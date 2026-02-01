@@ -1894,40 +1894,58 @@ print(f"GCD of {original_a} and {original_b} is {a}")</textarea>
             <!-- Submit Form -->
             <section id="submit" class="form-section">
                 <h2>📤 Submit Your Work</h2>
-                <p>Complete the exercises above and submit when you're done.</p>
+                <p>Complete the exercises above and submit when you're done. All fields are required.</p>
                 
-                <form id="submissionForm">
+                <div style="background: linear-gradient(135deg, var(--success), #059669); color: white; padding: 16px 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <strong>📅 Week 3 Submission Window:</strong> February 23-27, 2025
+                </div>
+                
+                <div class="warning-box info-box" style="background: rgba(245, 158, 11, 0.1); border-color: var(--warning);">
+                    <p style="margin: 0;"><strong style="color: var(--warning);">⚠️ Important:</strong></p>
+                    <ul style="margin: 10px 0 0 20px; color: var(--text-secondary);">
+                        <li>Use your <strong>real university email</strong> (@istun.edu.tr)</li>
+                        <li>You can only submit <strong>once per week</strong></li>
+                        <li>Get the <strong>class code</strong> from your instructor</li>
+                        <li>Submissions only accepted <strong>during the submission window</strong></li>
+                    </ul>
+                </div>
+                
+                <!-- Honeypot field (hidden) -->
+                <div style="position: absolute; left: -9999px;">
+                    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                </div>
+                
+                <form id="submitForm" onsubmit="return false;">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="studentId">Student ID</label>
-                            <input type="text" id="studentId" name="studentId" placeholder="e.g., 2024001234" required>
+                            <label for="studentId">Student ID *</label>
+                            <input type="text" id="studentId" placeholder="e.g., 2024001234" maxlength="10" required>
+                            <small style="color: var(--text-muted); font-size: 0.8rem;">Your student number (digits only)</small>
                         </div>
                         
                         <div class="form-group">
-                            <label for="fullName">Full Name</label>
-                            <input type="text" id="fullName" name="fullName" placeholder="Your full name" required>
+                            <label for="studentName">Full Name *</label>
+                            <input type="text" id="studentName" placeholder="e.g., Ali Yılmaz" required>
+                            <small style="color: var(--text-muted); font-size: 0.8rem;">First and last name as registered</small>
                         </div>
                         
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder="yourname@istun.edu.tr" required>
+                            <label for="studentEmail">University Email *</label>
+                            <input type="email" id="studentEmail" placeholder="e.g., ali.yilmaz@istun.edu.tr" required>
+                            <small style="color: var(--text-muted); font-size: 0.8rem;">Must be @istun.edu.tr email</small>
                         </div>
                         
                         <div class="form-group">
-                            <label for="classCode">Class Code</label>
-                            <select id="classCode" name="classCode" required>
-                                <option value="">Select your class</option>
-                                <option value="MCH101-A">MCH101-A (Morning)</option>
-                                <option value="MCH101-B">MCH101-B (Afternoon)</option>
-                                <option value="MCH101-C">MCH101-C (Evening)</option>
-                            </select>
+                            <label for="classCode">Class Code *</label>
+                            <input type="text" id="classCode" placeholder="Enter code from instructor" required>
+                            <small style="color: var(--text-muted); font-size: 0.8rem;">Get this code from your instructor in class</small>
                         </div>
                     </div>
                     
-                    <input type="hidden" name="week" value="Week 03 - Loops">
-                    
-                    <button type="submit" class="submit-btn">📤 Submit</button>
+                    <button type="submit" class="submit-btn" onclick="submitWork()">📤 Submit My Work</button>
                 </form>
+                
+                <div id="submitStatus" style="margin-top: 16px; padding: 12px; border-radius: 8px; display: none;"></div>
             </section>
             
             <!-- Navigation -->
@@ -2082,33 +2100,161 @@ _output
             sidebar.classList.toggle('open');
         });
         
+        // Track time on page
+        const pageLoadTime = Date.now();
+        
+        // Form validation functions
+        function validateStudentId(id) {
+            if (id.length < 6 || id.length > 10) return false;
+            if (!/^\d+$/.test(id)) return false;
+            if (/^(\d)\1+$/.test(id)) return false;
+            return true;
+        }
+        
+        function validateName(name) {
+            if (name.length < 5) return false;
+            const words = name.trim().split(/\s+/);
+            if (words.length < 2) return false;
+            if (!/^[A-Za-zğüşıöçĞÜŞİÖÇ\s]+$/.test(name)) return false;
+            return true;
+        }
+        
+        function validateEmail(email) {
+            return email.endsWith('@istun.edu.tr') && email.length > 15;
+        }
+        
         // Form submission
-        document.getElementById('submissionForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        function submitWork() {
+            const statusDiv = document.getElementById('submitStatus');
+            statusDiv.style.display = 'none';
             
-            const email = document.getElementById('email').value;
-            if (!email.includes('@istun.edu.tr')) {
-                alert('Please use your ISTUN email (@istun.edu.tr)');
+            const studentId = document.getElementById('studentId').value.trim();
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentEmail = document.getElementById('studentEmail').value.trim().toLowerCase();
+            const classCode = document.getElementById('classCode').value.trim().toUpperCase();
+            const honeypot = document.getElementById('website').value;
+            
+            // Honeypot check
+            if (honeypot) {
+                statusDiv.textContent = '❌ Submission rejected.';
+                statusDiv.style.background = 'rgba(239, 68, 68, 0.2)';
+                statusDiv.style.color = '#ef4444';
+                statusDiv.style.display = 'block';
                 return;
             }
             
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            data.timestamp = new Date().toISOString();
+            // Time check
+            const timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
+            if (timeOnPage < 30) {
+                statusDiv.textContent = '❌ Please spend more time reviewing the material before submitting.';
+                statusDiv.style.background = 'rgba(239, 68, 68, 0.2)';
+                statusDiv.style.color = '#ef4444';
+                statusDiv.style.display = 'block';
+                return;
+            }
             
-            try {
-                await fetch('https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec', {
+            // Validation
+            if (!studentId || !studentName || !studentEmail || !classCode) {
+                statusDiv.textContent = '❌ All fields are required.';
+                statusDiv.style.background = 'rgba(239, 68, 68, 0.2)';
+                statusDiv.style.color = '#ef4444';
+                statusDiv.style.display = 'block';
+                return;
+            }
+            
+            if (!validateStudentId(studentId)) {
+                statusDiv.textContent = '❌ Invalid Student ID. Must be 6-10 digits.';
+                statusDiv.style.background = 'rgba(239, 68, 68, 0.2)';
+                statusDiv.style.color = '#ef4444';
+                statusDiv.style.display = 'block';
+                return;
+            }
+            
+            if (!validateName(studentName)) {
+                statusDiv.textContent = '❌ Please enter your full name (first and last name).';
+                statusDiv.style.background = 'rgba(239, 68, 68, 0.2)';
+                statusDiv.style.color = '#ef4444';
+                statusDiv.style.display = 'block';
+                return;
+            }
+            
+            if (!validateEmail(studentEmail)) {
+                statusDiv.textContent = '❌ Please use your @istun.edu.tr email address.';
+                statusDiv.style.background = 'rgba(239, 68, 68, 0.2)';
+                statusDiv.style.color = '#ef4444';
+                statusDiv.style.display = 'block';
+                return;
+            }
+            
+            if (classCode.length < 4) {
+                statusDiv.textContent = '❌ Invalid class code. Get the correct code from your instructor.';
+                statusDiv.style.background = 'rgba(239, 68, 68, 0.2)';
+                statusDiv.style.color = '#ef4444';
+                statusDiv.style.display = 'block';
+                return;
+            }
+            
+            // Prepare data
+            const data = {
+                week: 'Week_03',
+                student_id: studentId,
+                student_name: studentName,
+                student_email: studentEmail,
+                classCode: classCode,
+                timeOnPage: timeOnPage,
+                source: 'website',
+                website: honeypot,
+                answers: {}
+            };
+            
+            statusDiv.textContent = '⏳ Submitting...';
+            statusDiv.style.background = 'rgba(16, 185, 129, 0.2)';
+            statusDiv.style.color = '#10b981';
+            statusDiv.style.display = 'block';
+            
+            // Submit to Google Apps Script
+            fetch('https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    statusDiv.textContent = '✅ ' + result.message + ' Check your email for confirmation.';
+                    statusDiv.style.background = 'rgba(16, 185, 129, 0.2)';
+                    statusDiv.style.color = '#10b981';
+                } else {
+                    statusDiv.textContent = '❌ ' + result.message;
+                    statusDiv.style.background = 'rgba(239, 68, 68, 0.2)';
+                    statusDiv.style.color = '#ef4444';
+                }
+            })
+            .catch(error => {
+                // Try no-cors mode as fallback
+                fetch('https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec', {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                     body: JSON.stringify(data)
+                })
+                .then(() => {
+                    statusDiv.textContent = '✅ Submission sent! If valid, you will receive a confirmation email.';
+                    statusDiv.style.background = 'rgba(16, 185, 129, 0.2)';
+                    statusDiv.style.color = '#10b981';
+                })
+                .catch(err => {
+                    statusDiv.textContent = '❌ Submission failed. Please try again later.';
+                    statusDiv.style.background = 'rgba(239, 68, 68, 0.2)';
+                    statusDiv.style.color = '#ef4444';
                 });
-                alert('✅ Solutions submitted successfully!');
-                this.reset();
-            } catch (error) {
-                alert('❌ Submission failed. Please try again.');
-            }
-        });
+            });
+        }
     </script>
 </body>
 </html>
