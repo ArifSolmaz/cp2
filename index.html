@@ -13,7 +13,7 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             line-height: 1.6;
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -51,9 +51,10 @@
             color: #3498db;
         }
         
+        /* Week Cards Grid */
         .week-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 15px;
             margin: 30px 0;
         }
@@ -66,6 +67,7 @@
             text-decoration: none;
             color: #333;
             transition: all 0.3s ease;
+            position: relative;
         }
         
         .week-card:hover {
@@ -75,12 +77,12 @@
         }
         
         .week-card h4 {
-            margin: 0 0 10px 0;
+            margin: 0 0 8px 0;
             color: #2c3e50;
         }
         
         .week-card p {
-            margin: 0;
+            margin: 0 0 10px 0;
             font-size: 0.9em;
             color: #666;
         }
@@ -96,36 +98,146 @@
             margin-bottom: 10px;
         }
         
-        .colab-section {
-            background: #fff8e1;
-            border: 2px solid #ff9800;
-            border-radius: 10px;
-            padding: 25px;
-            margin: 30px 0;
+        .week-card .dates {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            display: inline-block;
+            margin-top: 8px;
+        }
+        
+        .week-card .dates.past {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .week-card .dates.current {
+            background: #fff3e0;
+            color: #e65100;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* Schedule Table */
+        .schedule-section {
+            margin: 40px 0;
+        }
+        
+        .schedule-section h2 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+        
+        .schedule-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .schedule-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .schedule-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .schedule-table .week-col {
+            font-weight: bold;
+            color: #3498db;
+            width: 80px;
+        }
+        
+        .schedule-table .topic-col {
+            color: #2c3e50;
+        }
+        
+        .schedule-table .dates-col {
+            color: #666;
+            width: 150px;
+        }
+        
+        .schedule-table .status-col {
+            width: 100px;
             text-align: center;
         }
         
-        .colab-section h3 {
-            color: #e65100;
-            margin-top: 0;
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
         }
         
-        .colab-btn {
-            display: inline-block;
-            background: #f9ab00;
+        .status-badge.upcoming {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .status-badge.open {
+            background: #e8f5e9;
+            color: #2e7d32;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-badge.closed {
+            background: #fafafa;
+            color: #999;
+        }
+        
+        /* Break row */
+        .schedule-table .break-row {
+            background: #fff8e1;
+        }
+        
+        .schedule-table .break-row td {
+            color: #f57c00;
+            font-style: italic;
+            text-align: center;
+        }
+        
+        /* Important notice */
+        .notice-box {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
             color: white;
-            padding: 12px 30px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 15px;
-            transition: background 0.3s;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
         }
         
-        .colab-btn:hover {
-            background: #e09900;
+        .notice-box h3 {
+            margin: 0 0 10px 0;
         }
         
+        .notice-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .notice-box li {
+            margin: 5px 0;
+        }
+        
+        /* How to section */
         .how-to {
             background: #e8f5e9;
             border-radius: 10px;
@@ -142,6 +254,7 @@
             margin-bottom: 0;
         }
         
+        /* Footer */
         .footer {
             text-align: center;
             margin-top: 40px;
@@ -151,17 +264,24 @@
             font-size: 0.9em;
         }
         
-        .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-size: 0.75em;
-            margin-left: 5px;
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .week-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .schedule-table {
+                font-size: 0.85em;
+            }
+            
+            .schedule-table th, .schedule-table td {
+                padding: 8px 6px;
+            }
         }
-        
-        .badge-easy { background: #d4edda; color: #155724; }
-        .badge-medium { background: #fff3cd; color: #856404; }
-        .badge-hard { background: #f8d7da; color: #721c24; }
     </style>
 </head>
 <body>
@@ -174,116 +294,57 @@
         <h3>👋 Welcome!</h3>
         <p>This is an interactive Python programming course. You can:</p>
         <ul>
-            <li><strong>Read</strong> the explanations</li>
+            <li><strong>Read</strong> the explanations and examples</li>
             <li><strong>Run</strong> code directly in your browser (no installation needed!)</li>
             <li><strong>Practice</strong> with exercises</li>
-            <li><strong>Submit</strong> your work via Google Colab</li>
+            <li><strong>Submit</strong> your work during the designated week</li>
+        </ul>
+    </div>
+    
+    <div class="notice-box">
+        <h3>⚠️ Important Submission Rules</h3>
+        <ul>
+            <li>Each week has a <strong>specific submission window</strong> (see schedule below)</li>
+            <li>You can <strong>only submit during that week</strong> - not before, not after</li>
+            <li>You need the <strong>class code</strong> from your instructor to submit</li>
+            <li>Use your <strong>@istun.edu.tr</strong> email address</li>
+            <li><strong>One submission per week</strong> - no resubmissions allowed</li>
         </ul>
     </div>
     
     <div class="how-to">
         <h3>📖 How to Use This Course</h3>
         <ol>
-            <li><strong>Browse here:</strong> Read content and try code examples on this site</li>
-            <li><strong>Do exercises:</strong> Open the week in Google Colab to complete exercises</li>
-            <li><strong>Submit:</strong> Fill the form at the end of the Colab notebook</li>
+            <li><strong>Study:</strong> Read the content and run the code examples</li>
+            <li><strong>Practice:</strong> Complete the exercises at the end of each week</li>
+            <li><strong>Get the code:</strong> Attend class to receive the submission code</li>
+            <li><strong>Submit:</strong> Fill the form at the bottom of each week's page</li>
         </ol>
     </div>
-    
+
+    <!-- Schedule Section -->
+    <div class="schedule-section">
+        <h2>📅 Course Schedule & Submission Dates</h2>
+        
+        <table class="schedule-table">
+            <thead>
+                <tr>
+                    <th>Week</th>
+                    <th>Topic</th>
+                    <th>Submission Dates</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="scheduleBody">
+                <!-- Filled by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
     <h2>📚 Course Contents</h2>
     
-    <div class="week-grid">
-        <a href="Week_01.html" class="week-card">
-            <span class="week-num">Week 1</span>
-            <h4>Introduction to Python</h4>
-            <p>print(), variables, data types, basic math</p>
-        </a>
-        
-        <a href="Week_02.html" class="week-card">
-            <span class="week-num">Week 2</span>
-            <h4>Control Flow & Conditionals</h4>
-            <p>if, elif, else, comparison operators</p>
-        </a>
-        
-        <a href="Week_03.html" class="week-card">
-            <span class="week-num">Week 3</span>
-            <h4>Loops</h4>
-            <p>for loops, while loops, break, continue</p>
-        </a>
-        
-        <a href="Week_04.html" class="week-card">
-            <span class="week-num">Week 4</span>
-            <h4>Functions</h4>
-            <p>def, parameters, return, scope</p>
-        </a>
-        
-        <a href="Week_05.html" class="week-card">
-            <span class="week-num">Week 5</span>
-            <h4>Lists and Tuples</h4>
-            <p>Creating, indexing, slicing, methods</p>
-        </a>
-        
-        <a href="Week_06.html" class="week-card">
-            <span class="week-num">Week 6</span>
-            <h4>Dictionaries and Sets</h4>
-            <p>Key-value pairs, set operations</p>
-        </a>
-        
-        <a href="Week_07.html" class="week-card">
-            <span class="week-num">Week 7</span>
-            <h4>Strings</h4>
-            <p>String methods, formatting, manipulation</p>
-        </a>
-        
-        <a href="Week_08.html" class="week-card">
-            <span class="week-num">Week 8</span>
-            <h4>File Handling</h4>
-            <p>Reading, writing, working with files</p>
-        </a>
-        
-        <a href="Week_09.html" class="week-card">
-            <span class="week-num">Week 9</span>
-            <h4>Error Handling</h4>
-            <p>try, except, finally, custom exceptions</p>
-        </a>
-        
-        <a href="Week_10.html" class="week-card">
-            <span class="week-num">Week 10</span>
-            <h4>OOP Basics</h4>
-            <p>Classes, objects, methods, attributes</p>
-        </a>
-        
-        <a href="Week_11.html" class="week-card">
-            <span class="week-num">Week 11</span>
-            <h4>OOP Inheritance</h4>
-            <p>Inheritance, polymorphism, super()</p>
-        </a>
-        
-        <a href="Week_12.html" class="week-card">
-            <span class="week-num">Week 12</span>
-            <h4>Modules & Packages</h4>
-            <p>import, creating modules, pip</p>
-        </a>
-        
-        <a href="Week_13.html" class="week-card">
-            <span class="week-num">Week 13</span>
-            <h4>External Data</h4>
-            <p>JSON, CSV, APIs</p>
-        </a>
-        
-        <a href="Week_14.html" class="week-card">
-            <span class="week-num">Week 14</span>
-            <h4>Final Project</h4>
-            <p>Putting it all together</p>
-        </a>
-    </div>
-    
-    <div class="colab-section">
-        <h3>📝 Submit Your Work</h3>
-        <p>To complete exercises and submit for grading, use Google Colab:</p>
-        <a href="https://github.com/ArifSolmaz/cp2" class="colab-btn" target="_blank">
-            🚀 Open Course in Colab
-        </a>
+    <div class="week-grid" id="weekGrid">
+        <!-- Filled by JavaScript -->
     </div>
     
     <div class="footer">
@@ -292,6 +353,102 @@
         Istanbul Health and Technology University</p>
     </div>
 </div>
+
+<script>
+// Course data
+const weeks = [
+    { week: 1, topic: "Introduction to Python", desc: "print(), variables, data types, basic math", start: "2025-02-09", end: "2025-02-13" },
+    { week: 2, topic: "Control Flow & Conditionals", desc: "if, elif, else, comparison operators", start: "2025-02-16", end: "2025-02-20" },
+    { week: 3, topic: "Loops", desc: "for loops, while loops, break, continue", start: "2025-02-23", end: "2025-02-27" },
+    { week: 4, topic: "Functions", desc: "def, parameters, return, scope", start: "2025-03-02", end: "2025-03-06" },
+    { week: 5, topic: "Lists and Tuples", desc: "Creating, indexing, slicing, methods", start: "2025-03-09", end: "2025-03-13" },
+    { week: 6, topic: "Dictionaries and Sets", desc: "Key-value pairs, set operations", start: "2025-03-16", end: "2025-03-20" },
+    { week: 7, topic: "Strings", desc: "String methods, formatting, manipulation", start: "2025-03-23", end: "2025-03-27" },
+    { week: 8, topic: "File Handling", desc: "Reading, writing, working with files", start: "2025-03-30", end: "2025-04-03" },
+    { week: "break", topic: "Spring Break", desc: "No classes", start: "2025-04-06", end: "2025-04-18" },
+    { week: 9, topic: "Error Handling", desc: "try, except, finally, custom exceptions", start: "2025-04-20", end: "2025-04-24" },
+    { week: 10, topic: "OOP Basics", desc: "Classes, objects, methods, attributes", start: "2025-04-27", end: "2025-05-01" },
+    { week: 11, topic: "OOP Inheritance", desc: "Inheritance, polymorphism, super()", start: "2025-05-04", end: "2025-05-08" },
+    { week: 12, topic: "Modules & Packages", desc: "import, creating modules, pip", start: "2025-05-11", end: "2025-05-15" },
+    { week: 13, topic: "External Data", desc: "JSON, CSV, APIs", start: "2025-05-18", end: "2025-05-22" },
+    { week: 14, topic: "Final Project", desc: "Putting it all together", start: "2025-06-01", end: "2025-06-05" }
+];
+
+// Format date as DD/MM
+function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    return `${day}/${month}`;
+}
+
+// Get status for a week
+function getStatus(start, end) {
+    const now = new Date();
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    endDate.setHours(23, 59, 59);
+    
+    if (now < startDate) return 'upcoming';
+    if (now > endDate) return 'closed';
+    return 'open';
+}
+
+// Build schedule table
+function buildSchedule() {
+    const tbody = document.getElementById('scheduleBody');
+    
+    weeks.forEach(item => {
+        const tr = document.createElement('tr');
+        
+        if (item.week === 'break') {
+            tr.className = 'break-row';
+            tr.innerHTML = `
+                <td colspan="4">🌴 ${item.topic} (${formatDate(item.start)} - ${formatDate(item.end)})</td>
+            `;
+        } else {
+            const status = getStatus(item.start, item.end);
+            const statusText = status === 'open' ? '🟢 Open' : status === 'upcoming' ? '🔵 Upcoming' : '⚫ Closed';
+            
+            tr.innerHTML = `
+                <td class="week-col">Week ${item.week}</td>
+                <td class="topic-col">${item.topic}</td>
+                <td class="dates-col">${formatDate(item.start)} - ${formatDate(item.end)}</td>
+                <td class="status-col"><span class="status-badge ${status}">${statusText}</span></td>
+            `;
+        }
+        
+        tbody.appendChild(tr);
+    });
+}
+
+// Build week cards
+function buildWeekCards() {
+    const grid = document.getElementById('weekGrid');
+    
+    weeks.filter(w => w.week !== 'break').forEach(item => {
+        const status = getStatus(item.start, item.end);
+        const statusClass = status === 'open' ? 'current' : status === 'closed' ? 'past' : '';
+        const weekNum = String(item.week).padStart(2, '0');
+        
+        const card = document.createElement('a');
+        card.href = `Week_${weekNum}.html`;
+        card.className = 'week-card';
+        card.innerHTML = `
+            <span class="week-num">Week ${item.week}</span>
+            <h4>${item.topic}</h4>
+            <p>${item.desc}</p>
+            <span class="dates ${statusClass}">📅 ${formatDate(item.start)} - ${formatDate(item.end)}</span>
+        `;
+        
+        grid.appendChild(card);
+    });
+}
+
+// Initialize
+buildSchedule();
+buildWeekCards();
+</script>
 
 </body>
 </html>
