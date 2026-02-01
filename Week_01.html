@@ -1832,54 +1832,198 @@ print(f"Consonants: {consonant_count}")</textarea>
         <section class="section" id="submit">
             <div class="section-header submit">✅ Submit Your Work</div>
             <div class="section-content">
-                <p>Fill in your information below and click Submit to record your completion of Week 1.</p>
+                <p>Fill in your information below to submit Week 1. All fields are required.</p>
+                
+                <div class="warning-box">
+                    <strong>⚠️ Important:</strong>
+                    <ul style="margin: 10px 0 0 0; padding-left: 20px;">
+                        <li>Use your <strong>real university email</strong> (@istun.edu.tr)</li>
+                        <li>You can only submit <strong>once per week</strong></li>
+                        <li>Get the <strong>class code</strong> from your instructor</li>
+                    </ul>
+                </div>
                 
                 <div class="submit-form">
+                    <!-- Honeypot field - hidden from real users, bots fill it -->
+                    <div style="position: absolute; left: -9999px;" aria-hidden="true">
+                        <label for="website">Website</label>
+                        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                    </div>
+                    
                     <div class="form-group">
                         <label for="studentId">Student ID *</label>
-                        <input type="text" id="studentId" placeholder="e.g., 123456" required>
+                        <input type="text" id="studentId" placeholder="e.g., 2024001234 (6-10 digits)" maxlength="10" required>
+                        <small style="color: #666;">Your student number (digits only)</small>
                     </div>
                     
                     <div class="form-group">
                         <label for="studentName">Full Name *</label>
                         <input type="text" id="studentName" placeholder="e.g., Ali Yılmaz" required>
+                        <small style="color: #666;">First and last name as registered</small>
                     </div>
                     
                     <div class="form-group">
-                        <label for="studentEmail">Email *</label>
+                        <label for="studentEmail">University Email *</label>
                         <input type="email" id="studentEmail" placeholder="e.g., ali.yilmaz@istun.edu.tr" required>
+                        <small style="color: #666;">Must be @istun.edu.tr email</small>
                     </div>
                     
-                    <button class="submit-btn" onclick="submitWork()">📤 Submit My Work</button>
+                    <div class="form-group">
+                        <label for="classCode">Class Code *</label>
+                        <input type="text" id="classCode" placeholder="Enter the code from class" maxlength="20" required>
+                        <small style="color: #666;">Get this code from your instructor in class</small>
+                    </div>
+                    
+                    <button class="submit-btn" id="submitBtn" onclick="submitWork()">📤 Submit My Work</button>
                     
                     <div id="submit-status"></div>
                 </div>
                 
                 <script>
+                // Track time on page for anti-spam
+                const pageLoadTime = Date.now();
+                
+                // Validation functions
+                function validateStudentId(id) {
+                    id = id.trim();
+                    if (id.length < 6 || id.length > 10) {
+                        return { valid: false, error: 'Student ID must be 6-10 digits' };
+                    }
+                    if (!/^\d+$/.test(id)) {
+                        return { valid: false, error: 'Student ID must contain only numbers' };
+                    }
+                    if (/^(\d)\1+$/.test(id)) {
+                        return { valid: false, error: 'Invalid Student ID' };
+                    }
+                    return { valid: true };
+                }
+                
+                function validateName(name) {
+                    name = name.trim();
+                    if (name.length < 5) {
+                        return { valid: false, error: 'Please enter your full name' };
+                    }
+                    const words = name.split(/\s+/).filter(w => w.length > 0);
+                    if (words.length < 2) {
+                        return { valid: false, error: 'Please enter both first and last name' };
+                    }
+                    for (const word of words) {
+                        if (word.length < 2) {
+                            return { valid: false, error: 'Each name part must be at least 2 characters' };
+                        }
+                    }
+                    // Only letters and Turkish characters
+                    if (!/^[A-Za-zğüşıöçĞÜŞİÖÇ\s]+$/.test(name)) {
+                        return { valid: false, error: 'Name can only contain letters' };
+                    }
+                    // Check for repeated characters (gibberish)
+                    if (/(.)\1{2,}/i.test(name.replace(/\s/g, ''))) {
+                        return { valid: false, error: 'Please enter a valid name' };
+                    }
+                    return { valid: true };
+                }
+                
+                function validateEmail(email) {
+                    email = email.trim().toLowerCase();
+                    const requiredDomain = '@istun.edu.tr';
+                    
+                    if (!email.includes('@')) {
+                        return { valid: false, error: 'Please enter a valid email' };
+                    }
+                    if (!email.endsWith(requiredDomain)) {
+                        return { valid: false, error: 'Only @istun.edu.tr emails are allowed' };
+                    }
+                    const localPart = email.replace(requiredDomain, '');
+                    if (localPart.length < 3) {
+                        return { valid: false, error: 'Invalid email format' };
+                    }
+                    // Check for gibberish (only consonants)
+                    if (/^[bcdfghjklmnpqrstvwxyz]+$/i.test(localPart)) {
+                        return { valid: false, error: 'Please use your real university email' };
+                    }
+                    return { valid: true };
+                }
+                
+                function validateClassCode(code) {
+                    code = code.trim().toUpperCase();
+                    if (code.length < 5) {
+                        return { valid: false, error: 'Please enter the class code' };
+                    }
+                    return { valid: true };
+                }
+                
+                function showError(message) {
+                    const statusEl = document.getElementById('submit-status');
+                    statusEl.className = 'error';
+                    statusEl.innerHTML = '❌ ' + message;
+                    statusEl.style.display = 'block';
+                }
+                
+                function showSuccess(message) {
+                    const statusEl = document.getElementById('submit-status');
+                    statusEl.className = 'success';
+                    statusEl.innerHTML = message;
+                    statusEl.style.display = 'block';
+                }
+                
                 async function submitWork() {
+                    const submitBtn = document.getElementById('submitBtn');
+                    const statusEl = document.getElementById('submit-status');
+                    
+                    // Get values
                     const studentId = document.getElementById('studentId').value.trim();
                     const studentName = document.getElementById('studentName').value.trim();
-                    const studentEmail = document.getElementById('studentEmail').value.trim();
-                    const statusEl = document.getElementById('submit-status');
-                    const submitBtn = document.querySelector('.submit-btn');
+                    const studentEmail = document.getElementById('studentEmail').value.trim().toLowerCase();
+                    const classCode = document.getElementById('classCode').value.trim().toUpperCase();
+                    const honeypot = document.getElementById('website').value;
                     
-                    // Validation
-                    if (!studentId || !studentName || !studentEmail) {
-                        statusEl.className = 'error';
-                        statusEl.textContent = '❌ Please fill in all fields!';
-                        statusEl.style.display = 'block';
+                    // Calculate time on page
+                    const timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
+                    
+                    // Hide previous status
+                    statusEl.style.display = 'none';
+                    
+                    // Bot check (honeypot)
+                    if (honeypot && honeypot.length > 0) {
+                        showError('Submission rejected');
                         return;
                     }
                     
-                    // Email validation
-                    if (!studentEmail.includes('@')) {
-                        statusEl.className = 'error';
-                        statusEl.textContent = '❌ Please enter a valid email address!';
-                        statusEl.style.display = 'block';
+                    // Time check (too fast = suspicious)
+                    if (timeOnPage < 30) {
+                        showError('Please take time to review the material before submitting');
                         return;
                     }
                     
-                    // Disable button
+                    // Validate Student ID
+                    const idCheck = validateStudentId(studentId);
+                    if (!idCheck.valid) {
+                        showError(idCheck.error);
+                        return;
+                    }
+                    
+                    // Validate Name
+                    const nameCheck = validateName(studentName);
+                    if (!nameCheck.valid) {
+                        showError(nameCheck.error);
+                        return;
+                    }
+                    
+                    // Validate Email
+                    const emailCheck = validateEmail(studentEmail);
+                    if (!emailCheck.valid) {
+                        showError(emailCheck.error);
+                        return;
+                    }
+                    
+                    // Validate Class Code
+                    const codeCheck = validateClassCode(classCode);
+                    if (!codeCheck.valid) {
+                        showError(codeCheck.error);
+                        return;
+                    }
+                    
+                    // All client-side validation passed
                     submitBtn.disabled = true;
                     submitBtn.textContent = '⏳ Submitting...';
                     
@@ -1888,9 +2032,10 @@ print(f"Consonants: {consonant_count}")</textarea>
                         studentId: studentId,
                         studentName: studentName,
                         studentEmail: studentEmail,
+                        classCode: classCode,
+                        timeOnPage: timeOnPage,
                         source: 'website',
-                        timestamp: new Date().toISOString(),
-                        answers: {}
+                        website: honeypot  // Should be empty
                     };
                     
                     try {
@@ -1898,31 +2043,56 @@ print(f"Consonants: {consonant_count}")</textarea>
                             'https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec',
                             {
                                 method: 'POST',
-                                mode: 'no-cors',
+                                mode: 'cors',
                                 headers: {
-                                    'Content-Type': 'application/json',
+                                    'Content-Type': 'text/plain',
                                 },
                                 body: JSON.stringify(data)
                             }
                         );
                         
-                        // Since no-cors, we can't read response, but assume success
-                        statusEl.className = 'success';
-                        statusEl.innerHTML = `✅ <strong>Submission successful!</strong><br>
-                            Week 1 completed by ${studentName} (${studentId})<br>
-                            Confirmation sent to: ${studentEmail}`;
-                        statusEl.style.display = 'block';
+                        const result = await response.json();
                         
-                        submitBtn.textContent = '✅ Submitted!';
-                        submitBtn.style.background = '#2d8e47';
+                        if (result.success) {
+                            showSuccess(`✅ <strong>Submission successful!</strong><br>
+                                Week 1 completed by ${studentName}<br>
+                                Student ID: ${studentId}<br>
+                                Confirmation will be sent to: ${studentEmail}`);
+                            submitBtn.textContent = '✅ Submitted!';
+                            submitBtn.style.background = '#2d8e47';
+                        } else {
+                            showError(result.message || 'Submission failed. Please try again.');
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = '📤 Submit My Work';
+                        }
                         
                     } catch (error) {
-                        statusEl.className = 'error';
-                        statusEl.textContent = '❌ Submission failed. Please try again or use Google Colab.';
-                        statusEl.style.display = 'block';
-                        
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = '📤 Submit My Work';
+                        // If CORS fails, try no-cors mode
+                        try {
+                            await fetch(
+                                'https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec',
+                                {
+                                    method: 'POST',
+                                    mode: 'no-cors',
+                                    headers: {
+                                        'Content-Type': 'text/plain',
+                                    },
+                                    body: JSON.stringify(data)
+                                }
+                            );
+                            
+                            showSuccess(`✅ <strong>Submission sent!</strong><br>
+                                Week 1 submitted by ${studentName}<br>
+                                If valid, confirmation will be sent to: ${studentEmail}<br>
+                                <small>Note: Server validation pending</small>`);
+                            submitBtn.textContent = '✅ Sent!';
+                            submitBtn.style.background = '#2d8e47';
+                            
+                        } catch (e) {
+                            showError('Network error. Please check your connection and try again.');
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = '📤 Submit My Work';
+                        }
                     }
                 }
                 </script>
