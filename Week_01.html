@@ -1834,12 +1834,17 @@ print(f"Consonants: {consonant_count}")</textarea>
             <div class="section-content">
                 <p>Fill in your information below to submit Week 1. All fields are required.</p>
                 
+                <div style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 16px 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <strong>📅 Week 1 Submission Window:</strong> February 9-13, 2025
+                </div>
+                
                 <div class="warning-box">
                     <strong>⚠️ Important:</strong>
                     <ul style="margin: 10px 0 0 0; padding-left: 20px;">
                         <li>Use your <strong>real university email</strong> (@istun.edu.tr)</li>
                         <li>You can only submit <strong>once per week</strong></li>
                         <li>Get the <strong>class code</strong> from your instructor</li>
+                        <li>Submissions only accepted <strong>during the submission window</strong></li>
                     </ul>
                 </div>
                 
@@ -2028,14 +2033,15 @@ print(f"Consonants: {consonant_count}")</textarea>
                     submitBtn.textContent = '⏳ Submitting...';
                     
                     const data = {
-                        week: 1,
-                        studentId: studentId,
-                        studentName: studentName,
-                        studentEmail: studentEmail,
+                        week: 'Week_01',
+                        student_id: studentId,
+                        student_name: studentName,
+                        student_email: studentEmail,
                         classCode: classCode,
                         timeOnPage: timeOnPage,
                         source: 'website',
-                        website: honeypot  // Should be empty
+                        website: honeypot,  // Should be empty
+                        answers: {}
                     };
                     
                     try {
