@@ -1,0 +1,2699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1: Introduction to Python | CP2</title>
+    
+    <!-- PyScript 2024 -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.8.2/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.8.2/core.js"></script>
+    
+    <style>
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2c3e50; margin-top: 50px; padding: 12px 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 5px; }
+        h3 { color: #2980b9; margin-top: 30px; border-left: 4px solid #3498db; padding-left: 10px; }
+        h4 { color: #16a085; margin-top: 20px; }
+        
+        .toc {
+            background: white;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 20px 30px;
+            margin: 20px 0;
+        }
+        .toc h3 { border: none; margin-top: 0; }
+        .toc ul { columns: 2; }
+        .toc li { margin: 5px 0; }
+        .toc a { color: #2980b9; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        
+        .info-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .danger-box {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .concept-box {
+            background: #e7f3ff;
+            border: 2px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .concept-box h4 { margin-top: 0; color: #1565C0; }
+        
+        .colab-box {
+            background: linear-gradient(135deg, #e8f4fd 0%, #d4e8f7 100%);
+            border: 2px solid #3498db;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .colab-box a {
+            display: inline-block;
+            background: #f9ab00;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .colab-box a:hover { background: #e09900; }
+        
+        .code-section {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .code-header {
+            background: #34495e;
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .code-header.example { background: #27ae60; }
+        .code-header.practice { background: #e67e22; }
+        .code-header.challenge { background: #8e44ad; }
+        
+        .code-body {
+            padding: 15px;
+            background: #f8f9fa;
+        }
+        
+        .code-body textarea {
+            width: 100%;
+            min-height: 100px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+        
+        .run-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .run-btn:hover { background: #219a52; }
+        
+        .output {
+            background: #1e1e1e;
+            color: #4ec9b0;
+            padding: 15px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            min-height: 40px;
+            white-space: pre-wrap;
+            border-top: 1px solid #ddd;
+        }
+        
+        .practice {
+            background: #fff8e1;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .practice h4 { margin-top: 0; color: #e65100; }
+        
+        .hint {
+            background: #f3e5f5;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        
+        .hint::before { content: "💡 Hint: "; font-weight: bold; }
+        
+        .expected {
+            background: #e8f5e9;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: monospace;
+        }
+        
+        .expected::before { content: "✅ Expected Output: "; font-weight: bold; color: #2e7d32; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+        }
+        
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background: #3498db; color: white; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            color: #c7254e;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+        }
+        
+        .nav-buttons a {
+            background: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        
+        .nav-buttons a:hover { background: #2980b9; }
+        
+        .loading { color: #888; font-style: italic; }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .two-column { grid-template-columns: 1fr; }
+            .toc ul { columns: 1; }
+        }
+        
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; }
+        .function { color: #dcdcaa; }
+    </style>
+</head>
+<body>
+
+<h1>🐍 Week 1: Introduction to Python Programming</h1>
+
+<p><strong>Course:</strong> Computer Programming II<br>
+<strong>Institution:</strong> Istanbul Health and Technology University<br>
+<strong>Department:</strong> Mechatronics Engineering<br>
+<strong>Instructor:</strong> Dr. Arif Solmaz<br>
+<strong>Duration:</strong> 5 hours</p>
+
+<div class="colab-box">
+    <strong>📝 For exercises and submission:</strong>
+    <p>This page is for learning. Complete exercises and submit your work in Google Colab.</p>
+    <a href="https://colab.research.google.com/github/ArifSolmaz/cp2/blob/main/notebooks/Week_01_Introduction_to_Python.ipynb" target="_blank">
+        🚀 Open in Google Colab
+    </a>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+    <h3>📑 Table of Contents</h3>
+    <ul>
+        <li><a href="#part1">Part 1: The print() Function</a></li>
+        <li><a href="#part2">Part 2: Variables and Assignment</a></li>
+        <li><a href="#part3">Part 3: Data Types</a></li>
+        <li><a href="#part4">Part 4: Type Conversion</a></li>
+        <li><a href="#part5">Part 5: Arithmetic Operations</a></li>
+        <li><a href="#part6">Part 6: The math Module</a></li>
+        <li><a href="#part7">Part 7: Strings In-Depth</a></li>
+        <li><a href="#part8">Part 8: String Methods</a></li>
+        <li><a href="#part9">Part 9: String Formatting</a></li>
+        <li><a href="#part10">Part 10: User Input</a></li>
+        <li><a href="#part11">Part 11: Comments</a></li>
+        <li><a href="#part12">Part 12: Common Errors</a></li>
+        <li><a href="#exercises">Exercises</a></li>
+    </ul>
+</div>
+
+<!-- Hidden Python helper script -->
+<script type="py">
+from pyscript import document
+import sys
+import io
+
+def run_code(event):
+    btn = event.target
+    code_id = btn.getAttribute("data-code")
+    output_id = btn.getAttribute("data-output")
+    
+    code = document.getElementById(code_id).value
+    output_el = document.getElementById(output_id)
+    
+    old_stdout = sys.stdout
+    old_stderr = sys.stderr
+    sys.stdout = io.StringIO()
+    sys.stderr = io.StringIO()
+    
+    try:
+        exec(code, {"__builtins__": __builtins__})
+        result = sys.stdout.getvalue()
+        if result:
+            output_el.innerText = result
+        else:
+            output_el.innerText = "(No output - add print() to see results)"
+    except Exception as e:
+        output_el.innerText = f"❌ Error: {type(e).__name__}: {e}"
+    finally:
+        sys.stdout = old_stdout
+        sys.stderr = old_stderr
+</script>
+
+<!-- ==================== PART 1: PRINT ==================== -->
+<h2 id="part1">📺 Part 1: The print() Function</h2>
+
+<div class="concept-box">
+    <h4>🎯 Learning Objectives</h4>
+    <ul>
+        <li>Display output to the screen using <code>print()</code></li>
+        <li>Print text, numbers, and multiple values</li>
+        <li>Use special parameters: <code>sep</code> and <code>end</code></li>
+        <li>Work with escape characters</li>
+    </ul>
+</div>
+
+<p>The <code>print()</code> function is your primary tool for displaying output. It sends text, numbers, or other data to the screen.</p>
+
+<h3>1.1 Basic Printing</h3>
+
+<p>The simplest use of <code>print()</code> displays a message:</p>
+
+<div class="code-section">
+    <div class="code-header example">Example: Basic print() usage</div>
+    <div class="code-body">
+        <textarea id="code1">print("Hello, World!")
+print("Welcome to Python programming!")
+print("Computer Programming II - Week 1")</textarea>
+        <br>
+        <button class="run-btn" data-code="code1" data-output="output1" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output1"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<div class="warning-box">
+    <strong>⚠️ Important Rule:</strong> Text (strings) must be enclosed in quotes. You can use either single quotes <code>'text'</code> or double quotes <code>"text"</code>, but they must match!
+</div>
+
+<h3>1.2 Printing Numbers</h3>
+
+<p>Numbers don't need quotes:</p>
+
+<div class="code-section">
+    <div class="code-header example">Example: Printing numbers</div>
+    <div class="code-body">
+        <textarea id="code2"># Integers (whole numbers)
+print(42)
+print(-17)
+print(1000000)
+
+# Floats (decimal numbers)
+print(3.14159)
+print(-273.15)
+print(0.001)</textarea>
+        <br>
+        <button class="run-btn" data-code="code2" data-output="output2" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output2"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>1.3 Printing Multiple Values</h3>
+
+<p>You can print multiple items by separating them with commas:</p>
+
+<div class="code-section">
+    <div class="code-header example">Example: Multiple values</div>
+    <div class="code-body">
+        <textarea id="code3"># Multiple items in one print
+print("Name:", "Ali")
+print("Age:", 21)
+print("Height:", 175, "cm")
+print("GPA:", 3.5, "out of", 4.0)</textarea>
+        <br>
+        <button class="run-btn" data-code="code3" data-output="output3" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output3"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>1.4 The <code>sep</code> Parameter</h3>
+
+<p>The <code>sep</code> (separator) parameter controls what appears between items. Default is a space.</p>
+
+<div class="code-section">
+    <div class="code-header example">Example: Using sep parameter</div>
+    <div class="code-body">
+        <textarea id="code4"># Default separator (space)
+print("A", "B", "C")
+
+# Custom separators
+print("A", "B", "C", sep="-")
+print("A", "B", "C", sep=" | ")
+print("A", "B", "C", sep="")  # No separator
+print("A", "B", "C", sep="\n")  # Newline separator
+
+# Practical example: Date formatting
+print(2024, 10, 15, sep="/")
+print(15, 10, 2024, sep=".")</textarea>
+        <br>
+        <button class="run-btn" data-code="code4" data-output="output4" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output4"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>1.5 The <code>end</code> Parameter</h3>
+
+<p>The <code>end</code> parameter controls what appears at the end of print. Default is newline (<code>\n</code>).</p>
+
+<div class="code-section">
+    <div class="code-header example">Example: Using end parameter</div>
+    <div class="code-body">
+        <textarea id="code5"># Default behavior (newline at end)
+print("Line 1")
+print("Line 2")
+
+print("---")
+
+# Custom end
+print("Hello", end=" ")
+print("World", end="!")
+print()  # Empty print for newline
+
+print("---")
+
+# Practical: Progress indicator
+print("Loading", end="")
+print(".", end="")
+print(".", end="")
+print(".", end="")
+print(" Done!")</textarea>
+        <br>
+        <button class="run-btn" data-code="code5" data-output="output5" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output5"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>1.6 Escape Characters</h3>
+
+<p>Escape characters start with backslash (<code>\</code>) and have special meanings:</p>
+
+<table>
+    <tr><th>Escape</th><th>Meaning</th><th>Example</th></tr>
+    <tr><td><code>\n</code></td><td>Newline</td><td><code>"Line1\nLine2"</code></td></tr>
+    <tr><td><code>\t</code></td><td>Tab</td><td><code>"Col1\tCol2"</code></td></tr>
+    <tr><td><code>\\</code></td><td>Backslash</td><td><code>"C:\\Users"</code></td></tr>
+    <tr><td><code>\"</code></td><td>Double quote</td><td><code>"He said \"Hi\""</code></td></tr>
+    <tr><td><code>\'</code></td><td>Single quote</td><td><code>'It\'s OK'</code></td></tr>
+</table>
+
+<div class="code-section">
+    <div class="code-header example">Example: Escape characters</div>
+    <div class="code-body">
+        <textarea id="code6"># Newline - creates multiple lines
+print("First Line\nSecond Line\nThird Line")
+
+# Tab - creates columns
+print("Name\tAge\tCity")
+print("Ali\t21\tIstanbul")
+print("Ayşe\t22\tAnkara")
+
+# Backslash - for file paths
+print("C:\\Users\\Student\\Documents")
+
+# Quotes inside strings
+print("She said \"Hello!\"")
+print('It\'s a beautiful day')</textarea>
+        <br>
+        <button class="run-btn" data-code="code6" data-output="output6" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output6"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>1.7 Multi-line Strings (Triple Quotes)</h3>
+
+<p>Triple quotes (<code>"""</code> or <code>'''</code>) allow strings spanning multiple lines:</p>
+
+<div class="code-section">
+    <div class="code-header example">Example: Multi-line strings</div>
+    <div class="code-body">
+        <textarea id="code7"># Multi-line string with triple quotes
+message = """Dear Student,
+
+Welcome to Computer Programming II!
+
+This course will teach you:
+- Python fundamentals
+- Data structures
+- Object-oriented programming
+
+Best regards,
+Dr. Solmaz"""
+
+print(message)</textarea>
+        <br>
+        <button class="run-btn" data-code="code7" data-output="output7" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output7"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<div class="practice">
+    <h4>✏️ Practice 1.1: Create a Formatted Receipt</h4>
+    <p>Create output that looks like a receipt using tabs and escape characters:</p>
+    <div class="expected">
+RECEIPT
+====================
+Item        Price
+--------------------
+Coffee      15.50
+Sandwich    25.00
+Water       5.00
+--------------------
+TOTAL       45.50</div>
+</div>
+
+<div class="code-section">
+    <div class="code-header practice">Practice: Receipt formatting</div>
+    <div class="code-body">
+        <textarea id="code8"># Create the receipt using print(), \t, and \n
+print("RECEIPT")
+# Add your code here...</textarea>
+        <br>
+        <button class="run-btn" data-code="code8" data-output="output8" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output8"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+
+<!-- ==================== PART 2: VARIABLES ==================== -->
+<h2 id="part2">📦 Part 2: Variables and Assignment</h2>
+
+<div class="concept-box">
+    <h4>🎯 Learning Objectives</h4>
+    <ul>
+        <li>Understand what variables are and why we use them</li>
+        <li>Create and assign values to variables</li>
+        <li>Follow Python naming conventions</li>
+        <li>Perform multiple and simultaneous assignments</li>
+    </ul>
+</div>
+
+<h3>2.1 What is a Variable?</h3>
+
+<p>A <strong>variable</strong> is a named container that stores a value in computer memory. Think of it as a labeled box where you can put data.</p>
+
+<div class="two-column">
+    <div>
+        <strong>Without variables:</strong>
+        <pre>print(3.14159 * 5 * 5)
+print(3.14159 * 7 * 7)
+print(3.14159 * 10 * 10)</pre>
+    </div>
+    <div>
+        <strong>With variables:</strong>
+        <pre>pi = 3.14159
+r1, r2, r3 = 5, 7, 10
+print(pi * r1 * r1)
+print(pi * r2 * r2)
+print(pi * r3 * r3)</pre>
+    </div>
+</div>
+
+<div class="code-section">
+    <div class="code-header example">Example: Creating variables</div>
+    <div class="code-body">
+        <textarea id="code9"># Creating variables with assignment operator (=)
+name = "Mehmet"
+age = 22
+height = 1.78
+is_student = True
+
+# Using variables
+print("Name:", name)
+print("Age:", age)
+print("Height:", height, "meters")
+print("Student:", is_student)
+
+# Variables can be used in calculations
+birth_year = 2024 - age
+print("Birth year:", birth_year)</textarea>
+        <br>
+        <button class="run-btn" data-code="code9" data-output="output9" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output9"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>2.2 Variable Naming Rules</h3>
+
+<table>
+    <tr><th>Rule</th><th>Valid ✅</th><th>Invalid ❌</th></tr>
+    <tr><td>Must start with letter or underscore</td><td><code>name</code>, <code>_count</code></td><td><code>1name</code>, <code>@value</code></td></tr>
+    <tr><td>Can contain letters, numbers, underscores</td><td><code>student1</code>, <code>total_sum</code></td><td><code>my-var</code>, <code>total$</code></td></tr>
+    <tr><td>Case sensitive</td><td><code>Name</code> ≠ <code>name</code> ≠ <code>NAME</code></td><td>-</td></tr>
+    <tr><td>Cannot be Python keywords</td><td><code>my_class</code></td><td><code>class</code>, <code>for</code>, <code>if</code></td></tr>
+</table>
+
+<div class="code-section">
+    <div class="code-header example">Example: Naming conventions</div>
+    <div class="code-body">
+        <textarea id="code10"># Good variable names (snake_case recommended in Python)
+first_name = "Ali"
+last_name = "Yılmaz"
+student_age = 21
+total_score = 85.5
+is_enrolled = True
+
+# Also valid but different styles
+firstName = "Ali"      # camelCase (common in other languages)
+FIRSTNAME = "Ali"      # UPPERCASE (usually for constants)
+
+# Demonstrating case sensitivity
+name = "lowercase"
+Name = "Capitalized"
+NAME = "UPPERCASE"
+
+print(name)
+print(Name)
+print(NAME)</textarea>
+        <br>
+        <button class="run-btn" data-code="code10" data-output="output10" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output10"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>2.3 Python Reserved Keywords</h3>
+
+<p>These words have special meaning in Python and cannot be used as variable names:</p>
+
+<div class="code-section">
+    <div class="code-header example">Example: List all Python keywords</div>
+    <div class="code-body">
+        <textarea id="code11">import keyword
+
+print("Python Reserved Keywords:")
+print("=" * 40)
+
+# Get all keywords
+all_keywords = keyword.kwlist
+
+# Print in columns
+for i, kw in enumerate(all_keywords):
+    print(f"{kw:12}", end="")
+    if (i + 1) % 5 == 0:
+        print()
+
+print(f"\n\nTotal: {len(all_keywords)} keywords")</textarea>
+        <br>
+        <button class="run-btn" data-code="code11" data-output="output11" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output11"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>2.4 Multiple Assignment</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Multiple assignment techniques</div>
+    <div class="code-body">
+        <textarea id="code12"># Assign same value to multiple variables
+x = y = z = 0
+print(f"x={x}, y={y}, z={z}")
+
+# Assign different values in one line
+a, b, c = 1, 2, 3
+print(f"a={a}, b={b}, c={c}")
+
+# Practical: Unpacking coordinates
+latitude, longitude = 41.0082, 28.9784
+print(f"Istanbul: {latitude}°N, {longitude}°E")
+
+# Swap two variables (Python's elegant way!)
+first = "Apple"
+second = "Banana"
+print(f"Before swap: first={first}, second={second}")
+
+first, second = second, first
+print(f"After swap: first={first}, second={second}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code12" data-output="output12" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output12"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>2.5 Reassigning Variables</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Variables can change</div>
+    <div class="code-body">
+        <textarea id="code13"># Variables can be reassigned
+score = 0
+print("Initial score:", score)
+
+score = 10
+print("After first update:", score)
+
+score = score + 5  # Add 5 to current value
+print("After adding 5:", score)
+
+score += 10  # Shorthand for score = score + 10
+print("After += 10:", score)
+
+# Variables can change type (dynamic typing)
+data = 42
+print(f"data = {data}, type: {type(data)}")
+
+data = "Hello"
+print(f"data = {data}, type: {type(data)}")
+
+data = [1, 2, 3]
+print(f"data = {data}, type: {type(data)}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code13" data-output="output13" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output13"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<div class="practice">
+    <h4>✏️ Practice 2.1: Student Information System</h4>
+    <p>Create variables to store student information and calculate their final grade:</p>
+    <ul>
+        <li>Student name, ID, department</li>
+        <li>Midterm score (40%), Final score (60%)</li>
+        <li>Calculate and display the weighted average</li>
+    </ul>
+</div>
+
+<div class="code-section">
+    <div class="code-header practice">Practice: Student grade calculator</div>
+    <div class="code-body">
+        <textarea id="code14"># Student information
+student_name = "???"
+student_id = "???"
+department = "Mechatronics Engineering"
+
+# Exam scores
+midterm = 75
+final = 85
+
+# Calculate weighted average (midterm 40%, final 60%)
+weighted_average = ???
+
+# Display results
+print("Student Information")
+print("=" * 30)
+print(f"Name: {student_name}")
+print(f"ID: {student_id}")
+print(f"Department: {department}")
+print(f"Midterm: {midterm}")
+print(f"Final: {final}")
+print(f"Weighted Average: {weighted_average}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code14" data-output="output14" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output14"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+
+<!-- ==================== PART 3: DATA TYPES ==================== -->
+<h2 id="part3">🔢 Part 3: Data Types</h2>
+
+<div class="concept-box">
+    <h4>🎯 Learning Objectives</h4>
+    <ul>
+        <li>Understand Python's basic data types</li>
+        <li>Use the <code>type()</code> function to identify types</li>
+        <li>Know when to use each data type</li>
+    </ul>
+</div>
+
+<p>Python has several built-in data types. The four fundamental ones are:</p>
+
+<table>
+    <tr><th>Type</th><th>Name</th><th>Examples</th><th>Use Case</th></tr>
+    <tr><td><code>int</code></td><td>Integer</td><td><code>42</code>, <code>-17</code>, <code>0</code></td><td>Counting, indexing</td></tr>
+    <tr><td><code>float</code></td><td>Floating-point</td><td><code>3.14</code>, <code>-0.001</code>, <code>2.0</code></td><td>Measurements, calculations</td></tr>
+    <tr><td><code>str</code></td><td>String</td><td><code>"Hello"</code>, <code>'Python'</code></td><td>Text, names, messages</td></tr>
+    <tr><td><code>bool</code></td><td>Boolean</td><td><code>True</code>, <code>False</code></td><td>Conditions, flags</td></tr>
+</table>
+
+<h3>3.1 Integers (int)</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Working with integers</div>
+    <div class="code-body">
+        <textarea id="code15"># Integers - whole numbers without decimal points
+positive = 42
+negative = -17
+zero = 0
+
+# Python can handle very large integers!
+big_number = 999999999999999999999999999999
+print("Big number:", big_number)
+
+# Underscores can make large numbers readable (Python 3.6+)
+population = 84_000_000
+distance_km = 149_597_870  # Earth to Sun
+
+print(f"Turkey population: {population:,}")
+print(f"Distance to Sun: {distance_km:,} km")
+
+# Check type
+print(f"Type of {positive}: {type(positive)}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code15" data-output="output15" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output15"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>3.2 Floating-Point Numbers (float)</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Working with floats</div>
+    <div class="code-body">
+        <textarea id="code16"># Floats - numbers with decimal points
+pi = 3.14159265359
+temperature = -40.0
+tiny = 0.000001
+
+print(f"Pi: {pi}")
+print(f"Temperature: {temperature}")
+print(f"Tiny: {tiny}")
+
+# Scientific notation for very large/small numbers
+avogadro = 6.022e23      # 6.022 × 10²³
+electron_mass = 9.109e-31 # 9.109 × 10⁻³¹
+
+print(f"Avogadro's number: {avogadro}")
+print(f"Electron mass: {electron_mass}")
+
+# Be aware of floating-point precision issues!
+print("\nFloating-point precision:")
+print(f"0.1 + 0.2 = {0.1 + 0.2}")  # Not exactly 0.3!
+print(f"Expected: 0.3")</textarea>
+        <br>
+        <button class="run-btn" data-code="code16" data-output="output16" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output16"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<div class="warning-box">
+    <strong>⚠️ Floating-Point Warning:</strong> Due to how computers represent decimals, <code>0.1 + 0.2</code> equals <code>0.30000000000000004</code>, not exactly <code>0.3</code>. For financial calculations, use the <code>decimal</code> module.
+</div>
+
+<h3>3.3 Strings (str)</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Working with strings</div>
+    <div class="code-body">
+        <textarea id="code17"># Strings - sequences of characters
+name = "Python"
+greeting = 'Hello, World!'
+empty = ""
+
+# Strings with quotes inside
+quote1 = "She said 'Hello'"
+quote2 = 'He replied "Hi there"'
+quote3 = "It's a \"beautiful\" day"
+
+print(quote1)
+print(quote2)
+print(quote3)
+
+# String length
+text = "Computer Programming"
+print(f"\nText: '{text}'")
+print(f"Length: {len(text)} characters")</textarea>
+        <br>
+        <button class="run-btn" data-code="code17" data-output="output17" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output17"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>3.4 Booleans (bool)</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Working with booleans</div>
+    <div class="code-body">
+        <textarea id="code18"># Booleans - True or False (must be capitalized!)
+is_student = True
+is_graduated = False
+
+print(f"Is student: {is_student}")
+print(f"Is graduated: {is_graduated}")
+
+# Booleans from comparisons
+age = 20
+is_adult = age >= 18
+print(f"\nAge {age} is adult: {is_adult}")
+
+# Comparison operators return booleans
+print("\nComparison results:")
+print(f"5 > 3: {5 > 3}")
+print(f"5 < 3: {5 < 3}")
+print(f"5 == 5: {5 == 5}")
+print(f"5 != 3: {5 != 3}")
+
+# Boolean values are also integers (True=1, False=0)
+print(f"\nTrue + True = {True + True}")
+print(f"True * 10 = {True * 10}")
+print(f"False * 10 = {False * 10}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code18" data-output="output18" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output18"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>3.5 The <code>type()</code> Function</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Checking data types</div>
+    <div class="code-body">
+        <textarea id="code19"># The type() function reveals the data type
+values = [42, 3.14, "Hello", True, None]
+
+for v in values:
+    print(f"Value: {str(v):10} Type: {type(v).__name__}")
+
+# None - special type representing "nothing"
+result = None
+print(f"\nresult = {result}")
+print(f"Type: {type(result)}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code19" data-output="output19" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output19"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+
+<!-- ==================== PART 4: TYPE CONVERSION ==================== -->
+<h2 id="part4">🔄 Part 4: Type Conversion</h2>
+
+<div class="concept-box">
+    <h4>🎯 Learning Objectives</h4>
+    <ul>
+        <li>Convert between different data types</li>
+        <li>Understand implicit vs explicit conversion</li>
+        <li>Handle conversion errors</li>
+    </ul>
+</div>
+
+<h3>4.1 Explicit Type Conversion</h3>
+
+<table>
+    <tr><th>Function</th><th>Converts to</th><th>Example</th><th>Result</th></tr>
+    <tr><td><code>int()</code></td><td>Integer</td><td><code>int("42")</code></td><td><code>42</code></td></tr>
+    <tr><td><code>float()</code></td><td>Float</td><td><code>float("3.14")</code></td><td><code>3.14</code></td></tr>
+    <tr><td><code>str()</code></td><td>String</td><td><code>str(42)</code></td><td><code>"42"</code></td></tr>
+    <tr><td><code>bool()</code></td><td>Boolean</td><td><code>bool(1)</code></td><td><code>True</code></td></tr>
+</table>
+
+<div class="code-section">
+    <div class="code-header example">Example: Type conversion functions</div>
+    <div class="code-body">
+        <textarea id="code20"># String to Integer
+age_str = "25"
+age_int = int(age_str)
+print(f"'{age_str}' -> {age_int} (type: {type(age_int).__name__})")
+
+# String to Float
+price_str = "19.99"
+price_float = float(price_str)
+print(f"'{price_str}' -> {price_float} (type: {type(price_float).__name__})")
+
+# Number to String
+count = 100
+count_str = str(count)
+print(f"{count} -> '{count_str}' (type: {type(count_str).__name__})")
+
+# Float to Integer (truncates, doesn't round!)
+temperature = 36.7
+temp_int = int(temperature)
+print(f"{temperature} -> {temp_int} (truncated)")
+
+# Integer to Float
+whole = 42
+decimal = float(whole)
+print(f"{whole} -> {decimal} (type: {type(decimal).__name__})")</textarea>
+        <br>
+        <button class="run-btn" data-code="code20" data-output="output20" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output20"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>4.2 Boolean Conversion</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: What's True and False?</div>
+    <div class="code-body">
+        <textarea id="code21"># Truthy and Falsy values
+print("Falsy values (convert to False):")
+print(f"bool(0) = {bool(0)}")
+print(f"bool(0.0) = {bool(0.0)}")
+print(f"bool('') = {bool('')}")  # Empty string
+print(f"bool(None) = {bool(None)}")
+
+print("\nTruthy values (convert to True):")
+print(f"bool(1) = {bool(1)}")
+print(f"bool(-1) = {bool(-1)}")
+print(f"bool(3.14) = {bool(3.14)}")
+print(f"bool('Hello') = {bool('Hello')}")
+print(f"bool(' ') = {bool(' ')}")  # Space is not empty!</textarea>
+        <br>
+        <button class="run-btn" data-code="code21" data-output="output21" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output21"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>4.3 Implicit Type Conversion</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Automatic type conversion</div>
+    <div class="code-body">
+        <textarea id="code22"># Python automatically converts in some operations
+
+# int + float = float
+result1 = 5 + 3.0
+print(f"5 + 3.0 = {result1} (type: {type(result1).__name__})")
+
+# int * float = float
+result2 = 4 * 2.5
+print(f"4 * 2.5 = {result2} (type: {type(result2).__name__})")
+
+# Division always returns float
+result3 = 10 / 2
+print(f"10 / 2 = {result3} (type: {type(result3).__name__})")
+
+# But string + number = ERROR!
+# This will fail:
+# result4 = "Age: " + 25  # TypeError!
+
+# You must convert explicitly:
+result4 = "Age: " + str(25)
+print(result4)</textarea>
+        <br>
+        <button class="run-btn" data-code="code22" data-output="output22" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output22"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<div class="practice">
+    <h4>✏️ Practice 4.1: Temperature Converter</h4>
+    <p>Given a temperature string in Celsius, convert it to Fahrenheit.</p>
+    <p>Formula: F = C × 9/5 + 32</p>
+</div>
+
+<div class="code-section">
+    <div class="code-header practice">Practice: Temperature conversion</div>
+    <div class="code-body">
+        <textarea id="code23"># Temperature as a string (simulating user input)
+celsius_str = "25"
+
+# Step 1: Convert string to number
+celsius = ???
+
+# Step 2: Calculate Fahrenheit
+fahrenheit = ???
+
+# Step 3: Display result
+print(f"{celsius}°C = {fahrenheit}°F")</textarea>
+        <br>
+        <button class="run-btn" data-code="code23" data-output="output23" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output23"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+
+<!-- ==================== PART 5: ARITHMETIC ==================== -->
+<h2 id="part5">➕ Part 5: Arithmetic Operations</h2>
+
+<div class="concept-box">
+    <h4>🎯 Learning Objectives</h4>
+    <ul>
+        <li>Use all arithmetic operators</li>
+        <li>Understand operator precedence (PEMDAS)</li>
+        <li>Use augmented assignment operators</li>
+        <li>Work with built-in math functions</li>
+    </ul>
+</div>
+
+<h3>5.1 Arithmetic Operators</h3>
+
+<table>
+    <tr><th>Operator</th><th>Name</th><th>Example</th><th>Result</th></tr>
+    <tr><td><code>+</code></td><td>Addition</td><td><code>7 + 3</code></td><td><code>10</code></td></tr>
+    <tr><td><code>-</code></td><td>Subtraction</td><td><code>7 - 3</code></td><td><code>4</code></td></tr>
+    <tr><td><code>*</code></td><td>Multiplication</td><td><code>7 * 3</code></td><td><code>21</code></td></tr>
+    <tr><td><code>/</code></td><td>Division (float)</td><td><code>7 / 3</code></td><td><code>2.333...</code></td></tr>
+    <tr><td><code>//</code></td><td>Floor Division</td><td><code>7 // 3</code></td><td><code>2</code></td></tr>
+    <tr><td><code>%</code></td><td>Modulo (remainder)</td><td><code>7 % 3</code></td><td><code>1</code></td></tr>
+    <tr><td><code>**</code></td><td>Exponentiation</td><td><code>7 ** 3</code></td><td><code>343</code></td></tr>
+</table>
+
+<div class="code-section">
+    <div class="code-header example">Example: All arithmetic operators</div>
+    <div class="code-body">
+        <textarea id="code24">a = 17
+b = 5
+
+print(f"a = {a}, b = {b}")
+print("-" * 30)
+
+print(f"a + b  = {a + b}")    # Addition
+print(f"a - b  = {a - b}")    # Subtraction
+print(f"a * b  = {a * b}")    # Multiplication
+print(f"a / b  = {a / b}")    # Division (always float)
+print(f"a // b = {a // b}")   # Floor division (integer)
+print(f"a % b  = {a % b}")    # Modulo (remainder)
+print(f"a ** b = {a ** b}")   # Power (17^5)</textarea>
+        <br>
+        <button class="run-btn" data-code="code24" data-output="output24" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output24"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>5.2 Floor Division vs Regular Division</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Division types</div>
+    <div class="code-body">
+        <textarea id="code25"># Regular division (/) always returns float
+print("Regular division (/):")
+print(f"10 / 3 = {10 / 3}")
+print(f"10 / 2 = {10 / 2}")  # Even 10/2 returns 5.0
+
+# Floor division (//) returns integer (rounds down)
+print("\nFloor division (//):")
+print(f"10 // 3 = {10 // 3}")
+print(f"10 // 2 = {10 // 2}")
+
+# Floor division rounds toward negative infinity
+print("\nNegative floor division:")
+print(f"-10 // 3 = {-10 // 3}")  # -4, not -3!
+print(f"10 // -3 = {10 // -3}")  # -4, not -3!</textarea>
+        <br>
+        <button class="run-btn" data-code="code25" data-output="output25" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output25"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>5.3 Modulo Operator (%)</h3>
+
+<p>The modulo operator returns the <strong>remainder</strong> of division. Very useful for:</p>
+
+<div class="code-section">
+    <div class="code-header example">Example: Practical uses of modulo</div>
+    <div class="code-body">
+        <textarea id="code26"># Check if a number is even or odd
+number = 17
+if number % 2 == 0:
+    print(f"{number} is even")
+else:
+    print(f"{number} is odd")
+
+# Extract digits from a number
+num = 12345
+last_digit = num % 10
+print(f"Last digit of {num}: {last_digit}")
+
+# Convert seconds to minutes and seconds
+total_seconds = 3725
+minutes = total_seconds // 60
+seconds = total_seconds % 60
+print(f"{total_seconds} seconds = {minutes} min {seconds} sec")
+
+# Wrap around (circular indexing)
+days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+today = 2  # Wednesday (index 2)
+days_later = 10
+future_day = (today + days_later) % 7
+print(f"10 days after Wednesday: {days[future_day]}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code26" data-output="output26" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output26"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>5.4 Operator Precedence (PEMDAS)</h3>
+
+<p>Order of operations (highest to lowest):</p>
+
+<table>
+    <tr><th>Priority</th><th>Operators</th><th>Description</th></tr>
+    <tr><td>1 (highest)</td><td><code>()</code></td><td>Parentheses</td></tr>
+    <tr><td>2</td><td><code>**</code></td><td>Exponentiation</td></tr>
+    <tr><td>3</td><td><code>+x</code>, <code>-x</code></td><td>Unary plus/minus</td></tr>
+    <tr><td>4</td><td><code>*</code>, <code>/</code>, <code>//</code>, <code>%</code></td><td>Multiplication, Division</td></tr>
+    <tr><td>5 (lowest)</td><td><code>+</code>, <code>-</code></td><td>Addition, Subtraction</td></tr>
+</table>
+
+<div class="code-section">
+    <div class="code-header example">Example: Operator precedence</div>
+    <div class="code-body">
+        <textarea id="code27"># Precedence examples
+print("Precedence Examples:")
+print(f"2 + 3 * 4 = {2 + 3 * 4}")         # 14, not 20
+print(f"(2 + 3) * 4 = {(2 + 3) * 4}")     # 20
+print(f"2 ** 3 ** 2 = {2 ** 3 ** 2}")     # 512 (right-to-left!)
+print(f"(2 ** 3) ** 2 = {(2 ** 3) ** 2}") # 64
+print(f"10 - 3 - 2 = {10 - 3 - 2}")       # 5 (left-to-right)
+
+# Complex expression
+result = 2 + 3 * 4 ** 2 / 8 - 1
+print(f"\n2 + 3 * 4 ** 2 / 8 - 1 = {result}")
+print("Steps: 4**2=16, 3*16=48, 48/8=6, 2+6=8, 8-1=7")</textarea>
+        <br>
+        <button class="run-btn" data-code="code27" data-output="output27" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output27"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>5.5 Augmented Assignment Operators</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Shorthand operators</div>
+    <div class="code-body">
+        <textarea id="code28"># Augmented assignment: shorthand for common operations
+x = 10
+print(f"Initial x = {x}")
+
+x += 5   # Same as: x = x + 5
+print(f"After x += 5: {x}")
+
+x -= 3   # Same as: x = x - 3
+print(f"After x -= 3: {x}")
+
+x *= 2   # Same as: x = x * 2
+print(f"After x *= 2: {x}")
+
+x /= 4   # Same as: x = x / 4
+print(f"After x /= 4: {x}")
+
+y = 17
+y //= 3  # Same as: y = y // 3
+print(f"\ny = 17, after y //= 3: {y}")
+
+z = 17
+z %= 5   # Same as: z = z % 5
+print(f"z = 17, after z %= 5: {z}")
+
+p = 2
+p **= 10 # Same as: p = p ** 10
+print(f"p = 2, after p **= 10: {p}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code28" data-output="output28" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output28"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>5.6 Built-in Math Functions</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Built-in functions</div>
+    <div class="code-body">
+        <textarea id="code29"># abs() - absolute value
+print(f"abs(-5) = {abs(-5)}")
+print(f"abs(3.14) = {abs(3.14)}")
+
+# round() - round to nearest integer or decimal places
+print(f"\nround(3.7) = {round(3.7)}")
+print(f"round(3.2) = {round(3.2)}")
+print(f"round(3.14159, 2) = {round(3.14159, 2)}")
+print(f"round(2.5) = {round(2.5)}")  # Banker's rounding!
+
+# min() and max()
+print(f"\nmin(5, 2, 8, 1) = {min(5, 2, 8, 1)}")
+print(f"max(5, 2, 8, 1) = {max(5, 2, 8, 1)}")
+
+# pow() - power function
+print(f"\npow(2, 10) = {pow(2, 10)}")
+print(f"pow(2, 10, 100) = {pow(2, 10, 100)}")  # (2^10) % 100
+
+# sum() - sum of iterable
+numbers = [1, 2, 3, 4, 5]
+print(f"\nsum([1,2,3,4,5]) = {sum(numbers)}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code29" data-output="output29" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output29"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+
+<!-- ==================== PART 6: MATH MODULE ==================== -->
+<h2 id="part6">📐 Part 6: The math Module</h2>
+
+<div class="concept-box">
+    <h4>🎯 Learning Objectives</h4>
+    <ul>
+        <li>Import and use the math module</li>
+        <li>Access mathematical constants</li>
+        <li>Use trigonometric, logarithmic, and other functions</li>
+    </ul>
+</div>
+
+<div class="code-section">
+    <div class="code-header example">Example: Math module basics</div>
+    <div class="code-body">
+        <textarea id="code30">import math
+
+# Mathematical constants
+print("Constants:")
+print(f"π (pi) = {math.pi}")
+print(f"e = {math.e}")
+print(f"τ (tau = 2π) = {math.tau}")
+print(f"∞ (infinity) = {math.inf}")
+
+# Square root
+print(f"\nSquare roots:")
+print(f"√16 = {math.sqrt(16)}")
+print(f"√2 = {math.sqrt(2)}")
+
+# Power and logarithms
+print(f"\nPowers and logs:")
+print(f"e³ = {math.exp(3)}")
+print(f"ln(e) = {math.log(math.e)}")
+print(f"log₁₀(1000) = {math.log10(1000)}")
+print(f"log₂(8) = {math.log2(8)}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code30" data-output="output30" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output30"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<div class="code-section">
+    <div class="code-header example">Example: Trigonometric functions</div>
+    <div class="code-body">
+        <textarea id="code31">import math
+
+# Trigonometric functions (input in radians!)
+angle_deg = 45
+angle_rad = math.radians(angle_deg)  # Convert to radians
+
+print(f"Angle: {angle_deg}° = {angle_rad:.4f} radians")
+print(f"sin(45°) = {math.sin(angle_rad):.4f}")
+print(f"cos(45°) = {math.cos(angle_rad):.4f}")
+print(f"tan(45°) = {math.tan(angle_rad):.4f}")
+
+# Common angles
+print("\nCommon values:")
+print(f"sin(30°) = {math.sin(math.radians(30)):.4f}")
+print(f"cos(60°) = {math.cos(math.radians(60)):.4f}")
+print(f"sin(90°) = {math.sin(math.radians(90)):.4f}")
+
+# Inverse trig (returns radians)
+print(f"\narcsin(0.5) = {math.degrees(math.asin(0.5))}°")</textarea>
+        <br>
+        <button class="run-btn" data-code="code31" data-output="output31" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output31"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<div class="code-section">
+    <div class="code-header example">Example: Rounding functions</div>
+    <div class="code-body">
+        <textarea id="code32">import math
+
+x = 3.7
+y = -3.7
+
+print(f"Value: {x}")
+print(f"math.floor({x}) = {math.floor(x)}")  # Round down
+print(f"math.ceil({x}) = {math.ceil(x)}")    # Round up
+print(f"math.trunc({x}) = {math.trunc(x)}")  # Truncate toward zero
+print(f"round({x}) = {round(x)}")            # Round to nearest
+
+print(f"\nValue: {y}")
+print(f"math.floor({y}) = {math.floor(y)}")  # -4 (toward -∞)
+print(f"math.ceil({y}) = {math.ceil(y)}")    # -3 (toward +∞)
+print(f"math.trunc({y}) = {math.trunc(y)}")  # -3 (toward 0)
+
+# Factorial
+print(f"\nFactorial:")
+print(f"5! = {math.factorial(5)}")
+print(f"10! = {math.factorial(10)}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code32" data-output="output32" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output32"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<div class="practice">
+    <h4>✏️ Practice 6.1: Projectile Motion</h4>
+    <p>Calculate the range of a projectile launched at angle θ with initial velocity v₀.</p>
+    <p>Formula: Range = (v₀² × sin(2θ)) / g</p>
+    <p>Given: v₀ = 50 m/s, θ = 45°, g = 9.8 m/s²</p>
+</div>
+
+<div class="code-section">
+    <div class="code-header practice">Practice: Projectile range</div>
+    <div class="code-body">
+        <textarea id="code33">import math
+
+# Given values
+v0 = 50          # Initial velocity (m/s)
+theta_deg = 45   # Launch angle (degrees)
+g = 9.8          # Gravity (m/s²)
+
+# Convert angle to radians
+theta_rad = ???
+
+# Calculate range: R = (v0² × sin(2θ)) / g
+range_m = ???
+
+print(f"Initial velocity: {v0} m/s")
+print(f"Launch angle: {theta_deg}°")
+print(f"Projectile range: {range_m:.2f} meters")</textarea>
+        <br>
+        <button class="run-btn" data-code="code33" data-output="output33" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output33"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+
+<!-- ==================== PART 7: STRINGS ==================== -->
+<h2 id="part7">📝 Part 7: Strings In-Depth</h2>
+
+<div class="concept-box">
+    <h4>🎯 Learning Objectives</h4>
+    <ul>
+        <li>Concatenate and repeat strings</li>
+        <li>Access characters using indexing</li>
+        <li>Extract substrings using slicing</li>
+        <li>Understand string immutability</li>
+    </ul>
+</div>
+
+<h3>7.1 String Concatenation and Repetition</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: String operations</div>
+    <div class="code-body">
+        <textarea id="code34"># String concatenation with +
+first_name = "Ali"
+last_name = "Yılmaz"
+full_name = first_name + " " + last_name
+print(f"Full name: {full_name}")
+
+# String repetition with *
+line = "-" * 40
+print(line)
+pattern = "AB" * 5
+print(f"Pattern: {pattern}")
+
+# Building strings
+greeting = "Hello"
+greeting = greeting + ", "
+greeting = greeting + "World"
+greeting = greeting + "!"
+print(greeting)
+
+# Note: += also works for strings
+message = "Python"
+message += " is"
+message += " awesome!"
+print(message)</textarea>
+        <br>
+        <button class="run-btn" data-code="code34" data-output="output34" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output34"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>7.2 String Indexing</h3>
+
+<p>Strings are sequences of characters. Each character has an index (position):</p>
+
+<pre>
+String:  P  y  t  h  o  n
+Index:   0  1  2  3  4  5
+Neg:    -6 -5 -4 -3 -2 -1
+</pre>
+
+<div class="code-section">
+    <div class="code-header example">Example: Accessing characters</div>
+    <div class="code-body">
+        <textarea id="code35">text = "Python"
+
+# Positive indexing (from start)
+print(f"text = '{text}'")
+print(f"text[0] = '{text[0]}'")  # First character
+print(f"text[1] = '{text[1]}'")
+print(f"text[5] = '{text[5]}'")  # Last character
+
+# Negative indexing (from end)
+print(f"\ntext[-1] = '{text[-1]}'")  # Last character
+print(f"text[-2] = '{text[-2]}'")    # Second to last
+print(f"text[-6] = '{text[-6]}'")    # First character
+
+# Length of string
+print(f"\nLength: {len(text)}")
+
+# Last character using length
+print(f"text[len(text)-1] = '{text[len(text)-1]}'")</textarea>
+        <br>
+        <button class="run-btn" data-code="code35" data-output="output35" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output35"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>7.3 String Slicing</h3>
+
+<p>Slicing extracts a portion of the string: <code>string[start:end:step]</code></p>
+
+<div class="code-section">
+    <div class="code-header example">Example: String slicing</div>
+    <div class="code-body">
+        <textarea id="code36">text = "Hello, World!"
+
+# Basic slicing [start:end] - end is exclusive
+print(f"text = '{text}'")
+print(f"text[0:5] = '{text[0:5]}'")    # 'Hello'
+print(f"text[7:12] = '{text[7:12]}'")  # 'World'
+
+# Omitting start or end
+print(f"\ntext[:5] = '{text[:5]}'")    # From beginning
+print(f"text[7:] = '{text[7:]}'")      # To end
+print(f"text[:] = '{text[:]}'")        # Entire string (copy)
+
+# Negative indices in slicing
+print(f"\ntext[-6:-1] = '{text[-6:-1]}'")  # 'World'
+print(f"text[-6:] = '{text[-6:]}'")        # 'World!'
+
+# Step (every nth character)
+print(f"\ntext[::2] = '{text[::2]}'")      # Every 2nd char
+print(f"text[1::2] = '{text[1::2]}'")      # Every 2nd, start at 1
+
+# Reverse a string!
+print(f"text[::-1] = '{text[::-1]}'")</textarea>
+        <br>
+        <button class="run-btn" data-code="code36" data-output="output36" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output36"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>7.4 String Immutability</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Strings cannot be changed</div>
+    <div class="code-body">
+        <textarea id="code37"># Strings are immutable (cannot be changed in place)
+text = "Hello"
+
+# This would cause an error:
+# text[0] = "h"  # TypeError!
+
+# Instead, create a new string
+text_lower = "h" + text[1:]
+print(f"Original: {text}")
+print(f"Modified: {text_lower}")
+
+# Or use string methods (they return new strings)
+text_upper = text.upper()
+print(f"Uppercase: {text_upper}")
+print(f"Original unchanged: {text}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code37" data-output="output37" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output37"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+
+<!-- ==================== PART 8: STRING METHODS ==================== -->
+<h2 id="part8">🔧 Part 8: String Methods</h2>
+
+<div class="concept-box">
+    <h4>🎯 Learning Objectives</h4>
+    <ul>
+        <li>Use case conversion methods</li>
+        <li>Search and replace in strings</li>
+        <li>Split and join strings</li>
+        <li>Strip whitespace</li>
+    </ul>
+</div>
+
+<h3>8.1 Case Conversion</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Case methods</div>
+    <div class="code-body">
+        <textarea id="code38">text = "Hello, World!"
+
+print(f"Original: '{text}'")
+print(f"upper(): '{text.upper()}'")
+print(f"lower(): '{text.lower()}'")
+print(f"title(): '{text.title()}'")
+print(f"capitalize(): '{text.capitalize()}'")
+print(f"swapcase(): '{text.swapcase()}'")
+
+# Practical: Case-insensitive comparison
+user_input = "YES"
+if user_input.lower() == "yes":
+    print("\nUser said yes!")
+    
+# Turkish characters
+turkish = "İSTANBUL"
+print(f"\n'{turkish}' lowercase: '{turkish.lower()}'")</textarea>
+        <br>
+        <button class="run-btn" data-code="code38" data-output="output38" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output38"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>8.2 Searching in Strings</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Search methods</div>
+    <div class="code-body">
+        <textarea id="code39">text = "Python programming is fun. Python is powerful."
+
+# find() - returns index of first occurrence, -1 if not found
+print(f"find('Python'): {text.find('Python')}")
+print(f"find('Java'): {text.find('Java')}")
+print(f"find('Python', 10): {text.find('Python', 10)}")  # Start from index 10
+
+# count() - count occurrences
+print(f"\ncount('Python'): {text.count('Python')}")
+print(f"count('is'): {text.count('is')}")
+
+# in operator - check if substring exists
+print(f"\n'Python' in text: {'Python' in text}")
+print(f"'Java' in text: {'Java' in text}")
+
+# startswith() and endswith()
+filename = "report_2024.pdf"
+print(f"\nFilename: {filename}")
+print(f"startswith('report'): {filename.startswith('report')}")
+print(f"endswith('.pdf'): {filename.endswith('.pdf')}")
+print(f"endswith('.txt'): {filename.endswith('.txt')}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code39" data-output="output39" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output39"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>8.3 Replace and Strip</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Replace and strip</div>
+    <div class="code-body">
+        <textarea id="code40"># replace() - replace occurrences
+text = "I like Java. Java is great!"
+new_text = text.replace("Java", "Python")
+print(f"Original: {text}")
+print(f"Replaced: {new_text}")
+
+# Replace with limit
+text2 = "a-b-c-d-e"
+print(f"\nOriginal: {text2}")
+print(f"Replace all '-' with '/': {text2.replace('-', '/')}")
+print(f"Replace first 2: {text2.replace('-', '/', 2)}")
+
+# strip() - remove whitespace
+messy = "   Hello, World!   \n"
+print(f"\nOriginal: '{messy}'")
+print(f"strip(): '{messy.strip()}'")
+print(f"lstrip(): '{messy.lstrip()}'")  # Left only
+print(f"rstrip(): '{messy.rstrip()}'")  # Right only
+
+# Strip specific characters
+data = "###Important###"
+print(f"\n'{data}' strip('#'): '{data.strip('#')}'")</textarea>
+        <br>
+        <button class="run-btn" data-code="code40" data-output="output40" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output40"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>8.4 Split and Join</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Split and join</div>
+    <div class="code-body">
+        <textarea id="code41"># split() - break string into list
+sentence = "Python is a powerful programming language"
+words = sentence.split()  # Split by whitespace (default)
+print(f"Sentence: '{sentence}'")
+print(f"Words: {words}")
+print(f"Number of words: {len(words)}")
+
+# Split by specific delimiter
+data = "Ali,25,Istanbul,Engineer"
+fields = data.split(",")
+print(f"\nCSV data: '{data}'")
+print(f"Fields: {fields}")
+name, age, city, job = fields  # Unpack
+print(f"Name: {name}, Age: {age}")
+
+# join() - combine list into string
+words = ["Hello", "World", "Python"]
+joined_space = " ".join(words)
+joined_dash = "-".join(words)
+joined_empty = "".join(words)
+
+print(f"\nWords: {words}")
+print(f"Join with space: '{joined_space}'")
+print(f"Join with dash: '{joined_dash}'")
+print(f"Join with nothing: '{joined_empty}'")</textarea>
+        <br>
+        <button class="run-btn" data-code="code41" data-output="output41" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output41"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>8.5 Validation Methods</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Checking string content</div>
+    <div class="code-body">
+        <textarea id="code42"># Methods that return True/False
+tests = ["Hello", "hello", "HELLO", "Hello123", "12345", 
+         "hello world", "   ", ""]
+
+print("String Validation Methods:")
+print("-" * 60)
+print(f"{'String':<15} {'alpha':<8} {'digit':<8} {'alnum':<8} {'space':<8}")
+print("-" * 60)
+
+for s in tests:
+    display = f"'{s}'" if s else "''"
+    print(f"{display:<15} {str(s.isalpha()):<8} {str(s.isdigit()):<8} "
+          f"{str(s.isalnum()):<8} {str(s.isspace()):<8}")
+
+# Practical: Input validation
+user_id = "ABC123"
+if user_id.isalnum():
+    print(f"\n'{user_id}' is valid (alphanumeric)")
+
+age_input = "25"
+if age_input.isdigit():
+    age = int(age_input)
+    print(f"Age converted: {age}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code42" data-output="output42" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output42"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+
+<!-- ==================== PART 9: STRING FORMATTING ==================== -->
+<h2 id="part9">🎨 Part 9: String Formatting</h2>
+
+<div class="concept-box">
+    <h4>🎯 Learning Objectives</h4>
+    <ul>
+        <li>Master f-strings (formatted string literals)</li>
+        <li>Format numbers with precision and alignment</li>
+        <li>Understand format specifiers</li>
+    </ul>
+</div>
+
+<h3>9.1 F-Strings (Recommended)</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: F-string basics</div>
+    <div class="code-body">
+        <textarea id="code43"># F-strings: prefix with 'f', use {expression}
+name = "Ali"
+age = 25
+height = 1.78
+
+# Basic usage
+print(f"My name is {name}")
+print(f"I am {age} years old")
+print(f"My height is {height} meters")
+
+# Expressions inside braces
+print(f"\nNext year I'll be {age + 1}")
+print(f"Height in cm: {height * 100}")
+
+# Calling methods
+print(f"Name uppercase: {name.upper()}")
+print(f"Name length: {len(name)}")
+
+# Multi-line f-strings
+info = f"""
+Student Information
+-------------------
+Name: {name}
+Age: {age}
+Height: {height}m
+"""
+print(info)</textarea>
+        <br>
+        <button class="run-btn" data-code="code43" data-output="output43" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output43"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>9.2 Number Formatting</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Formatting numbers</div>
+    <div class="code-body">
+        <textarea id="code44">import math
+
+pi = math.pi
+big_num = 1234567890
+percentage = 0.8567
+
+# Decimal places
+print("Decimal precision:")
+print(f"pi = {pi}")
+print(f"pi = {pi:.2f}")    # 2 decimal places
+print(f"pi = {pi:.4f}")    # 4 decimal places
+print(f"pi = {pi:.0f}")    # No decimal places
+
+# Width and alignment
+print("\nWidth and alignment:")
+print(f"|{42:10}|")     # Right-aligned (default for numbers)
+print(f"|{42:<10}|")    # Left-aligned
+print(f"|{42:^10}|")    # Centered
+print(f"|{42:010}|")    # Zero-padded
+
+# Thousands separator
+print(f"\nThousands separator:")
+print(f"{big_num:,}")       # 1,234,567,890
+print(f"{big_num:_}")       # 1_234_567_890
+
+# Percentage
+print(f"\nPercentage:")
+print(f"{percentage}")       # 0.8567
+print(f"{percentage:.2%}")   # 85.67%
+
+# Scientific notation
+print(f"\nScientific notation:")
+print(f"{big_num:.2e}")      # 1.23e+09</textarea>
+        <br>
+        <button class="run-btn" data-code="code44" data-output="output44" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output44"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>9.3 String Formatting</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Formatting strings</div>
+    <div class="code-body">
+        <textarea id="code45"># String width and alignment
+text = "Python"
+
+print("String alignment:")
+print(f"|{text:15}|")     # Left-aligned (default for strings)
+print(f"|{text:>15}|")    # Right-aligned
+print(f"|{text:^15}|")    # Centered
+print(f"|{text:*^15}|")   # Centered with fill character
+
+# Creating a formatted table
+print("\nFormatted Table:")
+print("-" * 40)
+print(f"{'Name':<15} {'Age':>5} {'City':<15}")
+print("-" * 40)
+
+data = [
+    ("Ali Yılmaz", 25, "Istanbul"),
+    ("Ayşe Demir", 22, "Ankara"),
+    ("Mehmet Can", 28, "Izmir"),
+]
+
+for name, age, city in data:
+    print(f"{name:<15} {age:>5} {city:<15}")
+
+print("-" * 40)</textarea>
+        <br>
+        <button class="run-btn" data-code="code45" data-output="output45" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output45"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>9.4 Other Formatting Methods</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: format() and % formatting</div>
+    <div class="code-body">
+        <textarea id="code46"># The .format() method (older style)
+name = "Ali"
+age = 25
+
+# Positional arguments
+print("Hello, {}! You are {} years old.".format(name, age))
+
+# Indexed arguments
+print("Hello, {0}! {0} is {1} years old.".format(name, age))
+
+# Named arguments
+print("Hello, {n}! You are {a} years old.".format(n=name, a=age))
+
+# % formatting (oldest style, still used)
+print("\n%% formatting (C-style):")
+print("Name: %s, Age: %d" % (name, age))
+print("Pi: %.2f" % 3.14159)
+print("Hex: %x, Octal: %o" % (255, 255))
+
+# Why f-strings are better:
+x = 10
+y = 20
+print(f"\nF-string: {x} + {y} = {x + y}")  # Clear and readable</textarea>
+        <br>
+        <button class="run-btn" data-code="code46" data-output="output46" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output46"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<div class="practice">
+    <h4>✏️ Practice 9.1: Formatted Invoice</h4>
+    <p>Create a formatted invoice using f-strings with proper alignment:</p>
+</div>
+
+<div class="code-section">
+    <div class="code-header practice">Practice: Create invoice</div>
+    <div class="code-body">
+        <textarea id="code47"># Invoice data
+items = [
+    ("Laptop", 2, 15000.00),
+    ("Mouse", 5, 250.50),
+    ("Keyboard", 3, 750.00),
+    ("Monitor", 2, 8500.00),
+]
+
+# Create formatted invoice
+print("=" * 50)
+print(f"{'INVOICE':^50}")
+print("=" * 50)
+print(f"{'Item':<20} {'Qty':>5} {'Price':>10} {'Total':>12}")
+print("-" * 50)
+
+grand_total = 0
+for item_name, qty, price in items:
+    total = qty * price
+    grand_total += total
+    # Format each line with proper alignment
+    print(f"{item_name:<20} {qty:>5} {price:>10.2f} {total:>12.2f}")
+
+print("-" * 50)
+print(f"{'GRAND TOTAL':>37} {grand_total:>12.2f}")
+print("=" * 50)</textarea>
+        <br>
+        <button class="run-btn" data-code="code47" data-output="output47" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output47"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+
+<!-- ==================== PART 10: USER INPUT ==================== -->
+<h2 id="part10">⌨️ Part 10: User Input</h2>
+
+<div class="concept-box">
+    <h4>🎯 Learning Objectives</h4>
+    <ul>
+        <li>Get input from users with <code>input()</code></li>
+        <li>Convert input to appropriate types</li>
+        <li>Build interactive programs</li>
+    </ul>
+</div>
+
+<div class="warning-box">
+    <strong>⚠️ Note:</strong> The <code>input()</code> function doesn't work in this browser environment. These examples show the syntax - practice them in Google Colab!
+</div>
+
+<h3>10.1 The input() Function</h3>
+
+<pre>
+# Basic input
+name = input("Enter your name: ")
+print(f"Hello, {name}!")
+
+# Input always returns a STRING
+age_str = input("Enter your age: ")
+print(f"You entered: {age_str}")
+print(f"Type: {type(age_str)}")  # Always <class 'str'>
+</pre>
+
+<h3>10.2 Converting Input</h3>
+
+<pre>
+# Convert to integer
+age_str = input("Enter your age: ")
+age = int(age_str)
+print(f"Next year you'll be {age + 1}")
+
+# Convert to float
+height_str = input("Enter your height (m): ")
+height = float(height_str)
+print(f"Height in cm: {height * 100}")
+
+# One-liner conversion
+weight = float(input("Enter your weight (kg): "))
+bmi = weight / (height ** 2)
+print(f"Your BMI: {bmi:.2f}")
+</pre>
+
+<h3>10.3 Interactive Calculator Example</h3>
+
+<pre>
+# Simple calculator
+print("Simple Calculator")
+print("-" * 20)
+
+num1 = float(input("Enter first number: "))
+operator = input("Enter operator (+, -, *, /): ")
+num2 = float(input("Enter second number: "))
+
+if operator == "+":
+    result = num1 + num2
+elif operator == "-":
+    result = num1 - num2
+elif operator == "*":
+    result = num1 * num2
+elif operator == "/":
+    if num2 != 0:
+        result = num1 / num2
+    else:
+        result = "Error: Division by zero"
+else:
+    result = "Error: Invalid operator"
+
+print(f"{num1} {operator} {num2} = {result}")
+</pre>
+
+
+<!-- ==================== PART 11: COMMENTS ==================== -->
+<h2 id="part11">💬 Part 11: Comments and Documentation</h2>
+
+<div class="concept-box">
+    <h4>🎯 Learning Objectives</h4>
+    <ul>
+        <li>Write single-line and multi-line comments</li>
+        <li>Document code effectively</li>
+        <li>Follow best practices for comments</li>
+    </ul>
+</div>
+
+<h3>11.1 Types of Comments</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Comment types</div>
+    <div class="code-body">
+        <textarea id="code48"># This is a single-line comment
+# Comments start with # and continue to end of line
+
+x = 10  # Inline comment: explaining this line
+
+# Multi-line comments can be done with multiple #
+# Line 1 of explanation
+# Line 2 of explanation
+# Line 3 of explanation
+
+"""
+This is a multi-line string (docstring).
+It's often used for documentation.
+Not technically a comment, but serves similar purpose.
+"""
+
+'''
+Single quotes also work
+for multi-line strings.
+'''
+
+# The code below prints a greeting
+print("Hello, World!")  # Output: Hello, World!</textarea>
+        <br>
+        <button class="run-btn" data-code="code48" data-output="output48" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output48"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>11.2 Docstrings</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Documentation strings</div>
+    <div class="code-body">
+        <textarea id="code49">def calculate_bmi(weight, height):
+    """
+    Calculate Body Mass Index (BMI).
+    
+    Parameters:
+        weight (float): Weight in kilograms
+        height (float): Height in meters
+    
+    Returns:
+        float: The calculated BMI value
+    
+    Example:
+        >>> calculate_bmi(70, 1.75)
+        22.86
+    """
+    return weight / (height ** 2)
+
+# Access the docstring
+print("Function documentation:")
+print(calculate_bmi.__doc__)
+
+# Use the function
+bmi = calculate_bmi(70, 1.75)
+print(f"\nBMI: {bmi:.2f}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code49" data-output="output49" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output49"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>11.3 Comment Best Practices</h3>
+
+<div class="two-column">
+    <div>
+        <h4>✅ Good Comments</h4>
+        <ul>
+            <li>Explain <em>why</em>, not <em>what</em></li>
+            <li>Document complex algorithms</li>
+            <li>Note assumptions and limitations</li>
+            <li>Mark TODO items</li>
+        </ul>
+    </div>
+    <div>
+        <h4>❌ Bad Comments</h4>
+        <ul>
+            <li>Stating the obvious</li>
+            <li>Outdated comments</li>
+            <li>Commented-out code (delete it!)</li>
+            <li>Too many comments</li>
+        </ul>
+    </div>
+</div>
+
+<div class="code-section">
+    <div class="code-header example">Example: Good vs Bad comments</div>
+    <div class="code-body">
+        <textarea id="code50"># BAD: States the obvious
+x = x + 1  # Increment x by 1
+
+# GOOD: Explains why
+x = x + 1  # Compensate for 0-based indexing
+
+# BAD: Unclear abbreviation
+# calc val
+result = a * b + c
+
+# GOOD: Clear explanation
+# Calculate total price: (quantity * unit_price) + tax
+result = quantity * unit_price + tax
+
+# TODO comments mark future work
+# TODO: Add input validation
+# FIXME: Handle negative numbers
+# NOTE: This assumes sorted input
+
+# BAD: Commented-out code (just delete it!)
+# old_function()
+# if condition:
+#     do_something()
+
+# GOOD: Self-documenting code needs fewer comments
+def calculate_rectangle_area(length, width):
+    """Calculate the area of a rectangle."""
+    return length * width
+
+print("Good code is its own best documentation!")</textarea>
+        <br>
+        <button class="run-btn" data-code="code50" data-output="output50" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output50"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+
+<!-- ==================== PART 12: ERRORS ==================== -->
+<h2 id="part12">🐛 Part 12: Common Errors</h2>
+
+<div class="concept-box">
+    <h4>🎯 Learning Objectives</h4>
+    <ul>
+        <li>Recognize common Python errors</li>
+        <li>Read and understand error messages</li>
+        <li>Debug simple mistakes</li>
+    </ul>
+</div>
+
+<h3>12.1 SyntaxError</h3>
+
+<p>Occurs when Python can't understand your code structure.</p>
+
+<div class="code-section">
+    <div class="code-header example">Example: SyntaxError examples</div>
+    <div class="code-body">
+        <textarea id="code51"># Common SyntaxErrors (uncomment to see error):
+
+# Missing colon
+# if True
+#     print("Hello")
+
+# Mismatched quotes
+# print("Hello')
+
+# Missing parenthesis
+# print("Hello"
+
+# Invalid variable name
+# 123abc = "value"
+
+# This is correct:
+if True:
+    print("SyntaxError avoided!")
+    
+print("Code runs when syntax is correct")</textarea>
+        <br>
+        <button class="run-btn" data-code="code51" data-output="output51" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output51"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>12.2 NameError</h3>
+
+<p>Occurs when you use a variable that doesn't exist.</p>
+
+<div class="code-section">
+    <div class="code-header example">Example: NameError</div>
+    <div class="code-body">
+        <textarea id="code52"># NameError: Variable not defined
+# print(undefined_variable)  # NameError!
+
+# Common causes:
+# 1. Typo in variable name
+mesage = "Hello"
+# print(message)  # NameError: 'message' not defined (typo!)
+
+# 2. Using before assignment
+# print(x)
+# x = 10
+
+# Correct approach:
+message = "Hello"
+print(message)
+
+x = 10
+print(x)</textarea>
+        <br>
+        <button class="run-btn" data-code="code52" data-output="output52" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output52"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>12.3 TypeError</h3>
+
+<p>Occurs when you use wrong types in operations.</p>
+
+<div class="code-section">
+    <div class="code-header example">Example: TypeError</div>
+    <div class="code-body">
+        <textarea id="code53"># TypeError: Wrong operation for types
+
+# Can't add string and integer
+# result = "Age: " + 25  # TypeError!
+
+# Fix: Convert to same type
+result = "Age: " + str(25)
+print(result)
+
+# Can't multiply string by string
+# result = "Hello" * "3"  # TypeError!
+
+# Fix: Use integer
+result = "Hello" * 3
+print(result)
+
+# Function called with wrong number of arguments
+# len()  # TypeError: missing argument
+# len("Hello", "World")  # TypeError: too many arguments
+
+# Correct:
+print(len("Hello"))</textarea>
+        <br>
+        <button class="run-btn" data-code="code53" data-output="output53" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output53"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>12.4 ValueError</h3>
+
+<p>Occurs when a value is inappropriate for an operation.</p>
+
+<div class="code-section">
+    <div class="code-header example">Example: ValueError</div>
+    <div class="code-body">
+        <textarea id="code54"># ValueError: Right type, wrong value
+
+# Can't convert non-numeric string to int
+# number = int("hello")  # ValueError!
+
+# Can't convert string with decimals to int
+# number = int("3.14")  # ValueError!
+
+# Fix: Use appropriate conversion
+number = int("42")
+print(f"Integer: {number}")
+
+decimal = float("3.14")
+print(f"Float: {decimal}")
+
+# For decimal string to int, convert via float first
+number = int(float("3.14"))
+print(f"Truncated: {number}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code54" data-output="output54" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output54"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>12.5 IndexError</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: IndexError</div>
+    <div class="code-body">
+        <textarea id="code55"># IndexError: Index out of range
+text = "Python"
+print(f"Text: '{text}', Length: {len(text)}")
+
+# Valid indices: 0 to 5 (or -1 to -6)
+print(f"text[0] = '{text[0]}'")
+print(f"text[5] = '{text[5]}'")
+
+# Invalid index (uncomment to see error):
+# print(text[6])  # IndexError: string index out of range
+# print(text[100])  # IndexError!
+
+# Safe way: Check length first
+index = 6
+if index < len(text):
+    print(text[index])
+else:
+    print(f"Index {index} is out of range!")</textarea>
+        <br>
+        <button class="run-btn" data-code="code55" data-output="output55" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output55"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>12.6 Reading Error Messages</h3>
+
+<div class="code-section">
+    <div class="code-header example">Example: Understanding error traceback</div>
+    <div class="code-body">
+        <textarea id="code56"># Error messages have useful information!
+# Let's intentionally cause an error:
+
+def calculate_average(numbers):
+    total = sum(numbers)
+    return total / len(numbers)
+
+def process_data(data):
+    return calculate_average(data)
+
+# This will cause ZeroDivisionError
+try:
+    result = process_data([])  # Empty list!
+except ZeroDivisionError as e:
+    print("Error caught!")
+    print(f"Error type: {type(e).__name__}")
+    print(f"Error message: {e}")
+    print("\nThe traceback would show:")
+    print("1. Which line caused the error")
+    print("2. The chain of function calls")
+    print("3. The exact error type and message")
+    
+# Fix: Check for empty list
+def safe_average(numbers):
+    if len(numbers) == 0:
+        return 0
+    return sum(numbers) / len(numbers)
+
+print(f"\nSafe average of []: {safe_average([])}")
+print(f"Safe average of [1,2,3]: {safe_average([1,2,3])}")</textarea>
+        <br>
+        <button class="run-btn" data-code="code56" data-output="output56" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="output56"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+
+<!-- ==================== EXERCISES ==================== -->
+<h2 id="exercises">📝 Exercises</h2>
+
+<div class="colab-box">
+    <strong>📝 Complete these exercises in Google Colab for submission!</strong>
+    <a href="https://colab.research.google.com/github/ArifSolmaz/cp2/blob/main/notebooks/Week_01_Introduction_to_Python.ipynb" target="_blank">
+        🚀 Open in Google Colab
+    </a>
+</div>
+
+<h3>Exercise 1: Personal Information Card (⭐ Easy)</h3>
+<div class="practice">
+    <p>Create variables for your name, age, major, and GPA. Display them in a formatted card.</p>
+</div>
+
+<div class="code-section">
+    <div class="code-header challenge">Exercise 1</div>
+    <div class="code-body">
+        <textarea id="ex1"># Create your personal information card
+name = "???"
+age = 0
+major = "???"
+gpa = 0.0
+
+# Display formatted output
+print("=" * 40)
+print("STUDENT INFORMATION CARD")
+print("=" * 40)
+# Add your formatting here...
+</textarea>
+        <br>
+        <button class="run-btn" data-code="ex1" data-output="outex1" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="outex1"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>Exercise 2: Unit Converter (⭐ Easy)</h3>
+<div class="practice">
+    <p>Convert 5 kilometers to miles, meters, centimeters, and feet.</p>
+    <p>1 km = 0.621371 miles = 1000 m = 100000 cm = 3280.84 feet</p>
+</div>
+
+<div class="code-section">
+    <div class="code-header challenge">Exercise 2</div>
+    <div class="code-body">
+        <textarea id="ex2"># Unit converter
+km = 5
+
+# Calculate conversions
+miles = ???
+meters = ???
+centimeters = ???
+feet = ???
+
+# Display results
+print(f"{km} kilometers equals:")
+print(f"  - ??? miles")
+# Continue...</textarea>
+        <br>
+        <button class="run-btn" data-code="ex2" data-output="outex2" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="outex2"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>Exercise 3: Time Calculator (⭐⭐ Medium)</h3>
+<div class="practice">
+    <p>Given a total number of seconds (e.g., 90061), convert it to hours, minutes, and seconds.</p>
+    <p>Example: 90061 seconds = 25 hours, 1 minute, 1 second</p>
+</div>
+
+<div class="code-section">
+    <div class="code-header challenge">Exercise 3</div>
+    <div class="code-body">
+        <textarea id="ex3"># Time calculator
+total_seconds = 90061
+
+# Calculate hours, minutes, seconds
+hours = ???
+remaining = ???  # Seconds left after removing hours
+minutes = ???
+seconds = ???
+
+print(f"{total_seconds} seconds = {hours} hours, {minutes} minutes, {seconds} seconds")</textarea>
+        <br>
+        <button class="run-btn" data-code="ex3" data-output="outex3" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="outex3"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>Exercise 4: Quadratic Formula (⭐⭐ Medium)</h3>
+<div class="practice">
+    <p>Solve ax² + bx + c = 0 using the quadratic formula.</p>
+    <p>x = (-b ± √(b²-4ac)) / 2a</p>
+    <p>Test with: a=1, b=-5, c=6 (roots should be 2 and 3)</p>
+</div>
+
+<div class="code-section">
+    <div class="code-header challenge">Exercise 4</div>
+    <div class="code-body">
+        <textarea id="ex4">import math
+
+# Coefficients
+a = 1
+b = -5
+c = 6
+
+# Calculate discriminant
+discriminant = ???
+
+# Calculate roots
+x1 = ???
+x2 = ???
+
+print(f"Equation: {a}x² + {b}x + {c} = 0")
+print(f"Discriminant: {discriminant}")
+print(f"Root 1: {x1}")
+print(f"Root 2: {x2}")</textarea>
+        <br>
+        <button class="run-btn" data-code="ex4" data-output="outex4" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="outex4"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>Exercise 5: Password Analyzer (⭐⭐ Medium)</h3>
+<div class="practice">
+    <p>Analyze a password string and report:</p>
+    <ul>
+        <li>Total length</li>
+        <li>Number of letters, digits, special characters</li>
+        <li>First and last characters</li>
+        <li>Whether it meets minimum length (8)</li>
+    </ul>
+</div>
+
+<div class="code-section">
+    <div class="code-header challenge">Exercise 5</div>
+    <div class="code-body">
+        <textarea id="ex5"># Password analyzer
+password = "MyP@ssw0rd123"
+
+# Analyze the password
+length = len(password)
+
+# Count character types
+letters = sum(1 for c in password if c.isalpha())
+digits = sum(1 for c in password if c.isdigit())
+special = length - letters - digits
+
+# Get first and last
+first_char = ???
+last_char = ???
+
+# Check minimum length
+meets_minimum = ???
+
+# Display analysis
+print("Password Analysis")
+print("=" * 30)
+print(f"Password: {password}")
+print(f"Length: {length}")
+# Continue...</textarea>
+        <br>
+        <button class="run-btn" data-code="ex5" data-output="outex5" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="outex5"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>Exercise 6: Electricity Bill Calculator (⭐⭐⭐ Hard)</h3>
+<div class="practice">
+    <p>Calculate electricity bill with tiered pricing:</p>
+    <ul>
+        <li>First 100 kWh: 0.85 TL/kWh</li>
+        <li>101-200 kWh: 1.20 TL/kWh</li>
+        <li>201-300 kWh: 1.80 TL/kWh</li>
+        <li>Above 300 kWh: 2.50 TL/kWh</li>
+        <li>Add 20% tax to total</li>
+    </ul>
+    <p>Test with 350 kWh usage</p>
+</div>
+
+<div class="code-section">
+    <div class="code-header challenge">Exercise 6</div>
+    <div class="code-body">
+        <textarea id="ex6"># Electricity bill calculator
+usage = 350  # kWh
+
+# Tier rates
+rate1 = 0.85   # 0-100 kWh
+rate2 = 1.20   # 101-200 kWh
+rate3 = 1.80   # 201-300 kWh
+rate4 = 2.50   # 300+ kWh
+tax_rate = 0.20
+
+# Calculate cost for each tier
+tier1_cost = ???  # First 100 kWh
+tier2_cost = ???  # Next 100 kWh
+tier3_cost = ???  # Next 100 kWh
+tier4_cost = ???  # Remaining
+
+subtotal = tier1_cost + tier2_cost + tier3_cost + tier4_cost
+tax = ???
+total = ???
+
+# Display bill
+print("ELECTRICITY BILL")
+print("=" * 40)
+print(f"Usage: {usage} kWh")
+print("-" * 40)
+# Continue with formatted output...</textarea>
+        <br>
+        <button class="run-btn" data-code="ex6" data-output="outex6" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="outex6"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+<h3>Exercise 7: String Manipulation (⭐⭐⭐ Hard)</h3>
+<div class="practice">
+    <p>Given a full name string, extract and format:</p>
+    <ul>
+        <li>First name, last name separately</li>
+        <li>Initials (e.g., "AY")</li>
+        <li>Email format: firstname.lastname@istun.edu.tr</li>
+        <li>Reverse the full name</li>
+        <li>Count vowels and consonants</li>
+    </ul>
+</div>
+
+<div class="code-section">
+    <div class="code-header challenge">Exercise 7</div>
+    <div class="code-body">
+        <textarea id="ex7"># String manipulation
+full_name = "Ali Yilmaz"
+
+# Split into parts
+parts = full_name.split()
+first_name = ???
+last_name = ???
+
+# Create initials
+initials = ???
+
+# Create email
+email = ???
+
+# Reverse name
+reversed_name = ???
+
+# Count vowels and consonants
+vowels = "aeiouAEIOU"
+vowel_count = ???
+consonant_count = ???
+
+# Display results
+print(f"Full Name: {full_name}")
+print(f"First Name: {first_name}")
+print(f"Last Name: {last_name}")
+# Continue...</textarea>
+        <br>
+        <button class="run-btn" data-code="ex7" data-output="outex7" py-click="run_code">▶ Run</button>
+    </div>
+    <div class="output" id="outex7"><span class="loading">Click "Run" to execute...</span></div>
+</div>
+
+
+<!-- ==================== SUMMARY ==================== -->
+<h2>📚 Week 1 Summary</h2>
+
+<table>
+    <tr><th>Topic</th><th>Key Points</th></tr>
+    <tr><td>print()</td><td><code>print("text")</code>, <code>sep</code>, <code>end</code>, escape characters</td></tr>
+    <tr><td>Variables</td><td>Assignment with <code>=</code>, naming rules, multiple assignment</td></tr>
+    <tr><td>Data Types</td><td><code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>, <code>type()</code></td></tr>
+    <tr><td>Type Conversion</td><td><code>int()</code>, <code>float()</code>, <code>str()</code>, <code>bool()</code></td></tr>
+    <tr><td>Arithmetic</td><td><code>+ - * / // % **</code>, precedence, augmented assignment</td></tr>
+    <tr><td>Math Module</td><td><code>math.pi</code>, <code>sqrt()</code>, <code>sin()</code>, <code>cos()</code>, <code>floor()</code></td></tr>
+    <tr><td>Strings</td><td>Indexing, slicing, <code>len()</code>, concatenation, repetition</td></tr>
+    <tr><td>String Methods</td><td><code>upper()</code>, <code>lower()</code>, <code>split()</code>, <code>join()</code>, <code>replace()</code></td></tr>
+    <tr><td>F-Strings</td><td><code>f"text {var}"</code>, formatting with <code>:.2f</code>, alignment</td></tr>
+    <tr><td>Input</td><td><code>input()</code> returns string, convert as needed</td></tr>
+    <tr><td>Comments</td><td><code># comment</code>, docstrings, best practices</td></tr>
+    <tr><td>Errors</td><td>SyntaxError, NameError, TypeError, ValueError, IndexError</td></tr>
+</table>
+
+<div class="colab-box">
+    <strong>🎯 Ready to practice and submit?</strong>
+    <p>Complete the exercises in Google Colab and submit your work!</p>
+    <a href="https://colab.research.google.com/github/ArifSolmaz/cp2/blob/main/notebooks/Week_01_Introduction_to_Python.ipynb" target="_blank">
+        🚀 Open in Google Colab
+    </a>
+</div>
+
+<div class="nav-buttons">
+    <a href="index.html">← Home</a>
+    <a href="Week_02.html">Week 2: Control Flow →</a>
+</div>
+
+<hr>
+<p style="text-align: center; color: #666; font-size: 0.9em;">
+    Computer Programming II | Istanbul Health and Technology University | Dr. Arif Solmaz<br>
+    Week 1: Introduction to Python Programming
+</p>
+
+</body>
+</html>

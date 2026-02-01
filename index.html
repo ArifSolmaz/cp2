@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CP2 - Computer Programming II</title>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .info-card h3 {
+            margin-top: 0;
+            color: #3498db;
+        }
+        
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .week-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        
+        .week-card:hover {
+            border-color: #3498db;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .week-card h4 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+        
+        .week-card p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .week-card .week-num {
+            background: #3498db;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        .colab-section {
+            background: #fff8e1;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .colab-section h3 {
+            color: #e65100;
+            margin-top: 0;
+        }
+        
+        .colab-btn {
+            display: inline-block;
+            background: #f9ab00;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+        
+        .colab-btn:hover {
+            background: #e09900;
+        }
+        
+        .how-to {
+            background: #e8f5e9;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .how-to h3 {
+            color: #2e7d32;
+            margin-top: 0;
+        }
+        
+        .how-to ol {
+            margin-bottom: 0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.75em;
+            margin-left: 5px;
+        }
+        
+        .badge-easy { background: #d4edda; color: #155724; }
+        .badge-medium { background: #fff3cd; color: #856404; }
+        .badge-hard { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🐍 Computer Programming II</h1>
+    <p class="subtitle">Interactive Python Course | Istanbul Health and Technology University</p>
+    
+    <div class="info-card">
+        <h3>👋 Welcome!</h3>
+        <p>This is an interactive Python programming course. You can:</p>
+        <ul>
+            <li><strong>Read</strong> the explanations</li>
+            <li><strong>Run</strong> code directly in your browser (no installation needed!)</li>
+            <li><strong>Practice</strong> with exercises</li>
+            <li><strong>Submit</strong> your work via Google Colab</li>
+        </ul>
+    </div>
+    
+    <div class="how-to">
+        <h3>📖 How to Use This Course</h3>
+        <ol>
+            <li><strong>Browse here:</strong> Read content and try code examples on this site</li>
+            <li><strong>Do exercises:</strong> Open the week in Google Colab to complete exercises</li>
+            <li><strong>Submit:</strong> Fill the form at the end of the Colab notebook</li>
+        </ol>
+    </div>
+    
+    <h2>📚 Course Contents</h2>
+    
+    <div class="week-grid">
+        <a href="Week_01.html" class="week-card">
+            <span class="week-num">Week 1</span>
+            <h4>Introduction to Python</h4>
+            <p>print(), variables, data types, basic math</p>
+        </a>
+        
+        <a href="Week_02.html" class="week-card">
+            <span class="week-num">Week 2</span>
+            <h4>Control Flow & Conditionals</h4>
+            <p>if, elif, else, comparison operators</p>
+        </a>
+        
+        <a href="Week_03.html" class="week-card">
+            <span class="week-num">Week 3</span>
+            <h4>Loops</h4>
+            <p>for loops, while loops, break, continue</p>
+        </a>
+        
+        <a href="Week_04.html" class="week-card">
+            <span class="week-num">Week 4</span>
+            <h4>Functions</h4>
+            <p>def, parameters, return, scope</p>
+        </a>
+        
+        <a href="Week_05.html" class="week-card">
+            <span class="week-num">Week 5</span>
+            <h4>Lists and Tuples</h4>
+            <p>Creating, indexing, slicing, methods</p>
+        </a>
+        
+        <a href="Week_06.html" class="week-card">
+            <span class="week-num">Week 6</span>
+            <h4>Dictionaries and Sets</h4>
+            <p>Key-value pairs, set operations</p>
+        </a>
+        
+        <a href="Week_07.html" class="week-card">
+            <span class="week-num">Week 7</span>
+            <h4>Strings</h4>
+            <p>String methods, formatting, manipulation</p>
+        </a>
+        
+        <a href="Week_08.html" class="week-card">
+            <span class="week-num">Week 8</span>
+            <h4>File Handling</h4>
+            <p>Reading, writing, working with files</p>
+        </a>
+        
+        <a href="Week_09.html" class="week-card">
+            <span class="week-num">Week 9</span>
+            <h4>Error Handling</h4>
+            <p>try, except, finally, custom exceptions</p>
+        </a>
+        
+        <a href="Week_10.html" class="week-card">
+            <span class="week-num">Week 10</span>
+            <h4>OOP Basics</h4>
+            <p>Classes, objects, methods, attributes</p>
+        </a>
+        
+        <a href="Week_11.html" class="week-card">
+            <span class="week-num">Week 11</span>
+            <h4>OOP Inheritance</h4>
+            <p>Inheritance, polymorphism, super()</p>
+        </a>
+        
+        <a href="Week_12.html" class="week-card">
+            <span class="week-num">Week 12</span>
+            <h4>Modules & Packages</h4>
+            <p>import, creating modules, pip</p>
+        </a>
+        
+        <a href="Week_13.html" class="week-card">
+            <span class="week-num">Week 13</span>
+            <h4>External Data</h4>
+            <p>JSON, CSV, APIs</p>
+        </a>
+        
+        <a href="Week_14.html" class="week-card">
+            <span class="week-num">Week 14</span>
+            <h4>Final Project</h4>
+            <p>Putting it all together</p>
+        </a>
+    </div>
+    
+    <div class="colab-section">
+        <h3>📝 Submit Your Work</h3>
+        <p>To complete exercises and submit for grading, use Google Colab:</p>
+        <a href="https://github.com/ArifSolmaz/cp2" class="colab-btn" target="_blank">
+            🚀 Open Course in Colab
+        </a>
+    </div>
+    
+    <div class="footer">
+        <p><strong>Instructor:</strong> Dr. Arif Solmaz<br>
+        <strong>Department:</strong> Mechatronics Engineering<br>
+        Istanbul Health and Technology University</p>
+    </div>
+</div>
+
+</body>
+</html>
