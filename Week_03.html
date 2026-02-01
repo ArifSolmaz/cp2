@@ -1666,77 +1666,225 @@ for num in range(2, n + 1):
                     <h2>Practice Exercises</h2>
                 </div>
                 
+                <!-- Exercise 1 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <span class="exercise-title">Exercise 1: Sum of Even Numbers</span>
                         <span class="difficulty easy">⭐ Easy</span>
                     </div>
-                    <p class="exercise-description">Calculate the sum of all even numbers from 1 to 100.<br><strong>Expected:</strong> 2550</p>
+                    <p class="exercise-description">Calculate the sum of all even numbers from 1 to 100.<br><strong>Answer:</strong> 2550</p>
+                </div>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('ex1')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="ex1"># Exercise 1: Sum of Even Numbers
+# Hint: Use range(start, stop, step) with step=2
+# Hint: Start from 2 (first even), go to 101 (to include 100)
+# Hint: Use accumulator pattern: total = 0, then total += num
+
+total = 0
+for i in range(__, ___, __):  # Fill in: start, stop, step
+    total += i
+print(f"Sum of even numbers 1-100: {total}")</textarea>
+                    <div class="output-container" id="outputex1">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
+                    </div>
                 </div>
                 
+                <!-- Exercise 2 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <span class="exercise-title">Exercise 2: Fibonacci Sequence</span>
                         <span class="difficulty medium">⭐⭐ Medium</span>
                     </div>
-                    <p class="exercise-description">Print the first 15 Fibonacci numbers: 0, 1, 1, 2, 3, 5, 8, ...</p>
+                    <p class="exercise-description">Print the first 15 Fibonacci numbers.<br><strong>Answer:</strong> 0 1 1 2 3 5 8 13 21 34 55 89 144 233 377</p>
+                </div>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('ex2')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="ex2"># Exercise 2: Fibonacci Sequence
+# Hint: Start with a=0, b=1
+# Hint: Each new number = sum of previous two
+# Hint: Use tuple assignment: a, b = b, a + b
+
+a, b = 0, 1
+print("Fibonacci sequence:")
+for i in range(15):
+    print(a, end=" ")
+    # Update a and b for next iteration
+    a, b = __, __  # Fill in: what should a and b become?</textarea>
+                    <div class="output-container" id="outputex2">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
+                    </div>
                 </div>
                 
+                <!-- Exercise 3 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <span class="exercise-title">Exercise 3: Factorial Calculator</span>
                         <span class="difficulty easy">⭐ Easy</span>
                     </div>
-                    <p class="exercise-description">Calculate n! for n = 7.<br><strong>Expected:</strong> 5040</p>
+                    <p class="exercise-description">Calculate n! (factorial) for n = 7.<br><strong>Answer:</strong> 7! = 5040</p>
+                </div>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('ex3')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="ex3"># Exercise 3: Factorial Calculator
+# Hint: n! = 1 × 2 × 3 × ... × n
+# Hint: Start factorial = 1 (not 0!)
+# Hint: Use *= to multiply and assign
+
+n = 7
+factorial = 1
+
+for i in range(1, __ + 1):  # Fill in: what should the range be?
+    factorial *= __  # Fill in: multiply by what?
+
+print(f"{n}! = {factorial}")</textarea>
+                    <div class="output-container" id="outputex3">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
+                    </div>
                 </div>
                 
+                <!-- Exercise 4 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <span class="exercise-title">Exercise 4: Prime Number Checker</span>
                         <span class="difficulty medium">⭐⭐ Medium</span>
                     </div>
-                    <p class="exercise-description">Check if numbers 17, 24, 97 are prime.</p>
+                    <p class="exercise-description">Check if numbers 17, 24, 97 are prime.<br><strong>Answer:</strong> 17 is prime, 24 is NOT prime, 97 is prime</p>
+                </div>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('ex4')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="ex4"># Exercise 4: Prime Number Checker
+# Hint: A prime has no divisors other than 1 and itself
+# Hint: Only need to check up to √n (use int(n ** 0.5) + 1)
+# Hint: Use break when divisor found, else clause if not
+
+def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:  # Found a divisor
+            return __  # Fill in: is it prime?
+    return __  # Fill in: no divisors found, is it prime?
+
+# Test the numbers
+for num in [17, 24, 97]:
+    if is_prime(num):
+        print(f"{num} is prime")
+    else:
+        print(f"{num} is NOT prime")</textarea>
+                    <div class="output-container" id="outputex4">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
+                    </div>
                 </div>
                 
+                <!-- Exercise 5 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <span class="exercise-title">Exercise 5: Reverse a Number</span>
                         <span class="difficulty medium">⭐⭐ Medium</span>
                     </div>
-                    <p class="exercise-description">Reverse 12345 → 54321 using while loop.</p>
+                    <p class="exercise-description">Reverse 12345 using a while loop.<br><strong>Answer:</strong> 54321</p>
+                </div>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('ex5')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="ex5"># Exercise 5: Reverse a Number
+# Hint: Use % 10 to get last digit
+# Hint: Use // 10 to remove last digit
+# Hint: Build reversed number: reversed = reversed * 10 + digit
+
+number = 12345
+original = number
+reversed_num = 0
+
+while number > 0:
+    digit = number % __  # Fill in: get last digit
+    reversed_num = reversed_num * __ + digit  # Fill in: shift left and add
+    number = number // __  # Fill in: remove last digit
+
+print(f"Original: {original}")
+print(f"Reversed: {reversed_num}")</textarea>
+                    <div class="output-container" id="outputex5">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
+                    </div>
                 </div>
                 
+                <!-- Exercise 6 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <span class="exercise-title">Exercise 6: Number Pyramid</span>
                         <span class="difficulty medium">⭐⭐ Medium</span>
                     </div>
-                    <p class="exercise-description">Print pattern: 1 / 1 2 / 1 2 3 / ...</p>
+                    <p class="exercise-description">Print a number pyramid pattern.<br><strong>Answer:</strong><br>1<br>1 2<br>1 2 3<br>1 2 3 4<br>1 2 3 4 5</p>
+                </div>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('ex6')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="ex6"># Exercise 6: Number Pyramid
+# Hint: Outer loop controls rows (1 to 5)
+# Hint: Inner loop prints numbers 1 to current row number
+# Hint: Use end=" " to print on same line, print() for new line
+
+n = 5
+
+for i in range(1, n + 1):  # Row 1, 2, 3, 4, 5
+    for j in range(1, __ + 1):  # Fill in: print 1 to what?
+        print(j, end=" ")
+    print()  # New line after each row</textarea>
+                    <div class="output-container" id="outputex6">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
+                    </div>
                 </div>
                 
+                <!-- Exercise 7 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <span class="exercise-title">Exercise 7: GCD Calculator</span>
                         <span class="difficulty hard">⭐⭐⭐ Hard</span>
                     </div>
-                    <p class="exercise-description">Find GCD of 48 and 18 using Euclidean algorithm.<br><strong>Expected:</strong> 6</p>
+                    <p class="exercise-description">Find Greatest Common Divisor of 48 and 18 using Euclidean algorithm.<br><strong>Answer:</strong> GCD(48, 18) = 6</p>
                 </div>
-                
-                <!-- Practice Area -->
-                <h3 style="margin-top: 30px;">Practice Area</h3>
                 <div class="code-container">
                     <div class="code-header">
                         <span class="code-lang">Python</span>
-                        <button class="run-btn" onclick="runCode('practice')">▶ Run</button>
+                        <button class="run-btn" onclick="runCode('ex7')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="practice" style="min-height: 200px;"># Write your exercise solutions here!
+                    <textarea class="code-editor" id="ex7"># Exercise 7: GCD Calculator (Euclidean Algorithm)
+# Hint: GCD(a, b) = GCD(b, a % b) until b becomes 0
+# Hint: When b is 0, a is the GCD
+# Hint: Use tuple swap: a, b = b, a % b
 
-# Exercise 1: Sum of Even Numbers
-total = 0
-for i in range(2, 101, 2):
-    total += i
-print(f"Sum of even numbers: {total}")</textarea>
-                    <div class="output-container" id="outputpractice">
+a = 48
+b = 18
+original_a, original_b = a, b
+
+while b != 0:
+    a, b = __, __  # Fill in: Euclidean step (b, a % b)
+
+print(f"GCD of {original_a} and {original_b} is {a}")</textarea>
+                    <div class="output-container" id="outputex7">
                         <div class="output-label">Output</div>
                         <div class="output-content"></div>
                     </div>
@@ -1746,7 +1894,7 @@ print(f"Sum of even numbers: {total}")</textarea>
             <!-- Submit Form -->
             <section id="submit" class="form-section">
                 <h2>📤 Submit Your Work</h2>
-                <p>Complete the exercises and submit your solutions below.</p>
+                <p>Complete the exercises above and submit when you're done.</p>
                 
                 <form id="submissionForm">
                     <div class="form-grid">
@@ -1774,23 +1922,11 @@ print(f"Sum of even numbers: {total}")</textarea>
                                 <option value="MCH101-C">MCH101-C (Evening)</option>
                             </select>
                         </div>
-                        
-                        <div class="form-group full-width">
-                            <label for="solutions">Your Solutions</label>
-                            <textarea id="solutions" name="solutions" placeholder="# Exercise 1: Sum of Even Numbers
-total = 0
-for i in range(2, 101, 2):
-    total += i
-print(f'Sum: {total}')
-
-# Exercise 2: Fibonacci
-# ... your code here" required></textarea>
-                        </div>
                     </div>
                     
                     <input type="hidden" name="week" value="Week 03 - Loops">
                     
-                    <button type="submit" class="submit-btn">📤 Submit Solutions</button>
+                    <button type="submit" class="submit-btn">📤 Submit</button>
                 </form>
             </section>
             
