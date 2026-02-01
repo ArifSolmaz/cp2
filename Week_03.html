@@ -3,41 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 03: Loops in Python | Computer Programming II</title>
+    <title>Week 03: Loops | Computer Programming II</title>
+    
+    <!-- PyScript -->
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary: #7c3aed;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #8b5cf6;
             --accent: #06b6d4;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
             --bg-dark: #0f172a;
-            --bg-light: #f8fafc;
-            --text-dark: #1e293b;
-            --text-light: #64748b;
-            --code-bg: #1e293b;
-            --sidebar-width: 280px;
+            --bg-card: #1e293b;
+            --bg-code: #0d1117;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #334155;
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg-light);
-            color: var(--text-dark);
+            background: var(--bg-dark);
+            color: var(--text-primary);
             line-height: 1.7;
-            overflow-x: hidden;
         }
-
+        
         /* Progress Bar */
         .progress-container {
             position: fixed;
@@ -45,268 +52,220 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: rgba(0,0,0,0.1);
-            z-index: 1001;
+            background: var(--bg-card);
+            z-index: 1000;
         }
-
+        
         .progress-bar {
             height: 100%;
             background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.2s ease;
         }
-
+        
         /* Sidebar */
         .sidebar {
             position: fixed;
             left: 0;
-            top: 0;
-            width: var(--sidebar-width);
-            height: 100vh;
-            background: var(--bg-dark);
-            color: white;
-            padding: 20px 0;
+            top: 4px;
+            width: 260px;
+            height: calc(100vh - 4px);
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
             overflow-y: auto;
-            z-index: 1000;
+            z-index: 100;
             transition: transform 0.3s ease;
         }
-
+        
         .sidebar-header {
-            padding: 20px 25px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 20px;
+            padding: 24px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            text-align: center;
         }
-
+        
         .sidebar-header h2 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--accent);
-            margin-bottom: 5px;
+            font-size: 1.2rem;
+            font-weight: 700;
         }
-
-        .sidebar-header p {
+        
+        .sidebar-header span {
             font-size: 0.85rem;
-            color: rgba(255,255,255,0.6);
+            opacity: 0.9;
         }
-
+        
         .nav-section {
-            padding: 0 15px;
-            margin-bottom: 25px;
-        }
-
-        .nav-section-title {
-            font-size: 0.75rem;
+            padding: 12px 16px 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: rgba(255,255,255,0.4);
-            padding: 10px;
-            font-weight: 600;
+            color: var(--text-muted);
         }
-
+        
         .nav-link {
-            display: block;
-            padding: 10px 15px;
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            font-size: 0.9rem;
-            border-radius: 8px;
-            margin-bottom: 2px;
-            transition: all 0.2s ease;
-        }
-
-        .nav-link:hover {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            transform: translateX(5px);
-        }
-
-        .nav-link.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
-
-        .nav-link .nav-number {
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            background: rgba(255,255,255,0.15);
-            border-radius: 6px;
-            text-align: center;
-            line-height: 24px;
-            margin-right: 10px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .colab-link {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px 15px;
-            margin: 15px;
-            background: linear-gradient(135deg, #f59e0b, #ea580c);
-            color: white;
+            padding: 10px 16px;
+            color: var(--text-secondary);
             text-decoration: none;
-            border-radius: 10px;
-            font-weight: 500;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-size: 0.85rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
         }
-
-        .colab-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(245,158,11,0.4);
+        
+        .nav-link:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--text-primary);
+            border-left-color: var(--primary);
         }
-
+        
+        .nav-link.active {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--primary);
+            border-left-color: var(--primary);
+        }
+        
+        .nav-link .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            background: var(--bg-dark);
+            border-radius: 5px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        
+        /* Completion Circle */
+        .completion-container {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .completion-circle {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 10px;
+        }
+        
+        .completion-circle svg {
+            transform: rotate(-90deg);
+        }
+        
+        .completion-circle .bg {
+            fill: none;
+            stroke: var(--bg-dark);
+            stroke-width: 6;
+        }
+        
+        .completion-circle .progress {
+            fill: none;
+            stroke: url(#gradient);
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-dasharray: 188;
+            stroke-dashoffset: 188;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        
+        .completion-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+        
+        .completion-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
         /* Main Content */
         .main-content {
-            margin-left: var(--sidebar-width);
+            margin-left: 260px;
             min-height: 100vh;
         }
-
+        
         /* Header */
         .header {
-            background: linear-gradient(135deg, var(--bg-dark) 0%, #1e3a5f 50%, var(--primary-dark) 100%);
-            color: white;
-            padding: 60px 50px;
-            position: relative;
-            overflow: hidden;
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-dark) 100%);
+            padding: 50px 40px;
+            border-bottom: 1px solid var(--border-color);
         }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.5;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-        }
-
+        
         .week-badge {
             display: inline-block;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.2);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 16px;
         }
-
+        
         .header h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            line-height: 1.2;
-        }
-
-        .header h1 .emoji {
             font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-
+        
         .header-meta {
             display: flex;
             flex-wrap: wrap;
-            gap: 25px;
-            margin-top: 25px;
-            font-size: 0.95rem;
+            gap: 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
-
-        .header-meta-item {
+        
+        .header-meta span {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.1);
-            padding: 8px 16px;
-            border-radius: 8px;
+            gap: 6px;
         }
-
-        .completion-tracker {
-            position: absolute;
-            right: 50px;
-            top: 50%;
-            transform: translateY(-50%);
-            text-align: center;
-        }
-
-        .completion-circle {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: conic-gradient(var(--success) 0deg, rgba(255,255,255,0.1) 0deg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .completion-inner {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            background: var(--bg-dark);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .completion-percent {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .completion-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.7;
-        }
-
-        /* Content Sections */
+        
+        /* Content */
         .content {
-            padding: 40px 50px;
-            max-width: 1000px;
+            max-width: 900px;
+            padding: 40px;
         }
-
+        
+        /* Sections */
         .section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-            border: 1px solid rgba(0,0,0,0.05);
+            margin-bottom: 50px;
+            scroll-margin-top: 20px;
         }
-
+        
         .section-header {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--bg-light);
+            gap: 14px;
+            margin-bottom: 24px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid var(--border-color);
         }
-
+        
         .section-number {
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            font-size: 1.1rem;
             font-weight: 700;
-            font-size: 1.2rem;
-            color: white;
+            flex-shrink: 0;
         }
-
+        
         .p1 .section-number { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
         .p2 .section-number { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
         .p3 .section-number { background: linear-gradient(135deg, #06b6d4, #0891b2); }
@@ -314,341 +273,396 @@
         .p5 .section-number { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .p6 .section-number { background: linear-gradient(135deg, #ef4444, #dc2626); }
         .p7 .section-number { background: linear-gradient(135deg, #ec4899, #db2777); }
-        .p8 .section-number { background: linear-gradient(135deg, #6366f1, #4f46e5); }
-        .p9 .section-number { background: linear-gradient(135deg, #14b8a6, #0d9488); }
-        .p10 .section-number { background: linear-gradient(135deg, #f97316, #ea580c); }
-        .p11 .section-number { background: linear-gradient(135deg, #a855f7, #9333ea); }
-        .p12 .section-number { background: linear-gradient(135deg, #84cc16, #65a30d); }
-
-        .section-title {
+        .p8 .section-number { background: linear-gradient(135deg, #14b8a6, #0d9488); }
+        .p9 .section-number { background: linear-gradient(135deg, #f97316, #ea580c); }
+        .p10 .section-number { background: linear-gradient(135deg, #6366f1, #4f46e5); }
+        .p11 .section-number { background: linear-gradient(135deg, #84cc16, #65a30d); }
+        
+        .section-header h2 {
             font-size: 1.5rem;
             font-weight: 600;
-            color: var(--text-dark);
         }
-
-        /* Code Blocks */
+        
+        .content p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        
+        .content h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 28px 0 14px;
+            color: var(--text-primary);
+        }
+        
+        .content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 22px 0 10px;
+            color: var(--accent);
+        }
+        
+        .content ul, .content ol {
+            color: var(--text-secondary);
+            margin: 14px 0 20px 20px;
+        }
+        
+        .content li {
+            margin-bottom: 8px;
+        }
+        
+        .content strong {
+            color: var(--text-primary);
+        }
+        
+        /* Code Blocks - EDITABLE */
         .code-container {
-            background: var(--code-bg);
-            border-radius: 12px;
+            background: var(--bg-code);
+            border-radius: 10px;
+            margin: 16px 0;
+            border: 1px solid var(--border-color);
             overflow: hidden;
-            margin: 20px 0;
         }
-
+        
         .code-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
-            background: rgba(255,255,255,0.05);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-color);
         }
-
-        .code-title {
-            color: rgba(255,255,255,0.7);
-            font-size: 0.85rem;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
+        
         .code-lang {
-            background: var(--primary);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
         }
-
-        .code-block {
-            padding: 20px;
-            overflow-x: auto;
-        }
-
-        .code-block pre {
-            margin: 0;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #e2e8f0;
-        }
-
-        .code-block code {
-            font-family: inherit;
-        }
-
-        .run-button {
+        
+        .run-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
             background: linear-gradient(135deg, var(--success), #059669);
-            color: white;
             border: none;
-            padding: 10px 25px;
-            border-radius: 8px;
+            border-radius: 5px;
+            color: white;
+            font-family: inherit;
+            font-size: 0.75rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
         }
-
-        .run-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+        
+        .run-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3);
         }
-
-        .output-container {
-            background: #0d1117;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-top: 10px;
+        
+        /* Editable Code Textarea */
+        .code-editor {
+            width: 100%;
+            min-height: 120px;
+            padding: 14px;
+            background: var(--bg-code);
+            border: none;
+            color: #e6edf3;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.85rem;
-            color: #7ee787;
-            min-height: 50px;
-            white-space: pre-wrap;
+            line-height: 1.6;
+            resize: vertical;
+            outline: none;
         }
-
+        
+        .code-editor:focus {
+            background: #161b22;
+        }
+        
+        .output-container {
+            background: rgba(16, 185, 129, 0.05);
+            border-top: 1px solid var(--border-color);
+            padding: 12px 14px;
+            display: none;
+        }
+        
+        .output-container.show {
+            display: block;
+        }
+        
         .output-label {
-            color: rgba(255,255,255,0.5);
-            font-size: 0.75rem;
-            margin-bottom: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--success);
             text-transform: uppercase;
             letter-spacing: 1px;
+            margin-bottom: 8px;
         }
-
+        
+        .output-content {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+        }
+        
         /* Info Boxes */
         .info-box {
-            padding: 20px 25px;
-            border-radius: 12px;
+            padding: 16px 20px;
+            border-radius: 10px;
             margin: 20px 0;
             border-left: 4px solid;
         }
-
+        
         .tip-box {
-            background: linear-gradient(135deg, rgba(6,182,212,0.1), rgba(59,130,246,0.1));
+            background: rgba(6, 182, 212, 0.1);
             border-color: var(--accent);
         }
-
+        
+        .tip-box::before {
+            content: '💡 Tip';
+            display: block;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+        
         .warning-box {
-            background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(234,88,12,0.1));
+            background: rgba(245, 158, 11, 0.1);
             border-color: var(--warning);
         }
-
-        .info-box-title {
+        
+        .warning-box::before {
+            content: '⚠️ Warning';
+            display: block;
             font-weight: 600;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: var(--warning);
+            margin-bottom: 6px;
+            font-size: 0.85rem;
         }
-
-        .tip-box .info-box-title { color: var(--accent); }
-        .warning-box .info-box-title { color: var(--warning); }
-
+        
+        .info-box p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
         /* Tables */
         .table-container {
             overflow-x: auto;
             margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
         }
-
+        
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.9rem;
         }
-
-        th, td {
+        
+        th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             padding: 12px 16px;
             text-align: left;
-            border-bottom: 1px solid var(--bg-light);
-        }
-
-        th {
-            background: var(--bg-light);
             font-weight: 600;
-            color: var(--text-dark);
         }
-
-        tr:hover {
-            background: rgba(37, 99, 235, 0.05);
+        
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
         }
-
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
         code {
             font-family: 'JetBrains Mono', monospace;
-            background: var(--bg-light);
-            padding: 2px 8px;
+            background: var(--bg-code);
+            padding: 2px 6px;
             border-radius: 4px;
             font-size: 0.85em;
-            color: var(--primary);
+            color: var(--accent);
         }
-
-        /* Exercises Section */
-        .exercises-section {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border: 2px solid #f59e0b;
-        }
-
+        
+        /* Exercise Cards */
         .exercise-card {
-            background: white;
+            background: var(--bg-card);
             border-radius: 12px;
-            padding: 25px;
-            margin: 15px 0;
-            border: 1px solid rgba(0,0,0,0.1);
+            padding: 24px;
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
         }
-
+        
         .exercise-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
+            align-items: flex-start;
+            margin-bottom: 12px;
         }
-
+        
         .exercise-title {
+            font-size: 1.05rem;
             font-weight: 600;
-            font-size: 1.1rem;
         }
-
+        
         .difficulty {
-            font-size: 1rem;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
-
-        .difficulty-easy { color: var(--success); }
-        .difficulty-medium { color: var(--warning); }
-        .difficulty-hard { color: var(--danger); }
-
-        /* Submission Form */
+        
+        .difficulty.easy { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .difficulty.medium { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .difficulty.hard { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        
+        .exercise-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* Form */
         .form-section {
-            background: linear-gradient(135deg, var(--bg-dark), #1e3a5f);
-            color: white;
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            margin: 40px 0;
+            border: 1px solid var(--border-color);
         }
-
-        .form-section .section-header {
-            border-bottom-color: rgba(255,255,255,0.2);
+        
+        .form-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
         }
-
-        .form-section .section-title {
-            color: white;
+        
+        .form-section > p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
         }
-
+        
         .form-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .form-group {
+            gap: 16px;
             margin-bottom: 20px;
         }
-
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
         .form-group.full-width {
             grid-column: span 2;
         }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
+        
+        .form-group label {
+            font-size: 0.85rem;
             font-weight: 500;
-            color: rgba(255,255,255,0.9);
+            margin-bottom: 6px;
         }
-
-        .form-input, .form-select, .form-textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 10px;
-            font-size: 1rem;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            transition: all 0.2s ease;
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 12px 14px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
         }
-
-        .form-input::placeholder, .form-textarea::placeholder {
-            color: rgba(255,255,255,0.5);
-        }
-
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
             outline: none;
-            border-color: var(--accent);
-            background: rgba(255,255,255,0.15);
+            border-color: var(--primary);
         }
-
-        .form-textarea {
-            min-height: 150px;
+        
+        .form-group textarea {
+            min-height: 180px;
             resize: vertical;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
         }
-
+        
         .submit-btn {
-            background: linear-gradient(135deg, var(--success), #059669);
-            color: white;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             border: none;
-            padding: 15px 40px;
             border-radius: 10px;
-            font-size: 1.1rem;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+            transition: all 0.2s ease;
         }
-
+        
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
         }
-
-        /* Navigation Buttons */
+        
+        /* Navigation */
         .nav-buttons {
             display: flex;
             justify-content: space-between;
-            padding: 30px 50px;
-            background: var(--bg-light);
+            gap: 16px;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
         }
-
+        
         .nav-btn {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 15px 30px;
-            background: white;
-            border: 2px solid var(--bg-light);
-            border-radius: 12px;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
             text-decoration: none;
-            color: var(--text-dark);
             font-weight: 500;
             transition: all 0.2s ease;
         }
-
+        
         .nav-btn:hover {
             border-color: var(--primary);
-            color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            background: rgba(59, 130, 246, 0.1);
         }
-
-        /* Mobile Toggle */
+        
+        /* Mobile */
         .mobile-toggle {
             display: none;
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
             border: none;
-            font-size: 1.5rem;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.3rem;
             cursor: pointer;
-            z-index: 1002;
-            box-shadow: 0 5px 25px rgba(37,99,235,0.4);
+            z-index: 200;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
         }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
+        
+        @media (max-width: 900px) {
             .sidebar {
                 transform: translateX(-100%);
             }
-            .sidebar.active {
+            .sidebar.open {
                 transform: translateX(0);
             }
             .main-content {
@@ -659,45 +673,19 @@
                 align-items: center;
                 justify-content: center;
             }
-            .completion-tracker {
-                display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                padding: 40px 25px;
-            }
-            .header h1 {
-                font-size: 2rem;
-            }
-            .content {
-                padding: 20px;
-            }
-            .section {
-                padding: 25px 20px;
-            }
             .form-grid {
                 grid-template-columns: 1fr;
             }
             .form-group.full-width {
                 grid-column: span 1;
             }
-            .nav-buttons {
-                flex-direction: column;
-                gap: 15px;
-                padding: 20px;
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .content {
+                padding: 24px;
             }
         }
-
-        /* Syntax Highlighting */
-        .keyword { color: #c678dd; }
-        .function { color: #61afef; }
-        .string { color: #98c379; }
-        .number { color: #d19a66; }
-        .comment { color: #5c6370; font-style: italic; }
-        .operator { color: #56b6c2; }
-        .builtin { color: #e5c07b; }
     </style>
 </head>
 <body>
@@ -705,1456 +693,1219 @@
     <div class="progress-container">
         <div class="progress-bar" id="progressBar"></div>
     </div>
-
+    
     <!-- Sidebar -->
-    <nav class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h2>🔄 Week 03</h2>
-            <p>Loops in Python</p>
+            <h2>Week 03</h2>
+            <span>Loops in Python</span>
         </div>
         
-        <div class="nav-section">
-            <div class="nav-section-title">Contents</div>
-            <a href="#intro" class="nav-link"><span class="nav-number">1</span> Introduction to Loops</a>
-            <a href="#for-loop" class="nav-link"><span class="nav-number">2</span> The for Loop</a>
-            <a href="#range" class="nav-link"><span class="nav-number">3</span> The range() Function</a>
-            <a href="#enumerate" class="nav-link"><span class="nav-number">4</span> Using enumerate()</a>
-            <a href="#while-loop" class="nav-link"><span class="nav-number">5</span> The while Loop</a>
-            <a href="#break-continue" class="nav-link"><span class="nav-number">6</span> break and continue</a>
-            <a href="#loop-else" class="nav-link"><span class="nav-number">7</span> Loop else Clause</a>
-            <a href="#nested" class="nav-link"><span class="nav-number">8</span> Nested Loops</a>
-            <a href="#patterns" class="nav-link"><span class="nav-number">9</span> Common Loop Patterns</a>
-            <a href="#engineering" class="nav-link"><span class="nav-number">10</span> Engineering Examples</a>
-            <a href="#summary" class="nav-link"><span class="nav-number">11</span> Summary</a>
-        </div>
+        <nav>
+            <div class="nav-section">Contents</div>
+            <a href="#intro" class="nav-link"><span class="num">1</span> Introduction</a>
+            <a href="#for-loop" class="nav-link"><span class="num">2</span> The for Loop</a>
+            <a href="#range" class="nav-link"><span class="num">3</span> range() Function</a>
+            <a href="#enumerate" class="nav-link"><span class="num">4</span> enumerate()</a>
+            <a href="#while-loop" class="nav-link"><span class="num">5</span> The while Loop</a>
+            <a href="#break-continue" class="nav-link"><span class="num">6</span> break & continue</a>
+            <a href="#loop-else" class="nav-link"><span class="num">7</span> Loop else</a>
+            <a href="#nested" class="nav-link"><span class="num">8</span> Nested Loops</a>
+            <a href="#patterns" class="nav-link"><span class="num">9</span> Common Patterns</a>
+            <a href="#engineering" class="nav-link"><span class="num">10</span> Engineering Apps</a>
+            <a href="#summary" class="nav-link"><span class="num">11</span> Summary</a>
+            
+            <div class="nav-section">Practice</div>
+            <a href="#exercises" class="nav-link"><span class="num">📝</span> Exercises</a>
+            <a href="#submit" class="nav-link"><span class="num">📤</span> Submit Work</a>
+        </nav>
         
-        <div class="nav-section">
-            <div class="nav-section-title">Practice</div>
-            <a href="#exercises" class="nav-link">📝 Exercises</a>
-            <a href="#submission" class="nav-link">📤 Submit Assignment</a>
+        <div class="completion-container">
+            <div class="completion-circle">
+                <svg width="70" height="70">
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="var(--primary)" />
+                            <stop offset="100%" stop-color="var(--accent)" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="bg" cx="35" cy="35" r="30"></circle>
+                    <circle class="progress" id="completionProgress" cx="35" cy="35" r="30"></circle>
+                </svg>
+                <span class="completion-text" id="completionText">0%</span>
+            </div>
+            <div class="completion-label">Completed</div>
         </div>
-
-        <a href="https://colab.research.google.com/" target="_blank" class="colab-link">
-            <span>📓</span> Open in Google Colab
-        </a>
-    </nav>
-
+    </aside>
+    
+    <!-- Mobile Toggle -->
+    <button class="mobile-toggle" id="mobileToggle">☰</button>
+    
     <!-- Main Content -->
     <main class="main-content">
-        <!-- Header -->
         <header class="header">
-            <div class="header-content">
-                <span class="week-badge">📅 Week 03</span>
-                <h1><span class="emoji">🔄</span> Loops in Python</h1>
-                <p style="font-size: 1.1rem; opacity: 0.9; margin-top: 10px;">
-                    Master iteration with for loops, while loops, and control statements
-                </p>
-                <div class="header-meta">
-                    <div class="header-meta-item">
-                        <span>📚</span> Computer Programming II
-                    </div>
-                    <div class="header-meta-item">
-                        <span>👨‍🏫</span> Dr. Arif Solmaz
-                    </div>
-                    <div class="header-meta-item">
-                        <span>🏫</span> ISTUN - Mechatronics Engineering
-                    </div>
-                    <div class="header-meta-item">
-                        <span>⏱️</span> 5 Hours
-                    </div>
-                </div>
-            </div>
-            <div class="completion-tracker">
-                <div class="completion-circle" id="completionCircle">
-                    <div class="completion-inner">
-                        <span class="completion-percent" id="completionPercent">0%</span>
-                        <span class="completion-label">Complete</span>
-                    </div>
-                </div>
+            <div class="week-badge">📅 Week 03</div>
+            <h1>🔄 Loops in Python</h1>
+            <div class="header-meta">
+                <span>📚 Computer Programming II</span>
+                <span>👨‍🏫 Dr. Arif Solmaz</span>
+                <span>🏛️ ISTUN - Mechatronics</span>
+                <span>⏱️ 5 Hours</span>
             </div>
         </header>
-
+        
         <div class="content">
             <!-- Section 1: Introduction -->
             <section id="intro" class="section p1">
                 <div class="section-header">
                     <div class="section-number">1</div>
-                    <h2 class="section-title">Introduction to Loops</h2>
+                    <h2>Introduction to Loops</h2>
                 </div>
                 
-                <p>Loops allow you to execute a block of code multiple times. They are fundamental to programming and essential for:</p>
+                <p>Loops allow you to execute a block of code multiple times. They are one of the most powerful concepts in programming!</p>
                 
-                <ul style="margin: 20px 0; padding-left: 25px;">
-                    <li>🔁 <strong>Automating repetitive tasks</strong> - Perform the same operation many times</li>
-                    <li>📊 <strong>Processing collections of data</strong> - Work with lists, strings, and other sequences</li>
-                    <li>🔢 <strong>Performing calculations iteratively</strong> - Sum, average, factorial, etc.</li>
-                    <li>🎨 <strong>Creating patterns and sequences</strong> - Generate structured outputs</li>
+                <h3>Why Use Loops?</h3>
+                <ul>
+                    <li><strong>Automate repetitive tasks</strong> – Write code once, run it many times</li>
+                    <li><strong>Process collections</strong> – Work through lists, strings, etc.</li>
+                    <li><strong>Perform calculations</strong> – Sum numbers, find averages</li>
+                    <li><strong>Create patterns</strong> – Generate sequences and shapes</li>
                 </ul>
-
-                <div class="tip-box info-box">
-                    <div class="info-box-title">💡 Two Types of Loops</div>
-                    <p><strong>for loop:</strong> Iterate over a sequence (known number of iterations)<br>
-                    <strong>while loop:</strong> Repeat while a condition is true (unknown number of iterations)</p>
-                </div>
-
+                
+                <h3>Types of Loops</h3>
                 <div class="table-container">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Loop Type</th>
-                                <th>Use When</th>
-                                <th>Example</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>for</code></td>
-                                <td>Number of iterations is known</td>
-                                <td>Processing all items in a list</td>
-                            </tr>
-                            <tr>
-                                <td><code>while</code></td>
-                                <td>Number of iterations is unknown</td>
-                                <td>Waiting for user input</td>
-                            </tr>
-                        </tbody>
+                        <tr>
+                            <th>Loop Type</th>
+                            <th>Best Used When</th>
+                            <th>Syntax</th>
+                        </tr>
+                        <tr>
+                            <td><code>for</code></td>
+                            <td>Number of iterations is <strong>known</strong></td>
+                            <td><code>for item in sequence:</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>while</code></td>
+                            <td>Number of iterations is <strong>unknown</strong></td>
+                            <td><code>while condition:</code></td>
+                        </tr>
                     </table>
                 </div>
+                
+                <div class="tip-box info-box">
+                    <p>Think of loops like a music playlist on repeat – Python keeps executing until told to stop!</p>
+                </div>
             </section>
-
+            
             <!-- Section 2: For Loop -->
             <section id="for-loop" class="section p2">
                 <div class="section-header">
                     <div class="section-number">2</div>
-                    <h2 class="section-title">The for Loop</h2>
+                    <h2>The for Loop</h2>
                 </div>
                 
                 <p>The <code>for</code> loop iterates over items in a sequence (list, string, range, etc.).</p>
                 
+                <h4>Example 1: Iterating Over a String</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">Basic for Loop Syntax</span>
                         <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code1')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code><span class="keyword">for</span> item <span class="keyword">in</span> sequence:
-    <span class="comment"># Code to execute for each item</span>
-    <span class="builtin">print</span>(item)</code></pre>
-                    </div>
-                </div>
-
-                <h3 style="margin: 25px 0 15px;">Iterating Over a String</h3>
-                <div class="code-container">
-                    <div class="code-header">
-                        <span class="code-title">example_string.py</span>
-                        <button class="run-button" py-click="run_code1">▶ Run</button>
-                    </div>
-                    <div class="code-block">
-<pre><code id="code1"><span class="comment"># Iterating over a string</span>
-<span class="keyword">for</span> letter <span class="keyword">in</span> <span class="string">"Python"</span>:
-    <span class="builtin">print</span>(letter)</code></pre>
-                    </div>
-                    <div class="output-container">
+                    <textarea class="code-editor" id="code1"># Iterating over a string
+for letter in "Python":
+    print(letter)</textarea>
+                    <div class="output-container" id="output1">
                         <div class="output-label">Output</div>
-                        <div id="output1"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Iterating Over a List</h3>
+                
+                <h4>Example 2: Iterating Over a List</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">example_list.py</span>
-                        <button class="run-button" py-click="run_code2">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code2')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code2"><span class="comment"># Iterating over a list</span>
-fruits = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"cherry"</span>]
+                    <textarea class="code-editor" id="code2"># Iterating over a list
+fruits = ["apple", "banana", "cherry"]
 
-<span class="keyword">for</span> fruit <span class="keyword">in</span> fruits:
-    <span class="builtin">print</span>(<span class="string">f"I like </span>{fruit}<span class="string">"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+for fruit in fruits:
+    print(f"I like {fruit}")</textarea>
+                    <div class="output-container" id="output2">
                         <div class="output-label">Output</div>
-                        <div id="output2"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Calculating Sum</h3>
+                
+                <h4>Example 3: Sum of Numbers</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">example_sum.py</span>
-                        <button class="run-button" py-click="run_code3">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code3')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code3"><span class="comment"># Sum of numbers using for loop</span>
-numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>]
-total = <span class="number">0</span>
+                    <textarea class="code-editor" id="code3"># Sum of numbers in a list
+numbers = [10, 20, 30, 40, 50]
+total = 0
 
-<span class="keyword">for</span> num <span class="keyword">in</span> numbers:
-    total += num  <span class="comment"># Same as: total = total + num</span>
+for num in numbers:
+    total += num  # Same as: total = total + num
 
-<span class="builtin">print</span>(<span class="string">f"Sum: </span>{total}<span class="string">"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+print(f"Sum: {total}")</textarea>
+                    <div class="output-container" id="output3">
                         <div class="output-label">Output</div>
-                        <div id="output3"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Finding Maximum Value</h3>
+                
+                <h4>Example 4: Finding Maximum</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">example_max.py</span>
-                        <button class="run-button" py-click="run_code4">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code4')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code4"><span class="comment"># Finding maximum temperature</span>
-temperatures = [<span class="number">23</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">19</span>, <span class="number">25</span>, <span class="number">30</span>, <span class="number">27</span>]
-max_temp = temperatures[<span class="number">0</span>]  <span class="comment"># Start with first element</span>
+                    <textarea class="code-editor" id="code4"># Finding maximum temperature
+temperatures = [23, 28, 31, 19, 25, 30, 27]
+max_temp = temperatures[0]  # Start with first
 
-<span class="keyword">for</span> temp <span class="keyword">in</span> temperatures:
-    <span class="keyword">if</span> temp > max_temp:
+for temp in temperatures:
+    if temp > max_temp:
         max_temp = temp
 
-<span class="builtin">print</span>(<span class="string">f"Maximum temperature: </span>{max_temp}<span class="string">°C"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+print(f"Maximum temperature: {max_temp}°C")</textarea>
+                    <div class="output-container" id="output4">
                         <div class="output-label">Output</div>
-                        <div id="output4"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
             </section>
-
-            <!-- Section 3: range() Function -->
+            
+            <!-- Section 3: Range -->
             <section id="range" class="section p3">
                 <div class="section-header">
                     <div class="section-number">3</div>
-                    <h2 class="section-title">The range() Function</h2>
+                    <h2>The range() Function</h2>
                 </div>
                 
-                <p>The <code>range()</code> function generates a sequence of numbers, commonly used with for loops.</p>
+                <p>The <code>range()</code> function generates a sequence of numbers.</p>
                 
                 <div class="table-container">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Syntax</th>
-                                <th>Description</th>
-                                <th>Example</th>
-                                <th>Output</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>range(stop)</code></td>
-                                <td>0 to stop-1</td>
-                                <td><code>range(5)</code></td>
-                                <td>0, 1, 2, 3, 4</td>
-                            </tr>
-                            <tr>
-                                <td><code>range(start, stop)</code></td>
-                                <td>start to stop-1</td>
-                                <td><code>range(2, 6)</code></td>
-                                <td>2, 3, 4, 5</td>
-                            </tr>
-                            <tr>
-                                <td><code>range(start, stop, step)</code></td>
-                                <td>start to stop-1, with step</td>
-                                <td><code>range(0, 10, 2)</code></td>
-                                <td>0, 2, 4, 6, 8</td>
-                            </tr>
-                        </tbody>
+                        <tr>
+                            <th>Syntax</th>
+                            <th>Description</th>
+                            <th>Example Output</th>
+                        </tr>
+                        <tr>
+                            <td><code>range(5)</code></td>
+                            <td>0 to 4</td>
+                            <td>0, 1, 2, 3, 4</td>
+                        </tr>
+                        <tr>
+                            <td><code>range(2, 6)</code></td>
+                            <td>2 to 5</td>
+                            <td>2, 3, 4, 5</td>
+                        </tr>
+                        <tr>
+                            <td><code>range(0, 10, 2)</code></td>
+                            <td>0 to 9, step 2</td>
+                            <td>0, 2, 4, 6, 8</td>
+                        </tr>
                     </table>
                 </div>
-
-                <div class="warning-box info-box">
-                    <div class="info-box-title">⚠️ Important</div>
-                    <p>The <code>stop</code> value is <strong>exclusive</strong> - it's NOT included in the sequence!</p>
-                </div>
-
+                
+                <h4>Example 1: Basic Range</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">range_examples.py</span>
-                        <button class="run-button" py-click="run_code5">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code5')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code5"><span class="comment"># range(stop) - 0 to stop-1</span>
-<span class="builtin">print</span>(<span class="string">"range(5):"</span>)
-<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">5</span>):
-    <span class="builtin">print</span>(i, end=<span class="string">" "</span>)
-
-<span class="builtin">print</span>(<span class="string">"\n\nrange(1, 6):"</span>)
-<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="number">6</span>):
-    <span class="builtin">print</span>(i, end=<span class="string">" "</span>)
-
-<span class="builtin">print</span>(<span class="string">"\n\nrange(0, 11, 2) - even numbers:"</span>)
-<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">0</span>, <span class="number">11</span>, <span class="number">2</span>):
-    <span class="builtin">print</span>(i, end=<span class="string">" "</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+                    <textarea class="code-editor" id="code5"># range(stop) - 0 to stop-1
+for i in range(5):
+    print(i, end=" ")</textarea>
+                    <div class="output-container" id="output5">
                         <div class="output-label">Output</div>
-                        <div id="output5"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Countdown with Negative Step</h3>
+                
+                <h4>Example 2: Range with Start and Stop</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">countdown.py</span>
-                        <button class="run-button" py-click="run_code6">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code6')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code6"><span class="comment"># Countdown using negative step</span>
-<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">10</span>, <span class="number">0</span>, <span class="number">-1</span>):
-    <span class="builtin">print</span>(i, end=<span class="string">" "</span>)
-<span class="builtin">print</span>(<span class="string">"🚀 Liftoff!"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+                    <textarea class="code-editor" id="code6"># range(start, stop) - 1 to 6
+for i in range(1, 7):
+    print(i, end=" ")</textarea>
+                    <div class="output-container" id="output6">
                         <div class="output-label">Output</div>
-                        <div id="output6"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Multiplication Table</h3>
+                
+                <h4>Example 3: Countdown</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">multiplication_table.py</span>
-                        <button class="run-button" py-click="run_code7">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code7')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code7"><span class="comment"># Multiplication table for 7</span>
-n = <span class="number">7</span>
-<span class="builtin">print</span>(<span class="string">f"Multiplication table for </span>{n}<span class="string">:"</span>)
-<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="number">11</span>):
-    <span class="builtin">print</span>(<span class="string">f"</span>{n}<span class="string"> × </span>{i}<span class="string"> = </span>{n * i}<span class="string">"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+                    <textarea class="code-editor" id="code7"># Countdown using negative step
+for i in range(10, 0, -1):
+    print(i, end=" ")
+print("Liftoff! 🚀")</textarea>
+                    <div class="output-container" id="output7">
                         <div class="output-label">Output</div>
-                        <div id="output7"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Factorial Calculation</h3>
+                
+                <h4>Example 4: Multiplication Table</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">factorial.py</span>
-                        <button class="run-button" py-click="run_code8">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code8')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code8"><span class="comment"># Calculate factorial (n!)</span>
-n = <span class="number">5</span>
-factorial = <span class="number">1</span>
+                    <textarea class="code-editor" id="code8"># Print multiplication table for 7
+n = 7
+print(f"Multiplication table for {n}:")
+for i in range(1, 11):
+    print(f"{n} × {i} = {n * i}")</textarea>
+                    <div class="output-container" id="output8">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Example 5: Factorial</h4>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code9')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code9"># Calculate factorial (n!)
+n = 5
+factorial = 1
 
-<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+for i in range(1, n + 1):
     factorial *= i
-    <span class="builtin">print</span>(<span class="string">f"Step </span>{i}<span class="string">: </span>{factorial}<span class="string">"</span>)
 
-<span class="builtin">print</span>(<span class="string">f"\n</span>{n}<span class="string">! = </span>{factorial}<span class="string">"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+print(f"{n}! = {factorial}")</textarea>
+                    <div class="output-container" id="output9">
                         <div class="output-label">Output</div>
-                        <div id="output8"></div>
+                        <div class="output-content"></div>
                     </div>
+                </div>
+                
+                <div class="tip-box info-box">
+                    <p><strong>Remember:</strong> <code>range()</code> stops <em>before</em> the stop value. To include it, use <code>range(start, stop + 1)</code>!</p>
                 </div>
             </section>
-
-            <!-- Section 4: enumerate() -->
+            
+            <!-- Section 4: Enumerate -->
             <section id="enumerate" class="section p4">
                 <div class="section-header">
                     <div class="section-number">4</div>
-                    <h2 class="section-title">Using enumerate()</h2>
+                    <h2>Using enumerate()</h2>
                 </div>
                 
-                <p>The <code>enumerate()</code> function returns both the index and value when iterating.</p>
+                <p>When you need both the <strong>index</strong> and the <strong>value</strong>, use <code>enumerate()</code>!</p>
                 
+                <h4>Example 1: Basic Enumerate</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">enumerate_example.py</span>
-                        <button class="run-button" py-click="run_code9">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code10')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code9"><span class="comment"># Using enumerate to get index and value</span>
-fruits = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"cherry"</span>, <span class="string">"date"</span>]
+                    <textarea class="code-editor" id="code10"># Using enumerate to get index
+fruits = ["apple", "banana", "cherry", "date"]
 
-<span class="builtin">print</span>(<span class="string">"Default (start=0):"</span>)
-<span class="keyword">for</span> index, fruit <span class="keyword">in</span> <span class="builtin">enumerate</span>(fruits):
-    <span class="builtin">print</span>(<span class="string">f"</span>{index}<span class="string">: </span>{fruit}<span class="string">"</span>)
-
-<span class="builtin">print</span>(<span class="string">"\nWith start=1:"</span>)
-<span class="keyword">for</span> num, fruit <span class="keyword">in</span> <span class="builtin">enumerate</span>(fruits, start=<span class="number">1</span>):
-    <span class="builtin">print</span>(<span class="string">f"</span>{num}<span class="string">. </span>{fruit}<span class="string">"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+for index, fruit in enumerate(fruits):
+    print(f"{index}: {fruit}")</textarea>
+                    <div class="output-container" id="output10">
                         <div class="output-label">Output</div>
-                        <div id="output9"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
+                
+                <h4>Example 2: Custom Start Index</h4>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code11')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code11"># enumerate with custom start
+students = ["Ali", "Ayşe", "Mehmet", "Zeynep"]
 
-                <div class="tip-box info-box">
-                    <div class="info-box-title">💡 When to Use enumerate()</div>
-                    <p>Use <code>enumerate()</code> when you need both the index and the value. It's cleaner than manually tracking an index variable!</p>
+for num, student in enumerate(students, start=1):
+    print(f"Student {num}: {student}")</textarea>
+                    <div class="output-container" id="output11">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
+                    </div>
                 </div>
             </section>
-
+            
             <!-- Section 5: While Loop -->
             <section id="while-loop" class="section p5">
                 <div class="section-header">
                     <div class="section-number">5</div>
-                    <h2 class="section-title">The while Loop</h2>
+                    <h2>The while Loop</h2>
                 </div>
                 
-                <p>The <code>while</code> loop continues executing while a condition is <code>True</code>.</p>
+                <p>The <code>while</code> loop continues as long as a condition is <code>True</code>.</p>
                 
-                <div class="code-container">
-                    <div class="code-header">
-                        <span class="code-title">while Loop Syntax</span>
-                        <span class="code-lang">Python</span>
-                    </div>
-                    <div class="code-block">
-<pre><code><span class="keyword">while</span> condition:
-    <span class="comment"># Code to execute while condition is True</span>
-    <span class="comment"># Don't forget to update the condition!</span></code></pre>
-                    </div>
-                </div>
-
                 <div class="warning-box info-box">
-                    <div class="info-box-title">⚠️ Infinite Loop Warning!</div>
-                    <p>Make sure the condition eventually becomes <code>False</code>, or you'll have an infinite loop that never stops!</p>
+                    <p>Make sure the condition eventually becomes <code>False</code>, or you'll create an <strong>infinite loop</strong>!</p>
                 </div>
-
+                
+                <h4>Example 1: Basic While Loop</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">while_basic.py</span>
-                        <button class="run-button" py-click="run_code10">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code12')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code10"><span class="comment"># Basic while loop</span>
-count = <span class="number">1</span>
+                    <textarea class="code-editor" id="code12"># Basic while loop
+count = 1
 
-<span class="keyword">while</span> count <= <span class="number">5</span>:
-    <span class="builtin">print</span>(<span class="string">f"Count: </span>{count}<span class="string">"</span>)
-    count += <span class="number">1</span>  <span class="comment"># Don't forget this!</span>
-
-<span class="builtin">print</span>(<span class="string">"Loop finished!"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+while count <= 5:
+    print(count)
+    count += 1  # Don't forget this!</textarea>
+                    <div class="output-container" id="output12">
                         <div class="output-label">Output</div>
-                        <div id="output10"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Sum Until Exceeds Target</h3>
+                
+                <h4>Example 2: Countdown</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">sum_until.py</span>
-                        <button class="run-button" py-click="run_code11">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code13')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code11"><span class="comment"># Sum until exceeds 100</span>
-total = <span class="number">0</span>
-number = <span class="number">1</span>
+                    <textarea class="code-editor" id="code13"># Countdown with while
+countdown = 5
 
-<span class="keyword">while</span> total <= <span class="number">100</span>:
+while countdown > 0:
+    print(countdown)
+    countdown -= 1
+
+print("Blast off! 🚀")</textarea>
+                    <div class="output-container" id="output13">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Example 3: Sum Until Target</h4>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code14')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code14"># Sum until exceeds 100
+total = 0
+number = 1
+
+while total <= 100:
     total += number
-    <span class="builtin">print</span>(<span class="string">f"Added </span>{number}<span class="string">, total = </span>{total}<span class="string">"</span>)
-    number += <span class="number">1</span>
+    number += 1
 
-<span class="builtin">print</span>(<span class="string">f"\nSum exceeded 100 at total = </span>{total}<span class="string">"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+print(f"Sum exceeded 100 at total = {total}")
+print(f"Last number added: {number - 1}")</textarea>
+                    <div class="output-container" id="output14">
                         <div class="output-label">Output</div>
-                        <div id="output11"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Digit Sum</h3>
+                
+                <h4>Example 4: Extract Digits</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">digit_sum.py</span>
-                        <button class="run-button" py-click="run_code12">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code15')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code12"><span class="comment"># Find sum of digits</span>
-number = <span class="number">12345</span>
+                    <textarea class="code-editor" id="code15"># Find digits of a number
+number = 12345
 original = number
-digit_sum = <span class="number">0</span>
+digit_sum = 0
 
-<span class="keyword">while</span> number > <span class="number">0</span>:
-    digit = number % <span class="number">10</span>  <span class="comment"># Get last digit</span>
+while number > 0:
+    digit = number % 10  # Get last digit
     digit_sum += digit
-    <span class="builtin">print</span>(<span class="string">f"Digit: </span>{digit}<span class="string">, Running sum: </span>{digit_sum}<span class="string">"</span>)
-    number //= <span class="number">10</span>  <span class="comment"># Remove last digit</span>
+    print(f"Digit: {digit}")
+    number //= 10  # Remove last digit
 
-<span class="builtin">print</span>(<span class="string">f"\nSum of digits of </span>{original}<span class="string">: </span>{digit_sum}<span class="string">"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+print(f"Sum of digits of {original}: {digit_sum}")</textarea>
+                    <div class="output-container" id="output15">
                         <div class="output-label">Output</div>
-                        <div id="output12"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">for vs while</h3>
+                
+                <h3>for vs while Comparison</h3>
                 <div class="table-container">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Use <code>for</code> when...</th>
-                                <th>Use <code>while</code> when...</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Number of iterations is known</td>
-                                <td>Number of iterations is unknown</td>
-                            </tr>
-                            <tr>
-                                <td>Iterating over a sequence</td>
-                                <td>Waiting for a condition</td>
-                            </tr>
-                            <tr>
-                                <td>Simple counting</td>
-                                <td>User input loops</td>
-                            </tr>
-                            <tr>
-                                <td>Processing collections</td>
-                                <td>Convergence algorithms</td>
-                            </tr>
-                        </tbody>
+                        <tr>
+                            <th>Use <code>for</code> when...</th>
+                            <th>Use <code>while</code> when...</th>
+                        </tr>
+                        <tr>
+                            <td>Number of iterations is known</td>
+                            <td>Number of iterations is unknown</td>
+                        </tr>
+                        <tr>
+                            <td>Iterating over a sequence</td>
+                            <td>Waiting for a condition</td>
+                        </tr>
+                        <tr>
+                            <td>Processing collections</td>
+                            <td>Convergence algorithms</td>
+                        </tr>
                     </table>
                 </div>
             </section>
-
-            <!-- Section 6: break and continue -->
+            
+            <!-- Section 6: Break and Continue -->
             <section id="break-continue" class="section p6">
                 <div class="section-header">
                     <div class="section-number">6</div>
-                    <h2 class="section-title">Loop Control: break and continue</h2>
+                    <h2>break and continue</h2>
+                </div>
+                
+                <h3>The break Statement</h3>
+                <p><code>break</code> exits the loop immediately.</p>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code16')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code16"># Search and stop when found
+numbers = [4, 7, 2, 9, 1, 8, 3]
+target = 9
+
+for num in numbers:
+    if num == target:
+        print(f"Found {target}!")
+        break
+    print(f"Checking {num}...")</textarea>
+                    <div class="output-container" id="output16">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>The continue Statement</h3>
+                <p><code>continue</code> skips to the next iteration.</p>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code17')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code17"># Print only odd numbers
+for i in range(1, 11):
+    if i % 2 == 0:  # Skip even numbers
+        continue
+    print(i, end=" ")</textarea>
+                    <div class="output-container" id="output17">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Comparison: break vs continue</h4>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code18')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code18"># See the difference
+print("Using break:")
+for i in range(1, 6):
+    if i == 3:
+        break
+    print(i, end=" ")
+
+print("\n\nUsing continue:")
+for i in range(1, 6):
+    if i == 3:
+        continue
+    print(i, end=" ")</textarea>
+                    <div class="output-container" id="output18">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
+                    </div>
                 </div>
                 
                 <div class="table-container">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Statement</th>
-                                <th>Effect</th>
-                                <th>Use Case</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>break</code></td>
-                                <td>Exits the loop entirely</td>
-                                <td>When target is found</td>
-                            </tr>
-                            <tr>
-                                <td><code>continue</code></td>
-                                <td>Skips to next iteration</td>
-                                <td>Skip unwanted items</td>
-                            </tr>
-                        </tbody>
+                        <tr>
+                            <th>break</th>
+                            <th>continue</th>
+                        </tr>
+                        <tr>
+                            <td>Exits loop entirely</td>
+                            <td>Skips to next iteration</td>
+                        </tr>
+                        <tr>
+                            <td>No more iterations</td>
+                            <td>Loop continues</td>
+                        </tr>
+                        <tr>
+                            <td>Used when target found</td>
+                            <td>Used to skip items</td>
+                        </tr>
                     </table>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">The break Statement</h3>
-                <div class="code-container">
-                    <div class="code-header">
-                        <span class="code-title">break_example.py</span>
-                        <button class="run-button" py-click="run_code13">▶ Run</button>
-                    </div>
-                    <div class="code-block">
-<pre><code id="code13"><span class="comment"># Search for a number and stop when found</span>
-numbers = [<span class="number">4</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">9</span>, <span class="number">1</span>, <span class="number">8</span>, <span class="number">3</span>]
-target = <span class="number">9</span>
-
-<span class="keyword">for</span> num <span class="keyword">in</span> numbers:
-    <span class="keyword">if</span> num == target:
-        <span class="builtin">print</span>(<span class="string">f"✓ Found </span>{target}<span class="string">!"</span>)
-        <span class="keyword">break</span>
-    <span class="builtin">print</span>(<span class="string">f"Checking </span>{num}<span class="string">..."</span>)
-
-<span class="builtin">print</span>(<span class="string">"Search complete"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
-                        <div class="output-label">Output</div>
-                        <div id="output13"></div>
-                    </div>
-                </div>
-
-                <h3 style="margin: 25px 0 15px;">The continue Statement</h3>
-                <div class="code-container">
-                    <div class="code-header">
-                        <span class="code-title">continue_example.py</span>
-                        <button class="run-button" py-click="run_code14">▶ Run</button>
-                    </div>
-                    <div class="code-block">
-<pre><code id="code14"><span class="comment"># Skip negative numbers</span>
-numbers = [<span class="number">5</span>, <span class="number">-3</span>, <span class="number">8</span>, <span class="number">-1</span>, <span class="number">4</span>, <span class="number">-7</span>, <span class="number">2</span>]
-
-<span class="builtin">print</span>(<span class="string">"Positive numbers only:"</span>)
-<span class="keyword">for</span> num <span class="keyword">in</span> numbers:
-    <span class="keyword">if</span> num < <span class="number">0</span>:
-        <span class="keyword">continue</span>  <span class="comment"># Skip negative numbers</span>
-    <span class="builtin">print</span>(num, end=<span class="string">" "</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
-                        <div class="output-label">Output</div>
-                        <div id="output14"></div>
-                    </div>
-                </div>
-
-                <h3 style="margin: 25px 0 15px;">Comparing break vs continue</h3>
-                <div class="code-container">
-                    <div class="code-header">
-                        <span class="code-title">break_vs_continue.py</span>
-                        <button class="run-button" py-click="run_code15">▶ Run</button>
-                    </div>
-                    <div class="code-block">
-<pre><code id="code15"><span class="builtin">print</span>(<span class="string">"Using break:"</span>)
-<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="number">6</span>):
-    <span class="keyword">if</span> i == <span class="number">3</span>:
-        <span class="keyword">break</span>
-    <span class="builtin">print</span>(i, end=<span class="string">" "</span>)
-
-<span class="builtin">print</span>(<span class="string">"\n\nUsing continue:"</span>)
-<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="number">6</span>):
-    <span class="keyword">if</span> i == <span class="number">3</span>:
-        <span class="keyword">continue</span>
-    <span class="builtin">print</span>(i, end=<span class="string">" "</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
-                        <div class="output-label">Output</div>
-                        <div id="output15"></div>
-                    </div>
-                </div>
             </section>
-
-            <!-- Section 7: Loop else Clause -->
+            
+            <!-- Section 7: Loop Else -->
             <section id="loop-else" class="section p7">
                 <div class="section-header">
                     <div class="section-number">7</div>
-                    <h2 class="section-title">The else Clause with Loops</h2>
+                    <h2>Loop else Clause</h2>
                 </div>
                 
-                <p>The <code>else</code> block executes when the loop completes normally (without <code>break</code>).</p>
+                <p>The <code>else</code> block executes when the loop completes <strong>without</strong> hitting <code>break</code>.</p>
                 
-                <div class="tip-box info-box">
-                    <div class="info-box-title">💡 Key Concept</div>
-                    <p>The <code>else</code> block runs when the loop finishes all iterations. If <code>break</code> is executed, the <code>else</code> block is skipped!</p>
-                </div>
-
+                <h4>Example 1: Completed Normally</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">loop_else.py</span>
-                        <button class="run-button" py-click="run_code16">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code19')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code16"><span class="comment"># Search with else clause</span>
-<span class="builtin">print</span>(<span class="string">"Searching for 4 in [1,3,5,7,9]:"</span>)
-numbers = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]
-target = <span class="number">4</span>
-
-<span class="keyword">for</span> num <span class="keyword">in</span> numbers:
-    <span class="keyword">if</span> num == target:
-        <span class="builtin">print</span>(<span class="string">f"Found </span>{target}<span class="string">!"</span>)
-        <span class="keyword">break</span>
-<span class="keyword">else</span>:
-    <span class="builtin">print</span>(<span class="string">f"</span>{target}<span class="string"> not found in list."</span>)
-
-<span class="builtin">print</span>(<span class="string">"\nSearching for 5 in [1,3,5,7,9]:"</span>)
-target = <span class="number">5</span>
-<span class="keyword">for</span> num <span class="keyword">in</span> numbers:
-    <span class="keyword">if</span> num == target:
-        <span class="builtin">print</span>(<span class="string">f"Found </span>{target}<span class="string">!"</span>)
-        <span class="keyword">break</span>
-<span class="keyword">else</span>:
-    <span class="builtin">print</span>(<span class="string">f"</span>{target}<span class="string"> not found in list."</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+                    <textarea class="code-editor" id="code19"># for-else: completed normally
+for i in range(1, 4):
+    print(i)
+else:
+    print("Loop completed!")</textarea>
+                    <div class="output-container" id="output19">
                         <div class="output-label">Output</div>
-                        <div id="output16"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Prime Number Checker</h3>
+                
+                <h4>Example 2: With Break (else doesn't run)</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">prime_checker.py</span>
-                        <button class="run-button" py-click="run_code17">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code20')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code17"><span class="comment"># Check if a number is prime</span>
-n = <span class="number">17</span>
-
-<span class="keyword">if</span> n < <span class="number">2</span>:
-    <span class="builtin">print</span>(<span class="string">f"</span>{n}<span class="string"> is not prime"</span>)
-<span class="keyword">else</span>:
-    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, <span class="builtin">int</span>(n ** <span class="number">0.5</span>) + <span class="number">1</span>):
-        <span class="keyword">if</span> n % i == <span class="number">0</span>:
-            <span class="builtin">print</span>(<span class="string">f"</span>{n}<span class="string"> is not prime (divisible by </span>{i}<span class="string">)"</span>)
-            <span class="keyword">break</span>
-    <span class="keyword">else</span>:
-        <span class="builtin">print</span>(<span class="string">f"</span>{n}<span class="string"> is prime! ✓"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+                    <textarea class="code-editor" id="code20"># for-else with break
+for i in range(1, 10):
+    if i == 5:
+        print("Breaking!")
+        break
+    print(i)
+else:
+    print("Loop completed!")  # Won't print</textarea>
+                    <div class="output-container" id="output20">
                         <div class="output-label">Output</div>
-                        <div id="output17"></div>
+                        <div class="output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Example 3: Search Pattern</h4>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code21')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code21"># Search: found vs not found
+numbers = [1, 3, 5, 7, 9]
+target = 4
+
+for num in numbers:
+    if num == target:
+        print(f"Found {target}!")
+        break
+else:
+    print(f"{target} not found in list.")</textarea>
+                    <div class="output-container" id="output21">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
             </section>
-
+            
             <!-- Section 8: Nested Loops -->
             <section id="nested" class="section p8">
                 <div class="section-header">
                     <div class="section-number">8</div>
-                    <h2 class="section-title">Nested Loops</h2>
+                    <h2>Nested Loops</h2>
                 </div>
                 
-                <p>A loop inside another loop is called a <strong>nested loop</strong>. The inner loop completes all iterations for each iteration of the outer loop.</p>
-
+                <p>A loop inside another loop. Inner loop completes all iterations for each outer iteration.</p>
+                
+                <h4>Example 1: Coordinate Pairs</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">nested_basic.py</span>
-                        <button class="run-button" py-click="run_code18">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code22')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code18"><span class="comment"># Basic nested loop - coordinate pairs</span>
-<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="number">4</span>):
-    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="number">4</span>):
-        <span class="builtin">print</span>(<span class="string">f"(</span>{i}<span class="string">, </span>{j}<span class="string">)"</span>, end=<span class="string">" "</span>)
-    <span class="builtin">print</span>()  <span class="comment"># New line after inner loop</span></code></pre>
-                    </div>
-                    <div class="output-container">
+                    <textarea class="code-editor" id="code22"># Nested loop - coordinate pairs
+for i in range(1, 4):
+    for j in range(1, 4):
+        print(f"({i}, {j})", end=" ")
+    print()  # New line</textarea>
+                    <div class="output-container" id="output22">
                         <div class="output-label">Output</div>
-                        <div id="output18"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Pattern Printing - Right Triangle</h3>
+                
+                <h4>Example 2: Right Triangle</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">triangle_pattern.py</span>
-                        <button class="run-button" py-click="run_code19">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code23')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code19"><span class="comment"># Right triangle pattern</span>
-n = <span class="number">5</span>
-<span class="builtin">print</span>(<span class="string">"Right Triangle:"</span>)
-<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
-    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i):
-        <span class="builtin">print</span>(<span class="string">"*"</span>, end=<span class="string">" "</span>)
-    <span class="builtin">print</span>()
+                    <textarea class="code-editor" id="code23"># Right triangle pattern
+n = 5
 
-<span class="builtin">print</span>(<span class="string">"\nNumber Pyramid:"</span>)
-<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
-    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, i + <span class="number">1</span>):
-        <span class="builtin">print</span>(j, end=<span class="string">" "</span>)
-    <span class="builtin">print</span>()</code></pre>
-                    </div>
-                    <div class="output-container">
+for i in range(1, n + 1):
+    for j in range(i):
+        print("*", end=" ")
+    print()</textarea>
+                    <div class="output-container" id="output23">
                         <div class="output-label">Output</div>
-                        <div id="output19"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Multiplication Table</h3>
+                
+                <h4>Example 3: Number Pyramid</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">mult_table.py</span>
-                        <button class="run-button" py-click="run_code20">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code24')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code20"><span class="comment"># Multiplication table 1-5</span>
-<span class="builtin">print</span>(<span class="string">"    "</span>, end=<span class="string">""</span>)
-<span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="number">6</span>):
-    <span class="builtin">print</span>(<span class="string">f"</span>{j:4d}<span class="string">"</span>, end=<span class="string">""</span>)
-<span class="builtin">print</span>(<span class="string">"\n"</span> + <span class="string">"-"</span> * <span class="number">25</span>)
+                    <textarea class="code-editor" id="code24"># Number pyramid
+n = 5
 
-<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="number">6</span>):
-    <span class="builtin">print</span>(<span class="string">f"</span>{i}<span class="string"> | "</span>, end=<span class="string">""</span>)
-    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="number">6</span>):
-        <span class="builtin">print</span>(<span class="string">f"</span>{i * j:4d}<span class="string">"</span>, end=<span class="string">""</span>)
-    <span class="builtin">print</span>()</code></pre>
-                    </div>
-                    <div class="output-container">
+for i in range(1, n + 1):
+    for j in range(1, i + 1):
+        print(j, end=" ")
+    print()</textarea>
+                    <div class="output-container" id="output24">
                         <div class="output-label">Output</div>
-                        <div id="output20"></div>
+                        <div class="output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Example 4: Multiplication Table</h4>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code25')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code25"># Multiplication table (1-5)
+print("   ", end="")
+for j in range(1, 6):
+    print(f"{j:4d}", end="")
+print("\n" + "-" * 25)
+
+for i in range(1, 6):
+    print(f"{i} |", end="")
+    for j in range(1, 6):
+        print(f"{i * j:4d}", end="")
+    print()</textarea>
+                    <div class="output-container" id="output25">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
             </section>
-
-            <!-- Section 9: Common Loop Patterns -->
+            
+            <!-- Section 9: Common Patterns -->
             <section id="patterns" class="section p9">
                 <div class="section-header">
                     <div class="section-number">9</div>
-                    <h2 class="section-title">Common Loop Patterns</h2>
+                    <h2>Common Loop Patterns</h2>
                 </div>
                 
-                <h3 style="margin: 20px 0 15px;">Accumulator Pattern</h3>
+                <h3>1. Accumulator Pattern</h3>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">accumulator.py</span>
-                        <button class="run-button" py-click="run_code21">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code26')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code21"><span class="comment"># Sum (accumulator starts at 0)</span>
-numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]
-total = <span class="number">0</span>
-<span class="keyword">for</span> n <span class="keyword">in</span> numbers:
-    total += n
-<span class="builtin">print</span>(<span class="string">f"Sum: </span>{total}<span class="string">"</span>)
+                    <textarea class="code-editor" id="code26"># Accumulator: Sum and Product
+numbers = [1, 2, 3, 4, 5]
 
-<span class="comment"># Product (accumulator starts at 1)</span>
-product = <span class="number">1</span>
-<span class="keyword">for</span> n <span class="keyword">in</span> numbers:
+# Sum
+total = 0
+for n in numbers:
+    total += n
+print(f"Sum: {total}")
+
+# Product
+product = 1
+for n in numbers:
     product *= n
-<span class="builtin">print</span>(<span class="string">f"Product: </span>{product}<span class="string">"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+print(f"Product: {product}")</textarea>
+                    <div class="output-container" id="output26">
                         <div class="output-label">Output</div>
-                        <div id="output21"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Filter Pattern</h3>
+                
+                <h3>2. Counter Pattern</h3>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">filter_pattern.py</span>
-                        <button class="run-button" py-click="run_code22">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code27')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code22"><span class="comment"># Filter even numbers into a new list</span>
-numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]
+                    <textarea class="code-editor" id="code27"># Counter: Count by category
+grades = [85, 92, 78, 95, 55, 88, 72, 90, 45]
+pass_count = 0
+fail_count = 0
+
+for grade in grades:
+    if grade >= 60:
+        pass_count += 1
+    else:
+        fail_count += 1
+
+print(f"Passed: {pass_count}, Failed: {fail_count}")</textarea>
+                    <div class="output-container" id="output27">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>3. Filter Pattern</h3>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code28')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code28"># Filter: Extract even numbers
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 evens = []
 
-<span class="keyword">for</span> n <span class="keyword">in</span> numbers:
-    <span class="keyword">if</span> n % <span class="number">2</span> == <span class="number">0</span>:
+for n in numbers:
+    if n % 2 == 0:
         evens.append(n)
 
-<span class="builtin">print</span>(<span class="string">f"Original: </span>{numbers}<span class="string">"</span>)
-<span class="builtin">print</span>(<span class="string">f"Even numbers: </span>{evens}<span class="string">"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+print(f"Even numbers: {evens}")</textarea>
+                    <div class="output-container" id="output28">
                         <div class="output-label">Output</div>
-                        <div id="output22"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Transform Pattern</h3>
+                
+                <h3>4. Transform Pattern</h3>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">transform_pattern.py</span>
-                        <button class="run-button" py-click="run_code23">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code29')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code23"><span class="comment"># Convert temperatures C to F</span>
-celsius = [<span class="number">0</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>]
+                    <textarea class="code-editor" id="code29"># Transform: Celsius to Fahrenheit
+celsius = [0, 10, 20, 30, 40]
 fahrenheit = []
 
-<span class="keyword">for</span> c <span class="keyword">in</span> celsius:
-    f = c * <span class="number">9</span>/<span class="number">5</span> + <span class="number">32</span>
+for c in celsius:
+    f = c * 9/5 + 32
     fahrenheit.append(f)
 
-<span class="builtin">print</span>(<span class="string">f"Celsius:    </span>{celsius}<span class="string">"</span>)
-<span class="builtin">print</span>(<span class="string">f"Fahrenheit: </span>{fahrenheit}<span class="string">"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+print(f"Celsius: {celsius}")
+print(f"Fahrenheit: {fahrenheit}")</textarea>
+                    <div class="output-container" id="output29">
                         <div class="output-label">Output</div>
-                        <div id="output23"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
             </section>
-
-            <!-- Section 10: Engineering Examples -->
+            
+            <!-- Section 10: Engineering Applications -->
             <section id="engineering" class="section p10">
                 <div class="section-header">
                     <div class="section-number">10</div>
-                    <h2 class="section-title">Engineering Applications</h2>
+                    <h2>Engineering Applications</h2>
                 </div>
-
-                <h3 style="margin: 20px 0 15px;">Sensor Data Processing</h3>
+                
+                <h4>Sensor Data Processing</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">sensor_average.py</span>
-                        <button class="run-button" py-click="run_code24">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code30')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code24"><span class="comment"># Calculate average voltage from sensor readings</span>
-<span class="comment"># Skip invalid readings (-999)</span>
-readings = [<span class="number">11.8</span>, <span class="number">12.1</span>, <span class="number">-999</span>, <span class="number">12.3</span>, <span class="number">12.0</span>, <span class="number">-999</span>, <span class="number">12.2</span>]
+                    <textarea class="code-editor" id="code30"># Process valid sensor readings only
+# -999 indicates invalid reading
+readings = [23.5, -999, 24.1, 23.8, -999, 24.5, 23.9]
 
-valid_sum = <span class="number">0</span>
-valid_count = <span class="number">0</span>
+valid_sum = 0
+valid_count = 0
 
-<span class="keyword">for</span> reading <span class="keyword">in</span> readings:
-    <span class="keyword">if</span> reading == <span class="number">-999</span>:
-        <span class="keyword">continue</span>  <span class="comment"># Skip invalid reading</span>
+for reading in readings:
+    if reading == -999:
+        continue
     valid_sum += reading
-    valid_count += <span class="number">1</span>
+    valid_count += 1
 
 average = valid_sum / valid_count
-<span class="builtin">print</span>(<span class="string">f"Valid readings: </span>{valid_count}<span class="string">"</span>)
-<span class="builtin">print</span>(<span class="string">f"Average voltage: </span>{average:.2f}<span class="string"> V"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+print(f"Average of valid readings: {average:.2f}°C")</textarea>
+                    <div class="output-container" id="output30">
                         <div class="output-label">Output</div>
-                        <div id="output24"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Newton-Raphson Square Root</h3>
+                
+                <h4>Newton-Raphson Square Root</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">newton_sqrt.py</span>
-                        <button class="run-button" py-click="run_code25">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code31')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code25"><span class="comment"># Newton-Raphson method to find square root</span>
-number = <span class="number">25</span>
-guess = number / <span class="number">2</span>
-tolerance = <span class="number">0.0001</span>
-iteration = <span class="number">0</span>
+                    <textarea class="code-editor" id="code31"># Newton-Raphson square root algorithm
+number = 25
+guess = number / 2
+tolerance = 0.0001
 
-<span class="keyword">while</span> <span class="builtin">abs</span>(guess * guess - number) > tolerance:
-    guess = (guess + number / guess) / <span class="number">2</span>
-    iteration += <span class="number">1</span>
-    <span class="builtin">print</span>(<span class="string">f"Iteration </span>{iteration}<span class="string">: </span>{guess:.6f}<span class="string">"</span>)
+while abs(guess * guess - number) > tolerance:
+    guess = (guess + number / guess) / 2
+    print(f"Guess: {guess:.6f}")
 
-<span class="builtin">print</span>(<span class="string">f"\n√</span>{number}<span class="string"> ≈ </span>{guess:.6f}<span class="string">"</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+print(f"\n√{number} ≈ {guess:.6f}")</textarea>
+                    <div class="output-container" id="output31">
                         <div class="output-label">Output</div>
-                        <div id="output25"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
-
-                <h3 style="margin: 25px 0 15px;">Find Prime Numbers</h3>
+                
+                <h4>Find Prime Numbers</h4>
                 <div class="code-container">
                     <div class="code-header">
-                        <span class="code-title">find_primes.py</span>
-                        <button class="run-button" py-click="run_code26">▶ Run</button>
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('code32')">▶ Run</button>
                     </div>
-                    <div class="code-block">
-<pre><code id="code26"><span class="comment"># Find all prime numbers up to n</span>
-n = <span class="number">30</span>
-<span class="builtin">print</span>(<span class="string">f"Prime numbers up to </span>{n}<span class="string">:"</span>)
+                    <textarea class="code-editor" id="code32"># Find prime numbers up to n
+n = 30
+print(f"Prime numbers up to {n}:")
 
-<span class="keyword">for</span> num <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):
-    is_prime = <span class="keyword">True</span>
-    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, <span class="builtin">int</span>(num ** <span class="number">0.5</span>) + <span class="number">1</span>):
-        <span class="keyword">if</span> num % i == <span class="number">0</span>:
-            is_prime = <span class="keyword">False</span>
-            <span class="keyword">break</span>
-    <span class="keyword">if</span> is_prime:
-        <span class="builtin">print</span>(num, end=<span class="string">" "</span>)</code></pre>
-                    </div>
-                    <div class="output-container">
+for num in range(2, n + 1):
+    is_prime = True
+    for i in range(2, int(num ** 0.5) + 1):
+        if num % i == 0:
+            is_prime = False
+            break
+    if is_prime:
+        print(num, end=" ")</textarea>
+                    <div class="output-container" id="output32">
                         <div class="output-label">Output</div>
-                        <div id="output26"></div>
+                        <div class="output-content"></div>
                     </div>
                 </div>
             </section>
-
+            
             <!-- Section 11: Summary -->
             <section id="summary" class="section p11">
                 <div class="section-header">
                     <div class="section-number">11</div>
-                    <h2 class="section-title">Summary</h2>
+                    <h2>Summary</h2>
                 </div>
                 
                 <div class="table-container">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Concept</th>
-                                <th>Syntax</th>
-                                <th>Use Case</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>for</code> loop</td>
-                                <td><code>for item in sequence:</code></td>
-                                <td>Known iterations, sequences</td>
-                            </tr>
-                            <tr>
-                                <td><code>range()</code></td>
-                                <td><code>range(start, stop, step)</code></td>
-                                <td>Generate number sequences</td>
-                            </tr>
-                            <tr>
-                                <td><code>enumerate()</code></td>
-                                <td><code>for i, v in enumerate(seq):</code></td>
-                                <td>Get index and value</td>
-                            </tr>
-                            <tr>
-                                <td><code>while</code> loop</td>
-                                <td><code>while condition:</code></td>
-                                <td>Unknown iterations, conditions</td>
-                            </tr>
-                            <tr>
-                                <td><code>break</code></td>
-                                <td><code>break</code></td>
-                                <td>Exit loop early</td>
-                            </tr>
-                            <tr>
-                                <td><code>continue</code></td>
-                                <td><code>continue</code></td>
-                                <td>Skip to next iteration</td>
-                            </tr>
-                            <tr>
-                                <td>Loop <code>else</code></td>
-                                <td><code>else:</code> after loop</td>
-                                <td>Runs if no break</td>
-                            </tr>
-                            <tr>
-                                <td>Nested loops</td>
-                                <td>Loop inside loop</td>
-                                <td>2D data, patterns</td>
-                            </tr>
-                        </tbody>
+                        <tr>
+                            <th>Concept</th>
+                            <th>Syntax</th>
+                            <th>Use Case</th>
+                        </tr>
+                        <tr>
+                            <td><code>for</code> loop</td>
+                            <td><code>for item in sequence:</code></td>
+                            <td>Known iterations</td>
+                        </tr>
+                        <tr>
+                            <td><code>range()</code></td>
+                            <td><code>range(start, stop, step)</code></td>
+                            <td>Number sequences</td>
+                        </tr>
+                        <tr>
+                            <td><code>enumerate()</code></td>
+                            <td><code>for i, val in enumerate(seq):</code></td>
+                            <td>Index + value</td>
+                        </tr>
+                        <tr>
+                            <td><code>while</code> loop</td>
+                            <td><code>while condition:</code></td>
+                            <td>Unknown iterations</td>
+                        </tr>
+                        <tr>
+                            <td><code>break</code></td>
+                            <td><code>break</code></td>
+                            <td>Exit loop</td>
+                        </tr>
+                        <tr>
+                            <td><code>continue</code></td>
+                            <td><code>continue</code></td>
+                            <td>Skip iteration</td>
+                        </tr>
+                        <tr>
+                            <td>Loop <code>else</code></td>
+                            <td><code>for/while ... else:</code></td>
+                            <td>No break occurred</td>
+                        </tr>
+                        <tr>
+                            <td>Nested loops</td>
+                            <td><code>for i: for j:</code></td>
+                            <td>2D patterns</td>
+                        </tr>
                     </table>
                 </div>
-
-                <div class="tip-box info-box">
-                    <div class="info-box-title">🎯 Key Takeaways</div>
-                    <ul style="margin: 10px 0; padding-left: 20px;">
-                        <li>Use <code>for</code> when you know how many times to iterate</li>
-                        <li>Use <code>while</code> when iteration depends on a condition</li>
-                        <li>Always ensure <code>while</code> loops can terminate</li>
-                        <li>Use <code>break</code> to exit early, <code>continue</code> to skip</li>
-                        <li>Master common patterns: accumulator, counter, filter, transform</li>
-                    </ul>
-                </div>
             </section>
-
-            <!-- Exercises Section -->
-            <section id="exercises" class="section exercises-section">
+            
+            <!-- Exercises -->
+            <section id="exercises" class="section">
                 <div class="section-header">
-                    <div class="section-number">📝</div>
-                    <h2 class="section-title">Practice Exercises</h2>
+                    <div class="section-number" style="background: linear-gradient(135deg, #f97316, #ea580c);">📝</div>
+                    <h2>Practice Exercises</h2>
                 </div>
-
+                
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <span class="exercise-title">Exercise 1: Sum of Even Numbers</span>
-                        <span class="difficulty difficulty-easy">⭐ Easy</span>
+                        <span class="difficulty easy">⭐ Easy</span>
                     </div>
-                    <p>Calculate the sum of all even numbers from 1 to 100 using a <code>for</code> loop with <code>range()</code>.</p>
-                    <p><strong>Expected output:</strong> 2550</p>
+                    <p class="exercise-description">Calculate the sum of all even numbers from 1 to 100.<br><strong>Expected:</strong> 2550</p>
                 </div>
-
+                
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <span class="exercise-title">Exercise 2: Fibonacci Sequence</span>
-                        <span class="difficulty difficulty-medium">⭐⭐ Medium</span>
+                        <span class="difficulty medium">⭐⭐ Medium</span>
                     </div>
-                    <p>Print the first 15 Fibonacci numbers (0, 1, 1, 2, 3, 5, 8, 13, ...).</p>
-                    <p><strong>Hint:</strong> Each number is the sum of the two preceding ones.</p>
+                    <p class="exercise-description">Print the first 15 Fibonacci numbers: 0, 1, 1, 2, 3, 5, 8, ...</p>
                 </div>
-
+                
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <span class="exercise-title">Exercise 3: Factorial Calculator</span>
-                        <span class="difficulty difficulty-easy">⭐ Easy</span>
+                        <span class="difficulty easy">⭐ Easy</span>
                     </div>
-                    <p>Calculate the factorial of n (n!) using a loop. Test with n = 7.</p>
-                    <p><strong>Expected output:</strong> 7! = 5040</p>
+                    <p class="exercise-description">Calculate n! for n = 7.<br><strong>Expected:</strong> 5040</p>
                 </div>
-
+                
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <span class="exercise-title">Exercise 4: Prime Number Checker</span>
-                        <span class="difficulty difficulty-medium">⭐⭐ Medium</span>
+                        <span class="difficulty medium">⭐⭐ Medium</span>
                     </div>
-                    <p>Write a program to check if a number is prime. Test with 17, 24, and 97.</p>
-                    <p><strong>Hint:</strong> Use the loop <code>else</code> clause for elegant solution.</p>
+                    <p class="exercise-description">Check if numbers 17, 24, 97 are prime.</p>
                 </div>
-
+                
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <span class="exercise-title">Exercise 5: Reverse a Number</span>
-                        <span class="difficulty difficulty-medium">⭐⭐ Medium</span>
+                        <span class="difficulty medium">⭐⭐ Medium</span>
                     </div>
-                    <p>Reverse a number using a <code>while</code> loop. Example: 12345 → 54321</p>
-                    <p><strong>Hint:</strong> Use modulo (%) and integer division (//).</p>
+                    <p class="exercise-description">Reverse 12345 → 54321 using while loop.</p>
                 </div>
-
+                
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <span class="exercise-title">Exercise 6: Number Pyramid</span>
-                        <span class="difficulty difficulty-medium">⭐⭐ Medium</span>
+                        <span class="difficulty medium">⭐⭐ Medium</span>
                     </div>
-                    <p>Print this pattern using nested loops:</p>
-                    <pre style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px;">1
-1 2
-1 2 3
-1 2 3 4
-1 2 3 4 5</pre>
+                    <p class="exercise-description">Print pattern: 1 / 1 2 / 1 2 3 / ...</p>
                 </div>
-
+                
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <span class="exercise-title">Exercise 7: GCD Calculator</span>
-                        <span class="difficulty difficulty-hard">⭐⭐⭐ Hard</span>
+                        <span class="difficulty hard">⭐⭐⭐ Hard</span>
                     </div>
-                    <p>Calculate the Greatest Common Divisor (GCD) of two numbers using the Euclidean algorithm.</p>
-                    <p><strong>Test:</strong> GCD(48, 18) = 6</p>
-                    <p><strong>Algorithm:</strong> Repeatedly replace (a, b) with (b, a % b) until b is 0.</p>
+                    <p class="exercise-description">Find GCD of 48 and 18 using Euclidean algorithm.<br><strong>Expected:</strong> 6</p>
+                </div>
+                
+                <!-- Practice Area -->
+                <h3 style="margin-top: 30px;">Practice Area</h3>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="run-btn" onclick="runCode('practice')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="practice" style="min-height: 200px;"># Write your exercise solutions here!
+
+# Exercise 1: Sum of Even Numbers
+total = 0
+for i in range(2, 101, 2):
+    total += i
+print(f"Sum of even numbers: {total}")</textarea>
+                    <div class="output-container" id="outputpractice">
+                        <div class="output-label">Output</div>
+                        <div class="output-content"></div>
+                    </div>
                 </div>
             </section>
-
-            <!-- Submission Form -->
-            <section id="submission" class="section form-section">
-                <div class="section-header">
-                    <div class="section-number">📤</div>
-                    <h2 class="section-title">Submit Your Assignment</h2>
-                </div>
-
-                <p style="margin-bottom: 25px; color: rgba(255,255,255,0.8);">
-                    Complete the exercises and submit your solutions. <strong>Submission window: Week 03</strong>
-                </p>
-
-                <form id="submissionForm" onsubmit="submitForm(event)">
+            
+            <!-- Submit Form -->
+            <section id="submit" class="form-section">
+                <h2>📤 Submit Your Work</h2>
+                <p>Complete the exercises and submit your solutions below.</p>
+                
+                <form id="submissionForm">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label class="form-label">Student ID *</label>
-                            <input type="text" class="form-input" name="studentId" placeholder="e.g., 2024001234" required>
+                            <label for="studentId">Student ID</label>
+                            <input type="text" id="studentId" name="studentId" placeholder="e.g., 2024001234" required>
                         </div>
+                        
                         <div class="form-group">
-                            <label class="form-label">Full Name *</label>
-                            <input type="text" class="form-input" name="fullName" placeholder="Your full name" required>
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" placeholder="Your full name" required>
                         </div>
+                        
                         <div class="form-group">
-                            <label class="form-label">Email *</label>
-                            <input type="email" class="form-input" name="email" placeholder="your.email@istun.edu.tr" required>
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="yourname@istun.edu.tr" required>
                         </div>
+                        
                         <div class="form-group">
-                            <label class="form-label">Class Code *</label>
-                            <select class="form-select" name="classCode" required>
+                            <label for="classCode">Class Code</label>
+                            <select id="classCode" name="classCode" required>
                                 <option value="">Select your class</option>
-                                <option value="MCT101-A">MCT101-A</option>
-                                <option value="MCT101-B">MCT101-B</option>
-                                <option value="MCT101-C">MCT101-C</option>
+                                <option value="MCH101-A">MCH101-A (Morning)</option>
+                                <option value="MCH101-B">MCH101-B (Afternoon)</option>
+                                <option value="MCH101-C">MCH101-C (Evening)</option>
                             </select>
                         </div>
+                        
                         <div class="form-group full-width">
-                            <label class="form-label">Your Code Solutions *</label>
-                            <textarea class="form-textarea" name="solutions" placeholder="Paste your Python code solutions here..." required></textarea>
+                            <label for="solutions">Your Solutions</label>
+                            <textarea id="solutions" name="solutions" placeholder="# Exercise 1: Sum of Even Numbers
+total = 0
+for i in range(2, 101, 2):
+    total += i
+print(f'Sum: {total}')
+
+# Exercise 2: Fibonacci
+# ... your code here" required></textarea>
                         </div>
                     </div>
-                    <button type="submit" class="submit-btn">
-                        <span>📤</span> Submit Assignment
-                    </button>
+                    
+                    <input type="hidden" name="week" value="Week 03 - Loops">
+                    
+                    <button type="submit" class="submit-btn">📤 Submit Solutions</button>
                 </form>
             </section>
-        </div>
-
-        <!-- Navigation Buttons -->
-        <div class="nav-buttons">
-            <a href="Week_02.html" class="nav-btn">
-                <span>←</span> Previous: Week 02 - Conditional Statements
-            </a>
-            <a href="Week_04.html" class="nav-btn">
-                Next: Week 04 - Functions <span>→</span>
-            </a>
+            
+            <!-- Navigation -->
+            <div class="nav-buttons">
+                <a href="Week_02.html" class="nav-btn">← Week 02: Conditionals</a>
+                <a href="Week_04.html" class="nav-btn">Week 04: Functions →</a>
+            </div>
         </div>
     </main>
-
-    <!-- Mobile Toggle -->
-    <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
-
-    <!-- PyScript -->
-    <script type="py">
-from pyscript import display
-from js import document
-
-def run_code1(event):
-    output = ""
-    for letter in "Python":
-        output += letter + "\n"
-    document.getElementById("output1").innerText = output
-
-def run_code2(event):
-    output = ""
-    fruits = ["apple", "banana", "cherry"]
-    for fruit in fruits:
-        output += f"I like {fruit}\n"
-    document.getElementById("output2").innerText = output
-
-def run_code3(event):
-    numbers = [10, 20, 30, 40, 50]
-    total = 0
-    for num in numbers:
-        total += num
-    document.getElementById("output3").innerText = f"Sum: {total}"
-
-def run_code4(event):
-    temperatures = [23, 28, 31, 19, 25, 30, 27]
-    max_temp = temperatures[0]
-    for temp in temperatures:
-        if temp > max_temp:
-            max_temp = temp
-    document.getElementById("output4").innerText = f"Maximum temperature: {max_temp}°C"
-
-def run_code5(event):
-    output = "range(5):\n"
-    for i in range(5):
-        output += str(i) + " "
-    output += "\n\nrange(1, 6):\n"
-    for i in range(1, 6):
-        output += str(i) + " "
-    output += "\n\nrange(0, 11, 2) - even numbers:\n"
-    for i in range(0, 11, 2):
-        output += str(i) + " "
-    document.getElementById("output5").innerText = output
-
-def run_code6(event):
-    output = ""
-    for i in range(10, 0, -1):
-        output += str(i) + " "
-    output += "🚀 Liftoff!"
-    document.getElementById("output6").innerText = output
-
-def run_code7(event):
-    n = 7
-    output = f"Multiplication table for {n}:\n"
-    for i in range(1, 11):
-        output += f"{n} × {i} = {n * i}\n"
-    document.getElementById("output7").innerText = output
-
-def run_code8(event):
-    n = 5
-    factorial = 1
-    output = ""
-    for i in range(1, n + 1):
-        factorial *= i
-        output += f"Step {i}: {factorial}\n"
-    output += f"\n{n}! = {factorial}"
-    document.getElementById("output8").innerText = output
-
-def run_code9(event):
-    fruits = ["apple", "banana", "cherry", "date"]
-    output = "Default (start=0):\n"
-    for index, fruit in enumerate(fruits):
-        output += f"{index}: {fruit}\n"
-    output += "\nWith start=1:\n"
-    for num, fruit in enumerate(fruits, start=1):
-        output += f"{num}. {fruit}\n"
-    document.getElementById("output9").innerText = output
-
-def run_code10(event):
-    count = 1
-    output = ""
-    while count <= 5:
-        output += f"Count: {count}\n"
-        count += 1
-    output += "Loop finished!"
-    document.getElementById("output10").innerText = output
-
-def run_code11(event):
-    total = 0
-    number = 1
-    output = ""
-    while total <= 100:
-        total += number
-        output += f"Added {number}, total = {total}\n"
-        number += 1
-    output += f"\nSum exceeded 100 at total = {total}"
-    document.getElementById("output11").innerText = output
-
-def run_code12(event):
-    number = 12345
-    original = number
-    digit_sum = 0
-    output = ""
-    while number > 0:
-        digit = number % 10
-        digit_sum += digit
-        output += f"Digit: {digit}, Running sum: {digit_sum}\n"
-        number //= 10
-    output += f"\nSum of digits of {original}: {digit_sum}"
-    document.getElementById("output12").innerText = output
-
-def run_code13(event):
-    numbers = [4, 7, 2, 9, 1, 8, 3]
-    target = 9
-    output = ""
-    for num in numbers:
-        if num == target:
-            output += f"✓ Found {target}!\n"
-            break
-        output += f"Checking {num}...\n"
-    output += "Search complete"
-    document.getElementById("output13").innerText = output
-
-def run_code14(event):
-    numbers = [5, -3, 8, -1, 4, -7, 2]
-    output = "Positive numbers only:\n"
-    for num in numbers:
-        if num < 0:
-            continue
-        output += str(num) + " "
-    document.getElementById("output14").innerText = output
-
-def run_code15(event):
-    output = "Using break:\n"
-    for i in range(1, 6):
-        if i == 3:
-            break
-        output += str(i) + " "
-    output += "\n\nUsing continue:\n"
-    for i in range(1, 6):
-        if i == 3:
-            continue
-        output += str(i) + " "
-    document.getElementById("output15").innerText = output
-
-def run_code16(event):
-    output = "Searching for 4 in [1,3,5,7,9]:\n"
-    numbers = [1, 3, 5, 7, 9]
-    target = 4
-    found = False
-    for num in numbers:
-        if num == target:
-            output += f"Found {target}!\n"
-            found = True
-            break
-    if not found:
-        output += f"{target} not found in list.\n"
     
-    output += "\nSearching for 5 in [1,3,5,7,9]:\n"
-    target = 5
-    found = False
-    for num in numbers:
-        if num == target:
-            output += f"Found {target}!"
-            found = True
-            break
-    if not found:
-        output += f"{target} not found in list."
-    document.getElementById("output16").innerText = output
+    <!-- PyScript for Running Code -->
+    <script type="py">
+import sys
+from io import StringIO
+from pyscript import document
 
-def run_code17(event):
-    n = 17
-    output = ""
-    if n < 2:
-        output = f"{n} is not prime"
-    else:
-        is_prime = True
-        for i in range(2, int(n ** 0.5) + 1):
-            if n % i == 0:
-                output = f"{n} is not prime (divisible by {i})"
-                is_prime = False
-                break
-        if is_prime:
-            output = f"{n} is prime! ✓"
-    document.getElementById("output17").innerText = output
-
-def run_code18(event):
-    output = ""
-    for i in range(1, 4):
-        for j in range(1, 4):
-            output += f"({i}, {j}) "
-        output += "\n"
-    document.getElementById("output18").innerText = output
-
-def run_code19(event):
-    n = 5
-    output = "Right Triangle:\n"
-    for i in range(1, n + 1):
-        for j in range(i):
-            output += "* "
-        output += "\n"
-    output += "\nNumber Pyramid:\n"
-    for i in range(1, n + 1):
-        for j in range(1, i + 1):
-            output += str(j) + " "
-        output += "\n"
-    document.getElementById("output19").innerText = output
-
-def run_code20(event):
-    output = "     "
-    for j in range(1, 6):
-        output += f"{j:4d}"
-    output += "\n" + "-" * 25 + "\n"
-    for i in range(1, 6):
-        output += f"{i} | "
-        for j in range(1, 6):
-            output += f"{i * j:4d}"
-        output += "\n"
-    document.getElementById("output20").innerText = output
-
-def run_code21(event):
-    numbers = [1, 2, 3, 4, 5]
-    total = 0
-    for n in numbers:
-        total += n
-    output = f"Sum: {total}\n"
-    product = 1
-    for n in numbers:
-        product *= n
-    output += f"Product: {product}"
-    document.getElementById("output21").innerText = output
-
-def run_code22(event):
-    numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    evens = []
-    for n in numbers:
-        if n % 2 == 0:
-            evens.append(n)
-    output = f"Original: {numbers}\nEven numbers: {evens}"
-    document.getElementById("output22").innerText = output
-
-def run_code23(event):
-    celsius = [0, 10, 20, 30, 40]
-    fahrenheit = []
-    for c in celsius:
-        f = c * 9/5 + 32
-        fahrenheit.append(f)
-    output = f"Celsius:    {celsius}\nFahrenheit: {fahrenheit}"
-    document.getElementById("output23").innerText = output
-
-def run_code24(event):
-    readings = [11.8, 12.1, -999, 12.3, 12.0, -999, 12.2]
-    valid_sum = 0
-    valid_count = 0
-    for reading in readings:
-        if reading == -999:
-            continue
-        valid_sum += reading
-        valid_count += 1
-    average = valid_sum / valid_count
-    output = f"Valid readings: {valid_count}\nAverage voltage: {average:.2f} V"
-    document.getElementById("output24").innerText = output
-
-def run_code25(event):
-    number = 25
-    guess = number / 2
-    tolerance = 0.0001
-    iteration = 0
-    output = ""
-    while abs(guess * guess - number) > tolerance:
-        guess = (guess + number / guess) / 2
-        iteration += 1
-        output += f"Iteration {iteration}: {guess:.6f}\n"
-    output += f"\n√{number} ≈ {guess:.6f}"
-    document.getElementById("output25").innerText = output
-
-def run_code26(event):
-    n = 30
-    output = f"Prime numbers up to {n}:\n"
-    for num in range(2, n + 1):
-        is_prime = True
-        for i in range(2, int(num ** 0.5) + 1):
-            if num % i == 0:
-                is_prime = False
-                break
-        if is_prime:
-            output += str(num) + " "
-    document.getElementById("output26").innerText = output
+def run_python(code_id):
+    code_el = document.getElementById(code_id)
+    output_el = document.getElementById(f"output{code_id}")
+    
+    code = code_el.value
+    
+    old_stdout = sys.stdout
+    sys.stdout = StringIO()
+    
+    try:
+        exec(code)
+        output = sys.stdout.getvalue()
+    except Exception as e:
+        output = f"Error: {e}"
+    finally:
+        sys.stdout = old_stdout
+    
+    output_el.classList.add("show")
+    output_content = output_el.querySelector(".output-content")
+    output_content.textContent = output
     </script>
-
+    
     <script>
+        // Run code function
+        async function runCode(codeId) {
+            const codeEl = document.getElementById(codeId);
+            const outputEl = document.getElementById('output' + codeId);
+            const code = codeEl.value;
+            
+            // Try using PyScript
+            try {
+                const pyInterp = pyscript.interpreter;
+                if (pyInterp && pyInterp.globals) {
+                    const runFn = pyInterp.globals.get('run_python');
+                    if (runFn) {
+                        runFn(codeId);
+                        return;
+                    }
+                }
+            } catch(e) {}
+            
+            // Fallback: direct execution
+            outputEl.classList.add('show');
+            const outputContent = outputEl.querySelector('.output-content');
+            
+            try {
+                let output = '';
+                const originalLog = console.log;
+                console.log = (...args) => {
+                    output += args.join(' ') + '\n';
+                };
+                
+                // Simple Python to JS translation for demo
+                outputContent.textContent = 'Running... (PyScript loading)';
+                
+                console.log = originalLog;
+            } catch(e) {
+                outputContent.textContent = 'Error: ' + e.message;
+            }
+        }
+        
+        // Wait for PyScript then setup
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                window.runCode = async function(codeId) {
+                    const codeEl = document.getElementById(codeId);
+                    const outputEl = document.getElementById('output' + codeId);
+                    const code = codeEl.value;
+                    
+                    outputEl.classList.add('show');
+                    const outputContent = outputEl.querySelector('.output-content');
+                    outputContent.textContent = 'Running...';
+                    
+                    try {
+                        const result = await pyscript.interpreter.runPython(`
+import sys
+from io import StringIO
+
+_code = '''${code.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'''
+_old_stdout = sys.stdout
+sys.stdout = StringIO()
+try:
+    exec(_code)
+    _output = sys.stdout.getvalue()
+except Exception as e:
+    _output = f"Error: {e}"
+finally:
+    sys.stdout = _old_stdout
+_output
+`);
+                        outputContent.textContent = result || '(no output)';
+                    } catch(e) {
+                        outputContent.textContent = 'Error: ' + e.message;
+                    }
+                };
+            }, 2000);
+        });
+        
         // Progress bar
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -2162,25 +1913,25 @@ def run_code26(event):
             const scrolled = (winScroll / height) * 100;
             document.getElementById('progressBar').style.width = scrolled + '%';
             
-            // Update completion circle
-            const circle = document.getElementById('completionCircle');
-            circle.style.background = `conic-gradient(#10b981 ${scrolled * 3.6}deg, rgba(255,255,255,0.1) ${scrolled * 3.6}deg)`;
-            document.getElementById('completionPercent').textContent = Math.round(scrolled) + '%';
+            // Completion circle
+            const progress = document.getElementById('completionProgress');
+            const text = document.getElementById('completionText');
+            const offset = 188 - (188 * scrolled / 100);
+            progress.style.strokeDashoffset = offset;
+            text.textContent = Math.round(scrolled) + '%';
         });
-
-        // Active nav link
-        const sections = document.querySelectorAll('section[id]');
+        
+        // Active navigation
+        const sections = document.querySelectorAll('.section');
         const navLinks = document.querySelectorAll('.nav-link');
-
+        
         window.addEventListener('scroll', () => {
             let current = '';
             sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 200) {
+                if (pageYOffset >= section.offsetTop - 200) {
                     current = section.getAttribute('id');
                 }
             });
-
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href') === '#' + current) {
@@ -2188,36 +1939,40 @@ def run_code26(event):
                 }
             });
         });
-
-        // Toggle sidebar
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
-
+        
+        // Mobile toggle
+        document.getElementById('mobileToggle').addEventListener('click', () => {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        });
+        
         // Form submission
-        function submitForm(event) {
-            event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-            data.week = 'Week 03 - Loops';
+        document.getElementById('submissionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            if (!email.includes('@istun.edu.tr')) {
+                alert('Please use your ISTUN email (@istun.edu.tr)');
+                return;
+            }
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
             data.timestamp = new Date().toISOString();
-
-            fetch('https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec', {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            }).then(() => {
-                alert('✅ Assignment submitted successfully!');
-                form.reset();
-            }).catch(error => {
-                alert('❌ Error submitting assignment. Please try again.');
-                console.error('Error:', error);
-            });
-        }
+            
+            try {
+                await fetch('https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                alert('✅ Solutions submitted successfully!');
+                this.reset();
+            } catch (error) {
+                alert('❌ Submission failed. Please try again.');
+            }
+        });
     </script>
 </body>
 </html>
