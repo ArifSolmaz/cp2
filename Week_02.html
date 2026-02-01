@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2: Control Flow & Conditionals | CP2</title>
+    
+    <!-- PyScript 2024 -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.8.2/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.8.2/core.js"></script>
+    
+    <style>
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Progress Bar */
+        #progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: #e0e0e0;
+            z-index: 9999;
+        }
+        
+        #progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #fa7b17, #ff5722);
+            width: 0%;
+            transition: width 0.2s;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #fa7b17 0%, #ff5722 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: 5px;
+        }
+        
+        .header h1 { margin: 0 0 10px 0; font-size: 28px; }
+        .header p { margin: 5px 0; opacity: 0.9; }
+        
+        /* Layout */
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: white;
+            padding: 20px;
+            position: sticky;
+            top: 5px;
+            height: calc(100vh - 5px);
+            overflow-y: auto;
+            border-right: 1px solid #ddd;
+        }
+        
+        .sidebar h3 { margin: 0 0 15px 0; color: #333; font-size: 16px; }
+        
+        .sidebar a {
+            display: block;
+            padding: 10px 12px;
+            margin: 4px 0;
+            color: #333;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .sidebar a:hover { background: #fff3e0; color: #e65100; }
+        .sidebar a.active { background: #ff5722; color: white; }
+        
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 30px;
+            min-width: 0;
+        }
+        
+        /* Progress Stats */
+        .progress-stats {
+            background: linear-gradient(135deg, #fa7b17 0%, #ff5722 100%);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .progress-info h3 { margin: 0 0 10px 0; font-size: 18px; }
+        
+        .progress-track {
+            width: 200px;
+            height: 10px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: white;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .progress-text { margin-top: 5px; font-size: 14px; }
+        
+        .stats { display: flex; gap: 30px; }
+        .stat { text-align: center; }
+        .stat-value { font-size: 28px; font-weight: bold; }
+        .stat-label { font-size: 12px; opacity: 0.9; }
+        
+        /* Sections */
+        .section {
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            padding: 16px 24px;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .section-header.p1 { background: linear-gradient(135deg, #4285f4, #5c9ce6); }
+        .section-header.p2 { background: linear-gradient(135deg, #34a853, #57d36f); }
+        .section-header.p3 { background: linear-gradient(135deg, #9334e6, #b47cff); }
+        .section-header.p4 { background: linear-gradient(135deg, #ea4335, #ff6b5b); }
+        .section-header.p5 { background: linear-gradient(135deg, #00acc1, #26d7ea); }
+        .section-header.p6 { background: linear-gradient(135deg, #8e24aa, #ba68c8); }
+        .section-header.p7 { background: linear-gradient(135deg, #43a047, #76d275); }
+        .section-header.p8 { background: linear-gradient(135deg, #fb8c00, #ffbd45); }
+        .section-header.exercises { background: linear-gradient(135deg, #6a1b9a, #9c4dcc); }
+        .section-header.submit { background: linear-gradient(135deg, #2e7d32, #4caf50); }
+        
+        .section-content { padding: 24px; }
+        
+        /* Objectives */
+        .objectives {
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+        
+        .objectives h4 { color: #2e7d32; margin: 0 0 12px 0; }
+        .objectives ul { margin: 0; padding-left: 20px; color: #1b5e20; }
+        .objectives li { margin: 6px 0; }
+        
+        /* Headings */
+        h3 {
+            color: #e65100;
+            margin: 28px 0 16px;
+            padding-left: 12px;
+            border-left: 4px solid #ff5722;
+            font-size: 18px;
+        }
+        
+        p { margin-bottom: 16px; }
+        
+        /* Code Blocks */
+        .code-block {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .code-label {
+            background: #34a853;
+            color: white;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .code-label.practice { background: #fb8c00; }
+        .code-label.exercise { background: #9334e6; }
+        
+        .code-area {
+            padding: 16px;
+            background: #fafafa;
+        }
+        
+        .code-area textarea {
+            width: 100%;
+            min-height: 120px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+        
+        .run-btn {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+        
+        .run-btn:hover { background: #e64a19; }
+        
+        .output {
+            background: #1e1e1e;
+            color: #4ec9b0;
+            padding: 16px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            min-height: 50px;
+            white-space: pre-wrap;
+        }
+        
+        /* Info Boxes */
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-box strong { color: #f57c00; }
+        
+        .tip-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .tip-box strong { color: #1565c0; }
+        
+        .concept-box {
+            background: #fce4ec;
+            border-left: 4px solid #e91e63;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .concept-box strong { color: #c2185b; }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th { background: #ff5722; color: white; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        
+        code {
+            background: #fff3e0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            color: #e65100;
+        }
+        
+        /* Truth Table */
+        .truth-table {
+            max-width: 400px;
+        }
+        
+        .truth-table td { text-align: center; }
+        .truth-table .true { color: #2e7d32; font-weight: bold; }
+        .truth-table .false { color: #c62828; font-weight: bold; }
+        
+        /* Form Styles */
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        .form-group input:focus {
+            border-color: #ff5722;
+            outline: none;
+        }
+        .form-group small {
+            color: #666;
+            font-size: 12px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+        .submit-btn:hover { background: linear-gradient(135deg, #45a049, #3d8b40); }
+        
+        #submitStatus {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 6px;
+            display: none;
+        }
+        #submitStatus.success { display: block; background: #e8f5e9; color: #2e7d32; }
+        #submitStatus.error { display: block; background: #ffebee; color: #c62828; }
+        
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .nav-buttons a {
+            padding: 12px 24px;
+            background: #ff5722;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+        
+        .nav-buttons a:hover { background: #e64a19; }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .container { display: block; }
+            .main { padding: 20px; }
+            .stats { gap: 15px; }
+            .stat-value { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div id="progress-container">
+    <div id="progress-bar"></div>
+</div>
+
+<!-- Header -->
+<div class="header">
+    <h1>🔀 Week 2: Control Flow & Conditionals</h1>
+    <p><strong>Course:</strong> Computer Programming II | <strong>Instructor:</strong> Dr. Arif Solmaz</p>
+    <p><strong>Institution:</strong> Istanbul Health and Technology University | <strong>Duration:</strong> 5 hours</p>
+</div>
+
+<div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <h3>📑 Contents</h3>
+        <a href="#part1">🔍 Part 1: Comparison Operators</a>
+        <a href="#part2">✅ Part 2: The if Statement</a>
+        <a href="#part3">↔️ Part 3: if-else Statement</a>
+        <a href="#part4">🔀 Part 4: if-elif-else</a>
+        <a href="#part5">🔗 Part 5: Logical Operators</a>
+        <a href="#part6">📦 Part 6: Nested Conditionals</a>
+        <a href="#part7">⚡ Part 7: Ternary Operator</a>
+        <a href="#part8">🎯 Part 8: Match Statement</a>
+        <hr style="margin: 15px 0; border: none; border-top: 1px solid #ddd;">
+        <a href="#exercises">📝 Exercises</a>
+        <a href="#submit">✅ Submit Work</a>
+        <hr style="margin: 15px 0; border: none; border-top: 1px solid #ddd;">
+        <a href="index.html">← Back to Home</a>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main">
+        
+        <!-- Progress Stats -->
+        <div class="progress-stats">
+            <div class="progress-info">
+                <h3>📊 Your Progress</h3>
+                <div class="progress-track">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-text" id="progress-text">0% Complete</div>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Parts</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">45+</div>
+                    <div class="stat-label">Examples</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">Exercises</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PyScript Setup -->
+        <script type="py">
+from pyscript import document
+import sys
+import io
+
+def run_code(event):
+    btn = event.target
+    code_id = btn.getAttribute("data-code")
+    output_id = btn.getAttribute("data-output")
+    
+    code = document.getElementById(code_id).value
+    output_el = document.getElementById(output_id)
+    
+    old_stdout = sys.stdout
+    sys.stdout = io.StringIO()
+    
+    try:
+        exec(code, {"__builtins__": __builtins__})
+        result = sys.stdout.getvalue()
+        if result:
+            output_el.innerText = result
+        else:
+            output_el.innerText = "(No output - add print() to see results)"
+    except Exception as e:
+        output_el.innerText = f"Error: {type(e).__name__}: {e}"
+    finally:
+        sys.stdout = old_stdout
+        </script>
+
+        <!-- ==================== PART 1 ==================== -->
+        <section class="section" id="part1">
+            <div class="section-header p1">🔍 Part 1: Comparison Operators</div>
+            <div class="section-content">
+                <div class="objectives">
+                    <h4>🎯 Learning Objectives</h4>
+                    <ul>
+                        <li>Compare values using comparison operators</li>
+                        <li>Understand the difference between <code>=</code> and <code>==</code></li>
+                        <li>Use chained comparisons</li>
+                        <li>Compare strings and floats correctly</li>
+                    </ul>
+                </div>
+                
+                <p>Comparison operators compare two values and return <code>True</code> or <code>False</code>. These are the building blocks for making decisions in your code!</p>
+                
+                <h3>1.1 The Six Comparison Operators</h3>
+                
+                <table>
+                    <tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+                    <tr><td><code>==</code></td><td>Equal to</td><td><code>5 == 5</code></td><td><code>True</code></td></tr>
+                    <tr><td><code>!=</code></td><td>Not equal to</td><td><code>5 != 3</code></td><td><code>True</code></td></tr>
+                    <tr><td><code>&gt;</code></td><td>Greater than</td><td><code>5 > 3</code></td><td><code>True</code></td></tr>
+                    <tr><td><code>&lt;</code></td><td>Less than</td><td><code>5 < 3</code></td><td><code>False</code></td></tr>
+                    <tr><td><code>&gt;=</code></td><td>Greater than or equal</td><td><code>5 >= 5</code></td><td><code>True</code></td></tr>
+                    <tr><td><code>&lt;=</code></td><td>Less than or equal</td><td><code>5 <= 3</code></td><td><code>False</code></td></tr>
+                </table>
+                
+                <div class="warning-box">
+                    <strong>⚠️ Common Mistake:</strong> Don't confuse <code>=</code> (assignment) with <code>==</code> (comparison)!
+                    <br><code>x = 5</code> → Assigns 5 to x
+                    <br><code>x == 5</code> → Checks if x equals 5
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Basic Comparisons</div>
+                    <div class="code-area">
+                        <textarea id="code1"># Equal to (==)
+print("5 == 5:", 5 == 5)
+print("5 == 3:", 5 == 3)
+
+# Not equal to (!=)
+print("5 != 3:", 5 != 3)
+print("5 != 5:", 5 != 5)
+
+# Greater than (>)
+print("10 > 5:", 10 > 5)
+print("5 > 5:", 5 > 5)
+
+# Greater than or equal (>=)
+print("5 >= 5:", 5 >= 5)
+print("6 >= 5:", 6 >= 5)</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code1" data-output="output1" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output1">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>1.2 Comparing Variables</h3>
+                <p>You can compare variables just like numbers:</p>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Variable Comparisons</div>
+                    <div class="code-area">
+                        <textarea id="code2"># Comparing variables
+age = 18
+voting_age = 18
+
+print(f"Your age: {age}")
+print(f"Voting age: {voting_age}")
+print(f"Can you vote? {age >= voting_age}")
+
+# Engineering example: Temperature check
+temperature = 85
+max_safe_temp = 100
+
+print(f"\nTemperature: {temperature}°C")
+print(f"Max safe: {max_safe_temp}°C")
+print(f"Is safe? {temperature < max_safe_temp}")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code2" data-output="output2" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output2">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>1.3 Comparing Strings</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: String Comparisons</div>
+                    <div class="code-area">
+                        <textarea id="code3"># Strings are case-sensitive!
+print("'Hello' == 'hello':", "Hello" == "hello")
+print("'Hello' == 'Hello':", "Hello" == "Hello")
+
+# Password check
+password = "secret123"
+user_input = "secret123"
+print(f"\nPassword correct? {password == user_input}")
+
+# Compare lowercase versions for case-insensitive
+name1 = "Ali"
+name2 = "ALI"
+print(f"\n'{name1}' == '{name2}':", name1 == name2)
+print(f"Case-insensitive:", name1.lower() == name2.lower())</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code3" data-output="output3" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output3">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>1.4 Chained Comparisons (Python Special!)</h3>
+                <p>Python allows you to chain comparisons in a natural way:</p>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Chained Comparisons</div>
+                    <div class="code-area">
+                        <textarea id="code4"># Instead of: x > 1 and x < 10
+# Python allows: 1 < x < 10
+
+x = 5
+print(f"x = {x}")
+print(f"1 < x < 10: {1 < x < 10}")
+
+# Score range check
+score = 75
+print(f"\nScore: {score}")
+print(f"Between 70-80? {70 <= score <= 80}")
+print(f"Between 80-90? {80 <= score <= 90}")
+
+# Engineering: Voltage range
+voltage = 11.8
+print(f"\nVoltage: {voltage}V")
+print(f"In safe range (11.5-12.5)? {11.5 <= voltage <= 12.5}")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code4" data-output="output4" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output4">Click "Run" to execute...</div>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>💡 Float Comparison Warning:</strong> Due to how computers store decimals, <code>0.1 + 0.2 == 0.3</code> returns <code>False</code>! Use <code>abs(a - b) < 0.0001</code> for float comparisons.
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PART 2 ==================== -->
+        <section class="section" id="part2">
+            <div class="section-header p2">✅ Part 2: The if Statement</div>
+            <div class="section-content">
+                <div class="objectives">
+                    <h4>🎯 Learning Objectives</h4>
+                    <ul>
+                        <li>Write basic <code>if</code> statements</li>
+                        <li>Understand indentation in Python</li>
+                        <li>Execute code conditionally</li>
+                    </ul>
+                </div>
+                
+                <p>The <code>if</code> statement executes code <strong>only when</strong> a condition is <code>True</code>.</p>
+                
+                <div class="concept-box">
+                    <strong>📌 Syntax:</strong>
+                    <pre style="margin: 10px 0 0 0; background: white; padding: 10px; border-radius: 4px;">if condition:
+    # This code runs if condition is True
+    # Must be indented with 4 spaces!</pre>
+                </div>
+                
+                <h3>2.1 Basic if Statement</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Simple if Statements</div>
+                    <div class="code-area">
+                        <textarea id="code5"># Basic if statement
+age = 20
+
+if age >= 18:
+    print("You are an adult.")
+
+# When condition is False, nothing in the if block runs
+age = 15
+
+if age >= 18:
+    print("You are an adult.")  # This won't print
+
+print("This always prints (outside the if block).")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code5" data-output="output5" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output5">Click "Run" to execute...</div>
+                </div>
+                
+                <div class="warning-box">
+                    <strong>⚠️ Indentation is CRITICAL in Python!</strong>
+                    <ul style="margin: 10px 0 0 0;">
+                        <li>Use <strong>4 spaces</strong> (or 1 tab) for each indentation level</li>
+                        <li>All code in the same block must have the same indentation</li>
+                        <li>Wrong indentation = <code>IndentationError</code></li>
+                    </ul>
+                </div>
+                
+                <h3>2.2 Multiple Statements in if Block</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Multiple Statements</div>
+                    <div class="code-area">
+                        <textarea id="code6"># Multiple statements in if block
+score = 85
+
+if score >= 60:
+    print("🎉 Congratulations!")
+    print("You passed the exam.")
+    print(f"Your score: {score}")
+
+# Engineering: Temperature alert
+temp = 105
+
+if temp > 100:
+    print("⚠️ WARNING: Temperature critical!")
+    print(f"Current: {temp}°C")
+    print("Please check cooling system.")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code6" data-output="output6" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output6">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>2.3 Common if Patterns</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Common Patterns</div>
+                    <div class="code-area">
+                        <textarea id="code7"># Check if positive
+number = 42
+if number > 0:
+    print(f"{number} is positive")
+
+# Check if even
+number = 24
+if number % 2 == 0:
+    print(f"{number} is even")
+
+# Check if divisible by 5
+number = 35
+if number % 5 == 0:
+    print(f"{number} is divisible by 5")
+
+# Engineering: Current check
+current = 2.5
+max_current = 3.0
+if current <= max_current:
+    print("✓ Current is within safe limits")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code7" data-output="output7" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output7">Click "Run" to execute...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PART 3 ==================== -->
+        <section class="section" id="part3">
+            <div class="section-header p3">↔️ Part 3: The if-else Statement</div>
+            <div class="section-content">
+                <div class="objectives">
+                    <h4>🎯 Learning Objectives</h4>
+                    <ul>
+                        <li>Use <code>else</code> to handle the False case</li>
+                        <li>Create two-way decision structures</li>
+                    </ul>
+                </div>
+                
+                <p>Use <code>else</code> to execute code when the condition is <code>False</code>.</p>
+                
+                <div class="concept-box">
+                    <strong>📌 Syntax:</strong>
+                    <pre style="margin: 10px 0 0 0; background: white; padding: 10px; border-radius: 4px;">if condition:
+    # Runs if condition is True
+else:
+    # Runs if condition is False</pre>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: if-else Basics</div>
+                    <div class="code-area">
+                        <textarea id="code8"># Adult or minor
+age = 15
+
+if age >= 18:
+    print("You are an adult.")
+else:
+    print("You are a minor.")
+
+# Pass or fail
+score = 55
+
+if score >= 60:
+    print("✓ PASSED")
+else:
+    print("✗ FAILED")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code8" data-output="output8" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output8">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>3.1 Even or Odd</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Even or Odd</div>
+                    <div class="code-area">
+                        <textarea id="code9"># Check even or odd
+number = 17
+
+if number % 2 == 0:
+    print(f"{number} is even")
+else:
+    print(f"{number} is odd")
+
+# Try different numbers
+for n in [4, 7, 10, 15, 22]:
+    if n % 2 == 0:
+        print(f"{n}: even")
+    else:
+        print(f"{n}: odd")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code9" data-output="output9" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output9">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>3.2 Engineering Examples</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Engineering Decisions</div>
+                    <div class="code-area">
+                        <textarea id="code10"># Motor status
+motor_running = True
+
+if motor_running:
+    print("Motor Status: RUNNING 🟢")
+else:
+    print("Motor Status: STOPPED 🔴")
+
+# Pressure check
+pressure = 95  # PSI
+normal_pressure = 100
+
+if pressure >= normal_pressure:
+    print("Pressure is normal or high")
+else:
+    print("⚠️ Warning: Low pressure!")
+    print(f"Current: {pressure} PSI")
+    print(f"Expected: {normal_pressure} PSI")
+
+# Password verification
+password = "admin123"
+entered = "admin123"
+
+if password == entered:
+    print("\n✓ Access granted!")
+else:
+    print("\n✗ Access denied!")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code10" data-output="output10" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output10">Click "Run" to execute...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PART 4 ==================== -->
+        <section class="section" id="part4">
+            <div class="section-header p4">🔀 Part 4: The if-elif-else Statement</div>
+            <div class="section-content">
+                <div class="objectives">
+                    <h4>🎯 Learning Objectives</h4>
+                    <ul>
+                        <li>Use <code>elif</code> for multiple conditions</li>
+                        <li>Create multi-way decision structures</li>
+                        <li>Build grade calculators and category systems</li>
+                    </ul>
+                </div>
+                
+                <p>Use <code>elif</code> (short for "else if") when you have <strong>more than two</strong> possible outcomes.</p>
+                
+                <div class="concept-box">
+                    <strong>📌 Syntax:</strong>
+                    <pre style="margin: 10px 0 0 0; background: white; padding: 10px; border-radius: 4px;">if condition1:
+    # Runs if condition1 is True
+elif condition2:
+    # Runs if condition1 is False AND condition2 is True
+elif condition3:
+    # Runs if condition1 and condition2 are False AND condition3 is True
+else:
+    # Runs if ALL conditions are False</pre>
+                </div>
+                
+                <h3>4.1 Grade Calculator</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Grade Calculator</div>
+                    <div class="code-area">
+                        <textarea id="code11"># Grade calculator
+score = 85
+
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+elif score >= 70:
+    grade = "C"
+elif score >= 60:
+    grade = "D"
+else:
+    grade = "F"
+
+print(f"Score: {score} → Grade: {grade}")
+
+# Try different scores
+print("\n--- Grade Table ---")
+for s in [95, 85, 75, 65, 45]:
+    if s >= 90:
+        g = "A"
+    elif s >= 80:
+        g = "B"
+    elif s >= 70:
+        g = "C"
+    elif s >= 60:
+        g = "D"
+    else:
+        g = "F"
+    print(f"{s}: {g}")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code11" data-output="output11" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output11">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>4.2 Number Classification</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Positive, Negative, or Zero</div>
+                    <div class="code-area">
+                        <textarea id="code12"># Positive, negative, or zero
+number = 0
+
+if number > 0:
+    print("Positive")
+elif number < 0:
+    print("Negative")
+else:
+    print("Zero")
+
+# Age categories
+age = 35
+
+if age < 13:
+    category = "Child"
+elif age < 20:
+    category = "Teenager"
+elif age < 60:
+    category = "Adult"
+else:
+    category = "Senior"
+
+print(f"\nAge {age} → Category: {category}")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code12" data-output="output12" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output12">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>4.3 Engineering: Temperature Status</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Temperature Monitor</div>
+                    <div class="code-area">
+                        <textarea id="code13"># Temperature status system
+temp = 75
+
+if temp < 0:
+    status = "FREEZING ❄️"
+elif temp < 20:
+    status = "COLD 🌡️"
+elif temp < 40:
+    status = "NORMAL ✓"
+elif temp < 60:
+    status = "WARM ⚠️"
+elif temp < 80:
+    status = "HOT 🔥"
+else:
+    status = "CRITICAL! 🚨"
+
+print(f"Temperature: {temp}°C → Status: {status}")
+
+# Battery level indicator
+battery = 35
+
+if battery > 80:
+    print("\n🔋 Battery: Full")
+elif battery > 50:
+    print("\n🔋 Battery: Good")
+elif battery > 20:
+    print("\n🪫 Battery: Low")
+else:
+    print("\n⚠️ Battery: Critical - Please charge!")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code13" data-output="output13" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output13">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>4.4 BMI Calculator</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: BMI with Categories</div>
+                    <div class="code-area">
+                        <textarea id="code14"># BMI calculator with categories
+weight = 70   # kg
+height = 1.75  # m
+
+bmi = weight / (height ** 2)
+
+if bmi < 18.5:
+    category = "Underweight"
+elif bmi < 25:
+    category = "Normal"
+elif bmi < 30:
+    category = "Overweight"
+else:
+    category = "Obese"
+
+print(f"Weight: {weight} kg")
+print(f"Height: {height} m")
+print(f"BMI: {bmi:.1f} → {category}")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code14" data-output="output14" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output14">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>4.5 Traffic Light</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Traffic Light Logic</div>
+                    <div class="code-area">
+                        <textarea id="code15"># Traffic light controller
+light = "yellow"
+
+if light == "red":
+    action = "STOP 🛑"
+elif light == "yellow":
+    action = "SLOW DOWN ⚠️"
+elif light == "green":
+    action = "GO 🟢"
+else:
+    action = "CAUTION - Light malfunction!"
+
+print(f"Light: {light}")
+print(f"Action: {action}")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code15" data-output="output15" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output15">Click "Run" to execute...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PART 5 ==================== -->
+        <section class="section" id="part5">
+            <div class="section-header p5">🔗 Part 5: Logical Operators</div>
+            <div class="section-content">
+                <div class="objectives">
+                    <h4>🎯 Learning Objectives</h4>
+                    <ul>
+                        <li>Combine conditions with <code>and</code>, <code>or</code>, <code>not</code></li>
+                        <li>Understand truth tables</li>
+                        <li>Build complex conditional logic</li>
+                    </ul>
+                </div>
+                
+                <p>Logical operators let you combine multiple conditions into one.</p>
+                
+                <table>
+                    <tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+                    <tr><td><code>and</code></td><td>Both must be True</td><td><code>True and True</code></td><td><code>True</code></td></tr>
+                    <tr><td><code>or</code></td><td>At least one must be True</td><td><code>True or False</code></td><td><code>True</code></td></tr>
+                    <tr><td><code>not</code></td><td>Reverses the boolean</td><td><code>not True</code></td><td><code>False</code></td></tr>
+                </table>
+                
+                <h3>5.1 The AND Operator</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: AND Truth Table & Usage</div>
+                    <div class="code-area">
+                        <textarea id="code16"># AND truth table
+print("=== AND Truth Table ===")
+print(f"True and True:   {True and True}")
+print(f"True and False:  {True and False}")
+print(f"False and True:  {False and True}")
+print(f"False and False: {False and False}")
+
+# Both conditions must be True!
+number = 7
+if number >= 1 and number <= 10:
+    print(f"\n{number} is between 1 and 10")
+
+# Eligibility check
+age = 20
+has_license = True
+
+if age >= 18 and has_license:
+    print("\n✓ You can drive!")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code16" data-output="output16" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output16">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>5.2 The OR Operator</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: OR Truth Table & Usage</div>
+                    <div class="code-area">
+                        <textarea id="code17"># OR truth table
+print("=== OR Truth Table ===")
+print(f"True or True:   {True or True}")
+print(f"True or False:  {True or False}")
+print(f"False or True:  {False or True}")
+print(f"False or False: {False or False}")
+
+# At least one must be True!
+day = "Saturday"
+if day == "Saturday" or day == "Sunday":
+    print(f"\n{day} - It's the weekend! 🎉")
+
+# Discount eligibility
+age = 65
+is_student = False
+
+if is_student or age >= 65:
+    print("\n✓ You get a discount!")
+else:
+    print("\nRegular price")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code17" data-output="output17" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output17">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>5.3 The NOT Operator</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: NOT Operator</div>
+                    <div class="code-area">
+                        <textarea id="code18"># NOT truth table
+print("=== NOT Truth Table ===")
+print(f"not True:  {not True}")
+print(f"not False: {not False}")
+
+# Check if NOT raining
+is_raining = False
+if not is_raining:
+    print("\n☀️ Let's go outside!")
+
+# Check if NOT logged in
+logged_in = False
+if not logged_in:
+    print("🔒 Please log in first")
+
+# Engineering: Motor control
+motor_running = False
+if not motor_running:
+    print("\n🔄 Starting motor...")
+    motor_running = True
+    print("✓ Motor started!")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code18" data-output="output18" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output18">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>5.4 Combining Logical Operators</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Complex Conditions</div>
+                    <div class="code-area">
+                        <textarea id="code19"># Engineering: Safe operating conditions
+temperature = 55
+pressure = 95
+emergency_stop = False
+
+# Safe if: (temp AND pressure OK) AND no emergency stop
+if (temperature < 80 and pressure < 100) and not emergency_stop:
+    print("✓ All systems operational")
+else:
+    print("⚠️ System in safe mode")
+
+# Loan approval
+age = 25
+income = 50000
+credit_score = 720
+
+if age >= 21 and income >= 30000 and credit_score >= 700:
+    print("\n✓ Loan approved!")
+else:
+    print("\n✗ Loan denied")
+
+# University admission
+gpa = 3.5
+test_score = 85
+has_recommendation = True
+
+# Admitted if: (high GPA AND good score) OR has recommendation
+if (gpa >= 3.5 and test_score >= 80) or has_recommendation:
+    print("\n🎓 Admission: ACCEPTED")
+else:
+    print("\n❌ Admission: REJECTED")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code19" data-output="output19" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output19">Click "Run" to execute...</div>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>💡 Operator Precedence:</strong> <code>not</code> is evaluated first, then <code>and</code>, then <code>or</code>. Use parentheses <code>()</code> to make your code clearer!
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PART 6 ==================== -->
+        <section class="section" id="part6">
+            <div class="section-header p6">📦 Part 6: Nested Conditionals</div>
+            <div class="section-content">
+                <div class="objectives">
+                    <h4>🎯 Learning Objectives</h4>
+                    <ul>
+                        <li>Put <code>if</code> statements inside other <code>if</code> statements</li>
+                        <li>Build multi-level decision trees</li>
+                        <li>Create hierarchical checks</li>
+                    </ul>
+                </div>
+                
+                <p>You can put <code>if</code> statements inside other <code>if</code> statements for more complex logic.</p>
+                
+                <h3>6.1 Basic Nested if</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Event Entry Check</div>
+                    <div class="code-area">
+                        <textarea id="code20"># Event entry check
+age = 25
+has_ticket = True
+
+if age >= 18:
+    print("✓ You are old enough")
+    if has_ticket:
+        print("✓ You have a ticket")
+        print("🎉 Welcome to the event!")
+    else:
+        print("✗ Please buy a ticket first")
+else:
+    print("✗ Sorry, adults only")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code20" data-output="output20" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output20">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>6.2 ATM Withdrawal</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: ATM System</div>
+                    <div class="code-area">
+                        <textarea id="code21"># ATM withdrawal system
+balance = 500
+withdrawal = 200
+pin_correct = True
+
+if pin_correct:
+    print("✓ PIN verified")
+    if withdrawal <= balance:
+        balance = balance - withdrawal
+        print(f"💵 Dispensing ${withdrawal}")
+        print(f"📊 New balance: ${balance}")
+    else:
+        print("✗ Insufficient funds!")
+        print(f"Your balance: ${balance}")
+else:
+    print("✗ Incorrect PIN!")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code21" data-output="output21" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output21">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>6.3 Multi-Level Safety Check</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Engineering Safety System</div>
+                    <div class="code-area">
+                        <textarea id="code22"># Multi-level safety check
+power_on = True
+safety_engaged = True
+temperature = 45
+
+if power_on:
+    print("Power: ON ✓")
+    if safety_engaged:
+        print("Safety: ENGAGED ✓")
+        if temperature < 60:
+            print("Temperature: OK ✓")
+            print(">>> System ready to operate!")
+        else:
+            print("Temperature: TOO HIGH ✗")
+            print(">>> Cool down required")
+    else:
+        print("Safety: DISENGAGED ✗")
+        print(">>> Cannot operate. Engage safety first.")
+else:
+    print("Power: OFF")
+    print(">>> Turn on power to begin")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code22" data-output="output22" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output22">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>6.4 Number Classification (Deep Nesting)</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Classify Numbers</div>
+                    <div class="code-area">
+                        <textarea id="code23"># Comprehensive number classification
+number = 15
+
+if number >= 0:
+    print(f"{number} is non-negative")
+    if number == 0:
+        print("It's zero")
+    else:
+        print("It's positive")
+        if number % 2 == 0:
+            print("It's even")
+        else:
+            print("It's odd")
+else:
+    print(f"{number} is negative")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code23" data-output="output23" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output23">Click "Run" to execute...</div>
+                </div>
+                
+                <div class="warning-box">
+                    <strong>⚠️ Don't Over-Nest!</strong> Too many nested levels make code hard to read. If you have more than 3 levels, consider:
+                    <ul style="margin: 10px 0 0 0;">
+                        <li>Using logical operators (<code>and</code>, <code>or</code>)</li>
+                        <li>Breaking into separate functions</li>
+                        <li>Restructuring your logic</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PART 7 ==================== -->
+        <section class="section" id="part7">
+            <div class="section-header p7">⚡ Part 7: Ternary Operator</div>
+            <div class="section-content">
+                <div class="objectives">
+                    <h4>🎯 Learning Objectives</h4>
+                    <ul>
+                        <li>Write one-line conditional expressions</li>
+                        <li>Use the ternary operator appropriately</li>
+                    </ul>
+                </div>
+                
+                <p>The ternary operator is a shorthand for simple if-else statements:</p>
+                
+                <div class="concept-box">
+                    <strong>📌 Syntax:</strong>
+                    <pre style="margin: 10px 0 0 0; background: white; padding: 10px; border-radius: 4px;">value = result_if_true if condition else result_if_false</pre>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Ternary Basics</div>
+                    <div class="code-area">
+                        <textarea id="code24"># Basic ternary
+age = 20
+status = "Adult" if age >= 18 else "Minor"
+print(f"Age {age}: {status}")
+
+# Even or odd
+number = 7
+result = "Even" if number % 2 == 0 else "Odd"
+print(f"{number} is {result}")
+
+# Pass or fail
+score = 75
+result = "PASS ✓" if score >= 60 else "FAIL ✗"
+print(f"Score {score}: {result}")
+
+# Maximum of two numbers
+a = 15
+b = 23
+maximum = a if a > b else b
+print(f"Max of {a} and {b}: {maximum}")
+
+# Absolute value
+number = -7
+absolute = number if number >= 0 else -number
+print(f"Absolute value of {number}: {absolute}")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code24" data-output="output24" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output24">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>7.1 Ternary in f-strings</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Ternary in Strings</div>
+                    <div class="code-area">
+                        <textarea id="code25"># Ternary inside f-strings
+is_online = True
+print(f"Server is {'online 🟢' if is_online else 'offline 🔴'}")
+
+# Temperature status
+temperature = 85
+print(f"Temperature {temperature}°C: {'SAFE' if temperature < 100 else 'DANGER!'}")
+
+# Plural handling
+count = 1
+print(f"You have {count} {'item' if count == 1 else 'items'}")
+
+count = 5
+print(f"You have {count} {'item' if count == 1 else 'items'}")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code25" data-output="output25" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output25">Click "Run" to execute...</div>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>💡 When to Use Ternary:</strong>
+                    <ul style="margin: 10px 0 0 0;">
+                        <li>✅ Simple true/false assignments</li>
+                        <li>✅ Short, clear expressions</li>
+                        <li>❌ Complex conditions (use regular if-else)</li>
+                        <li>❌ Multiple statements</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PART 8 ==================== -->
+        <section class="section" id="part8">
+            <div class="section-header p8">🎯 Part 8: Match Statement (Python 3.10+)</div>
+            <div class="section-content">
+                <div class="objectives">
+                    <h4>🎯 Learning Objectives</h4>
+                    <ul>
+                        <li>Use pattern matching with <code>match</code></li>
+                        <li>Create cleaner multi-way branches</li>
+                    </ul>
+                </div>
+                
+                <p>Python 3.10 introduced <code>match</code> for cleaner pattern matching:</p>
+                
+                <div class="concept-box">
+                    <strong>📌 Syntax:</strong>
+                    <pre style="margin: 10px 0 0 0; background: white; padding: 10px; border-radius: 4px;">match value:
+    case pattern1:
+        # action1
+    case pattern2:
+        # action2
+    case _:
+        # default (like else)</pre>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Day of Week</div>
+                    <div class="code-area">
+                        <textarea id="code26"># Day of week using match
+day = 3
+
+match day:
+    case 1:
+        print("Monday")
+    case 2:
+        print("Tuesday")
+    case 3:
+        print("Wednesday")
+    case 4:
+        print("Thursday")
+    case 5:
+        print("Friday")
+    case 6 | 7:  # Multiple values!
+        print("Weekend! 🎉")
+    case _:  # Default case
+        print("Invalid day")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code26" data-output="output26" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output26">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>8.1 HTTP Status Codes</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: HTTP Status Handler</div>
+                    <div class="code-area">
+                        <textarea id="code27"># HTTP status codes
+status_code = 404
+
+match status_code:
+    case 200:
+        message = "OK ✓"
+    case 201:
+        message = "Created"
+    case 400:
+        message = "Bad Request"
+    case 404:
+        message = "Not Found 🔍"
+    case 500:
+        message = "Internal Server Error"
+    case _:
+        message = "Unknown Status"
+
+print(f"Status {status_code}: {message}")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code27" data-output="output27" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output27">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>8.2 Simple Calculator</h3>
+                
+                <div class="code-block">
+                    <div class="code-label">Example: Calculator with Match</div>
+                    <div class="code-area">
+                        <textarea id="code28"># Simple calculator using match
+a = 10
+b = 5
+
+for operation in ["+", "-", "*", "/"]:
+    match operation:
+        case "+":
+            result = a + b
+        case "-":
+            result = a - b
+        case "*":
+            result = a * b
+        case "/":
+            result = a / b if b != 0 else "Error: Division by zero"
+        case _:
+            result = "Unknown operation"
+    
+    print(f"{a} {operation} {b} = {result}")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="code28" data-output="output28" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="output28">Click "Run" to execute...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== EXERCISES ==================== -->
+        <section class="section" id="exercises">
+            <div class="section-header exercises">📝 Exercises</div>
+            <div class="section-content">
+                <p>Complete these exercises to practice conditionals. Try them yourself before looking at hints!</p>
+                
+                <h3>Exercise 1: Number Sign (⭐ Easy)</h3>
+                <p>Write code that checks if a number is positive, negative, or zero.</p>
+                
+                <div class="code-block">
+                    <div class="code-label exercise">Exercise 1: Number Sign</div>
+                    <div class="code-area">
+                        <textarea id="ex1"># Check if number is positive, negative, or zero
+number = -5
+
+# Your code here:
+if number > 0:
+    print("Positive")
+elif number < 0:
+    print("Negative")
+else:
+    print("Zero")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="ex1" data-output="outex1" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="outex1">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>Exercise 2: Grade Calculator (⭐ Easy)</h3>
+                <p>Create a grade calculator (A: 90+, B: 80+, C: 70+, D: 60+, F: below 60).</p>
+                
+                <div class="code-block">
+                    <div class="code-label exercise">Exercise 2: Grade Calculator</div>
+                    <div class="code-area">
+                        <textarea id="ex2"># Grade calculator
+score = 78
+
+# Your code here:
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+elif score >= 70:
+    grade = "C"
+elif score >= 60:
+    grade = "D"
+else:
+    grade = "F"
+
+print(f"Score: {score} → Grade: {grade}")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="ex2" data-output="outex2" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="outex2">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>Exercise 3: Largest of Three (⭐⭐ Medium)</h3>
+                <p>Find the largest of three numbers using conditionals.</p>
+                
+                <div class="code-block">
+                    <div class="code-label exercise">Exercise 3: Largest of Three</div>
+                    <div class="code-area">
+                        <textarea id="ex3"># Find the largest of three numbers
+a = 15
+b = 23
+c = 8
+
+# Your code here:
+if a >= b and a >= c:
+    largest = a
+elif b >= a and b >= c:
+    largest = b
+else:
+    largest = c
+
+print(f"Numbers: {a}, {b}, {c}")
+print(f"Largest: {largest}")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="ex3" data-output="outex3" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="outex3">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>Exercise 4: Leap Year (⭐⭐ Medium)</h3>
+                <p>Check if a year is a leap year. Rules: divisible by 4, but not by 100, unless also divisible by 400.</p>
+                
+                <div class="code-block">
+                    <div class="code-label exercise">Exercise 4: Leap Year</div>
+                    <div class="code-area">
+                        <textarea id="ex4"># Check if year is a leap year
+year = 2024
+
+# Your code here:
+if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+    print(f"{year} is a leap year ✓")
+else:
+    print(f"{year} is not a leap year")
+
+# Test more years
+for y in [2000, 1900, 2024, 2023]:
+    is_leap = (y % 4 == 0 and y % 100 != 0) or (y % 400 == 0)
+    print(f"{y}: {'Leap' if is_leap else 'Not leap'}")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="ex4" data-output="outex4" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="outex4">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>Exercise 5: Triangle Validator (⭐⭐ Medium)</h3>
+                <p>Check if three sides can form a valid triangle. Rule: sum of any two sides must be greater than the third.</p>
+                
+                <div class="code-block">
+                    <div class="code-label exercise">Exercise 5: Triangle Validator</div>
+                    <div class="code-area">
+                        <textarea id="ex5"># Check if three sides form a valid triangle
+a, b, c = 3, 4, 5
+
+# Your code here:
+if a + b > c and b + c > a and a + c > b:
+    print(f"Sides {a}, {b}, {c}: Valid triangle ✓")
+else:
+    print(f"Sides {a}, {b}, {c}: Invalid triangle ✗")
+
+# Test invalid triangle
+a, b, c = 1, 2, 10
+if a + b > c and b + c > a and a + c > b:
+    print(f"Sides {a}, {b}, {c}: Valid triangle ✓")
+else:
+    print(f"Sides {a}, {b}, {c}: Invalid triangle ✗")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="ex5" data-output="outex5" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="outex5">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>Exercise 6: Quadrant Finder (⭐⭐⭐ Hard)</h3>
+                <p>Determine which quadrant a point (x, y) is in, or if it's on an axis or at origin.</p>
+                
+                <div class="code-block">
+                    <div class="code-label exercise">Exercise 6: Quadrant Finder</div>
+                    <div class="code-area">
+                        <textarea id="ex6"># Determine quadrant of point (x, y)
+x, y = 3, -4
+
+# Your code here:
+if x == 0 and y == 0:
+    print("Origin")
+elif x == 0:
+    print("On Y-axis")
+elif y == 0:
+    print("On X-axis")
+elif x > 0 and y > 0:
+    print("Quadrant I")
+elif x < 0 and y > 0:
+    print("Quadrant II")
+elif x < 0 and y < 0:
+    print("Quadrant III")
+else:
+    print("Quadrant IV")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="ex6" data-output="outex6" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="outex6">Click "Run" to execute...</div>
+                </div>
+                
+                <h3>Exercise 7: Rock Paper Scissors (⭐⭐⭐ Hard)</h3>
+                <p>Determine the winner of Rock Paper Scissors.</p>
+                
+                <div class="code-block">
+                    <div class="code-label exercise">Exercise 7: Rock Paper Scissors</div>
+                    <div class="code-area">
+                        <textarea id="ex7"># Rock Paper Scissors game
+player1 = "rock"
+player2 = "scissors"
+
+# Your code here:
+if player1 == player2:
+    print("Tie! 🤝")
+elif (player1 == "rock" and player2 == "scissors") or \
+     (player1 == "scissors" and player2 == "paper") or \
+     (player1 == "paper" and player2 == "rock"):
+    print("Player 1 wins! 🎉")
+else:
+    print("Player 2 wins! 🎉")
+
+print(f"Player 1: {player1}")
+print(f"Player 2: {player2}")</textarea>
+                        <br>
+                        <button class="run-btn" data-code="ex7" data-output="outex7" py-click="run_code">▶ Run</button>
+                    </div>
+                    <div class="output" id="outex7">Click "Run" to execute...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SUBMIT ==================== -->
+        <section class="section" id="submit">
+            <div class="section-header submit">✅ Submit Your Work</div>
+            <div class="section-content">
+                <p>Fill in your information below to submit Week 2. All fields are required.</p>
+                
+                <div style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 16px 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <strong>📅 Week 2 Submission Window:</strong> February 16-20, 2025
+                </div>
+                
+                <div class="warning-box">
+                    <strong>⚠️ Important:</strong>
+                    <ul style="margin: 10px 0 0 0; padding-left: 20px;">
+                        <li>Use your <strong>real university email</strong> (@istun.edu.tr)</li>
+                        <li>You can only submit <strong>once per week</strong></li>
+                        <li>Get the <strong>class code</strong> from your instructor</li>
+                        <li>Submissions only accepted <strong>during the submission window</strong></li>
+                    </ul>
+                </div>
+                
+                <!-- Honeypot field (hidden) -->
+                <div style="position: absolute; left: -9999px;">
+                    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                </div>
+                
+                <form id="submitForm" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="studentId">Student ID *</label>
+                        <input type="text" id="studentId" placeholder="e.g., 2024001234" maxlength="10" required>
+                        <small>Your student number (digits only)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="studentName">Full Name *</label>
+                        <input type="text" id="studentName" placeholder="e.g., Ali Yılmaz" required>
+                        <small>First and last name as registered</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="studentEmail">University Email *</label>
+                        <input type="email" id="studentEmail" placeholder="e.g., ali.yilmaz@istun.edu.tr" required>
+                        <small>Must be @istun.edu.tr email</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="classCode">Class Code *</label>
+                        <input type="text" id="classCode" placeholder="Enter code from instructor" required>
+                        <small>Get this code from your instructor in class</small>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" onclick="submitWork()">📤 Submit My Work</button>
+                </form>
+                
+                <div id="submitStatus"></div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="nav-buttons">
+            <a href="Week_01.html">← Week 1: Introduction</a>
+            <a href="Week_03.html">Week 3: Loops →</a>
+        </div>
+        
+        <p style="text-align: center; color: #666; margin-top: 40px;">
+            Computer Programming II | Istanbul Health and Technology University | Dr. Arif Solmaz
+        </p>
+    </main>
+</div>
+
+<!-- Scripts -->
+<script>
+// Track time on page
+const pageLoadTime = Date.now();
+
+// Progress tracking
+window.addEventListener('scroll', function() {
+    var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrolled = (winScroll / height) * 100;
+    
+    document.getElementById('progress-bar').style.width = scrolled + '%';
+    document.getElementById('progress-fill').style.width = scrolled + '%';
+    document.getElementById('progress-text').textContent = Math.round(scrolled) + '% Complete';
+});
+
+// Form validation and submission
+function validateStudentId(id) {
+    if (id.length < 6 || id.length > 10) return false;
+    if (!/^\d+$/.test(id)) return false;
+    if (/^(\d)\1+$/.test(id)) return false;
+    return true;
+}
+
+function validateName(name) {
+    if (name.length < 5) return false;
+    const words = name.trim().split(/\s+/);
+    if (words.length < 2) return false;
+    if (!/^[A-Za-zğüşıöçĞÜŞİÖÇ\s]+$/.test(name)) return false;
+    return true;
+}
+
+function validateEmail(email) {
+    return email.endsWith('@istun.edu.tr') && email.length > 15;
+}
+
+function submitWork() {
+    const statusDiv = document.getElementById('submitStatus');
+    statusDiv.className = '';
+    statusDiv.style.display = 'none';
+    
+    const studentId = document.getElementById('studentId').value.trim();
+    const studentName = document.getElementById('studentName').value.trim();
+    const studentEmail = document.getElementById('studentEmail').value.trim().toLowerCase();
+    const classCode = document.getElementById('classCode').value.trim().toUpperCase();
+    const honeypot = document.getElementById('website').value;
+    
+    // Honeypot check
+    if (honeypot) {
+        statusDiv.textContent = '❌ Submission rejected.';
+        statusDiv.className = 'error';
+        return;
+    }
+    
+    // Time check
+    const timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
+    if (timeOnPage < 30) {
+        statusDiv.textContent = '❌ Please spend more time reviewing the material before submitting.';
+        statusDiv.className = 'error';
+        return;
+    }
+    
+    // Validation
+    if (!studentId || !studentName || !studentEmail || !classCode) {
+        statusDiv.textContent = '❌ All fields are required.';
+        statusDiv.className = 'error';
+        return;
+    }
+    
+    if (!validateStudentId(studentId)) {
+        statusDiv.textContent = '❌ Invalid Student ID. Must be 6-10 digits.';
+        statusDiv.className = 'error';
+        return;
+    }
+    
+    if (!validateName(studentName)) {
+        statusDiv.textContent = '❌ Please enter your full name (first and last name).';
+        statusDiv.className = 'error';
+        return;
+    }
+    
+    if (!validateEmail(studentEmail)) {
+        statusDiv.textContent = '❌ Please use your @istun.edu.tr email address.';
+        statusDiv.className = 'error';
+        return;
+    }
+    
+    if (classCode.length < 4) {
+        statusDiv.textContent = '❌ Invalid class code. Get the correct code from your instructor.';
+        statusDiv.className = 'error';
+        return;
+    }
+    
+    // Prepare data
+    const data = {
+        week: 'Week_02',
+        student_id: studentId,
+        student_name: studentName,
+        student_email: studentEmail,
+        classCode: classCode,
+        timeOnPage: timeOnPage,
+        source: 'website',
+        website: honeypot,
+        answers: {}
+    };
+    
+    statusDiv.textContent = '⏳ Submitting...';
+    statusDiv.className = 'success';
+    statusDiv.style.display = 'block';
+    
+    // Submit to Google Apps Script
+    fetch('https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            statusDiv.textContent = '✅ ' + result.message + ' Check your email for confirmation.';
+            statusDiv.className = 'success';
+        } else {
+            statusDiv.textContent = '❌ ' + result.message;
+            statusDiv.className = 'error';
+        }
+    })
+    .catch(error => {
+        // Try no-cors mode as fallback
+        fetch('https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(() => {
+            statusDiv.textContent = '✅ Submission sent! If valid, you will receive a confirmation email.';
+            statusDiv.className = 'success';
+        })
+        .catch(err => {
+            statusDiv.textContent = '❌ Submission failed. Please try again later.';
+            statusDiv.className = 'error';
+        });
+    });
+}
+</script>
+
+</body>
+</html>
