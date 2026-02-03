@@ -2102,6 +2102,16 @@ print("=" * 60)</textarea>
 Light level: normal
 Stats: {'count': 5, 'min': 234.5, 'max': 876.2, 'avg': 523.4}</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints1')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints1">
+                                <ul>
+                                    <li>Inherit from <code>BaseSensor</code></li>
+                                    <li>Override <code>sensor_type</code>, <code>unit</code>, <code>_simulate_reading</code></li>
+                                    <li>Use thresholds: dim &lt;300, normal 300-700, bright &gt;700</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2158,6 +2168,16 @@ print(f"Stats: {light.get_statistics()}")</textarea>
                     </div>
                     <div class="exercise-body">
                         <p>Create a function that exports all sensor readings to CSV format.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints2">
+                                <ul>
+                                    <li>Start with header line: sensor_id,type,value,unit</li>
+                                    <li>Loop through sensors and their readings</li>
+                                    <li>Join lines with <code>'\n'.join(lines)</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2282,6 +2302,16 @@ for sensor_id, sensor_type, value in test_readings:
                     </div>
                     <div class="exercise-body">
                         <p>Create a <code>SensorRegistry</code> class that manages sensor registration, lookup, and filtering.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints4')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints4">
+                                <ul>
+                                    <li>Store sensors in <code>self._sensors = {}</code></li>
+                                    <li>Use <code>sensor.sensor_id</code> as key</li>
+                                    <li>Filter by type: <code>[s for s in sensors if s.sensor_type == type]</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2438,6 +2468,16 @@ print(report.generate_summary())</textarea>
                     </div>
                     <div class="exercise-body">
                         <p>Create a notification system using the Observer pattern to notify subscribers when alerts occur.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints6">
+                                <ul>
+                                    <li>Store callbacks in <code>self._subscribers = []</code></li>
+                                    <li>subscribe: <code>self._subscribers.append(callback)</code></li>
+                                    <li>notify: loop and call each <code>callback(alert)</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>

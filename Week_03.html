@@ -1636,6 +1636,16 @@ print()</textarea>
 ...
 10</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints1')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints1">
+                                <ul>
+                                    <li>Use <code>range(1, 11)</code> to generate numbers 1-10</li>
+                                    <li>Remember: range end value is exclusive</li>
+                                    <li>Structure: <code>for i in range(1, 11):</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1663,6 +1673,16 @@ print()</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Sum: 75</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints2">
+                                <ul>
+                                    <li>Create a variable <code>total = 0</code> before the loop</li>
+                                    <li>Add each number: <code>total += num</code> or <code>total = total + num</code></li>
+                                    <li>Print after the loop completes</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1692,6 +1712,16 @@ print()</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>2 4 6 8 10 12 14 16 18 20</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints3">
+                                <ul>
+                                    <li>Use <code>range(start, stop, step)</code> with step=2</li>
+                                    <li>Example: <code>range(2, 21, 2)</code></li>
+                                    <li>Print on same line: <code>print(n, end=" ")</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1763,6 +1793,16 @@ print()</textarea>
 ...
 5 x 10 = 50</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints5')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints5">
+                                <ul>
+                                    <li>Loop through <code>range(1, 11)</code></li>
+                                    <li>Calculate result: <code>5 * i</code></li>
+                                    <li>Format: <code>f"5 x {i} = {5 * i}"</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1790,6 +1830,16 @@ print()</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>6! = 720</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints6">
+                                <ul>
+                                    <li>Start with <code>factorial = 1</code></li>
+                                    <li>Multiply by each number: <code>factorial *= i</code></li>
+                                    <li>Loop from 1 to n: <code>range(1, n + 1)</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1819,6 +1869,16 @@ print()</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Maximum: 89</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints7')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints7">
+                                <ul>
+                                    <li>Initialize <code>max_val = values[0]</code> (first element)</li>
+                                    <li>Loop through list, compare each value</li>
+                                    <li>If <code>val > max_val</code>, update <code>max_val = val</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1854,6 +1914,17 @@ print()</textarea>
 1
 Blast off!</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints8')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints8">
+                                <ul>
+                                    <li>Start with <code>count = 5</code></li>
+                                    <li>While condition: <code>while count > 0:</code></li>
+                                    <li>Decrement: <code>count -= 1</code> inside loop</li>
+                                    <li>Print "Blast off!" after the loop ends</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1881,6 +1952,16 @@ Blast off!</pre>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Positives: [4, 7, 3, 8]</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints9')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints9">
+                                <ul>
+                                    <li>Create empty list: <code>positives = []</code></li>
+                                    <li>Loop through nums, check <code>if num > 0:</code></li>
+                                    <li>Append to list: <code>positives.append(num)</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1915,6 +1996,16 @@ Blast off!</pre>
 ****
 *****</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints10')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints10">
+                                <ul>
+                                    <li>Outer loop: <code>for i in range(1, 6):</code></li>
+                                    <li>Print stars: <code>print("*" * i)</code></li>
+                                    <li>Or use nested loop with inner <code>range(i)</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1942,6 +2033,16 @@ Blast off!</pre>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>First even: 4</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints11">
+                                <ul>
+                                    <li>Loop through numbers with <code>for num in numbers:</code></li>
+                                    <li>Check even: <code>if num % 2 == 0:</code></li>
+                                    <li>Print and then <code>break</code> to exit loop</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1971,6 +2072,16 @@ Blast off!</pre>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>1 3 5</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints12">
+                                <ul>
+                                    <li>Check if negative: <code>if num < 0:</code></li>
+                                    <li>Use <code>continue</code> to skip negative numbers</li>
+                                    <li>Print on same line: <code>print(num, end=" ")</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2040,6 +2151,16 @@ Blast off!</pre>
                             <pre>1. apple
 2. banana
 3. cherry</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints14')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints14">
+                                <ul>
+                                    <li>Use <code>enumerate(fruits, start=1)</code> to start from 1</li>
+                                    <li>Unpack: <code>for i, fruit in enumerate(...):</code></li>
+                                    <li>Format: <code>f"{i}. {fruit}"</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">

@@ -1776,6 +1776,16 @@ except SensorNotFoundError as e:
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Area of circle with radius 5: 78.54</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints1')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints1">
+                                <ul>
+                                    <li>Use <code>import math</code></li>
+                                    <li>Access pi as <code>math.pi</code></li>
+                                    <li>Formula: <code>math.pi * radius ** 2</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1808,6 +1818,16 @@ print(f"Area of circle with radius {radius}: {area:.2f}")</textarea>
                             <div class="expected-output-label">✓ Expected Output (example)</div>
                             <pre>Random numbers: [42, 17, 83, 56, 91]</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints2">
+                                <ul>
+                                    <li>Use <code>import random as rnd</code></li>
+                                    <li>Generate: <code>rnd.randint(1, 100)</code></li>
+                                    <li>Use list comprehension for 5 numbers</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1839,6 +1859,16 @@ print(f"Random numbers: {numbers}")</textarea>
                             <pre>Square root of 144: 12.0
 2 to the power 10: 1024.0</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints3">
+                                <ul>
+                                    <li>Use <code>from math import sqrt, pow</code></li>
+                                    <li>Call directly: <code>sqrt(144)</code></li>
+                                    <li>No need for <code>math.</code> prefix</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1868,6 +1898,16 @@ print(f"2 to the power 10: {pow(2, 10)}")</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output (example)</div>
                             <pre>Current: 2025-06-15 14:30</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints4')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints4">
+                                <ul>
+                                    <li>Use <code>now.strftime()</code> for formatting</li>
+                                    <li>Format: <code>"%Y-%m-%d %H:%M"</code></li>
+                                    <li>%Y=year, %m=month, %d=day, %H=hour, %M=minute</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1900,6 +1940,16 @@ print(f"Current: {formatted}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>JSON: {"name": "Sensor1", "value": 25.5}
 Back to dict: {'name': 'Sensor1', 'value': 25.5}</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints5')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints5">
+                                <ul>
+                                    <li>Dict to JSON: <code>json.dumps(data)</code></li>
+                                    <li>JSON to dict: <code>json.loads(json_str)</code></li>
+                                    <li>dumps = dump string, loads = load string</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1936,6 +1986,16 @@ print(f"Back to dict: {back_to_dict}")</textarea>
                             <pre>Counts: {'OK': 4, 'ERROR': 2, 'WARNING': 1}
 Most common: OK (4 times)</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints6">
+                                <ul>
+                                    <li>Create: <code>Counter(statuses)</code></li>
+                                    <li>Most common: <code>counts.most_common(1)</code></li>
+                                    <li>Returns list of (item, count) tuples</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1969,6 +2029,16 @@ print(f"Counts: {dict(counts)}")
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>100°C = 212.0°F
 10m = 32.81ft</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints7')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints7">
+                                <ul>
+                                    <li>Celsius to F: <code>c * 9/5 + 32</code></li>
+                                    <li>Meters to feet: <code>m * 3.28084</code></li>
+                                    <li>Return the calculated value</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2010,6 +2080,16 @@ print(f"10m = {meters_to_feet(10):.2f}ft")</textarea>
 ✓ factorial(0) = 1
 All tests passed!</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints8')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints8">
+                                <ul>
+                                    <li>Factorial: <code>if n <= 1: return 1</code></li>
+                                    <li>Recursive: <code>return n * factorial(n-1)</code></li>
+                                    <li>Or use <code>math.factorial(n)</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2048,6 +2128,16 @@ if __name__ == "__main__":
                             <pre>Reading: SensorReading(sensor_id='TEMP_001', value=25.5, unit='C')
 Value: 25.5 C</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints9')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints9">
+                                <ul>
+                                    <li>Create: <code>namedtuple('Name', ['field1', 'field2'])</code></li>
+                                    <li>Fields: sensor_id, value, unit</li>
+                                    <li>Access: <code>reading.value</code>, <code>reading.unit</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2082,6 +2172,16 @@ print(f"Value: {reading.value} {reading.unit}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>TEMP_001: [25.5, 26.0, 25.8]
 TEMP_002: [24.0, 24.5]</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints10')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints10">
+                                <ul>
+                                    <li>Create: <code>defaultdict(list)</code></li>
+                                    <li>Loop: <code>grouped[id].append(value)</code></li>
+                                    <li>No need to check if key exists</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2120,6 +2220,16 @@ for sensor_id, values in grouped.items():
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Calculate dates 30 days from now and 90 days ago.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints11">
+                                <ul>
+                                    <li>Use <code>timedelta(days=30)</code></li>
+                                    <li>Future: <code>today + timedelta(days=30)</code></li>
+                                    <li>Past: <code>today - timedelta(days=90)</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2154,6 +2264,16 @@ print(f"90 days ago: {days_past}")</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>After adding 8 readings: [4, 5, 6, 7, 8]</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints12">
+                                <ul>
+                                    <li>Create: <code>deque(maxlen=5)</code></li>
+                                    <li>Add: <code>buffer.append(value)</code></li>
+                                    <li>Old items auto-removed when full</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">

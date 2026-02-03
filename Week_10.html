@@ -2154,6 +2154,16 @@ robot.status()</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>"Python Basics" by John Smith</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints1')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints1">
+                                <ul>
+                                    <li>Define <code>__init__(self, title, author)</code></li>
+                                    <li>Store as <code>self.title</code> and <code>self.author</code></li>
+                                    <li>display() prints formatted string</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2189,6 +2199,16 @@ book.display()</textarea>
 After increment: 1
 After increment: 2
 After decrement: 1</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints2">
+                                <ul>
+                                    <li>Use <code>__init__(self, start=0)</code> for default</li>
+                                    <li>increment: <code>self.value += 1</code></li>
+                                    <li>get_value returns <code>self.value</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2229,6 +2249,16 @@ print(f"After decrement: {counter.get_value()}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Ali (25 years old)</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints3">
+                                <ul>
+                                    <li>Define <code>def __str__(self):</code></li>
+                                    <li>Return formatted string (not print)</li>
+                                    <li>Use f-string: <code>f"{self.name} ({self.age} years old)"</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2263,6 +2293,16 @@ print(person)</textarea>
                             <pre>Ali from ISTUN, Grade: 85
 Ayşe from ISTUN, Grade: 90
 Total students: 2</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints4')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints4">
+                                <ul>
+                                    <li>Class attribute: defined outside __init__</li>
+                                    <li>In __init__: <code>Student.count += 1</code></li>
+                                    <li>Access via <code>Student.count</code> or <code>self.count</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2303,6 +2343,16 @@ print(f"Total students: {Student.count}")</textarea>
 Area: 15
 Perimeter: 16</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints5')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints5">
+                                <ul>
+                                    <li>Area: <code>self.width * self.height</code></li>
+                                    <li>Perimeter: <code>2 * (self.width + self.height)</code></li>
+                                    <li>Methods return values, don't print</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2340,6 +2390,16 @@ print(f"Perimeter: {rect.perimeter()}")</textarea>
 25°C = 77.0°F
 100°C = 212.0°F</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints6">
+                                <ul>
+                                    <li>Use <code>@staticmethod</code> decorator</li>
+                                    <li>No <code>self</code> parameter needed</li>
+                                    <li>Formula: <code>celsius * 9/5 + 32</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2374,6 +2434,16 @@ for c in [0, 25, 100]:
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Point(3, 4)
 Point(5, 10)</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints7')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints7">
+                                <ul>
+                                    <li>Use <code>@classmethod</code> decorator</li>
+                                    <li>First param is <code>cls</code>, not <code>self</code></li>
+                                    <li>Return <code>cls(tuple[0], tuple[1])</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2411,6 +2481,16 @@ print(p2)</textarea>
                             <pre>Laptop == Phone: False
 Laptop > Phone: True
 Mouse < Phone: True</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints8')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints8">
+                                <ul>
+                                    <li><code>__eq__(self, other)</code> returns <code>self.price == other.price</code></li>
+                                    <li><code>__lt__</code> for less than, <code>__gt__</code> for greater than</li>
+                                    <li>Compare <code>self.price</code> with <code>other.price</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2506,6 +2586,17 @@ Length: 3
 Popped: 3
 Stack: [1, 2]</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints10')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints10">
+                                <ul>
+                                    <li>Store items in <code>self.items = []</code></li>
+                                    <li>push: <code>self.items.append(item)</code></li>
+                                    <li>pop: <code>return self.items.pop()</code></li>
+                                    <li><code>__len__</code> returns <code>len(self.items)</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2545,6 +2636,16 @@ print(stack)</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>100 USD + 50 USD = 150 USD
 100 USD - 30 USD = 70 USD</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints11">
+                                <ul>
+                                    <li><code>__add__(self, other)</code> returns new Money object</li>
+                                    <li>Return <code>Money(self.amount + other.amount, self.currency)</code></li>
+                                    <li>Implement <code>__str__</code> to format output</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">

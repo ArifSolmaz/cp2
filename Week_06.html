@@ -1900,6 +1900,16 @@ for sensor_type, value in test_data:
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{'name': 'Ali', 'age': 25, 'city': 'Istanbul'}</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints1')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints1">
+                                <ul>
+                                    <li>Use curly braces: <code>{"key": value}</code></li>
+                                    <li>Separate pairs with commas</li>
+                                    <li>Example: <code>{"name": "Ali", "age": 25, ...}</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1927,6 +1937,16 @@ print(person)</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Country: Unknown</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints2">
+                                <ul>
+                                    <li>Syntax: <code>dict.get(key, default)</code></li>
+                                    <li>Returns default if key not found</li>
+                                    <li>Example: <code>person.get("country", "Unknown")</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1956,6 +1976,16 @@ print(f"Country: {country}")</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{'name': 'Ali', 'age': 26, 'email': '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c1a0ada881a4aca0a8adefa2aeac">[email&#160;protected]</a>'}</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints3">
+                                <ul>
+                                    <li>Add/update: <code>dict[key] = value</code></li>
+                                    <li>Add email: <code>person["email"] = "..."</code></li>
+                                    <li>Update age: <code>person["age"] = 26</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1989,6 +2019,16 @@ print(person)</textarea>
 age: 25
 city: Istanbul</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints4')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints4">
+                                <ul>
+                                    <li>Use <code>for key, value in dict.items():</code></li>
+                                    <li>Print: <code>f"{key}: {value}"</code></li>
+                                    <li>items() returns key-value tuples</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2017,6 +2057,16 @@ city: Istanbul</pre>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{1: 1, 2: 4, 3: 9, 4: 16, 5: 25}</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints5')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints5">
+                                <ul>
+                                    <li>Syntax: <code>{key: value for item in iterable}</code></li>
+                                    <li>Example: <code>{x: x**2 for x in range(1, 6)}</code></li>
+                                    <li>Creates key-value pairs in one line</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2044,6 +2094,16 @@ print(squares)</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{'hello': 2, 'world': 1}</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints6">
+                                <ul>
+                                    <li>Split text: <code>text.split()</code></li>
+                                    <li>Loop through words, use <code>get(word, 0) + 1</code></li>
+                                    <li>Or: <code>word_count[word] = word_count.get(word, 0) + 1</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2074,6 +2134,16 @@ print(word_count)</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Math grade: 85</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints7')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints7">
+                                <ul>
+                                    <li>Chain brackets: <code>dict[key1][key2]</code></li>
+                                    <li>Access: <code>student["grades"]["math"]</code></li>
+                                    <li>First get inner dict, then the value</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2107,6 +2177,16 @@ print(f"Math grade: {math_grade}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{1, 2, 3, 4, 5}</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints8')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints8">
+                                <ul>
+                                    <li>Convert list to set: <code>set(list)</code></li>
+                                    <li>Sets automatically remove duplicates</li>
+                                    <li>Example: <code>set(numbers)</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2135,6 +2215,16 @@ print(unique)</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{1, 2, 3, 4, 5, 6}</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints9')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints9">
+                                <ul>
+                                    <li>Union method: <code>A.union(B)</code></li>
+                                    <li>Or use operator: <code>A | B</code></li>
+                                    <li>Returns all unique elements from both sets</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2166,6 +2256,16 @@ print(result)</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{3, 4}</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints10')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints10">
+                                <ul>
+                                    <li>Intersection: <code>A.intersection(B)</code></li>
+                                    <li>Or use operator: <code>A & B</code></li>
+                                    <li>Returns elements in both sets</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2195,6 +2295,16 @@ print(common)</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{1, 2}</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints11">
+                                <ul>
+                                    <li>Difference: <code>A.difference(B)</code></li>
+                                    <li>Or use operator: <code>A - B</code></li>
+                                    <li>Returns elements only in A</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2226,6 +2336,16 @@ print(only_in_A)</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{'Alice': 85, 'Charlie': 92}</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints12">
+                                <ul>
+                                    <li>Dict comprehension with condition</li>
+                                    <li>Syntax: <code>{k: v for k, v in dict.items() if condition}</code></li>
+                                    <li>Example: <code>{k: v for k, v in grades.items() if v >= 80}</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2254,6 +2374,16 @@ print(passing)</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Has all required skills: True</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints13')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints13">
+                                <ul>
+                                    <li>Use <code>set.issubset(other)</code></li>
+                                    <li>Or operator: <code>A <= B</code></li>
+                                    <li>Example: <code>required_skills.issubset(candidate_skills)</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">

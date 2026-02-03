@@ -1318,6 +1318,16 @@ print(f"Missing: {config.get('missing', 'default')}")</textarea>
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Create a file named "greeting.txt" and write "Hello, Python!" to it.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints1')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints1">
+                                <ul>
+                                    <li>Use <code>with open('filename', 'w') as f:</code></li>
+                                    <li>Write with <code>f.write("text")</code></li>
+                                    <li>Mode 'w' creates new file or overwrites</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1347,6 +1357,16 @@ with open('greeting.txt', 'r') as f:
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>['Line 1', 'Line 2', 'Line 3']</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints2">
+                                <ul>
+                                    <li>Use <code>f.readlines()</code> to get list</li>
+                                    <li>Strip newlines: <code>[line.strip() for line in f]</code></li>
+                                    <li>Or use list comprehension with <code>.strip()</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1378,6 +1398,16 @@ print(lines)</textarea>
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Append "New entry" to an existing file.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints3">
+                                <ul>
+                                    <li>Use mode 'a' for append: <code>open('file', 'a')</code></li>
+                                    <li>Write adds to end: <code>f.write("New entry\n")</code></li>
+                                    <li>Append doesn't overwrite existing content</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1412,6 +1442,16 @@ with open('log.txt', 'r') as f:
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Line count: 5</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints4')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints4">
+                                <ul>
+                                    <li>Read all lines: <code>f.readlines()</code></li>
+                                    <li>Count with <code>len()</code></li>
+                                    <li>Example: <code>len(f.readlines())</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1443,6 +1483,16 @@ print(f"Line count: {count}")</textarea>
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Check if a file exists before reading it.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints5')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints5">
+                                <ul>
+                                    <li>Use <code>os.path.exists(filename)</code></li>
+                                    <li>Returns True if file exists</li>
+                                    <li>Import: <code>import os</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1474,6 +1524,16 @@ else:
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Write a list of students to a CSV file.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints6">
+                                <ul>
+                                    <li>Use <code>csv.writer(file)</code></li>
+                                    <li>Write rows: <code>writer.writerows(students)</code></li>
+                                    <li>Open with <code>newline=''</code> for CSV</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1509,6 +1569,16 @@ with open('students.csv', 'r') as f:
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Read CSV file using DictReader and print each row.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints7')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints7">
+                                <ul>
+                                    <li>Use <code>csv.DictReader(file)</code></li>
+                                    <li>Each row is a dictionary</li>
+                                    <li>Access values: <code>row['column_name']</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1537,6 +1607,16 @@ with open('students.csv', 'r') as f:
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Write a dictionary to JSON file and read it back.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints8')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints8">
+                                <ul>
+                                    <li>Write: <code>json.dump(data, file)</code></li>
+                                    <li>Read: <code>json.load(file)</code></li>
+                                    <li>Import: <code>import json</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1578,6 +1658,16 @@ print(f"Theme: {loaded['theme']}")</textarea>
                             <pre>Filename: data.csv
 Extension: .csv</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints9')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints9">
+                                <ul>
+                                    <li>Use <code>os.path.basename(path)</code> for filename</li>
+                                    <li>Use <code>os.path.splitext(path)</code> for extension</li>
+                                    <li>splitext returns (name, extension) tuple</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1609,6 +1699,16 @@ print(f"Extension: {extension}")</textarea>
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Handle FileNotFoundError when reading a missing file.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints10')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints10">
+                                <ul>
+                                    <li>Use <code>try:</code> and <code>except:</code> blocks</li>
+                                    <li>Catch specific: <code>except FileNotFoundError:</code></li>
+                                    <li>Put risky code in try block</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1636,6 +1736,16 @@ print(f"Extension: {extension}")</textarea>
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Copy contents from one file to another.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints11">
+                                <ul>
+                                    <li>Read source: <code>content = f.read()</code></li>
+                                    <li>Write to dest: <code>f.write(content)</code></li>
+                                    <li>Use two separate with blocks or nested</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1666,6 +1776,16 @@ with open('destination.txt', 'r') as f:
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Create multiple numbered files in a loop.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints12">
+                                <ul>
+                                    <li>Use f-string for filename: <code>f"file_{i}.txt"</code></li>
+                                    <li>Open and write inside the loop</li>
+                                    <li>Write content: <code>f.write(f"File {i}")</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>

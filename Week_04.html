@@ -2466,6 +2466,16 @@ print(f"1 bar = {bar_to_psi(1):.2f} psi")</textarea>
                             <pre>Hello, Alice!
 Hello, Bob!</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints1')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints1">
+                                <ul>
+                                    <li>Define with <code>def greet(name):</code></li>
+                                    <li>Use f-string: <code>print(f"Hello, {name}!")</code></li>
+                                    <li>This function prints, no return needed</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2496,6 +2506,16 @@ greet("Bob")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>25
 100</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints2">
+                                <ul>
+                                    <li>Define with <code>def square(x):</code></li>
+                                    <li>Return the result: <code>return x ** 2</code></li>
+                                    <li>Or use: <code>return x * x</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2528,6 +2548,16 @@ print(square(10))</textarea>
                             <pre>Area: 24
 Area: 35</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints3">
+                                <ul>
+                                    <li>Define with <code>def rectangle_area(length, width):</code></li>
+                                    <li>Area formula: <code>return length * width</code></li>
+                                    <li>Function takes 2 parameters</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2558,6 +2588,16 @@ print(f"Area: {rectangle_area(5, 7)}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Max: 15
 Max: 8</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints4')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints4">
+                                <ul>
+                                    <li>Use if-elif-else to compare values</li>
+                                    <li>Check if <code>a >= b and a >= c</code></li>
+                                    <li>Return the largest value found</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2591,6 +2631,16 @@ print(f"Max: {max_of_three(8, 3, 6)}")</textarea>
 100°C = 212.0°F
 98.6°F = 37.0°C</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints5')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints5">
+                                <ul>
+                                    <li>C to F formula: <code>celsius * 9/5 + 32</code></li>
+                                    <li>F to C formula: <code>(fahrenheit - 32) * 5/9</code></li>
+                                    <li>Each function returns a single value</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2623,6 +2673,16 @@ print(f"98.6°F = {f_to_c(98.6)}°C")</textarea>
                             <pre>is_even(4): True
 is_even(7): False</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints6">
+                                <ul>
+                                    <li>Check with modulus: <code>n % 2 == 0</code></li>
+                                    <li>Return the boolean result directly</li>
+                                    <li>One-liner: <code>return n % 2 == 0</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2653,6 +2713,16 @@ print(f"is_even(7): {is_even(7)}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Sum: 15
 Sum: 45</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints7')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints7">
+                                <ul>
+                                    <li>Initialize <code>total = 0</code></li>
+                                    <li>Loop through numbers with <code>for num in numbers:</code></li>
+                                    <li>Add each: <code>total += num</code>, then return total</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2686,6 +2756,16 @@ print(f"Sum: {sum_list([10, 10, 10, 10, 5])}")</textarea>
 Hi, Bob!
 Good morning, Charlie!</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints8')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints8">
+                                <ul>
+                                    <li>Define: <code>def greet_with_default(name, greeting="Hello"):</code></li>
+                                    <li>Default value used when argument not provided</li>
+                                    <li>Print: <code>f"{greeting}, {name}!"</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2716,6 +2796,16 @@ greet_with_default("Charlie", "Good morning")</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Min: 1, Max: 9</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints9')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints9">
+                                <ul>
+                                    <li>Use built-in <code>min()</code> and <code>max()</code></li>
+                                    <li>Return multiple: <code>return min_val, max_val</code></li>
+                                    <li>Caller unpacks: <code>a, b = min_max(list)</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2748,6 +2838,16 @@ print(f"Min: {minimum}, Max: {maximum}")</textarea>
                             <pre>5! = 120
 7! = 5040</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints10')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints10">
+                                <ul>
+                                    <li>Initialize <code>result = 1</code></li>
+                                    <li>Loop from 1 to n: <code>for i in range(1, n + 1):</code></li>
+                                    <li>Multiply: <code>result *= i</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2779,6 +2879,16 @@ print(f"7! = {factorial(7)}")</textarea>
                             <pre>Vowels in "Hello World": 3
 Vowels in "Python Programming": 4</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints11">
+                                <ul>
+                                    <li>Create vowels string: <code>"aeiouAEIOU"</code></li>
+                                    <li>Loop through each char in text</li>
+                                    <li>Count if <code>char in vowels</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2808,6 +2918,16 @@ print(f'Vowels in "Python Programming": {count_vowels("Python Programming")}')</
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>[1, 4, 9, 16, 25]</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints12">
+                                <ul>
+                                    <li>Lambda syntax: <code>lambda x: x ** 2</code></li>
+                                    <li>Map applies function to each element</li>
+                                    <li>Convert to list: <code>list(map(lambda x: x**2, numbers))</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2882,6 +3002,16 @@ countdown(5)</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Circle (r=5): Area=78.54, Circumference=31.42</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints14')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints14">
+                                <ul>
+                                    <li>Area: <code>math.pi * radius ** 2</code></li>
+                                    <li>Circumference: <code>2 * math.pi * radius</code></li>
+                                    <li>Return tuple: <code>return area, circumference</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2915,6 +3045,16 @@ print(f"Circle (r=5): Area={area:.2f}, Circumference={circumference:.2f}")</text
                             <pre>5² = 25
 2³ = 8
 10⁴ = 10000</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints15')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints15">
+                                <ul>
+                                    <li>Define: <code>def power(base, exp=2):</code></li>
+                                    <li>Calculate: <code>return base ** exp</code></li>
+                                    <li>Default exp=2 squares when no 2nd arg given</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">

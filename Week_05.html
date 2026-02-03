@@ -2042,6 +2042,16 @@ for row in C: print(row)</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>[1, 2, 3, 4, 5]</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints1')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints1">
+                                <ul>
+                                    <li>Use square brackets: <code>[1, 2, 3, 4, 5]</code></li>
+                                    <li>Or use: <code>list(range(1, 6))</code></li>
+                                    <li>Assign to variable: <code>numbers = [...]</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2069,6 +2079,16 @@ print(numbers)</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>elderberry</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints2">
+                                <ul>
+                                    <li>Negative index -1 gets last element</li>
+                                    <li>Syntax: <code>fruits[-1]</code></li>
+                                    <li>-2 would get second-to-last, etc.</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2098,6 +2118,16 @@ print(numbers)</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>[30, 40, 50]</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints3">
+                                <ul>
+                                    <li>Slice syntax: <code>list[start:end]</code></li>
+                                    <li>End index is exclusive, so use <code>[2:5]</code></li>
+                                    <li>Gets indices 2, 3, 4 (values 30, 40, 50)</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2126,6 +2156,16 @@ print(middle)</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>['apple', 'banana', 'cherry', 'date', 'elderberry', 'fig']</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints4')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints4">
+                                <ul>
+                                    <li>Append single item: <code>fruits.append("date")</code></li>
+                                    <li>Extend with list: <code>fruits.extend(["elderberry", "fig"])</code></li>
+                                    <li>append() adds one, extend() adds multiple</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2159,6 +2199,16 @@ print(fruits)</textarea>
                             <pre>Sum: 45
 Average: 9.0</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints5')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints5">
+                                <ul>
+                                    <li>Use <code>sum(numbers)</code> for total</li>
+                                    <li>Average: <code>sum(numbers) / len(numbers)</code></li>
+                                    <li>Assign to variables: total and avg</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2189,6 +2239,16 @@ print(f"Average: {avg}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>[5, 4, 3, 2, 1]</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints6">
+                                <ul>
+                                    <li>Use slice with step -1: <code>[::-1]</code></li>
+                                    <li>Syntax: <code>numbers[::-1]</code></li>
+                                    <li>Creates a reversed copy of the list</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2218,6 +2278,16 @@ print(reversed_list)</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>[1, 4, 9, 16, 25]</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints7')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints7">
+                                <ul>
+                                    <li>Comprehension: <code>[expression for item in iterable]</code></li>
+                                    <li>Square: <code>x ** 2</code> or <code>x * x</code></li>
+                                    <li>Example: <code>[x**2 for x in range(1, 6)]</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2245,6 +2315,16 @@ print(squares)</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>[2, 4, 6, 8, 10]</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints8')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints8">
+                                <ul>
+                                    <li>Add condition: <code>[x for x in list if condition]</code></li>
+                                    <li>Even check: <code>x % 2 == 0</code></li>
+                                    <li>Example: <code>[x for x in numbers if x % 2 == 0]</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2276,6 +2356,16 @@ print(evens)</textarea>
                             <pre>Row 0 sum: 6
 Row 1 sum: 15
 Row 2 sum: 24</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints9')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints9">
+                                <ul>
+                                    <li>Use <code>for i, row in enumerate(matrix):</code></li>
+                                    <li>Sum each row: <code>sum(row)</code></li>
+                                    <li>Print: <code>f"Row {i} sum: {sum(row)}"</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2309,6 +2399,16 @@ Row 2 sum: 24</pre>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>x=10, y=20, z=30</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints10')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints10">
+                                <ul>
+                                    <li>Unpack syntax: <code>x, y, z = tuple</code></li>
+                                    <li>One line: <code>x, y, z = coordinates</code></li>
+                                    <li>Number of variables must match tuple length</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2338,6 +2438,16 @@ print(f"x={x}, y={y}, z={z}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Before: a=5, b=10
 After: a=10, b=5</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints11">
+                                <ul>
+                                    <li>Python swap idiom: <code>a, b = b, a</code></li>
+                                    <li>No temp variable needed</li>
+                                    <li>Works with tuples on both sides</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2371,6 +2481,16 @@ print(f"After: a={a}, b={b}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Top 3 scores: [95, 92, 88]</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints12">
+                                <ul>
+                                    <li>Sort descending: <code>sorted(scores, reverse=True)</code></li>
+                                    <li>Take first 3: <code>[:3]</code></li>
+                                    <li>Combine: <code>sorted(scores, reverse=True)[:3]</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2401,6 +2521,16 @@ print(f"Top 3 scores: {top3}")</textarea>
                             <pre>1. apple
 2. banana
 3. cherry</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints13')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints13">
+                                <ul>
+                                    <li>Use <code>enumerate(fruits, start=1)</code></li>
+                                    <li>Unpack: <code>for i, fruit in enumerate(...):</code></li>
+                                    <li>Print: <code>f"{i}. {fruit}"</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">

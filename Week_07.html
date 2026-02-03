@@ -1512,6 +1512,16 @@ for x, y, z in points:
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Length: 24</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints1')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints1">
+                                <ul>
+                                    <li>Use <code>len()</code> function</li>
+                                    <li>Syntax: <code>len(string)</code></li>
+                                    <li>Assign to variable: <code>length = len(text)</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1540,6 +1550,16 @@ print(f"Length: {length}")</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>First: P, Last: n</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints2">
+                                <ul>
+                                    <li>First character: <code>text[0]</code></li>
+                                    <li>Last character: <code>text[-1]</code></li>
+                                    <li>Negative index counts from end</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1570,6 +1590,16 @@ print(f"First: {first}, Last: {last}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Programming</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints3">
+                                <ul>
+                                    <li>Use slicing: <code>text[start:end]</code></li>
+                                    <li>"Programming" starts at index 7</li>
+                                    <li>Or use: <code>text[7:]</code> to get from 7 to end</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1598,6 +1628,16 @@ print(result)</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>olleH</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints4')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints4">
+                                <ul>
+                                    <li>Use slice with step -1: <code>[::-1]</code></li>
+                                    <li>Syntax: <code>text[::-1]</code></li>
+                                    <li>This creates a reversed copy</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1628,6 +1668,16 @@ print(reversed_text)</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>HELLO WORLD</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints5')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints5">
+                                <ul>
+                                    <li>Use <code>.upper()</code> method</li>
+                                    <li>Syntax: <code>text.upper()</code></li>
+                                    <li>Returns new string, doesn't modify original</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1656,6 +1706,16 @@ print(result)</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Count: 3</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints6">
+                                <ul>
+                                    <li>Use <code>.count()</code> method</li>
+                                    <li>Syntax: <code>text.count("substring")</code></li>
+                                    <li>Returns number of non-overlapping occurrences</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1686,6 +1746,16 @@ print(f"Count: {count}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>I love Java programming</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints7')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints7">
+                                <ul>
+                                    <li>Use <code>.replace()</code> method</li>
+                                    <li>Syntax: <code>text.replace("old", "new")</code></li>
+                                    <li>Returns new string with replacements</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1714,6 +1784,16 @@ print(result)</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>apple | banana | cherry</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints8')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints8">
+                                <ul>
+                                    <li>Split: <code>text.split(",")</code> returns list</li>
+                                    <li>Join: <code>" | ".join(list)</code></li>
+                                    <li>Chain: <code>" | ".join(text.split(","))</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1744,6 +1824,16 @@ print(result)</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Valid data file: True</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints9')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints9">
+                                <ul>
+                                    <li>Use <code>.endswith()</code> method</li>
+                                    <li>Can pass tuple: <code>endswith((".csv", ".txt"))</code></li>
+                                    <li>Returns True if ends with any of them</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1772,6 +1862,16 @@ print(f"Valid data file: {is_valid}")</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Hello World Python</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints10')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints10">
+                                <ul>
+                                    <li>Strip whitespace: <code>.strip()</code></li>
+                                    <li>Title case: <code>.title()</code></li>
+                                    <li>Chain: <code>text.strip().title()</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1802,6 +1902,16 @@ print(cleaned)</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Value: 1,234,567.89</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints11">
+                                <ul>
+                                    <li>Format spec: <code>{value:,.2f}</code></li>
+                                    <li>Comma for thousands separator</li>
+                                    <li>.2f for 2 decimal places</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1829,6 +1939,16 @@ print(f"Value: {}")</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Is all digits: True</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints12">
+                                <ul>
+                                    <li>Use <code>.isdigit()</code> method</li>
+                                    <li>Returns True if all characters are digits</li>
+                                    <li>Syntax: <code>text.isdigit()</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">

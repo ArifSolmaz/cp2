@@ -1856,6 +1856,16 @@ print(f"Config: {actual_value}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>42 is Even</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints2">
+                                <ul>
+                                    <li>Use modulus operator: <code>number % 2</code></li>
+                                    <li>If result is 0 → Even, otherwise → Odd</li>
+                                    <li>Use f-string: <code>f"{number} is Even"</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1885,6 +1895,17 @@ print(f"Config: {actual_value}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Score: 78 → Grade: C</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints3">
+                                <ul>
+                                    <li>Use if-elif-else chain starting from highest grade</li>
+                                    <li>Check <code>score >= 90</code> first, then 80, 70, 60</li>
+                                    <li>Use <code>else</code> for F (anything below 60)</li>
+                                    <li>Format: <code>f"Score: {score} → Grade: {grade}"</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1913,6 +1934,16 @@ print(f"Config: {actual_value}")</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>-5 is Negative</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints4')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints4">
+                                <ul>
+                                    <li>Three conditions: <code>num > 0</code>, <code>num < 0</code>, <code>num == 0</code></li>
+                                    <li>Use if-elif-else structure</li>
+                                    <li>Format: <code>f"{num} is Negative"</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1982,6 +2013,16 @@ print(f"Config: {actual_value}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>The largest is 22</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints6">
+                                <ul>
+                                    <li>Method 1: Use nested if-elif checking all comparisons</li>
+                                    <li>Method 2: Use Python's built-in <code>max(a, b, c)</code></li>
+                                    <li>If using conditionals: check if <code>a >= b and a >= c</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2010,6 +2051,16 @@ print(f"Config: {actual_value}")</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Age 35: Ticket price is 25 TL</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints7')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints7">
+                                <ul>
+                                    <li>Use if-elif-else chain for age ranges</li>
+                                    <li>Check: <code>age <= 12</code>, <code>age <= 17</code>, <code>age <= 64</code>, else senior</li>
+                                    <li>Store price in a variable, then print result</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2079,6 +2130,16 @@ print(f"Config: {actual_value}")</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Sides 3, 4, 5 form a valid triangle</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints9')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints9">
+                                <ul>
+                                    <li>Check all three conditions with <code>and</code>:</li>
+                                    <li><code>a + b > c</code> and <code>b + c > a</code> and <code>a + c > b</code></li>
+                                    <li>If all true → valid triangle</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2107,6 +2168,16 @@ print(f"Config: {actual_value}")</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>BMI: 23.1 - Normal weight</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints10')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints10">
+                                <ul>
+                                    <li>BMI formula: <code>bmi = weight / (height ** 2)</code></li>
+                                    <li>Use if-elif-else to classify BMI ranges</li>
+                                    <li>Format to 1 decimal: <code>f"BMI: {bmi:.1f}"</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2138,6 +2209,16 @@ height = 1.80  # meters
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Weight: 3.5 kg → Shipping: 30 TL</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints11">
+                                <ul>
+                                    <li>Use if-elif-else chain for weight ranges</li>
+                                    <li>Check: <code>weight <= 1</code>, <code>weight <= 3</code>, <code>weight <= 5</code></li>
+                                    <li>Use <code>else</code> for 5+ kg (50 TL)</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2166,6 +2247,16 @@ height = 1.80  # meters
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Password strength: Strong (9 characters)</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints12">
+                                <ul>
+                                    <li>Get password length: <code>len(password)</code></li>
+                                    <li>Check length ranges with if-elif-else</li>
+                                    <li>Format: <code>f"Password strength: {strength} ({length} characters)"</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2197,6 +2288,16 @@ height = 1.80  # meters
                             <pre>Temperature: 85°C (106.2% of max)
 Status: CRITICAL</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints13')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints13">
+                                <ul>
+                                    <li>Calculate percentage: <code>percentage = (temp / max_temp) * 100</code></li>
+                                    <li>Check percentage thresholds with if-elif-else</li>
+                                    <li>Format percentage: <code>f"{percentage:.1f}%"</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2226,6 +2327,16 @@ max_temp = 80  # Maximum safe temperature
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Discount: 20%</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints14')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints14">
+                                <ul>
+                                    <li>Ternary syntax: <code>value_if_true if condition else value_if_false</code></li>
+                                    <li>Example: <code>discount = 20 if is_member else 0</code></li>
+                                    <li>Print: <code>f"Discount: {discount}%"</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2258,6 +2369,17 @@ max_temp = 80  # Maximum safe temperature
 Voltage: 220V (OK)
 Current: 15A (OK)
 Overall: SYSTEM NORMAL</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints15')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints15">
+                                <ul>
+                                    <li>Check voltage in range: <code>min_voltage <= voltage <= max_voltage</code></li>
+                                    <li>Check current: <code>current <= max_current</code></li>
+                                    <li>Use ternary for OK/FAULT: <code>"OK" if condition else "FAULT"</code></li>
+                                    <li>Overall normal if both voltage and current are OK</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">

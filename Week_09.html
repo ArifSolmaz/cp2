@@ -1698,6 +1698,16 @@ for i, config in enumerate(test_configs, 1):
                             <pre>Cannot divide by zero!
 Program continues normally.</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints1')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints1">
+                                <ul>
+                                    <li>Use <code>try:</code> before risky code</li>
+                                    <li>Use <code>except ZeroDivisionError:</code></li>
+                                    <li>Print error message in except block</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1735,6 +1745,16 @@ print("Program continues normally.")</textarea>
 '3.14' -> Invalid number!
 '100' -> 100</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints2">
+                                <ul>
+                                    <li>Use <code>except ValueError:</code></li>
+                                    <li>Put <code>int(value)</code> in try block</li>
+                                    <li>Print "Invalid number!" in except</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1769,6 +1789,16 @@ for value in inputs:
 Index 2: cherry
 Index 5: Index out of range!
 Index -1: cherry</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints3">
+                                <ul>
+                                    <li>Use <code>except IndexError:</code></li>
+                                    <li>Put <code>fruits[idx]</code> in try block</li>
+                                    <li>Print "Index out of range!" in except</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1805,6 +1835,16 @@ age: 25
 email: Key 'email' not found!
 city: Key 'city' not found!</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints4')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints4">
+                                <ul>
+                                    <li>Use <code>except KeyError:</code></li>
+                                    <li>Put <code>person[key]</code> in try block</li>
+                                    <li>Print key name in error message</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1838,6 +1878,16 @@ for key in keys_to_access:
                             <pre>Exception type: ValueError
 Exception message: invalid literal for int() with base 10: 'hello'</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints5')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints5">
+                                <ul>
+                                    <li>Use <code>except ValueError as e:</code></li>
+                                    <li>Type: <code>type(e).__name__</code></li>
+                                    <li>Message: <code>str(e)</code> or just <code>e</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1870,6 +1920,16 @@ except ValueError:  # Add 'as e' to capture the exception
                             <pre>10 / 2 = 5.0
 10 / 0 = None
 15 / 3 = 5.0</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints6">
+                                <ul>
+                                    <li>Try: <code>return a / b</code></li>
+                                    <li>Except ZeroDivisionError: <code>return None</code></li>
+                                    <li>Function handles error internally</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1907,6 +1967,16 @@ print(f"15 / 3 = {safe_divide(15, 3)}")</textarea>
 'abc': Invalid number format
 '0': Cannot divide by zero
 '5': 20.0</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints7')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints7">
+                                <ul>
+                                    <li>Add multiple except blocks</li>
+                                    <li><code>except ValueError:</code> then <code>except ZeroDivisionError:</code></li>
+                                    <li>Return message string instead of None</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -1953,6 +2023,16 @@ for val in test_values:
 Converting 'hello':
   Invalid value
   Result: None</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints8')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints8">
+                                <ul>
+                                    <li>Add <code>else:</code> after except block</li>
+                                    <li>else runs only when no exception</li>
+                                    <li>Print success message in else block</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2002,6 +2082,16 @@ Processing 0:
   Error: Division by zero
   Operation complete</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints9')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints9">
+                                <ul>
+                                    <li>Add <code>finally:</code> at end of try/except</li>
+                                    <li>finally always runs (error or not)</li>
+                                    <li>Used for cleanup operations</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2044,6 +2134,16 @@ for val in [5, 0]:
 200: Error - Age cannot exceed 150
 42: Valid age</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints10')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints10">
+                                <ul>
+                                    <li>Use <code>raise ValueError("message")</code></li>
+                                    <li>Check <code>if age < 0:</code> and <code>if age > 150:</code></li>
+                                    <li>Include descriptive error message</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2085,6 +2185,16 @@ for age in test_ages:
 -5: ✗ ValueError - Value must be positive
 'abc': ✗ TypeError - Value must be a number
 0: ✗ ValueError - Value must be positive</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints11">
+                                <ul>
+                                    <li>Check type: <code>isinstance(value, (int, float))</code></li>
+                                    <li>Raise TypeError for non-numbers</li>
+                                    <li>Raise ValueError for non-positive values</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2132,6 +2242,16 @@ for val in test_values:
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Withdraw $50 from $100: New balance: $50
 Withdraw $150 from $100: Error - Cannot withdraw $150, only $100 available</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints12">
+                                <ul>
+                                    <li>Create class: <code>class InsufficientFundsError(Exception): pass</code></li>
+                                    <li>Raise with: <code>raise InsufficientFundsError("message")</code></li>
+                                    <li>Catch with: <code>except InsufficientFundsError as e:</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">

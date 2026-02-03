@@ -2054,6 +2054,16 @@ for sensor in sensors:
                             <pre>Toyota Camry
 Toyota Camry (4 doors)</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints1')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints1">
+                                <ul>
+                                    <li>Use <code>class Car(Vehicle):</code> syntax</li>
+                                    <li>Call <code>super().__init__(brand, model)</code></li>
+                                    <li>Override <code>describe()</code> in Car</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2093,6 +2103,16 @@ print(car.describe())</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Person: Ali, 25 years
 Employee: Ayşe, 30 years, ID: E001</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints2">
+                                <ul>
+                                    <li>In Employee.__init__: <code>super().__init__(name, age)</code></li>
+                                    <li>Add <code>self.employee_id</code> after super call</li>
+                                    <li>Override __str__ to include ID</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2138,6 +2158,16 @@ print(employee)</textarea>
                             <pre>Some sound
 Buddy says Woof!
 Whiskers says Meow!</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints3">
+                                <ul>
+                                    <li>Define <code>def speak(self):</code> in each subclass</li>
+                                    <li>Return <code>f"{self.name} says Woof!"</code> for Dog</li>
+                                    <li>Return <code>f"{self.name} says Meow!"</code> for Cat</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2189,6 +2219,16 @@ print(cat.speak())</textarea>
 Circle: 78.54 sq units
 Unknown shape</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints4')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints4">
+                                <ul>
+                                    <li>Use <code>if isinstance(shape, Rectangle):</code></li>
+                                    <li>Circle area: <code>3.14159 * shape.r ** 2</code></li>
+                                    <li>Return "Unknown shape" for non-Shape types</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2237,6 +2277,16 @@ print(describe_shape("not a shape"))</textarea>
 [LOG] add(10, 5) = 15
 15</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints5')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints5">
+                                <ul>
+                                    <li>Override add(): call <code>result = super().add(a, b)</code></li>
+                                    <li>Print the log message with result</li>
+                                    <li>Return the result after logging</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2277,6 +2327,16 @@ print(logged_calc.add(10, 5))</textarea>
                             <pre>Processing text: Hello
 Processing number: 84
 Processing list: 3 items</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints6">
+                                <ul>
+                                    <li>Loop: <code>for proc in processors:</code></li>
+                                    <li>Call <code>print(proc.process())</code></li>
+                                    <li>Same method name works on all types</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2333,6 +2393,16 @@ process_all(items)</textarea>
                             <pre>Nemo is flying
 Nemo is swimming</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints7')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints7">
+                                <ul>
+                                    <li>Use <code>class FlyingFish(Flyable, Swimmable):</code></li>
+                                    <li>Define __init__ to set <code>self.name</code></li>
+                                    <li>Inherits both fly() and swim() methods</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2374,6 +2444,16 @@ print(fish.swim())</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Event created at timestamp: 1
 Event created at timestamp: 2</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints8')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints8">
+                                <ul>
+                                    <li>Increment class counter: <code>TimestampMixin._counter += 1</code></li>
+                                    <li>Set <code>self.timestamp = TimestampMixin._counter</code></li>
+                                    <li>Class attributes shared across all instances</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2424,6 +2504,16 @@ print(e2)</textarea>
                             <pre>Cannot instantiate abstract class
 FileSource read: data.txt
 MemorySource read: memory data</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints9')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints9">
+                                <ul>
+                                    <li>Use <code>@abstractmethod</code> decorator</li>
+                                    <li>Subclasses must implement all abstract methods</li>
+                                    <li>FileSource.read returns <code>f"FileSource read: {self.filename}"</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
@@ -2476,6 +2566,16 @@ print(mem_src.read())</textarea>
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Rectangle: 4 sides, area=50</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints10')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints10">
+                                <ul>
+                                    <li>Rectangle calls <code>super().__init__(4)</code></li>
+                                    <li>Each level overrides describe()</li>
+                                    <li>Rectangle.describe includes area calculation</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2524,6 +2624,16 @@ print(rect.describe())</textarea>
                             <pre>MRO: D -> B -> C -> A -> object
 D.greet(): Hello from B</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints11">
+                                <ul>
+                                    <li>Get MRO: <code>D.__mro__</code> or <code>D.mro()</code></li>
+                                    <li>Format: <code>[c.__name__ for c in D.__mro__]</code></li>
+                                    <li>D inherits from B first, so B.greet() is used</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2566,6 +2676,16 @@ class D(B, C):
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>TEMP_001: 25.5 °C
 PRES_001: 1013.25 hPa</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints12">
+                                <ul>
+                                    <li>TemperatureSensor: <code>super().__init__(sensor_id, "°C")</code></li>
+                                    <li>PressureSensor: <code>super().__init__(sensor_id, "hPa")</code></li>
+                                    <li>Use parent's read() and display() methods</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">

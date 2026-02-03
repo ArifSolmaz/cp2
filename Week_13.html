@@ -1838,6 +1838,16 @@ for i, record in enumerate(records, 1):
                             <pre>TEMP_001: 25.5 celsius
 PRES_001: 1013.25 hPa</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints2">
+                                <ul>
+                                    <li>Use <code>json.loads()</code> to parse JSON string</li>
+                                    <li>Access nested data: <code>data['sensors']</code></li>
+                                    <li>Loop through list and access dict keys</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1939,6 +1949,16 @@ for sensor_id, value in test_cases:
 All: 3 records
 TEMP_001: 2 records</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints4')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints4">
+                                <ul>
+                                    <li>Store records in <code>self.records = []</code></li>
+                                    <li>insert: append dict with auto-increment id</li>
+                                    <li>select_by_sensor: filter with list comprehension</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1994,6 +2014,16 @@ print(f"TEMP_001: {len(db.select_by_sensor('TEMP_001'))} records")</textarea>
                             <div class="expected-output-label">Expected Output</div>
                             <pre>Statistics: min=22.1, max=26.0, avg=24.50</pre>
                         </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints5')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints5">
+                                <ul>
+                                    <li>Extract values: <code>[float(row['temp']) for row in reader]</code></li>
+                                    <li>Use <code>min()</code>, <code>max()</code>, <code>sum()/len()</code></li>
+                                    <li>Return dict with min, max, avg keys</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2035,6 +2065,16 @@ print(f"Statistics: min={stats['min']}, max={stats['max']}, avg={stats['avg']:.2
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Create a Config class that loads settings from JSON and provides get/set methods.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints6">
+                                <ul>
+                                    <li>__init__: <code>self.data = json.loads(json_str)</code></li>
+                                    <li>get: <code>return self.data.get(key, default)</code></li>
+                                    <li>to_json: <code>json.dumps(self.data, indent=2)</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2077,6 +2117,16 @@ print(f"Config:\n{config.to_json()}")</textarea>
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Parse XML and extract sensor readings into a list of dictionaries.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints7')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints7">
+                                <ul>
+                                    <li>Parse: <code>ET.fromstring(xml_string)</code></li>
+                                    <li>Find elements: <code>root.findall('sensor')</code></li>
+                                    <li>Get attribute: <code>sensor.get('id')</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2120,6 +2170,16 @@ for s in sensors:
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Use struct to pack and unpack sensor data (id: int, value: float, status: byte).</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints8')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints8">
+                                <ul>
+                                    <li>Format string: 'i'=int, 'f'=float, 'B'=byte</li>
+                                    <li>Pack: <code>struct.pack(FORMAT, id, val, stat)</code></li>
+                                    <li>Unpack: <code>struct.unpack(FORMAT, data)</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2240,6 +2300,16 @@ for r in results:
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Create a mock API client with GET and POST methods and error handling.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints10')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints10">
+                                <ul>
+                                    <li>Store data in <code>self.data = []</code></li>
+                                    <li>GET: check endpoint and return matching data</li>
+                                    <li>Return dict with 'status' and 'data' or 'error'</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2299,6 +2369,16 @@ print(f"POST: {resp['status']}, added {resp['data']}")</textarea>
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Implement a schema validator that checks required fields, types, and value ranges.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints11">
+                                <ul>
+                                    <li>Schema: dict of field names to rules</li>
+                                    <li>Check required, type with <code>isinstance()</code></li>
+                                    <li>Return tuple: <code>(is_valid, error_list)</code></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2365,6 +2445,16 @@ for data in test_data:
                     </div>
                     <div class="exercise-body">
                         <p class="exercise-description">Create functions to convert between CSV, JSON, and XML formats.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints12">
+                                <ul>
+                                    <li>CSV to JSON: DictReader → list → json.dumps</li>
+                                    <li>JSON to CSV: json.loads → DictWriter</li>
+                                    <li>Use StringIO for string ↔ file conversion</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
