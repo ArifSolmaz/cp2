@@ -3026,7 +3026,7 @@ sys.stdout = StringIO()
         // =========================================
         // Form Submission
         // =========================================
-        function submitWork() {
+        async function submitWork() {
             const status = document.getElementById('submitStatus');
             status.style.display = 'none';
             
@@ -3036,7 +3036,7 @@ sys.stdout = StringIO()
             const classCode = document.getElementById('classCode').value.trim().toUpperCase();
             const honeypot = document.getElementById('website').value;
             
-            // Anti-spam check
+            // Bot check
             if (honeypot) {
                 status.textContent = '❌ Submission rejected.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
@@ -3046,7 +3046,7 @@ sys.stdout = StringIO()
             // Time check
             const timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
             if (timeOnPage < 60) {
-                status.textContent = '❌ Please spend more time reviewing the material before submitting.';
+                status.textContent = '❌ Please spend more time reviewing the material.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
@@ -3058,35 +3058,72 @@ sys.stdout = StringIO()
                 return;
             }
             
-            // Student ID validation
+            // Validate student ID
             if (!validateStudentId(studentId)) {
-                status.textContent = '❌ Invalid Student ID. Must be 6-10 digits.';
+                status.textContent = '❌ Invalid Student ID (must be 6-10 digits).';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            // Name validation
+            // Validate name
             if (!validateName(studentName)) {
-                status.textContent = '❌ Please enter your full name (first and last name).';
+                status.textContent = '❌ Please enter your full name (first and last).';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            // Email validation
+            // Validate email
             if (!validateEmail(studentEmail)) {
-                status.textContent = '❌ Please use your @istun.edu.tr email address.';
+                status.textContent = '❌ Please use your @istun.edu.tr email.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            // Class code validation
+            // Validate class code
             if (classCode.length < 4) {
                 status.textContent = '❌ Invalid class code.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            // Prepare data
+            status.textContent = '⏳ Collecting answers and submitting...';
+            status.style.cssText = 'display:block;background:rgba(124,58,237,0.2);color:#a78bfa';
+            
+            // Collect all exercise answers
+            const answers = {};
+            const exerciseCards = document.querySelectorAll('.exercise-card');
+            exerciseCards.forEach((card, index) => {
+                const exNum = index + 1;
+                const titleEl = card.querySelector('.exercise-title');
+                const descEl = card.querySelector('.exercise-description');
+                const codeEl = card.querySelector('.code-editor[id^="ex"]');
+                
+                if (codeEl) {
+                    const exId = codeEl.id;
+                    answers[exId] = {
+                        title: titleEl ? titleEl.textContent.replace(/^\d+/, '').trim() : 'Exercise ' + exNum,
+                        description: descEl ? descEl.textContent.trim() : '',
+                        code: codeEl.value || ''
+                    };
+                }
+            });
+            
+            // Fetch IP and location
+            let ipAddress = 'Unknown';
+            let location = 'Unknown';
+            try {
+                const ipResponse = await fetch('https://ipapi.co/json/', { timeout: 5000 });
+                if (ipResponse.ok) {
+                    const ipData = await ipResponse.json();
+                    ipAddress = ipData.ip || 'Unknown';
+                    location = (ipData.city && ipData.country_name) 
+                        ? `${ipData.city}, ${ipData.country_name}` 
+                        : (ipData.country_name || 'Unknown');
+                }
+            } catch (e) {
+                console.log('Could not fetch IP info');
+            }
+            
             const data = {
                 week: 'Week_10',
                 studentId: studentId,
@@ -3094,15 +3131,14 @@ sys.stdout = StringIO()
                 studentEmail: studentEmail,
                 classCode: classCode,
                 timeOnPage: timeOnPage,
-                source: 'cp2-web'
+                source: 'cp2-web',
+                answers: answers,
+                ipAddress: ipAddress,
+                location: location
             };
-            
-            status.textContent = '⏳ Submitting...';
-            status.style.cssText = 'display:block;background:rgba(124,58,237,0.2);color:#a78bfa';
             
             const scriptUrl = 'https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec';
             
-            // Try CORS first, fall back to no-cors
             fetch(scriptUrl, {
                 method: 'POST',
                 mode: 'cors',
@@ -3112,7 +3148,7 @@ sys.stdout = StringIO()
             .then(response => response.json())
             .then(result => {
                 if (result.success) {
-                    status.textContent = '✅ ' + result.message;
+                    status.textContent = '✅ ' + result.message + ' Check your email for confirmation with your submitted answers.';
                     status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
                 } else {
                     status.textContent = '❌ ' + result.message;
@@ -3120,7 +3156,6 @@ sys.stdout = StringIO()
                 }
             })
             .catch(error => {
-                // Fallback to no-cors mode
                 fetch(scriptUrl, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -3128,11 +3163,11 @@ sys.stdout = StringIO()
                     body: JSON.stringify(data)
                 })
                 .then(() => {
-                    status.textContent = '✅ Submission received! Thank you.';
-                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                    status.textContent = '⚠️ Request sent. Check your email for confirmation.';
+                    status.style.cssText = 'display:block;background:rgba(217,119,6,0.2);color:#fcd34d';
                 })
                 .catch(() => {
-                    status.textContent = '❌ Connection error. Please try again later.';
+                    status.textContent = '❌ Connection error. Please try again.';
                     status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 });
             });

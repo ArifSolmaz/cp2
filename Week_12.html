@@ -3300,73 +3300,118 @@ for sensor in sensors:
             return email.endsWith('@istun.edu.tr') && email.length > 15;
         }
 
-        function submitWork() {
-            var status = document.getElementById('submitStatus');
+        async function submitWork() {
+            const status = document.getElementById('submitStatus');
             status.style.display = 'none';
             
-            var studentId = document.getElementById('studentId').value.trim();
-            var studentName = document.getElementById('studentName').value.trim();
-            var studentEmail = document.getElementById('studentEmail').value.trim().toLowerCase();
-            var classCode = document.getElementById('classCode').value.trim().toUpperCase();
-            var honeypot = document.getElementById('website').value;
+            const studentId = document.getElementById('studentId').value.trim();
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentEmail = document.getElementById('studentEmail').value.trim().toLowerCase();
+            const classCode = document.getElementById('classCode').value.trim().toUpperCase();
+            const honeypot = document.getElementById('website').value;
             
+            // Bot check
             if (honeypot) {
                 status.textContent = '❌ Submission rejected.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
+            // Time check
+            const timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
             if (timeOnPage < 60) {
                 status.textContent = '❌ Please spend more time reviewing the material.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
+            // Required fields
             if (!studentId || !studentName || !studentEmail || !classCode) {
                 status.textContent = '❌ All fields are required.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
+            // Validate student ID
             if (!validateStudentId(studentId)) {
-                status.textContent = '❌ Invalid Student ID. Must be 6-10 digits.';
+                status.textContent = '❌ Invalid Student ID (must be 6-10 digits).';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
+            // Validate name
             if (!validateName(studentName)) {
-                status.textContent = '❌ Please enter your full name.';
+                status.textContent = '❌ Please enter your full name (first and last).';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
+            // Validate email
             if (!validateEmail(studentEmail)) {
                 status.textContent = '❌ Please use your @istun.edu.tr email.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
+            // Validate class code
             if (classCode.length < 4) {
                 status.textContent = '❌ Invalid class code.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            var data = {
+            status.textContent = '⏳ Collecting answers and submitting...';
+            status.style.cssText = 'display:block;background:rgba(124,58,237,0.2);color:#a78bfa';
+            
+            // Collect all exercise answers
+            const answers = {};
+            const exerciseCards = document.querySelectorAll('.exercise-card');
+            exerciseCards.forEach((card, index) => {
+                const exNum = index + 1;
+                const titleEl = card.querySelector('.exercise-title');
+                const descEl = card.querySelector('.exercise-description');
+                const codeEl = card.querySelector('.code-editor[id^="ex"]');
+                
+                if (codeEl) {
+                    const exId = codeEl.id;
+                    answers[exId] = {
+                        title: titleEl ? titleEl.textContent.replace(/^\d+/, '').trim() : 'Exercise ' + exNum,
+                        description: descEl ? descEl.textContent.trim() : '',
+                        code: codeEl.value || ''
+                    };
+                }
+            });
+            
+            // Fetch IP and location
+            let ipAddress = 'Unknown';
+            let location = 'Unknown';
+            try {
+                const ipResponse = await fetch('https://ipapi.co/json/', { timeout: 5000 });
+                if (ipResponse.ok) {
+                    const ipData = await ipResponse.json();
+                    ipAddress = ipData.ip || 'Unknown';
+                    location = (ipData.city && ipData.country_name) 
+                        ? `${ipData.city}, ${ipData.country_name}` 
+                        : (ipData.country_name || 'Unknown');
+                }
+            } catch (e) {
+                console.log('Could not fetch IP info');
+            }
+            
+            const data = {
                 week: 'Week_12',
                 studentId: studentId,
                 studentName: studentName,
                 studentEmail: studentEmail,
                 classCode: classCode,
                 timeOnPage: timeOnPage,
-                source: 'cp2-web'
+                source: 'cp2-web',
+                answers: answers,
+                ipAddress: ipAddress,
+                location: location
             };
             
-            status.textContent = '⏳ Submitting...';
-            status.style.cssText = 'display:block;background:rgba(147,51,234,0.2);color:#a78bfa';
-            
-            var scriptUrl = 'https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec';
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec';
             
             fetch(scriptUrl, {
                 method: 'POST',
@@ -3374,28 +3419,28 @@ for sensor in sensors:
                 headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify(data)
             })
-            .then(function(response) { return response.json(); })
-            .then(function(result) {
+            .then(response => response.json())
+            .then(result => {
                 if (result.success) {
-                    status.textContent = '✅ ' + result.message;
+                    status.textContent = '✅ ' + result.message + ' Check your email for confirmation with your submitted answers.';
                     status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
                 } else {
                     status.textContent = '❌ ' + result.message;
                     status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 }
             })
-            .catch(function(error) {
+            .catch(error => {
                 fetch(scriptUrl, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify(data)
                 })
-                .then(function() {
-                    status.textContent = '✅ Submission received! Thank you.';
-                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                .then(() => {
+                    status.textContent = '⚠️ Request sent. Check your email for confirmation.';
+                    status.style.cssText = 'display:block;background:rgba(217,119,6,0.2);color:#fcd34d';
                 })
-                .catch(function() {
+                .catch(() => {
                     status.textContent = '❌ Connection error. Please try again.';
                     status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 });
