@@ -3737,7 +3737,83 @@ for r in results:
         // Form Validation
         var pageLoadTime = Date.now();
 
+        // ============ ANTI-CHEAT SYSTEM ============
+        // Store original/default code for each exercise
+        const originalExerciseCode = {};
+        // Track keystroke counts per exercise
+        const keystrokeCounts = {};
+        // Track if paste was attempted
+        const pasteAttempts = {};
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.code-editor[id^="ex"]').forEach(textarea => {
+                const exId = textarea.id;
+                
+                // Store original code
+                originalExerciseCode[exId] = textarea.value;
+                keystrokeCounts[exId] = 0;
+                pasteAttempts[exId] = 0;
+                
+                // Block paste
+                textarea.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    pasteAttempts[exId]++;
+                    // Show warning
+                    const warning = document.createElement('div');
+                    warning.textContent = '⚠️ Paste is disabled. Please type your code.';
+                    warning.style.cssText = 'color:#f87171;font-size:12px;margin-top:5px;';
+                    warning.className = 'paste-warning';
+                    // Remove existing warning if any
+                    const existingWarning = textarea.parentElement.querySelector('.paste-warning');
+                    if (existingWarning) existingWarning.remove();
+                    textarea.parentElement.appendChild(warning);
+                    // Auto-remove warning after 3 seconds
+                    setTimeout(() => warning.remove(), 3000);
+                });
+                
+                // Block drag & drop
+                textarea.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                });
+                
+                // Count keystrokes (only actual typing keys)
+                textarea.addEventListener('keydown', function(e) {
+                    // Count printable characters, backspace, delete, enter, tab
+                    if (e.key.length === 1 || ['Backspace', 'Delete', 'Enter', 'Tab'].includes(e.key)) {
+                        keystrokeCounts[exId]++;
+                    }
+                });
+            });
+        });
+        
+        // Check if code was actually modified by student (with meaningful effort)
+        function isCodeModified(exId, currentCode) {
+            const original = originalExerciseCode[exId] || '';
+            const keystrokes = keystrokeCounts[exId] || 0;
+            
+            // Normalize whitespace for comparison
+            const normalizedOriginal = original.trim().replace(/\s+/g, ' ');
+            const normalizedCurrent = currentCode.trim().replace(/\s+/g, ' ');
+            
+            // Must be different from original
+            if (normalizedOriginal === normalizedCurrent) return false;
+            
+            // Must have typed at least 20 keystrokes (prevents minimal changes)
+            if (keystrokes < 20) return false;
+            
+            // Remove comments and check if anything substantial remains
+            const withoutComments = currentCode.replace(/#.*$/gm, '').replace(/"""[\s\S]*?"""/g, '').replace(/'''[\s\S]*?'''/g, '').trim();
+            const originalWithoutComments = original.replace(/#.*$/gm, '').replace(/"""[\s\S]*?"""/g, '').replace(/'''[\s\S]*?'''/g, '').trim();
+            
+            // Must have added meaningful code (not just modified comments)
+            if (withoutComments.length <= originalWithoutComments.length + 10) return false;
+            
+            return true;
+        }
+        // ============ END ANTI-CHEAT ============
+
         function validateStudentId(id) {
+
             if (id.length < 6 || id.length > 10) return false;
             if (!/^\d+$/.test(id)) return false;
             if (/^(\d)\1+$/.test(id)) return false;
@@ -3818,7 +3894,7 @@ for r in results:
             status.textContent = '⏳ Collecting answers and submitting...';
             status.style.cssText = 'display:block;background:rgba(124,58,237,0.2);color:#a78bfa';
             
-            // Collect all exercise answers
+            // Collect all exercise answers with anti-cheat data
             const answers = {};
             const exerciseCards = document.querySelectorAll('.exercise-card');
             exerciseCards.forEach((card, index) => {
@@ -3829,13 +3905,20 @@ for r in results:
                 
                 if (codeEl) {
                     const exId = codeEl.id;
+                    const code = codeEl.value || '';
+                    const wasModified = isCodeModified(exId, code);
+                    
                     answers[exId] = {
                         title: titleEl ? titleEl.textContent.replace(/^\d+/, '').trim() : 'Exercise ' + exNum,
                         description: descEl ? descEl.textContent.trim() : '',
-                        code: codeEl.value || ''
+                        code: code,
+                        modified: wasModified,
+                        keystrokes: keystrokeCounts[exId] || 0,
+                        pasteAttempts: pasteAttempts[exId] || 0
                     };
                 }
             });
+
             
             // Fetch IP and location
             let ipAddress = 'Unknown';
