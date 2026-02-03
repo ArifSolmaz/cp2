@@ -1,0 +1,2630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 09: Error Handling and Exceptions | Computer Programming II</title>
+    
+    <!-- Pyodide for Python execution -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-cream: #faf9f7;
+            --bg-dark: #1a1a2e;
+            --bg-code: #1e1e2e;
+            --text-primary: #1a1a2e;
+            --text-secondary: #444;
+            --text-muted: #666;
+            --accent: #7c3aed;
+            --accent-light: rgba(124, 58, 237, 0.1);
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --border: #e5e5e5;
+            --card-bg: #ffffff;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: 19px;
+            line-height: 1.8;
+            background: var(--bg-cream);
+            color: var(--text-primary);
+        }
+        
+        .topbar {
+            background: var(--bg-dark);
+            color: white;
+            padding: 14px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .topbar a { color: white; text-decoration: none; font-family: system-ui, sans-serif; font-size: 0.9rem; opacity: 0.9; transition: opacity 0.2s; }
+        .topbar a:hover { opacity: 1; }
+        .topbar-title { font-family: system-ui, sans-serif; font-weight: 600; font-size: 1rem; }
+        .topbar-nav { display: flex; gap: 24px; align-items: center; }
+        
+        .progress-container { position: fixed; top: 52px; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 99; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa); width: 0%; transition: width 0.15s ease-out; }
+        
+        .container { max-width: 900px; margin: 0 auto; padding: 50px 24px 80px; }
+        
+        .chapter-header { text-align: center; margin-bottom: 50px; padding-bottom: 40px; border-bottom: 2px solid var(--border); }
+        .chapter-label { display: inline-block; background: var(--accent); color: white; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-family: system-ui, sans-serif; font-weight: 500; margin-bottom: 20px; }
+        .chapter-header h1 { font-size: 2.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; line-height: 1.2; }
+        .chapter-meta { display: flex; justify-content: center; gap: 30px; color: var(--text-muted); font-size: 1rem; flex-wrap: wrap; }
+        .chapter-meta span { display: flex; align-items: center; gap: 6px; }
+        
+        .objectives-box { background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(124, 58, 237, 0.2); border-left: 4px solid var(--accent); border-radius: 8px; padding: 28px; margin-bottom: 50px; }
+        .objectives-box h3 { font-size: 1.2rem; margin-bottom: 16px; color: var(--accent); }
+        .objectives-box ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 10px 30px; list-style: none; }
+        .objectives-box li { color: var(--text-secondary); font-size: 0.95rem; padding-left: 28px; position: relative; }
+        .objectives-box li::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: bold; }
+        
+        .section { margin-bottom: 60px; scroll-margin-top: 70px; }
+        .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+        .section-number { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: var(--accent); color: white; border-radius: 10px; font-size: 1.2rem; font-weight: 700; font-family: system-ui, sans-serif; flex-shrink: 0; }
+        .section-header h2 { font-size: 1.6rem; font-weight: 600; color: var(--text-primary); }
+        
+        .content p { color: var(--text-secondary); margin-bottom: 18px; }
+        .content h3 { font-size: 1.25rem; font-weight: 600; margin: 35px 0 16px; color: var(--text-primary); }
+        .content h4 { font-size: 1.05rem; font-weight: 600; margin: 28px 0 12px; color: var(--accent); }
+        .content ul, .content ol { color: var(--text-secondary); margin: 16px 0 20px 28px; }
+        .content li { margin-bottom: 10px; }
+        .content strong { color: var(--text-primary); }
+        
+        code { font-family: 'JetBrains Mono', monospace; background: rgba(124, 58, 237, 0.1); padding: 2px 8px; border-radius: 4px; font-size: 0.85em; color: var(--accent); }
+        pre { font-family: 'JetBrains Mono', monospace; background: var(--bg-code); color: #e4e4e7; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 0.9rem; line-height: 1.5; margin: 16px 0; }
+        
+        .code-figure { background: var(--bg-code); border-radius: 10px; margin: 20px 0; overflow: hidden; border: 1px solid #333; }
+        .code-figure-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(255,255,255,0.05); border-bottom: 1px solid #333; }
+        .code-figure-label { font-family: system-ui, sans-serif; font-size: 0.8rem; color: #a78bfa; font-weight: 500; }
+        .code-figure-run { background: var(--success); color: white; border: none; padding: 6px 14px; border-radius: 6px; font-family: system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .code-figure-run:hover { background: #047857; transform: translateY(-1px); }
+        .code-editor { width: 100%; min-height: 120px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; }
+        .code-output.show { display: block; }
+        .code-output-label { font-family: system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .code-output-content { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #d4d4d8; white-space: pre-wrap; }
+        
+        .info-box { padding: 18px 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid; }
+        .info-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .tip-box { background: rgba(5, 150, 105, 0.08); border-color: var(--success); }
+        .tip-box::before { content: '💡 Tip'; display: block; font-weight: 600; color: var(--success); margin-bottom: 8px; font-size: 0.9rem; }
+        .warning-box { background: rgba(217, 119, 6, 0.08); border-color: var(--warning); }
+        .warning-box::before { content: '⚠️ Important'; display: block; font-weight: 600; color: var(--warning); margin-bottom: 8px; font-size: 0.9rem; }
+        .note-box { background: var(--accent-light); border-color: var(--accent); }
+        .note-box::before { content: '📝 Note'; display: block; font-weight: 600; color: var(--accent); margin-bottom: 8px; font-size: 0.9rem; }
+        
+        .table-container { overflow-x: auto; margin: 24px 0; border-radius: 10px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        th { background: var(--bg-dark); color: white; padding: 14px 18px; text-align: left; font-weight: 600; font-family: system-ui, sans-serif; font-size: 0.9rem; }
+        td { padding: 14px 18px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(124, 58, 237, 0.03); }
+        
+        .exercise-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 28px 0; overflow: hidden; }
+        .exercise-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05)); border-bottom: 1px solid var(--border); }
+        .exercise-title { font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 12px; }
+        .exercise-number { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; font-family: system-ui, sans-serif; }
+        .difficulty { padding: 5px 14px; border-radius: 15px; font-size: 0.8rem; font-weight: 600; font-family: system-ui, sans-serif; }
+        .difficulty.easy { background: rgba(5, 150, 105, 0.12); color: var(--success); }
+        .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
+        .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
+        .exercise-body { padding: 24px; }
+        .exercise-description { color: var(--text-secondary); font-size: 1rem; margin-bottom: 20px; }
+        .expected-output { background: rgba(5, 150, 105, 0.06); border: 1px solid rgba(5, 150, 105, 0.15); border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
+        .expected-output-label { font-size: 0.8rem; font-weight: 600; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; font-family: system-ui, sans-serif; }
+        .expected-output pre { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-secondary); margin: 0; white-space: pre-wrap; background: transparent; padding: 0; }
+        .hints-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--accent-light); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 8px; color: var(--accent); font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .hints-toggle:hover { background: rgba(124, 58, 237, 0.15); }
+        .hints-content { display: none; background: rgba(124, 58, 237, 0.05); border: 1px solid rgba(124, 58, 237, 0.12); border-radius: 8px; padding: 18px 24px; margin-top: 14px; }
+        .hints-content.show { display: block; }
+        .hints-content ul { margin: 0; padding-left: 20px; }
+        .hints-content li { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 8px; }
+        
+        .submit-section { background: var(--bg-dark); border-radius: 14px; padding: 40px; margin: 60px 0; color: white; }
+        .submit-section h2 { font-size: 1.6rem; margin-bottom: 10px; color: white; }
+        .submit-section > p { color: rgba(255,255,255,0.7); margin-bottom: 28px; }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 8px; color: rgba(255,255,255,0.8); font-family: system-ui, sans-serif; }
+        .form-group input { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; font-size: 1rem; font-family: inherit; transition: all 0.2s; }
+        .form-group input:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,0.15); }
+        .form-group input::placeholder { color: rgba(255,255,255,0.4); }
+        .honeypot { position: absolute; left: -9999px; }
+        .submit-btn { background: var(--accent); color: white; border: none; padding: 16px 40px; border-radius: 8px; font-size: 1.05rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: system-ui, sans-serif; }
+        .submit-btn:hover { background: #6d28d9; transform: translateY(-2px); }
+        .submit-status { margin-top: 20px; padding: 16px 20px; border-radius: 8px; font-family: system-ui, sans-serif; display: none; }
+        
+        .page-nav { display: flex; justify-content: space-between; padding: 30px 0; border-top: 2px solid var(--border); margin-top: 60px; }
+        .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: all 0.2s; }
+        .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+        
+        .summary-box { background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 12px; padding: 30px; margin: 50px 0; }
+        .summary-box h3 { color: var(--accent); margin-bottom: 20px; font-size: 1.3rem; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .summary-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--card-bg); border-radius: 8px; font-size: 0.95rem; }
+        .summary-item .icon { font-size: 1.3rem; }
+        
+        @media (max-width: 700px) {
+            .chapter-header h1 { font-size: 2rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .chapter-meta { flex-direction: column; gap: 10px; }
+            .topbar-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+    
+    <nav class="topbar">
+        <a href="index.html?home=true" class="topbar-title">← Course Home</a>
+        <div class="topbar-nav">
+            <span style="opacity:0.7">Week 09 of 14</span>
+            <a href="Week_08.html">← Week 08</a>
+            <a href="Week_10.html">Week 10 →</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <header class="chapter-header">
+            <span class="chapter-label">Week 09</span>
+            <h1>Error Handling and Exceptions</h1>
+            <div class="chapter-meta">
+                <span>📚 Computer Programming II</span>
+                <span>👨‍🏫 Dr. Arif Solmaz</span>
+            </div>
+        </header>
+        
+        <div class="objectives-box">
+            <h3>🎯 Learning Objectives</h3>
+            <ul>
+                <li>Understand different types of errors in Python</li>
+                <li>Use try/except blocks to handle exceptions</li>
+                <li>Handle multiple exception types effectively</li>
+                <li>Use else and finally clauses properly</li>
+                <li>Raise exceptions intentionally for validation</li>
+                <li>Create custom exception classes</li>
+                <li>Apply debugging techniques systematically</li>
+                <li>Write robust, error-resistant code</li>
+            </ul>
+        </div>
+        
+        <div class="content">
+            <!-- Section 1: Types of Errors -->
+            <section id="part1" class="section">
+                <div class="section-header">
+                    <div class="section-number">1</div>
+                    <h2>Types of Errors in Python</h2>
+                </div>
+                
+                <p>Every programmer encounters errors. Python categorizes errors into two main types: syntax errors that prevent code from running, and exceptions that occur during execution. Understanding this distinction is fundamental to writing robust programs.</p>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Error Type</th><th>Description</th><th>When Detected</th><th>Can Be Caught?</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Syntax Errors</strong></td><td>Invalid code structure</td><td>Before running (parsing)</td><td>No</td></tr>
+                            <tr><td><strong>Exceptions</strong></td><td>Runtime errors during execution</td><td>While running</td><td>Yes</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3>Syntax Errors</h3>
+                <p>Syntax errors occur when Python cannot parse your code because it violates the language's grammar rules. These errors are detected before execution begins, and the program will not run at all until they are fixed.</p>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.1: Syntax Error Examples</span>
+                        <button class="code-figure-run" onclick="runCode('code1')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code1"># Syntax errors prevent code from running entirely
+# These are commented out because they would stop execution:
+
+# Missing colon after if statement:
+# if True
+#     print("Hello")
+
+# Unmatched parentheses:
+# print("Hello"
+
+# Invalid assignment:
+# 5 = x
+
+# Missing quotes:
+# print(Hello World)
+
+print("Syntax errors must be fixed before the program can run!")
+print("Python's error messages help identify the line and nature of syntax errors.")</textarea>
+                    <div class="code-output" id="outputcode1">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Common Exception Types</h3>
+                <p>Exceptions are errors that occur during program execution. Unlike syntax errors, the code is valid Python, but something goes wrong at runtime. Python has many built-in exception types for different error conditions.</p>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.2: Common Built-in Exceptions</span>
+                        <button class="code-figure-run" onclick="runCode('code2')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code2"># Common Built-in Exceptions Reference
+exceptions = [
+    ("ZeroDivisionError", "Division or modulo by zero", "10 / 0"),
+    ("TypeError", "Operation on incompatible types", "'5' + 5"),
+    ("ValueError", "Right type, invalid value", "int('abc')"),
+    ("IndexError", "Sequence index out of range", "[1,2,3][10]"),
+    ("KeyError", "Dictionary key not found", "{'a':1}['b']"),
+    ("NameError", "Variable not defined", "print(undefined_var)"),
+    ("AttributeError", "Object has no attribute", "'hello'.append('!')"),
+    ("FileNotFoundError", "File doesn't exist", "open('missing.txt')"),
+    ("ImportError", "Module import failed", "import nonexistent"),
+    ("RuntimeError", "Generic runtime error", "Various situations"),
+]
+
+print(f"{'Exception':<20} {'Description':<35} {'Example'}")
+print("=" * 80)
+for exc, desc, example in exceptions:
+    print(f"{exc:<20} {desc:<35} {example}")</textarea>
+                    <div class="code-output" id="outputcode2">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Exception Hierarchy</h3>
+                <p>Python exceptions form a hierarchy. All exceptions inherit from <code>BaseException</code>, with most user-catchable exceptions inheriting from <code>Exception</code>. Understanding this hierarchy helps when catching exceptions.</p>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.3: Exception Hierarchy</span>
+                        <button class="code-figure-run" onclick="runCode('code3')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code3"># Exception inheritance hierarchy
+print("Exception Hierarchy (partial):")
+print()
+print("BaseException")
+print("├── SystemExit")
+print("├── KeyboardInterrupt")
+print("├── GeneratorExit")
+print("└── Exception")
+print("    ├── StopIteration")
+print("    ├── ArithmeticError")
+print("    │   ├── ZeroDivisionError")
+print("    │   ├── OverflowError")
+print("    │   └── FloatingPointError")
+print("    ├── LookupError")
+print("    │   ├── IndexError")
+print("    │   └── KeyError")
+print("    ├── ValueError")
+print("    ├── TypeError")
+print("    ├── OSError")
+print("    │   ├── FileNotFoundError")
+print("    │   ├── PermissionError")
+print("    │   └── ConnectionError")
+print("    └── RuntimeError")
+print()
+
+# Demonstrate inheritance
+print("Checking inheritance:")
+print(f"ZeroDivisionError is ArithmeticError: {issubclass(ZeroDivisionError, ArithmeticError)}")
+print(f"IndexError is LookupError: {issubclass(IndexError, LookupError)}")
+print(f"FileNotFoundError is OSError: {issubclass(FileNotFoundError, OSError)}")</textarea>
+                    <div class="code-output" id="outputcode3">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="warning-box info-box">
+                    <p>Unhandled exceptions will crash your program! The traceback shows where the error occurred, but users see an unfriendly error message. Always handle exceptions that users might encounter.</p>
+                </div>
+            </section>
+            
+            <!-- Section 2: Basic try/except -->
+            <section id="part2" class="section">
+                <div class="section-header">
+                    <div class="section-number">2</div>
+                    <h2>Basic Exception Handling with try/except</h2>
+                </div>
+                
+                <p>The <code>try/except</code> block is Python's primary mechanism for handling exceptions. Code that might raise an exception goes in the <code>try</code> block, and the handling code goes in the <code>except</code> block.</p>
+                
+                <pre>try:
+    # Code that might raise an exception
+    risky_operation()
+except ExceptionType:
+    # Handle the exception
+    handle_error()</pre>
+                
+                <h3>Basic Exception Handling</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.1: Without vs With Exception Handling</span>
+                        <button class="code-figure-run" onclick="runCode('code4')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code4"># Without exception handling - would crash!
+# result = 10 / 0  # Uncomment to see crash
+
+# With exception handling - graceful recovery
+print("=== With Exception Handling ===")
+try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("Error: Cannot divide by zero!")
+    result = None
+
+print(f"Program continues! Result: {result}")
+print()
+
+# Another example with user input simulation
+print("=== Converting User Input ===")
+user_inputs = ["42", "hello", "3.14"]
+
+for user_input in user_inputs:
+    try:
+        number = int(user_input)
+        print(f"'{user_input}' -> {number}")
+    except ValueError:
+        print(f"'{user_input}' -> Invalid number!")
+
+print("\nProgram completed successfully!")</textarea>
+                    <div class="code-output" id="outputcode4">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Accessing Exception Information</h3>
+                <p>You can capture the exception object using <code>as</code> to access its message and other attributes.</p>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.2: Capturing Exception Details</span>
+                        <button class="code-figure-run" onclick="runCode('code5')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code5"># Capture and examine exception objects
+print("=== Exception Details ===")
+
+# ZeroDivisionError
+try:
+    result = 10 / 0
+except ZeroDivisionError as e:
+    print(f"Exception type: {type(e).__name__}")
+    print(f"Exception message: {e}")
+    print(f"Exception args: {e.args}")
+print()
+
+# ValueError with more details
+try:
+    number = int("not_a_number")
+except ValueError as e:
+    print(f"Exception type: {type(e).__name__}")
+    print(f"Exception message: {e}")
+print()
+
+# KeyError
+try:
+    data = {"name": "Ali"}
+    print(data["email"])
+except KeyError as e:
+    print(f"Exception type: {type(e).__name__}")
+    print(f"Missing key: {e}")</textarea>
+                    <div class="code-output" id="outputcode5">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Creating Safe Utility Functions</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.3: Safe Utility Functions</span>
+                        <button class="code-figure-run" onclick="runCode('code6')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code6"># Safe utility functions that handle exceptions
+
+def safe_divide(a, b):
+    """Safely divide two numbers, returning None on error."""
+    try:
+        return a / b
+    except ZeroDivisionError:
+        return None
+    except TypeError:
+        return None
+
+def safe_int(value, default=0):
+    """Safely convert to integer with default value."""
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return default
+
+def safe_float(value, default=0.0):
+    """Safely convert to float with default value."""
+    try:
+        return float(value)
+    except (ValueError, TypeError):
+        return default
+
+def safe_list_access(lst, index, default=None):
+    """Safely access list element with default."""
+    try:
+        return lst[index]
+    except (IndexError, TypeError):
+        return default
+
+# Test the functions
+print("=== Testing Safe Functions ===")
+print(f"safe_divide(10, 2) = {safe_divide(10, 2)}")
+print(f"safe_divide(10, 0) = {safe_divide(10, 0)}")
+print(f"safe_divide('10', 2) = {safe_divide('10', 2)}")
+print()
+print(f"safe_int('42') = {safe_int('42')}")
+print(f"safe_int('hello') = {safe_int('hello')}")
+print(f"safe_int('hello', -1) = {safe_int('hello', -1)}")
+print()
+print(f"safe_list_access([1,2,3], 1) = {safe_list_access([1,2,3], 1)}")
+print(f"safe_list_access([1,2,3], 10) = {safe_list_access([1,2,3], 10)}")
+print(f"safe_list_access([1,2,3], 10, 'N/A') = {safe_list_access([1,2,3], 10, 'N/A')}")</textarea>
+                    <div class="code-output" id="outputcode6">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Engineering Example: Safe Sensor Reading</h4>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.4: Safe Sensor Data Processing</span>
+                        <button class="code-figure-run" onclick="runCode('code7')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code7"># Engineering: Safe sensor reading function
+def read_sensor(sensor_id, readings):
+    """
+    Safely read sensor value from readings dictionary.
+    
+    Args:
+        sensor_id: Identifier for the sensor
+        readings: Dictionary of sensor readings
+        
+    Returns:
+        float: Sensor value, or None if error
+    """
+    try:
+        raw_value = readings[sensor_id]
+        return float(raw_value)
+    except KeyError:
+        print(f"  Warning: Sensor {sensor_id} not found")
+        return None
+    except ValueError:
+        print(f"  Warning: Invalid reading for {sensor_id}: '{readings[sensor_id]}'")
+        return None
+    except TypeError:
+        print(f"  Warning: Cannot convert {sensor_id} reading to float")
+        return None
+
+# Simulated sensor readings (some with errors)
+sensor_readings = {
+    'TEMP_001': '25.5',
+    'TEMP_002': 'ERROR',
+    'PRES_001': '1013.25',
+    'HUMI_001': None,
+    'TEMP_003': '28.3'
+}
+
+print("=== Sensor Data Processing ===")
+print()
+
+valid_readings = {}
+for sensor_id in ['TEMP_001', 'TEMP_002', 'PRES_001', 'HUMI_001', 'TEMP_003', 'TEMP_004']:
+    value = read_sensor(sensor_id, sensor_readings)
+    if value is not None:
+        valid_readings[sensor_id] = value
+        print(f"✓ {sensor_id}: {value}")
+    else:
+        print(f"✗ {sensor_id}: Failed to read")
+
+print(f"\nSuccessfully read {len(valid_readings)} of 6 sensors")</textarea>
+                    <div class="code-output" id="outputcode7">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="tip-box info-box">
+                    <p>Without exception handling, a single bad sensor reading could crash your entire monitoring system. With proper handling, the system continues operating and logs the problematic sensors.</p>
+                </div>
+            </section>
+            
+            <!-- Section 3: Multiple Exceptions -->
+            <section id="part3" class="section">
+                <div class="section-header">
+                    <div class="section-number">3</div>
+                    <h2>Handling Multiple Exception Types</h2>
+                </div>
+                
+                <p>Real-world code often needs to handle different types of exceptions differently. Python provides several ways to handle multiple exception types.</p>
+                
+                <h3>Multiple except Blocks</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.1: Separate except Blocks</span>
+                        <button class="code-figure-run" onclick="runCode('code8')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code8"># Handle each exception type differently
+def process_data(data, index, divisor):
+    """Process data with multiple potential error points."""
+    try:
+        value = data[index]
+        converted = int(value)
+        result = converted / divisor
+        return result
+    except IndexError:
+        print("  Error: Index out of range")
+        return None
+    except ValueError:
+        print("  Error: Cannot convert value to integer")
+        return None
+    except ZeroDivisionError:
+        print("  Error: Division by zero")
+        return None
+    except TypeError:
+        print("  Error: Invalid type for operation")
+        return None
+
+# Test with different error conditions
+data = ['10', '20', 'abc', '40']
+
+test_cases = [
+    (data, 0, 2, "Normal operation"),
+    (data, 10, 2, "Index out of range"),
+    (data, 2, 2, "Invalid value"),
+    (data, 0, 0, "Division by zero"),
+    (None, 0, 2, "Invalid data type"),
+]
+
+print("=== Testing Multiple Exception Handling ===")
+for d, idx, div, description in test_cases:
+    print(f"\n{description}:")
+    result = process_data(d, idx, div)
+    print(f"  Result: {result}")</textarea>
+                    <div class="code-output" id="outputcode8">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Grouping Exceptions</h3>
+                <p>When multiple exceptions should be handled the same way, you can group them in a tuple.</p>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.2: Grouped Exception Handling</span>
+                        <button class="code-figure-run" onclick="runCode('code9')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code9"># Group similar exceptions together
+def convert_to_number(value):
+    """Convert value to float, handling multiple error types."""
+    try:
+        return float(value)
+    except (ValueError, TypeError) as e:
+        print(f"  Conversion error ({type(e).__name__}): {e}")
+        return None
+
+def get_nested_value(data, *keys):
+    """Safely get value from nested dictionary."""
+    try:
+        result = data
+        for key in keys:
+            result = result[key]
+        return result
+    except (KeyError, TypeError, IndexError) as e:
+        print(f"  Access error ({type(e).__name__}): {e}")
+        return None
+
+# Test convert_to_number
+print("=== Testing convert_to_number ===")
+test_values = ["3.14", "42", "hello", None, [1, 2, 3]]
+for val in test_values:
+    result = convert_to_number(val)
+    print(f"  {repr(val):<15} -> {result}")
+
+# Test get_nested_value
+print("\n=== Testing get_nested_value ===")
+config = {
+    "database": {
+        "host": "localhost",
+        "port": 5432
+    },
+    "users": ["admin", "guest"]
+}
+
+print(f"  config['database']['host']: {get_nested_value(config, 'database', 'host')}")
+print(f"  config['database']['name']: {get_nested_value(config, 'database', 'name')}")
+print(f"  config['users'][0]: {get_nested_value(config, 'users', 0)}")
+print(f"  config['users'][5]: {get_nested_value(config, 'users', 5)}")</textarea>
+                    <div class="code-output" id="outputcode9">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Order Matters: Specific to General</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.3: Exception Order</span>
+                        <button class="code-figure-run" onclick="runCode('code10')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code10"># Exception handlers are checked in order
+# More specific exceptions should come before general ones
+
+def process_file_data(filename, index):
+    """Demonstrate exception ordering."""
+    try:
+        # Multiple things could go wrong
+        with open(filename, 'r') as f:
+            lines = f.readlines()
+            value = int(lines[index].strip())
+            return 100 / value
+    
+    # CORRECT ORDER: specific to general
+    except FileNotFoundError:
+        return "File not found"
+    except IndexError:
+        return "Line index out of range"
+    except ValueError:
+        return "Could not convert to integer"
+    except ZeroDivisionError:
+        return "Division by zero"
+    except OSError:  # Parent of FileNotFoundError
+        return "OS error occurred"
+    except Exception as e:  # Catch-all (last resort)
+        return f"Unexpected error: {type(e).__name__}"
+
+# Note: If we put OSError before FileNotFoundError,
+# FileNotFoundError would never be reached!
+
+print("=== Exception Order Demo ===")
+print("(Simulated - showing correct ordering)")
+print()
+print("Correct order (specific to general):")
+print("  1. FileNotFoundError (most specific)")
+print("  2. IndexError")
+print("  3. ValueError")
+print("  4. ZeroDivisionError")
+print("  5. OSError (parent of FileNotFoundError)")
+print("  6. Exception (catch-all, always last)")
+print()
+print("WRONG: If OSError comes before FileNotFoundError,")
+print("       FileNotFoundError will never be caught separately!")</textarea>
+                    <div class="code-output" id="outputcode10">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="warning-box info-box">
+                    <p>Always order exception handlers from most specific to most general. Parent exceptions (like <code>Exception</code>) will catch child exceptions, so they should come last.</p>
+                </div>
+            </section>
+            
+            <!-- Section 4: else and finally -->
+            <section id="part4" class="section">
+                <div class="section-header">
+                    <div class="section-number">4</div>
+                    <h2>The else and finally Clauses</h2>
+                </div>
+                
+                <p>Python's exception handling provides two additional clauses: <code>else</code> runs when no exception occurred, and <code>finally</code> always runs, making it perfect for cleanup code.</p>
+                
+                <pre>try:
+    # Code that might fail
+    risky_operation()
+except ExceptionType:
+    # Handle specific exception
+    handle_error()
+else:
+    # Runs ONLY if no exception occurred
+    success_actions()
+finally:
+    # ALWAYS runs - cleanup code
+    cleanup()</pre>
+                
+                <h3>The else Clause</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.1: Using the else Clause</span>
+                        <button class="code-figure-run" onclick="runCode('code11')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code11"># else clause runs only when no exception occurs
+def divide_and_process(a, b):
+    """Divide numbers and process result only on success."""
+    try:
+        result = a / b
+    except ZeroDivisionError:
+        print("  Cannot divide by zero!")
+        return None
+    else:
+        # This only runs if division succeeded
+        print(f"  Division successful: {a} / {b} = {result}")
+        # Do additional processing that depends on success
+        doubled = result * 2
+        print(f"  Doubled result: {doubled}")
+        return doubled
+
+print("=== Testing else Clause ===")
+print("\nTest 1 (success):")
+result = divide_and_process(10, 2)
+print(f"  Final result: {result}")
+
+print("\nTest 2 (failure):")
+result = divide_and_process(10, 0)
+print(f"  Final result: {result}")</textarea>
+                    <div class="code-output" id="outputcode11">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>The finally Clause</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.2: Using the finally Clause</span>
+                        <button class="code-figure-run" onclick="runCode('code12')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code12"># finally clause ALWAYS runs - perfect for cleanup
+def process_with_cleanup(value):
+    """Demonstrate finally for guaranteed cleanup."""
+    resource_acquired = False
+    
+    try:
+        print("  Acquiring resource...")
+        resource_acquired = True
+        
+        # Simulate processing that might fail
+        result = 100 / value
+        print(f"  Processing result: {result}")
+        return result
+        
+    except ZeroDivisionError:
+        print("  Error: Division by zero!")
+        return None
+        
+    finally:
+        # This ALWAYS runs, even after return!
+        if resource_acquired:
+            print("  Releasing resource... (cleanup)")
+        print("  Finally block completed")
+
+print("=== Testing finally Clause ===")
+print("\nTest 1 (success):")
+result = process_with_cleanup(5)
+print(f"  Returned: {result}")
+
+print("\nTest 2 (failure):")
+result = process_with_cleanup(0)
+print(f"  Returned: {result}")</textarea>
+                    <div class="code-output" id="outputcode12">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Complete try/except/else/finally</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.3: Complete Exception Handling</span>
+                        <button class="code-figure-run" onclick="runCode('code13')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code13"># Complete try/except/else/finally pattern
+def read_and_process_file(filename):
+    """
+    Demonstrate complete exception handling pattern.
+    """
+    file_handle = None
+    
+    try:
+        print(f"  Opening file: {filename}")
+        file_handle = open(filename, 'r')
+        content = file_handle.read()
+        
+    except FileNotFoundError:
+        print(f"  Error: File '{filename}' not found")
+        return None
+        
+    except PermissionError:
+        print(f"  Error: No permission to read '{filename}'")
+        return None
+        
+    else:
+        # Only runs if file was read successfully
+        print(f"  File read successfully ({len(content)} bytes)")
+        return content
+        
+    finally:
+        # Always close the file if it was opened
+        if file_handle is not None:
+            file_handle.close()
+            print("  File handle closed (cleanup)")
+        print("  Function complete")
+
+print("=== Complete Exception Pattern ===")
+print("\nTest with non-existent file:")
+result = read_and_process_file('nonexistent.txt')
+
+# Create a test file first
+print("\nCreating test file...")
+with open('test_file.txt', 'w') as f:
+    f.write("Hello, World!")
+
+print("\nTest with existing file:")
+result = read_and_process_file('test_file.txt')
+print(f"  Content: {result}")</textarea>
+                    <div class="code-output" id="outputcode13">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="tip-box info-box">
+                    <p>Use <code>finally</code> for critical cleanup operations like closing files, releasing locks, or closing network connections. It guarantees cleanup even if an exception occurs or a return statement is executed.</p>
+                </div>
+            </section>
+
+            <!-- Section 5: Raising Exceptions -->
+            <section id="part5" class="section">
+                <div class="section-header">
+                    <div class="section-number">5</div>
+                    <h2>Raising Exceptions</h2>
+                </div>
+                
+                <p>Use the <code>raise</code> statement to intentionally trigger exceptions. This is essential for input validation and signaling error conditions in your own functions.</p>
+                
+                <pre># Basic syntax
+raise ExceptionType("Error message")
+
+# Re-raise current exception
+raise</pre>
+                
+                <h3>Basic Exception Raising</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.1: Raising Exceptions</span>
+                        <button class="code-figure-run" onclick="runCode('code14')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code14"># Raise exceptions for invalid conditions
+def set_age(age):
+    """Set age with validation."""
+    if not isinstance(age, int):
+        raise TypeError(f"Age must be an integer, got {type(age).__name__}")
+    if age < 0:
+        raise ValueError("Age cannot be negative")
+    if age > 150:
+        raise ValueError("Age cannot exceed 150")
+    return age
+
+def set_name(name):
+    """Set name with validation."""
+    if not isinstance(name, str):
+        raise TypeError(f"Name must be a string, got {type(name).__name__}")
+    if len(name) < 2:
+        raise ValueError("Name must be at least 2 characters")
+    if not name.replace(' ', '').isalpha():
+        raise ValueError("Name must contain only letters and spaces")
+    return name.strip()
+
+# Test the validations
+print("=== Testing set_age ===")
+test_ages = [25, -5, 200, "thirty", 42.5]
+for age in test_ages:
+    try:
+        result = set_age(age)
+        print(f"  Age {age}: ✓ Valid -> {result}")
+    except (TypeError, ValueError) as e:
+        print(f"  Age {repr(age)}: ✗ {type(e).__name__}: {e}")
+
+print("\n=== Testing set_name ===")
+test_names = ["Ali", "A", "John123", 42, "   Mary   "]
+for name in test_names:
+    try:
+        result = set_name(name)
+        print(f"  Name {repr(name)}: ✓ Valid -> '{result}'")
+    except (TypeError, ValueError) as e:
+        print(f"  Name {repr(name)}: ✗ {type(e).__name__}: {e}")</textarea>
+                    <div class="code-output" id="outputcode14">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Re-raising Exceptions</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.2: Re-raising After Logging</span>
+                        <button class="code-figure-run" onclick="runCode('code15')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code15"># Re-raise exception after logging or partial handling
+error_log = []
+
+def log_and_reraise(operation_name, func, *args):
+    """Execute function, log errors, and re-raise."""
+    try:
+        return func(*args)
+    except Exception as e:
+        # Log the error
+        error_log.append({
+            'operation': operation_name,
+            'error_type': type(e).__name__,
+            'message': str(e)
+        })
+        print(f"  Logged error: {type(e).__name__}")
+        # Re-raise to let caller handle it
+        raise
+
+def risky_division(a, b):
+    return a / b
+
+# Test with catching the re-raised exception
+print("=== Re-raising Exceptions ===")
+try:
+    result = log_and_reraise("division", risky_division, 10, 0)
+except ZeroDivisionError:
+    print("  Caller caught the re-raised exception")
+
+print(f"\nError log: {error_log}")</textarea>
+                    <div class="code-output" id="outputcode15">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Engineering: Sensor Input Validation</h4>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.3: Engineering Validation Function</span>
+                        <button class="code-figure-run" onclick="runCode('code16')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code16"># Engineering: Complete sensor validation
+def validate_sensor_reading(sensor_id, value, sensor_type="temperature"):
+    """
+    Validate sensor reading is within acceptable range.
+    
+    Args:
+        sensor_id: Unique sensor identifier
+        value: The reading value
+        sensor_type: Type of sensor for range validation
+        
+    Returns:
+        float: Validated value
+        
+    Raises:
+        TypeError: If value is not numeric
+        ValueError: If value is out of acceptable range
+    """
+    # Define valid ranges for different sensor types
+    valid_ranges = {
+        "temperature": (-40, 125),    # Celsius
+        "humidity": (0, 100),          # Percentage
+        "pressure": (800, 1200),       # hPa
+        "voltage": (0, 5),             # Volts
+        "current": (0, 20)             # mA
+    }
+    
+    # Validate sensor_id
+    if not isinstance(sensor_id, str) or not sensor_id:
+        raise ValueError("sensor_id must be a non-empty string")
+    
+    # Validate sensor_type
+    if sensor_type not in valid_ranges:
+        raise ValueError(f"Unknown sensor type: {sensor_type}")
+    
+    # Validate value type
+    if not isinstance(value, (int, float)):
+        raise TypeError(f"Value must be numeric, got {type(value).__name__}")
+    
+    # Validate value range
+    min_val, max_val = valid_ranges[sensor_type]
+    if value < min_val or value > max_val:
+        raise ValueError(
+            f"Sensor {sensor_id}: {value} out of valid range "
+            f"[{min_val}, {max_val}] for {sensor_type}"
+        )
+    
+    return float(value)
+
+# Test validation
+print("=== Sensor Validation Tests ===")
+test_cases = [
+    ("TEMP_001", 25.5, "temperature"),
+    ("TEMP_002", 150, "temperature"),   # Out of range
+    ("HUMI_001", 65, "humidity"),
+    ("HUMI_002", -10, "humidity"),       # Out of range
+    ("PRES_001", 1013.25, "pressure"),
+    ("VOLT_001", "5V", "voltage"),       # Wrong type
+    ("", 25, "temperature"),             # Invalid sensor_id
+]
+
+for sensor_id, value, sensor_type in test_cases:
+    try:
+        result = validate_sensor_reading(sensor_id, value, sensor_type)
+        print(f"✓ {sensor_id}: {result} ({sensor_type})")
+    except (TypeError, ValueError) as e:
+        print(f"✗ {sensor_id or 'N/A'}: {type(e).__name__} - {e}")</textarea>
+                    <div class="code-output" id="outputcode16">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 6: Custom Exceptions -->
+            <section id="part6" class="section">
+                <div class="section-header">
+                    <div class="section-number">6</div>
+                    <h2>Custom Exception Classes</h2>
+                </div>
+                
+                <p>Create custom exception classes for domain-specific errors. This makes your code more readable and allows callers to handle specific error conditions precisely.</p>
+                
+                <pre># Basic custom exception
+class MyError(Exception):
+    pass
+
+# Custom exception with attributes
+class DetailedError(Exception):
+    def __init__(self, message, code):
+        self.code = code
+        super().__init__(message)</pre>
+                
+                <h3>Basic Custom Exception</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.1: Simple Custom Exception</span>
+                        <button class="code-figure-run" onclick="runCode('code17')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code17"># Simple custom exception
+class ValidationError(Exception):
+    """Raised when data validation fails."""
+    pass
+
+class AuthenticationError(Exception):
+    """Raised when authentication fails."""
+    pass
+
+def validate_username(username):
+    """Validate username format."""
+    if len(username) < 3:
+        raise ValidationError("Username must be at least 3 characters")
+    if len(username) > 20:
+        raise ValidationError("Username cannot exceed 20 characters")
+    if not username.isalnum():
+        raise ValidationError("Username must be alphanumeric")
+    return username
+
+def authenticate_user(username, password):
+    """Simulate authentication."""
+    valid_users = {"admin": "secret123", "user": "password"}
+    
+    if username not in valid_users:
+        raise AuthenticationError(f"User '{username}' not found")
+    if valid_users[username] != password:
+        raise AuthenticationError("Invalid password")
+    return True
+
+# Test custom exceptions
+print("=== Testing Custom Exceptions ===")
+print("\nUsername validation:")
+for name in ["admin", "ab", "user@123", "validuser"]:
+    try:
+        validate_username(name)
+        print(f"  '{name}': ✓ Valid")
+    except ValidationError as e:
+        print(f"  '{name}': ✗ {e}")
+
+print("\nAuthentication:")
+test_logins = [("admin", "secret123"), ("admin", "wrong"), ("guest", "pass")]
+for user, pwd in test_logins:
+    try:
+        authenticate_user(user, pwd)
+        print(f"  {user}: ✓ Authenticated")
+    except AuthenticationError as e:
+        print(f"  {user}: ✗ {e}")</textarea>
+                    <div class="code-output" id="outputcode17">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Custom Exception with Attributes</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.2: Exception with Extra Data</span>
+                        <button class="code-figure-run" onclick="runCode('code18')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code18"># Custom exception with additional attributes
+class SensorError(Exception):
+    """Exception for sensor-related errors with detailed info."""
+    
+    def __init__(self, sensor_id, message, error_code=None, timestamp=None):
+        self.sensor_id = sensor_id
+        self.message = message
+        self.error_code = error_code
+        self.timestamp = timestamp or "now"
+        super().__init__(self.message)
+    
+    def __str__(self):
+        base = f"[{self.error_code}] " if self.error_code else ""
+        return f"{base}Sensor {self.sensor_id}: {self.message}"
+    
+    def to_dict(self):
+        """Convert error to dictionary for logging."""
+        return {
+            'sensor_id': self.sensor_id,
+            'message': self.message,
+            'error_code': self.error_code,
+            'timestamp': self.timestamp
+        }
+
+# Use the custom exception
+print("=== Custom Exception with Attributes ===")
+
+try:
+    raise SensorError(
+        sensor_id="TEMP_001",
+        message="Connection timeout after 5 attempts",
+        error_code="E001"
+    )
+except SensorError as e:
+    print(f"Error: {e}")
+    print(f"Sensor ID: {e.sensor_id}")
+    print(f"Error Code: {e.error_code}")
+    print(f"Timestamp: {e.timestamp}")
+    print(f"As dict: {e.to_dict()}")</textarea>
+                    <div class="code-output" id="outputcode18">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Exception Hierarchy</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.3: Custom Exception Hierarchy</span>
+                        <button class="code-figure-run" onclick="runCode('code19')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code19"># Build an exception hierarchy for a sensor system
+class SensorSystemError(Exception):
+    """Base exception for all sensor system errors."""
+    pass
+
+class SensorNotFoundError(SensorSystemError):
+    """Raised when sensor is not registered."""
+    def __init__(self, sensor_id):
+        self.sensor_id = sensor_id
+        super().__init__(f"Sensor '{sensor_id}' not found in registry")
+
+class SensorReadError(SensorSystemError):
+    """Raised when sensor reading fails."""
+    def __init__(self, sensor_id, reason):
+        self.sensor_id = sensor_id
+        self.reason = reason
+        super().__init__(f"Failed to read sensor '{sensor_id}': {reason}")
+
+class SensorRangeError(SensorSystemError):
+    """Raised when reading is out of valid range."""
+    def __init__(self, sensor_id, value, valid_range):
+        self.sensor_id = sensor_id
+        self.value = value
+        self.valid_range = valid_range
+        super().__init__(
+            f"Sensor '{sensor_id}' value {value} out of range {valid_range}"
+        )
+
+class SensorCalibrationError(SensorSystemError):
+    """Raised when sensor needs calibration."""
+    def __init__(self, sensor_id, last_calibration):
+        self.sensor_id = sensor_id
+        self.last_calibration = last_calibration
+        super().__init__(
+            f"Sensor '{sensor_id}' requires calibration "
+            f"(last: {last_calibration})"
+        )
+
+# Simulate sensor operations
+sensor_registry = {"TEMP_001": "online", "TEMP_002": "offline"}
+
+def read_sensor(sensor_id, simulate_value=None):
+    """Read sensor with various error conditions."""
+    if sensor_id not in sensor_registry:
+        raise SensorNotFoundError(sensor_id)
+    
+    if sensor_registry[sensor_id] == "offline":
+        raise SensorReadError(sensor_id, "sensor is offline")
+    
+    if simulate_value is not None:
+        if simulate_value < -40 or simulate_value > 125:
+            raise SensorRangeError(sensor_id, simulate_value, (-40, 125))
+    
+    return simulate_value or 25.0
+
+print("=== Exception Hierarchy Demo ===")
+test_cases = [
+    ("TEMP_001", 25.0),      # OK
+    ("TEMP_003", None),      # Not found
+    ("TEMP_002", None),      # Offline
+    ("TEMP_001", 200.0),     # Out of range
+]
+
+for sensor_id, value in test_cases:
+    try:
+        result = read_sensor(sensor_id, value)
+        print(f"✓ {sensor_id}: {result}°C")
+    except SensorNotFoundError as e:
+        print(f"✗ {e}")
+    except SensorReadError as e:
+        print(f"✗ {e}")
+    except SensorRangeError as e:
+        print(f"✗ {e}")
+    except SensorSystemError as e:
+        print(f"✗ System error: {e}")
+
+# Can also catch all sensor errors with base class
+print("\n=== Catching with Base Class ===")
+for sensor_id, value in test_cases:
+    try:
+        result = read_sensor(sensor_id, value)
+        print(f"✓ {sensor_id}: OK")
+    except SensorSystemError as e:
+        print(f"✗ {sensor_id}: {type(e).__name__}")</textarea>
+                    <div class="code-output" id="outputcode19">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 7: Assertions -->
+            <section id="part7" class="section">
+                <div class="section-header">
+                    <div class="section-number">7</div>
+                    <h2>Assertions for Debugging</h2>
+                </div>
+                
+                <p>Assertions are debugging aids that test conditions that should always be true. They help catch programming errors during development.</p>
+                
+                <pre>assert condition, "Error message if condition is False"
+
+# Equivalent to:
+if not condition:
+    raise AssertionError("Error message")</pre>
+                
+                <h3>Basic Assertions</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.1: Using Assertions</span>
+                        <button class="code-figure-run" onclick="runCode('code20')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code20"># Basic assertion examples
+def calculate_average(numbers):
+    """Calculate average with assertion checks."""
+    assert isinstance(numbers, list), "Input must be a list"
+    assert len(numbers) > 0, "List cannot be empty"
+    assert all(isinstance(n, (int, float)) for n in numbers), \
+        "All elements must be numbers"
+    
+    return sum(numbers) / len(numbers)
+
+def calculate_percentage(part, whole):
+    """Calculate percentage with assertions."""
+    assert isinstance(part, (int, float)), "Part must be a number"
+    assert isinstance(whole, (int, float)), "Whole must be a number"
+    assert whole != 0, "Whole cannot be zero"
+    assert part >= 0, "Part must be non-negative"
+    assert whole > 0, "Whole must be positive"
+    
+    return (part / whole) * 100
+
+# Test assertions
+print("=== Testing Assertions ===")
+
+print("\ncalculate_average tests:")
+try:
+    print(f"  [1, 2, 3, 4, 5]: {calculate_average([1, 2, 3, 4, 5])}")
+except AssertionError as e:
+    print(f"  AssertionError: {e}")
+
+try:
+    print(f"  []: ", end="")
+    calculate_average([])
+except AssertionError as e:
+    print(f"AssertionError: {e}")
+
+try:
+    print(f"  [1, 'two', 3]: ", end="")
+    calculate_average([1, 'two', 3])
+except AssertionError as e:
+    print(f"AssertionError: {e}")
+
+print("\ncalculate_percentage tests:")
+try:
+    print(f"  25 of 100: {calculate_percentage(25, 100)}%")
+except AssertionError as e:
+    print(f"  AssertionError: {e}")
+
+try:
+    print(f"  50 of 0: ", end="")
+    calculate_percentage(50, 0)
+except AssertionError as e:
+    print(f"AssertionError: {e}")</textarea>
+                    <div class="code-output" id="outputcode20">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Assertions vs Exceptions</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.2: When to Use Assertions vs Exceptions</span>
+                        <button class="code-figure-run" onclick="runCode('code21')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code21"># Assertions: Internal consistency checks (programming errors)
+# Exceptions: Expected error conditions (user input, external data)
+
+def process_internal_data(data):
+    """
+    Internal function - use assertions.
+    Caller is responsible for providing valid data.
+    """
+    assert isinstance(data, dict), "Internal error: data must be dict"
+    assert 'value' in data, "Internal error: 'value' key required"
+    
+    return data['value'] * 2
+
+def process_user_input(user_data):
+    """
+    External input - use exceptions.
+    We can't trust user-provided data.
+    """
+    if not isinstance(user_data, dict):
+        raise TypeError("Data must be a dictionary")
+    if 'value' not in user_data:
+        raise ValueError("Missing required 'value' key")
+    if not isinstance(user_data['value'], (int, float)):
+        raise TypeError("Value must be a number")
+    
+    return user_data['value'] * 2
+
+print("=== Assertions vs Exceptions ===")
+print()
+print("USE ASSERTIONS FOR:")
+print("  • Internal function contracts")
+print("  • Conditions that should never be False")
+print("  • Debugging during development")
+print("  • Checking programmer errors")
+print()
+print("USE EXCEPTIONS FOR:")
+print("  • User input validation")
+print("  • External data (files, network)")
+print("  • Recoverable error conditions")
+print("  • Expected failure modes")
+print()
+
+# Demo
+print("=== Demo ===")
+print("Internal function with valid data:")
+result = process_internal_data({'value': 5})
+print(f"  Result: {result}")
+
+print("\nExternal function with invalid data:")
+try:
+    process_user_input("not a dict")
+except TypeError as e:
+    print(f"  TypeError: {e}")</textarea>
+                    <div class="code-output" id="outputcode21">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="note-box info-box">
+                    <p>Assertions can be disabled with the <code>-O</code> flag when running Python (<code>python -O script.py</code>). Never use assertions for input validation in production code—use exceptions instead.</p>
+                </div>
+            </section>
+            
+            <!-- Section 8: Debugging Techniques -->
+            <section id="part8" class="section">
+                <div class="section-header">
+                    <div class="section-number">8</div>
+                    <h2>Debugging Techniques</h2>
+                </div>
+                
+                <p>Effective debugging is essential for finding and fixing errors. Python provides several tools and techniques for debugging code.</p>
+                
+                <h3>Understanding Tracebacks</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 8.1: Reading Traceback Information</span>
+                        <button class="code-figure-run" onclick="runCode('code22')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code22"># Understanding and using traceback information
+import traceback
+
+def level_3(x):
+    return x / 0  # This will cause an error
+
+def level_2(x):
+    return level_3(x + 1)
+
+def level_1(x):
+    return level_2(x * 2)
+
+print("=== Traceback Demo ===")
+try:
+    result = level_1(5)
+except ZeroDivisionError:
+    print("Caught ZeroDivisionError!")
+    print()
+    print("Traceback (formatted):")
+    print("-" * 40)
+    traceback.print_exc()
+    print("-" * 40)
+    print()
+    print("Traceback shows the call stack:")
+    print("  1. level_1(5) called")
+    print("  2. level_2(10) called")
+    print("  3. level_3(11) called")
+    print("  4. Division by zero occurred")</textarea>
+                    <div class="code-output" id="outputcode22">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Logging for Debugging</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 8.2: Using Print and Logging</span>
+                        <button class="code-figure-run" onclick="runCode('code23')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code23"># Simple logging for debugging
+DEBUG = True
+
+def debug_log(message):
+    """Print debug message if debugging is enabled."""
+    if DEBUG:
+        print(f"[DEBUG] {message}")
+
+def process_data(data):
+    """Process data with debug logging."""
+    debug_log(f"Input: {data}")
+    
+    if not data:
+        debug_log("Empty data, returning empty list")
+        return []
+    
+    debug_log(f"Processing {len(data)} items")
+    
+    results = []
+    for i, item in enumerate(data):
+        debug_log(f"Processing item {i}: {item}")
+        try:
+            value = float(item)
+            results.append(value * 2)
+            debug_log(f"  Result: {value * 2}")
+        except (ValueError, TypeError) as e:
+            debug_log(f"  Error: {e}, skipping")
+    
+    debug_log(f"Returning {len(results)} results")
+    return results
+
+# Run with debug logging
+print("=== Processing with Debug Logging ===")
+data = [10, "20", "invalid", 30, None]
+result = process_data(data)
+print(f"\nFinal result: {result}")</textarea>
+                    <div class="code-output" id="outputcode23">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 9: Best Practices -->
+            <section id="part9" class="section">
+                <div class="section-header">
+                    <div class="section-number">9</div>
+                    <h2>Error Handling Best Practices</h2>
+                </div>
+                
+                <p>Following best practices for error handling makes your code more robust, maintainable, and easier to debug.</p>
+                
+                <h3>Key Principles</h3>
+                <ul>
+                    <li><strong>Be Specific:</strong> Catch specific exceptions, not bare <code>except:</code></li>
+                    <li><strong>Don't Suppress:</strong> Always handle or re-raise exceptions meaningfully</li>
+                    <li><strong>Fail Fast:</strong> Validate inputs early and raise exceptions quickly</li>
+                    <li><strong>Use finally:</strong> For cleanup code that must always run</li>
+                    <li><strong>Document:</strong> Document what exceptions your functions can raise</li>
+                    <li><strong>Meaningful Messages:</strong> Include helpful information in error messages</li>
+                </ul>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.1: Best Practices Example</span>
+                        <button class="code-figure-run" onclick="runCode('code24')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code24"># Best practices demonstration
+def process_sensor_config(config):
+    """
+    Process sensor configuration dictionary.
+    
+    Args:
+        config: Dictionary with sensor configuration
+        
+    Returns:
+        str: Formatted connection string
+        
+    Raises:
+        TypeError: If config is not a dictionary
+        KeyError: If required keys are missing
+        ValueError: If values are invalid
+    """
+    # Fail fast: validate input type immediately
+    if not isinstance(config, dict):
+        raise TypeError(
+            f"Config must be a dictionary, got {type(config).__name__}"
+        )
+    
+    # Check for required keys with helpful messages
+    required_keys = ['host', 'port', 'sensor_id']
+    missing = [k for k in required_keys if k not in config]
+    if missing:
+        raise KeyError(f"Missing required keys: {', '.join(missing)}")
+    
+    # Validate values
+    port = config['port']
+    if not isinstance(port, int) or port < 1 or port > 65535:
+        raise ValueError(f"Port must be integer 1-65535, got {port}")
+    
+    sensor_id = config['sensor_id']
+    if not sensor_id or not isinstance(sensor_id, str):
+        raise ValueError("sensor_id must be a non-empty string")
+    
+    # Build and return result
+    return f"{config['host']}:{port}/{sensor_id}"
+
+# Test with various inputs
+print("=== Best Practices Demo ===")
+test_configs = [
+    {"host": "192.168.1.100", "port": 5000, "sensor_id": "TEMP_001"},
+    {"host": "localhost"},  # Missing keys
+    {"host": "localhost", "port": "5000", "sensor_id": "T1"},  # Wrong port type
+    "not a dict",  # Wrong type
+]
+
+for i, config in enumerate(test_configs, 1):
+    print(f"\nTest {i}: {config}")
+    try:
+        result = process_sensor_config(config)
+        print(f"  ✓ Result: {result}")
+    except TypeError as e:
+        print(f"  ✗ TypeError: {e}")
+    except KeyError as e:
+        print(f"  ✗ KeyError: {e}")
+    except ValueError as e:
+        print(f"  ✗ ValueError: {e}")</textarea>
+                    <div class="code-output" id="outputcode24">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="warning-box info-box">
+                    <p>Avoid using bare <code>except:</code> clauses—they catch all exceptions including <code>KeyboardInterrupt</code> and <code>SystemExit</code>, making it hard to stop your program. Always specify the exception types you expect.</p>
+                </div>
+            </section>
+            
+            <!-- Summary -->
+            <div class="summary-box">
+                <h3>📋 Week 9 Summary</h3>
+                <div class="summary-grid">
+                    <div class="summary-item"><span class="icon">⚠️</span><span>try/except blocks</span></div>
+                    <div class="summary-item"><span class="icon">📋</span><span>Multiple except clauses</span></div>
+                    <div class="summary-item"><span class="icon">✅</span><span>else clause (success)</span></div>
+                    <div class="summary-item"><span class="icon">🧹</span><span>finally (cleanup)</span></div>
+                    <div class="summary-item"><span class="icon">🚨</span><span>raise exceptions</span></div>
+                    <div class="summary-item"><span class="icon">🏗️</span><span>Custom exceptions</span></div>
+                    <div class="summary-item"><span class="icon">🔍</span><span>assert for debugging</span></div>
+                    <div class="summary-item"><span class="icon">📝</span><span>Best practices</span></div>
+                </div>
+            </div>
+
+            <!-- Exercises Section -->
+            <section id="exercises" class="section">
+                <div class="section-header">
+                    <div class="section-number">📝</div>
+                    <h2>Practice Exercises</h2>
+                </div>
+                
+                <p>Complete these 15 exercises to master error handling and exception management in Python. Start with the easy exercises and work your way up to the challenges.</p>
+                
+                <!-- Exercise 1 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">1</span>Basic ZeroDivisionError</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Wrap the division operation in a try/except block to handle ZeroDivisionError. Print a friendly message when division by zero occurs.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Cannot divide by zero!
+Program continues normally.</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex1"># Handle division by zero
+numerator = 10
+denominator = 0
+
+# Add try/except here
+result = numerator / denominator
+print(f"Result: {result}")
+
+print("Program continues normally.")</textarea>
+                            <div class="code-output" id="outputex1">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 2 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">2</span>ValueError Handling</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Handle ValueError when converting invalid strings to integers. Test with multiple inputs.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>'42' -> 42
+'hello' -> Invalid number!
+'3.14' -> Invalid number!
+'100' -> 100</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex2"># Convert strings to integers safely
+inputs = ['42', 'hello', '3.14', '100']
+
+for value in inputs:
+    # Add try/except to handle ValueError
+    num = int(value)
+    print(f"'{value}' -> {num}")</textarea>
+                            <div class="code-output" id="outputex2">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 3 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">3</span>IndexError Handling</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Safely access list elements and handle IndexError when the index is out of range.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Index 0: apple
+Index 2: cherry
+Index 5: Index out of range!
+Index -1: cherry</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex3"># Safely access list elements
+fruits = ['apple', 'banana', 'cherry']
+indices = [0, 2, 5, -1]
+
+for idx in indices:
+    # Add try/except to handle IndexError
+    print(f"Index {idx}: {fruits[idx]}")</textarea>
+                            <div class="code-output" id="outputex3">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 4 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">4</span>KeyError Handling</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Access dictionary keys safely and handle KeyError when the key doesn't exist.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>name: Ali
+age: 25
+email: Key 'email' not found!
+city: Key 'city' not found!</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex4"># Safely access dictionary keys
+person = {'name': 'Ali', 'age': 25}
+keys_to_access = ['name', 'age', 'email', 'city']
+
+for key in keys_to_access:
+    # Add try/except to handle KeyError
+    print(f"{key}: {person[key]}")</textarea>
+                            <div class="code-output" id="outputex4">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 5 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">5</span>Exception Message Access</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Capture and print the exception message and type using the <code>as</code> keyword.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Exception type: ValueError
+Exception message: invalid literal for int() with base 10: 'hello'</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex5"># Capture and display exception details
+try:
+    num = int("hello")
+except ValueError:  # Add 'as e' to capture the exception
+    # Print the exception type and message
+    pass</textarea>
+                            <div class="code-output" id="outputex5">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 6 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">6</span>Safe Division Function</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>safe_divide</code> function that returns None on division by zero instead of crashing.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>10 / 2 = 5.0
+10 / 0 = None
+15 / 3 = 5.0</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex6">def safe_divide(a, b):
+    """Safely divide a by b, returning None on error."""
+    # Your code here
+    pass
+
+# Test the function
+print(f"10 / 2 = {safe_divide(10, 2)}")
+print(f"10 / 0 = {safe_divide(10, 0)}")
+print(f"15 / 3 = {safe_divide(15, 3)}")</textarea>
+                            <div class="code-output" id="outputex6">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 7 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">7</span>Multiple Exception Types</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Handle both ValueError and ZeroDivisionError in a calculation function with appropriate messages.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>'10': 10.0
+'abc': Invalid number format
+'0': Cannot divide by zero
+'5': 20.0</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex7">def calculate(value_str):
+    """Convert string to number and calculate 100/number."""
+    try:
+        num = int(value_str)
+        result = 100 / num
+        return result
+    # Add exception handlers for ValueError and ZeroDivisionError
+    
+    return None
+
+# Test
+test_values = ['10', 'abc', '0', '5']
+for val in test_values:
+    result = calculate(val)
+    print(f"'{val}': {result}")</textarea>
+                            <div class="code-output" id="outputex7">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 8 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">8</span>Using else Clause</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Use the else clause to print "Conversion successful!" only when no exception occurs.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Converting '42':
+  Conversion successful!
+  Result: 42
+
+Converting 'hello':
+  Invalid value
+  Result: None</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex8">def convert_string(value):
+    """Convert string to integer with success message."""
+    try:
+        result = int(value)
+    except ValueError:
+        print("  Invalid value")
+        return None
+    # Add else clause to print success message
+    
+    return result
+
+# Test
+for val in ['42', 'hello']:
+    print(f"Converting '{val}':")
+    result = convert_string(val)
+    print(f"  Result: {result}")
+    print()</textarea>
+                            <div class="code-output" id="outputex8">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 9 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">9</span>Using finally Clause</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Use finally to print "Operation complete" regardless of whether an exception occurs.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Processing 5:
+  Result: 20.0
+  Operation complete
+
+Processing 0:
+  Error: Division by zero
+  Operation complete</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex9">def process_number(value):
+    """Process a number with guaranteed cleanup message."""
+    try:
+        result = 100 / value
+        print(f"  Result: {result}")
+    except ZeroDivisionError:
+        print("  Error: Division by zero")
+    # Add finally clause
+
+# Test
+for val in [5, 0]:
+    print(f"Processing {val}:")
+    process_number(val)
+    print()</textarea>
+                            <div class="code-output" id="outputex9">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 10 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">10</span>Raising Exceptions</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a function that raises ValueError if age is negative or greater than 150.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>25: Valid age
+-5: Error - Age cannot be negative
+200: Error - Age cannot exceed 150
+42: Valid age</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex10">def validate_age(age):
+    """Validate age is between 0 and 150."""
+    # Raise ValueError if age is invalid
+    
+    return age
+
+# Test
+test_ages = [25, -5, 200, 42]
+for age in test_ages:
+    try:
+        validate_age(age)
+        print(f"{age}: Valid age")
+    except ValueError as e:
+        print(f"{age}: Error - {e}")</textarea>
+                            <div class="code-output" id="outputex10">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 11 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">11</span>Input Type Validation</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a function that validates input is a positive number, raising appropriate exceptions.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>10: ✓ Valid
+-5: ✗ ValueError - Value must be positive
+'abc': ✗ TypeError - Value must be a number
+0: ✗ ValueError - Value must be positive</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex11">def validate_positive(value):
+    """
+    Validate that value is a positive number.
+    
+    Raises:
+        TypeError: if value is not a number
+        ValueError: if value is not positive
+    """
+    # Your implementation here
+    pass
+
+# Test
+test_values = [10, -5, 'abc', 0]
+for val in test_values:
+    try:
+        validate_positive(val)
+        print(f"{repr(val)}: ✓ Valid")
+    except TypeError as e:
+        print(f"{repr(val)}: ✗ TypeError - {e}")
+    except ValueError as e:
+        print(f"{repr(val)}: ✗ ValueError - {e}")</textarea>
+                            <div class="code-output" id="outputex11">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 12 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">12</span>Custom Exception Class</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a custom InsufficientFundsError exception for a banking function.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Withdraw $50 from $100: New balance: $50
+Withdraw $150 from $100: Error - Cannot withdraw $150, only $100 available</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex12"># Define custom exception
+class InsufficientFundsError(Exception):
+    """Raised when account has insufficient funds."""
+    pass
+
+def withdraw(balance, amount):
+    """Withdraw amount from balance."""
+    # Raise InsufficientFundsError if amount > balance
+    
+    return balance - amount
+
+# Test
+test_cases = [(100, 50), (100, 150)]
+for balance, amount in test_cases:
+    try:
+        new_balance = withdraw(balance, amount)
+        print(f"Withdraw ${amount} from ${balance}: New balance: ${new_balance}")
+    except InsufficientFundsError as e:
+        print(f"Withdraw ${amount} from ${balance}: Error - {e}")</textarea>
+                            <div class="code-output" id="outputex12">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 13 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">13</span>Assertions for Validation</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Use assertions to validate function preconditions for an average calculator.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints13')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints13">
+                                <ul>
+                                    <li>Use <code>assert condition, "message"</code> syntax</li>
+                                    <li>Check that numbers is a list using <code>isinstance()</code></li>
+                                    <li>Check that the list is not empty using <code>len()</code></li>
+                                    <li>Use <code>all()</code> with a generator expression to check all elements are numbers</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>[1, 2, 3, 4, 5]: Average = 3.0
+[]: AssertionError - List cannot be empty
+[1, 'two', 3]: AssertionError - All elements must be numbers</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex13')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex13">def calculate_average(numbers):
+    """
+    Calculate average of a list of numbers.
+    Uses assertions to validate input.
+    """
+    # Add assertions:
+    # 1. numbers must be a list
+    # 2. list must not be empty
+    # 3. all elements must be numbers (int or float)
+    
+    return sum(numbers) / len(numbers)
+
+# Test
+test_cases = [[1, 2, 3, 4, 5], [], [1, 'two', 3]]
+for data in test_cases:
+    try:
+        result = calculate_average(data)
+        print(f"{data}: Average = {result}")
+    except AssertionError as e:
+        print(f"{data}: AssertionError - {e}")</textarea>
+                            <div class="code-output" id="outputex13">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 14 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">14</span>Complete Exception Handling</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a function with complete exception handling including try, except, else, and finally.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints14')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints14">
+                                <ul>
+                                    <li>Use try to attempt the file operation</li>
+                                    <li>Handle FileNotFoundError specifically</li>
+                                    <li>Use else to print success message when no exception</li>
+                                    <li>Use finally for cleanup message</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex14')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex14">def read_config_file(filename):
+    """
+    Read configuration file with complete exception handling.
+    
+    - try: attempt to open and read file
+    - except: handle FileNotFoundError
+    - else: print success message
+    - finally: print cleanup message
+    """
+    try:
+        with open(filename, 'r') as f:
+            content = f.read()
+    # Add except, else, and finally clauses
+    
+    return None  # Modify as needed
+
+# Create a test file first
+with open('config.txt', 'w') as f:
+    f.write("setting=value")
+
+# Test
+print("=== Testing with existing file ===")
+result = read_config_file('config.txt')
+print(f"Result: {result}")
+
+print("\n=== Testing with missing file ===")
+result = read_config_file('missing.txt')
+print(f"Result: {result}")</textarea>
+                            <div class="code-output" id="outputex14">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 15 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">15</span>Sensor System with Custom Exceptions</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a complete sensor validation system with custom exception hierarchy.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints15')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints15">
+                                <ul>
+                                    <li>Create base SensorError class that extends Exception</li>
+                                    <li>Create SensorTypeError for type validation</li>
+                                    <li>Create SensorRangeError for range validation</li>
+                                    <li>Store sensor_id and value in exception attributes</li>
+                                    <li>Check isinstance() for numeric types</li>
+                                    <li>Check value against min_val and max_val</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>TEMP_001 (25): ✓ Valid
+TEMP_002 (150): ✗ SensorRangeError - Value 150 out of range [0, 100]
+TEMP_003 ('hot'): ✗ SensorTypeError - Expected number, got str</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex15')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex15"># Define custom exception hierarchy
+class SensorError(Exception):
+    """Base exception for sensor errors."""
+    pass
+
+# Add SensorTypeError class
+
+# Add SensorRangeError class
+
+def validate_sensor(sensor_id, value, min_val=0, max_val=100):
+    """
+    Validate sensor reading.
+    
+    Raises:
+        SensorTypeError: if value is not a number
+        SensorRangeError: if value is out of range
+    """
+    # Your implementation here
+    pass
+
+# Test
+sensors = [
+    ("TEMP_001", 25),
+    ("TEMP_002", 150),
+    ("TEMP_003", "hot")
+]
+
+for sensor_id, value in sensors:
+    try:
+        validate_sensor(sensor_id, value)
+        print(f"{sensor_id} ({value}): ✓ Valid")
+    except SensorError as e:
+        print(f"{sensor_id} ({repr(value)}): ✗ {type(e).__name__} - {e}")</textarea>
+                            <div class="code-output" id="outputex15">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Submit Section -->
+            <section id="submit" class="section">
+                <div class="section-header">
+                    <div class="section-number">📤</div>
+                    <h2>Submit Your Work</h2>
+                </div>
+                
+                <div class="submit-section">
+                    <h2>📋 Submission Form</h2>
+                    <p>Complete the exercises above, then fill out this form to record your attendance and participation for Week 09.</p>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Student ID</label>
+                            <input type="text" id="studentId" placeholder="e.g., 2024001234" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="studentName" placeholder="e.g., Ahmet Yılmaz">
+                        </div>
+                        <div class="form-group">
+                            <label>Email (@istun.edu.tr)</label>
+                            <input type="email" id="studentEmail" placeholder="e.g., ahmet.yilmaz@istun.edu.tr">
+                        </div>
+                        <div class="form-group">
+                            <label>Class Code (from instructor)</label>
+                            <input type="text" id="classCode" placeholder="Enter code from class">
+                        </div>
+                    </div>
+                    
+                    <div class="honeypot">
+                        <input type="text" id="website" tabindex="-1" autocomplete="off">
+                    </div>
+                    
+                    <button class="submit-btn" onclick="submitWork()">Submit Week 09</button>
+                    
+                    <div class="submit-status" id="submitStatus"></div>
+                </div>
+            </section>
+            
+            <!-- Navigation -->
+            <div class="page-nav">
+                <a href="Week_08.html" class="nav-btn">← Week 08: File Handling</a>
+                <a href="index.html?home=true" class="nav-btn">Course Home</a>
+                <a href="Week_10.html" class="nav-btn">Week 10: OOP Basics →</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // =========================================
+        // Progress Bar
+        // =========================================
+        function updateProgress() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = Math.min(100, Math.max(0, (winScroll / height) * 100));
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        }
+        window.addEventListener('scroll', updateProgress);
+        window.addEventListener('load', updateProgress);
+        
+        // =========================================
+        // Hints Toggle
+        // =========================================
+        function toggleHints(id) {
+            const hints = document.getElementById(id);
+            hints.classList.toggle('show');
+            const btn = hints.previousElementSibling;
+            btn.textContent = hints.classList.contains('show') ? '💡 Hide Hints' : '💡 Show Hints';
+        }
+        
+        // =========================================
+        // Pyodide Python Execution
+        // =========================================
+        let pyodideReady = false;
+        let pyodide = null;
+        
+        async function initPyodide() {
+            if (!pyodideReady) {
+                try {
+                    pyodide = await loadPyodide();
+                    pyodideReady = true;
+                    console.log("Pyodide loaded successfully");
+                } catch (e) {
+                    console.error("Failed to load Pyodide:", e);
+                    throw e;
+                }
+            }
+            return pyodide;
+        }
+        
+        async function runCode(codeId) {
+            const codeEl = document.getElementById(codeId);
+            const outputEl = document.getElementById('output' + codeId);
+            const code = codeEl.value;
+            
+            outputEl.classList.add('show');
+            const outputContent = outputEl.querySelector('.code-output-content');
+            
+            if (!pyodideReady) {
+                outputContent.textContent = 'Initializing Python (first run takes a few seconds)...';
+                try {
+                    await initPyodide();
+                } catch (e) {
+                    outputContent.textContent = 'Error loading Python: ' + e.message;
+                    return;
+                }
+            }
+            
+            outputContent.textContent = 'Running...';
+            
+            try {
+                // Reset stdout
+                pyodide.runPython(`
+import sys
+from io import StringIO
+sys.stdout = StringIO()
+`);
+                // Run the user's code
+                await pyodide.runPythonAsync(code);
+                
+                // Get the output
+                const output = pyodide.runPython(`sys.stdout.getvalue()`);
+                outputContent.textContent = output || '(no output)';
+            } catch (e) {
+                outputContent.textContent = 'Error: ' + e.message;
+            }
+        }
+        
+        // =========================================
+        // Form Validation
+        // =========================================
+        const pageLoadTime = Date.now();
+        
+        function validateStudentId(id) {
+            if (id.length < 6 || id.length > 10) return false;
+            if (!/^\d+$/.test(id)) return false;
+            if (/^(\d)\1+$/.test(id)) return false;
+            return true;
+        }
+        
+        function validateName(name) {
+            if (name.length < 5) return false;
+            const words = name.trim().split(/\s+/);
+            if (words.length < 2) return false;
+            if (!/^[A-Za-zğüşıöçĞÜŞİÖÇ\s]+$/.test(name)) return false;
+            return true;
+        }
+        
+        function validateEmail(email) {
+            return email.endsWith('@istun.edu.tr') && email.length > 15;
+        }
+        
+        // =========================================
+        // Form Submission
+        // =========================================
+        function submitWork() {
+            const status = document.getElementById('submitStatus');
+            status.style.display = 'none';
+            
+            const studentId = document.getElementById('studentId').value.trim();
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentEmail = document.getElementById('studentEmail').value.trim().toLowerCase();
+            const classCode = document.getElementById('classCode').value.trim().toUpperCase();
+            const honeypot = document.getElementById('website').value;
+            
+            // Anti-spam check
+            if (honeypot) {
+                status.textContent = '❌ Submission rejected.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Time check
+            const timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
+            if (timeOnPage < 60) {
+                status.textContent = '❌ Please spend more time reviewing the material before submitting.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Required fields
+            if (!studentId || !studentName || !studentEmail || !classCode) {
+                status.textContent = '❌ All fields are required.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Student ID validation
+            if (!validateStudentId(studentId)) {
+                status.textContent = '❌ Invalid Student ID. Must be 6-10 digits.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Name validation
+            if (!validateName(studentName)) {
+                status.textContent = '❌ Please enter your full name (first and last name).';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Email validation
+            if (!validateEmail(studentEmail)) {
+                status.textContent = '❌ Please use your @istun.edu.tr email address.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Class code validation
+            if (classCode.length < 4) {
+                status.textContent = '❌ Invalid class code.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Prepare data
+            const data = {
+                week: 'Week_09',
+                studentId: studentId,
+                studentName: studentName,
+                studentEmail: studentEmail,
+                classCode: classCode,
+                timeOnPage: timeOnPage,
+                source: 'cp2-web'
+            };
+            
+            status.textContent = '⏳ Submitting...';
+            status.style.cssText = 'display:block;background:rgba(124,58,237,0.2);color:#a78bfa';
+            
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec';
+            
+            // Try CORS first, fall back to no-cors
+            fetch(scriptUrl, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    status.textContent = '✅ ' + result.message;
+                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                } else {
+                    status.textContent = '❌ ' + result.message;
+                    status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                }
+            })
+            .catch(error => {
+                // Fallback to no-cors mode
+                fetch(scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(data)
+                })
+                .then(() => {
+                    status.textContent = '✅ Submission received! Thank you.';
+                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                })
+                .catch(() => {
+                    status.textContent = '❌ Connection error. Please try again later.';
+                    status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                });
+            });
+        }
+    </script>
+</body>
+</html>

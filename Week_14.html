@@ -1,0 +1,2734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 14: Final Project &amp; Course Review | Computer Programming II</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-cream: #faf9f7;
+            --bg-dark: #1a1a2e;
+            --bg-code: #1e1e2e;
+            --text-primary: #1a1a2e;
+            --text-secondary: #444;
+            --text-muted: #666;
+            --accent: #7c3aed;
+            --accent-light: rgba(124, 58, 237, 0.1);
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --gold: #d97706;
+            --border: #e5e5e5;
+            --card-bg: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Crimson Pro', Georgia, serif; font-size: 19px; line-height: 1.8; background: var(--bg-cream); color: var(--text-primary); }
+        .topbar { background: var(--bg-dark); color: white; padding: 14px 24px; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
+        .topbar a { color: white; text-decoration: none; font-family: system-ui, sans-serif; font-size: 0.9rem; opacity: 0.9; }
+        .topbar a:hover { opacity: 1; }
+        .topbar-title { font-family: system-ui, sans-serif; font-weight: 600; font-size: 1rem; }
+        .topbar-nav { display: flex; gap: 24px; align-items: center; }
+        .progress-container { position: fixed; top: 52px; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 99; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa, var(--gold)); width: 0%; transition: width 0.15s ease-out; }
+        .container { max-width: 900px; margin: 0 auto; padding: 50px 24px 80px; }
+        .chapter-header { text-align: center; margin-bottom: 50px; padding-bottom: 40px; border-bottom: 2px solid var(--border); }
+        .chapter-label { display: inline-block; background: linear-gradient(135deg, var(--accent), var(--gold)); color: white; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-family: system-ui, sans-serif; font-weight: 500; margin-bottom: 20px; }
+        .chapter-header h1 { font-size: 2.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; }
+        .chapter-meta { display: flex; justify-content: center; gap: 30px; color: var(--text-muted); font-size: 1rem; }
+        .objectives-box { background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(124, 58, 237, 0.2); border-left: 4px solid var(--accent); border-radius: 8px; padding: 28px; margin-bottom: 50px; }
+        .objectives-box h3 { font-size: 1.2rem; margin-bottom: 16px; color: var(--accent); }
+        .objectives-box ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px 30px; list-style: none; }
+        .objectives-box li { color: var(--text-secondary); font-size: 0.95rem; padding-left: 28px; position: relative; }
+        .objectives-box li::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: bold; }
+        .section { margin-bottom: 60px; scroll-margin-top: 70px; }
+        .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+        .section-number { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: var(--accent); color: white; border-radius: 10px; font-size: 1.2rem; font-weight: 700; font-family: system-ui, sans-serif; }
+        .section-header h2 { font-size: 1.6rem; font-weight: 600; color: var(--text-primary); }
+        .content p { color: var(--text-secondary); margin-bottom: 18px; }
+        .content h3 { font-size: 1.25rem; font-weight: 600; margin: 35px 0 16px; color: var(--text-primary); }
+        .content h4 { font-size: 1.1rem; font-weight: 600; margin: 25px 0 12px; color: var(--accent); }
+        .content ul, .content ol { color: var(--text-secondary); margin: 16px 0 20px 28px; }
+        .content li { margin-bottom: 8px; }
+        code { font-family: 'JetBrains Mono', monospace; background: rgba(124, 58, 237, 0.1); padding: 2px 8px; border-radius: 4px; font-size: 0.85em; color: var(--accent); }
+        .code-figure { background: var(--bg-code); border-radius: 10px; margin: 20px 0; overflow: hidden; border: 1px solid #333; }
+        .code-figure-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(255,255,255,0.05); border-bottom: 1px solid #333; }
+        .code-figure-label { font-family: system-ui, sans-serif; font-size: 0.8rem; color: #a78bfa; font-weight: 500; }
+        .code-figure-run { background: var(--success); color: white; border: none; padding: 6px 14px; border-radius: 6px; font-family: system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+        .code-figure-run:hover { background: #047857; }
+        .code-editor { width: 100%; min-height: 120px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; }
+        .code-output.show { display: block; }
+        .code-output-label { font-family: system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--success); text-transform: uppercase; margin-bottom: 8px; }
+        .code-output-content { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #d4d4d8; white-space: pre-wrap; }
+        .info-box { padding: 18px 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid; }
+        .info-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .tip-box { background: rgba(5, 150, 105, 0.08); border-color: var(--success); }
+        .tip-box::before { content: '💡 Tip'; display: block; font-weight: 600; color: var(--success); margin-bottom: 8px; font-size: 0.9rem; }
+        .warning-box { background: rgba(217, 119, 6, 0.08); border-color: var(--warning); }
+        .warning-box::before { content: '⚠️ Important'; display: block; font-weight: 600; color: var(--warning); margin-bottom: 8px; font-size: 0.9rem; }
+        .note-box { background: rgba(124, 58, 237, 0.08); border-color: var(--accent); }
+        .note-box::before { content: '📝 Note'; display: block; font-weight: 600; color: var(--accent); margin-bottom: 8px; font-size: 0.9rem; }
+        .celebration-box { background: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(124, 58, 237, 0.15)); border: 2px solid var(--gold); border-radius: 12px; padding: 28px; margin: 24px 0; text-align: center; }
+        .celebration-box p { color: var(--text-primary); font-size: 1.15rem; margin: 0; }
+        .table-container { overflow-x: auto; margin: 24px 0; border-radius: 10px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        th { background: var(--bg-dark); color: white; padding: 14px 18px; text-align: left; font-weight: 600; font-family: system-ui, sans-serif; }
+        td { padding: 14px 18px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+        tr:last-child td { border-bottom: none; }
+        tr:nth-child(even) { background: rgba(124, 58, 237, 0.03); }
+        .exercise-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 28px 0; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .exercise-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05)); border-bottom: 1px solid var(--border); }
+        .exercise-title { font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 12px; }
+        .exercise-number { background: linear-gradient(135deg, #7c3aed, #7c3aed); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; font-family: system-ui, sans-serif; }
+        .difficulty { padding: 5px 14px; border-radius: 15px; font-size: 0.8rem; font-weight: 600; font-family: system-ui, sans-serif; }
+        .difficulty.easy { background: rgba(5, 150, 105, 0.12); color: var(--success); }
+        .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
+        .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
+        .difficulty.challenge { background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(217, 119, 6, 0.15)); color: var(--accent); }
+        .exercise-body { padding: 24px; }
+        .expected-output { background: rgba(5, 150, 105, 0.06); border: 1px solid rgba(5, 150, 105, 0.15); border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
+        .expected-output-label { font-size: 0.8rem; font-weight: 600; color: var(--success); text-transform: uppercase; margin-bottom: 10px; font-family: system-ui, sans-serif; }
+        .expected-output pre { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-secondary); margin: 0; background: transparent; padding: 0; white-space: pre-wrap; }
+        .hints-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--accent-light); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 8px; color: var(--accent); font-size: 0.9rem; cursor: pointer; font-family: inherit; }
+        .hints-toggle:hover { background: rgba(124, 58, 237, 0.15); }
+        .hints-content { display: none; background: rgba(124, 58, 237, 0.05); border: 1px solid rgba(124, 58, 237, 0.12); border-radius: 8px; padding: 18px 24px; margin-top: 14px; }
+        .hints-content.show { display: block; }
+        .hints-content ul { margin: 0; padding-left: 20px; }
+        .submit-section { background: var(--bg-dark); border-radius: 14px; padding: 40px; margin: 60px 0; color: white; }
+        .submit-section h2 { font-size: 1.6rem; margin-bottom: 10px; color: white; }
+        .submit-section > p { color: rgba(255,255,255,0.7); margin-bottom: 28px; }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 8px; color: rgba(255,255,255,0.8); font-family: system-ui, sans-serif; }
+        .form-group input { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; font-size: 1rem; font-family: inherit; }
+        .form-group input:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,0.15); }
+        .form-group input::placeholder { color: rgba(255,255,255,0.4); }
+        .honeypot { position: absolute; left: -9999px; }
+        .submit-btn { background: linear-gradient(135deg, var(--accent), var(--gold)); color: white; border: none; padding: 16px 40px; border-radius: 8px; font-size: 1.05rem; font-weight: 600; cursor: pointer; font-family: system-ui, sans-serif; transition: transform 0.2s, box-shadow 0.2s; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124, 58, 237, 0.3); }
+        .submit-status { margin-top: 20px; padding: 16px 20px; border-radius: 8px; font-family: system-ui, sans-serif; display: none; }
+        .page-nav { display: flex; justify-content: space-between; padding: 30px 0; border-top: 2px solid var(--border); margin-top: 60px; }
+        .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); text-decoration: none; font-size: 0.95rem; transition: all 0.2s; }
+        .nav-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+        .summary-box { background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 12px; padding: 30px; margin: 50px 0; }
+        .summary-box h3 { color: var(--accent); margin-bottom: 20px; font-size: 1.3rem; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+        .summary-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--card-bg); border-radius: 8px; font-size: 0.95rem; border: 1px solid var(--border); }
+        .file-tree { background: var(--bg-code); border-radius: 10px; padding: 20px; margin: 20px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: #e4e4e7; white-space: pre; overflow-x: auto; border: 1px solid #333; }
+        .checklist { list-style: none; margin-left: 0 !important; padding-left: 0 !important; }
+        .checklist li { padding-left: 28px; position: relative; margin-bottom: 10px; }
+        .checklist li::before { content: '☐'; position: absolute; left: 0; color: var(--accent); font-size: 1.1em; }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; margin: 20px 0; }
+        .skill-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: rgba(5, 150, 105, 0.08); border-radius: 8px; font-size: 0.95rem; color: var(--text-secondary); }
+        .skill-item::before { content: '✅'; }
+        @media (max-width: 700px) { 
+            .chapter-header h1 { font-size: 2rem; } 
+            .form-grid { grid-template-columns: 1fr; } 
+            .topbar-nav { display: none; }
+            .page-nav { flex-direction: column; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+    <nav class="topbar">
+        <a href="index.html" class="topbar-title">← Course Home</a>
+        <div class="topbar-nav">
+            <span style="opacity:0.7">Week 14 of 14 🎓</span>
+            <a href="Week_13.html">← Week 13</a>
+            <a href="index.html">Course Home</a>
+        </div>
+    </nav>
+    <div class="container">
+        <header class="chapter-header">
+            <span class="chapter-label">🎓 Week 14 - Final</span>
+            <h1>Final Project &amp; Course Review</h1>
+            <div class="chapter-meta">
+                <span>📚 Computer Programming II</span>
+                <span>👨‍🏫 Dr. Arif Solmaz</span>
+            </div>
+        </header>
+        <div class="objectives-box">
+            <h3>🎯 Learning Objectives</h3>
+            <ul>
+                <li>Review key concepts from all 14 weeks</li>
+                <li>Complete a comprehensive final project</li>
+                <li>Apply best practices in a real-world scenario</li>
+                <li>Demonstrate mastery of Python fundamentals</li>
+                <li>Integrate OOP, file handling, and data processing</li>
+                <li>Build a complete sensor monitoring system</li>
+                <li>Implement error handling and data validation</li>
+                <li>Prepare for continued Python learning</li>
+            </ul>
+        </div>
+        <div class="content">
+            <!-- Section 1: Course Review -->
+            <section id="part1" class="section">
+                <div class="section-header">
+                    <div class="section-number">1</div>
+                    <h2>Course Review</h2>
+                </div>
+                <p>This final week brings together everything you've learned throughout the course. Let's review the key concepts from all 14 weeks before diving into the final project.</p>
+                
+                <h3>Complete Course Summary</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Week</th><th>Topic</th><th>Key Concepts</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>Introduction</td><td>Variables, data types, operators, input/output</td></tr>
+                            <tr><td>2</td><td>Control Flow</td><td>if/elif/else, comparison operators, boolean logic</td></tr>
+                            <tr><td>3</td><td>Loops</td><td>for loops, while loops, break/continue, nested loops</td></tr>
+                            <tr><td>4</td><td>Functions</td><td>def, parameters, return values, scope, lambda</td></tr>
+                            <tr><td>5</td><td>Lists &amp; Tuples</td><td>Indexing, slicing, methods, list comprehensions</td></tr>
+                            <tr><td>6</td><td>Dictionaries &amp; Sets</td><td>Key-value pairs, dict methods, set operations</td></tr>
+                            <tr><td>7</td><td>Strings</td><td>String methods, formatting, f-strings, regex basics</td></tr>
+                            <tr><td>8</td><td>File Handling</td><td>open/close, read/write, context managers, paths</td></tr>
+                            <tr><td>9</td><td>Error Handling</td><td>try/except, raising exceptions, custom exceptions</td></tr>
+                            <tr><td>10</td><td>OOP Basics</td><td>Classes, objects, methods, properties, encapsulation</td></tr>
+                            <tr><td>11</td><td>OOP Advanced</td><td>Inheritance, polymorphism, abstract classes, mixins</td></tr>
+                            <tr><td>12</td><td>Modules &amp; Packages</td><td>import, creating modules, pip, virtual environments</td></tr>
+                            <tr><td>13</td><td>External Data</td><td>CSV, JSON, XML, APIs, SQLite, data validation</td></tr>
+                            <tr><td>14</td><td>Final Project</td><td>Integration of all concepts</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Quick Reference: Variables and Data Types</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.1: Data Types Review</span>
+                        <button class="code-figure-run" onclick="runCode('code1')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code1"># === VARIABLES AND DATA TYPES ===
+integer_var = 42
+float_var = 3.14159
+string_var = "Hello, Python!"
+bool_var = True
+none_var = None
+list_var = [1, 2, 3, 4, 5]
+dict_var = {'name': 'sensor', 'value': 25.5}
+tuple_var = (10, 20, 30)
+set_var = {1, 2, 3, 4}
+
+# Type conversion
+x = int("42")
+y = float("3.14")
+z = str(42)
+w = list("abc")
+b = bool(1)
+
+print("=== Data Types ===")
+print(f"  int: {integer_var} ({type(integer_var).__name__})")
+print(f"  float: {float_var} ({type(float_var).__name__})")
+print(f"  str: {string_var} ({type(string_var).__name__})")
+print(f"  bool: {bool_var} ({type(bool_var).__name__})")
+print(f"  list: {list_var} ({type(list_var).__name__})")
+print(f"  dict: {dict_var} ({type(dict_var).__name__})")
+print(f"  tuple: {tuple_var} ({type(tuple_var).__name__})")
+print(f"  set: {set_var} ({type(set_var).__name__})")
+print(f"\n=== Conversions ===")
+print(f"  int('42') = {x}")
+print(f"  float('3.14') = {y}")
+print(f"  str(42) = '{z}'")
+print(f"  list('abc') = {w}")
+print(f"  bool(1) = {b}")</textarea>
+                    <div class="code-output" id="outputcode1">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Quick Reference: Control Flow and Loops</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.2: Control Flow Review</span>
+                        <button class="code-figure-run" onclick="runCode('code2')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code2"># === CONDITIONALS ===
+value = 75
+
+if value >= 90:
+    grade = 'A'
+elif value >= 80:
+    grade = 'B'
+elif value >= 70:
+    grade = 'C'
+elif value >= 60:
+    grade = 'D'
+else:
+    grade = 'F'
+
+# Ternary operator
+status = "Pass" if value >= 60 else "Fail"
+
+print(f"Score: {value} → Grade: {grade}, Status: {status}")
+
+# === FOR LOOP ===
+print("\n=== For Loop ===")
+for i in range(5):
+    print(f"  i = {i}", end="")
+print()
+
+# Iterating over list with enumerate
+fruits = ['apple', 'banana', 'cherry']
+for idx, fruit in enumerate(fruits):
+    print(f"  {idx}: {fruit}")
+
+# === WHILE LOOP ===
+print("\n=== While Loop ===")
+count = 0
+while count < 3:
+    print(f"  count = {count}")
+    count += 1
+
+# === LIST COMPREHENSION ===
+print("\n=== List Comprehension ===")
+squares = [x**2 for x in range(1, 6)]
+print(f"  Squares: {squares}")
+evens = [x for x in range(10) if x % 2 == 0]
+print(f"  Evens: {evens}")</textarea>
+                    <div class="code-output" id="outputcode2">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Quick Reference: Functions</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.3: Functions Review</span>
+                        <button class="code-figure-run" onclick="runCode('code3')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code3"># === BASIC FUNCTION ===
+def greet(name, greeting="Hello"):
+    """Return a greeting message."""
+    return f"{greeting}, {name}!"
+
+print(greet("Engineer"))
+print(greet("Student", "Welcome"))
+
+# === MULTIPLE RETURN VALUES ===
+def get_stats(numbers):
+    """Return multiple statistics."""
+    return min(numbers), max(numbers), sum(numbers) / len(numbers)
+
+data = [10, 20, 30, 40, 50]
+minimum, maximum, average = get_stats(data)
+print(f"\nStats: min={minimum}, max={maximum}, avg={average}")
+
+# === *ARGS AND **KWARGS ===
+def process_data(*args, **kwargs):
+    """Process variable arguments."""
+    print(f"\n*args: {args}")
+    print(f"**kwargs: {kwargs}")
+
+process_data(1, 2, 3, name="test", value=42)
+
+# === LAMBDA FUNCTION ===
+square = lambda x: x ** 2
+add = lambda a, b: a + b
+
+print(f"\nLambda square(5) = {square(5)}")
+print(f"Lambda add(3, 4) = {add(3, 4)}")
+
+# === DECORATOR ===
+def log_call(func):
+    def wrapper(*args, **kwargs):
+        print(f"\n[LOG] Calling {func.__name__}...")
+        result = func(*args, **kwargs)
+        print(f"[LOG] Result: {result}")
+        return result
+    return wrapper
+
+@log_call
+def multiply(a, b):
+    return a * b
+
+multiply(3, 4)</textarea>
+                    <div class="code-output" id="outputcode3">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Quick Reference: Data Structures</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.4: Data Structures Review</span>
+                        <button class="code-figure-run" onclick="runCode('code4')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code4"># === LISTS ===
+print("=== Lists ===")
+sensors = ['temp', 'humidity', 'pressure']
+sensors.append('light')
+sensors.insert(0, 'voltage')
+print(f"  List: {sensors}")
+print(f"  Slicing [1:3]: {sensors[1:3]}")
+print(f"  Reversed: {sensors[::-1]}")
+
+# === DICTIONARIES ===
+print("\n=== Dictionaries ===")
+config = {
+    'sensor_id': 'TEMP_001',
+    'interval': 5,
+    'unit': 'celsius'
+}
+config['location'] = 'Room A'
+print(f"  Dict: {config}")
+print(f"  Keys: {list(config.keys())}")
+print(f"  Values: {list(config.values())}")
+print(f"  Get with default: {config.get('unknown', 'N/A')}")
+
+# === SETS ===
+print("\n=== Sets ===")
+active = {'TEMP_001', 'HUMI_001', 'PRES_001'}
+online = {'TEMP_001', 'PRES_001', 'LIGHT_001'}
+print(f"  Active: {active}")
+print(f"  Online: {online}")
+print(f"  Intersection (both): {active & online}")
+print(f"  Union (all): {active | online}")
+print(f"  Difference (active only): {active - online}")
+
+# === TUPLES ===
+print("\n=== Tuples ===")
+point = (10.5, 20.3, 5.0)
+x, y, z = point
+print(f"  Tuple: {point}")
+print(f"  Unpacked: x={x}, y={y}, z={z}")
+
+# Named tuple-like with dict
+reading = {'x': 10, 'y': 20, 'z': 30}
+print(f"  Dict as record: {reading}")</textarea>
+                    <div class="code-output" id="outputcode4">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Quick Reference: String Operations</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.5: String Operations Review</span>
+                        <button class="code-figure-run" onclick="runCode('code5')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code5"># === STRING METHODS ===
+print("=== String Methods ===")
+text = "  Hello, Python World!  "
+print(f"  Original: '{text}'")
+print(f"  strip(): '{text.strip()}'")
+print(f"  lower(): '{text.lower()}'")
+print(f"  upper(): '{text.upper()}'")
+print(f"  replace(): '{text.replace('Python', 'Programming')}'")
+print(f"  split(): {text.split()}")
+
+# === STRING FORMATTING ===
+print("\n=== String Formatting ===")
+name = "Sensor"
+value = 25.5678
+unit = "°C"
+
+# f-strings (recommended)
+print(f"  f-string: {name}: {value:.2f} {unit}")
+
+# format() method
+print("  format(): {}: {:.2f} {}".format(name, value, unit))
+
+# % formatting (old style)
+print("  %% format: %s: %.2f %s" % (name, value, unit))
+
+# === STRING VALIDATION ===
+print("\n=== String Validation ===")
+print(f"  '123'.isdigit(): {'123'.isdigit()}")
+print(f"  'abc'.isalpha(): {'abc'.isalpha()}")
+print(f"  'abc123'.isalnum(): {'abc123'.isalnum()}")
+print(f"  '   '.isspace(): {'   '.isspace()}")
+
+# === JOIN AND SPLIT ===
+print("\n=== Join and Split ===")
+parts = ['sensor', 'data', 'log']
+joined = '_'.join(parts)
+print(f"  Joined: {joined}")
+print(f"  Split back: {joined.split('_')}")</textarea>
+                    <div class="code-output" id="outputcode5">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Quick Reference: File and Error Handling</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.6: File and Error Handling Review</span>
+                        <button class="code-figure-run" onclick="runCode('code6')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code6"># === FILE HANDLING (simulated with StringIO) ===
+from io import StringIO
+
+print("=== File Operations (Simulated) ===")
+# Writing
+output = StringIO()
+output.write("Sensor ID: TEMP_001\n")
+output.write("Value: 25.5°C\n")
+output.write("Timestamp: 2025-01-15 10:00:00\n")
+
+# Reading
+output.seek(0)  # Go back to start
+content = output.read()
+print("File content:")
+print(content)
+
+# Reading lines
+output.seek(0)
+lines = output.readlines()
+print(f"Lines count: {len(lines)}")
+
+# === ERROR HANDLING ===
+print("=== Error Handling ===")
+def safe_divide(a, b):
+    """Divide with comprehensive error handling."""
+    try:
+        result = a / b
+    except ZeroDivisionError:
+        print(f"  ✗ Error: Cannot divide by zero!")
+        return None
+    except TypeError as e:
+        print(f"  ✗ Error: {e}")
+        return None
+    else:
+        print(f"  ✓ Success: {a} / {b} = {result}")
+        return result
+    finally:
+        print("  (cleanup complete)")
+
+safe_divide(10, 2)
+safe_divide(10, 0)
+safe_divide(10, "2")
+
+# === CUSTOM EXCEPTION ===
+print("\n=== Custom Exception ===")
+class SensorError(Exception):
+    """Custom sensor exception."""
+    pass
+
+try:
+    raise SensorError("Sensor not responding")
+except SensorError as e:
+    print(f"  Caught: {e}")</textarea>
+                    <div class="code-output" id="outputcode6">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Quick Reference: Object-Oriented Programming</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.7: OOP Review</span>
+                        <button class="code-figure-run" onclick="runCode('code7')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code7">from abc import ABC, abstractmethod
+import random
+
+# === ABSTRACT BASE CLASS ===
+class Sensor(ABC):
+    """Abstract base sensor class."""
+    
+    _count = 0  # Class variable
+    
+    def __init__(self, sensor_id, location="Unknown"):
+        self.sensor_id = sensor_id
+        self.location = location
+        self._value = None  # Protected
+        Sensor._count += 1
+    
+    @property
+    @abstractmethod
+    def unit(self):
+        """Abstract property for unit."""
+        pass
+    
+    @abstractmethod
+    def read(self):
+        """Abstract method to read sensor."""
+        pass
+    
+    @property
+    def value(self):
+        """Property getter."""
+        return self._value
+    
+    def __str__(self):
+        """String representation."""
+        return f"{self.sensor_id}: {self._value} {self.unit}"
+    
+    @classmethod
+    def get_count(cls):
+        """Class method."""
+        return cls._count
+
+# === CONCRETE CLASS ===
+class TemperatureSensor(Sensor):
+    """Temperature sensor implementation."""
+    
+    def __init__(self, sensor_id, location="Unknown", base_temp=25.0):
+        super().__init__(sensor_id, location)
+        self.base_temp = base_temp
+    
+    @property
+    def unit(self):
+        return "°C"
+    
+    def read(self):
+        self._value = round(self.base_temp + random.uniform(-3, 3), 2)
+        return self._value
+
+# === TEST ===
+print("=== OOP Demo ===")
+sensor = TemperatureSensor("TEMP_001", "Room A", base_temp=22.0)
+for _ in range(3):
+    sensor.read()
+    print(f"  {sensor}")
+
+print(f"\nTotal sensors created: {Sensor.get_count()}")</textarea>
+                    <div class="code-output" id="outputcode7">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <p>Review the previous weeks' materials if you need to refresh your understanding of any concept before starting the final project.</p>
+                </div>
+            </section>
+
+            <!-- Section 2: Final Project Overview -->
+            <section id="part2" class="section">
+                <div class="section-header">
+                    <div class="section-number">2</div>
+                    <h2>Final Project Overview</h2>
+                </div>
+                <p>Build a complete <strong>Sensor Monitoring System</strong> that demonstrates mastery of all course concepts. This project integrates OOP, file handling, data processing, error handling, and external data management.</p>
+
+                <h3>Project Requirements</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Component</th><th>Concepts Used</th><th>Points</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Sensor Classes</td><td>OOP, inheritance, properties, abstract classes</td><td>20</td></tr>
+                            <tr><td>Data Storage</td><td>File I/O, SQLite, JSON configuration</td><td>20</td></tr>
+                            <tr><td>Data Processing</td><td>Functions, comprehensions, statistics</td><td>15</td></tr>
+                            <tr><td>Error Handling</td><td>try/except, validation, custom exceptions</td><td>15</td></tr>
+                            <tr><td>User Interface</td><td>Input/output, formatting, menus</td><td>10</td></tr>
+                            <tr><td>Code Quality</td><td>Modules, documentation, PEP 8</td><td>10</td></tr>
+                            <tr><td>Testing</td><td>Test cases, edge cases, validation</td><td>10</td></tr>
+                            <tr><td><strong>Total</strong></td><td></td><td><strong>100</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Project Structure</h3>
+                <div class="file-tree">sensor_monitoring/
+├── __init__.py
+├── sensors.py          # Sensor classes (OOP)
+├── storage.py          # Data storage (DB, files)
+├── processing.py       # Data processing/analysis
+├── validation.py       # Data validation
+├── config.py           # Configuration management
+├── main.py             # Main application
+├── tests/
+│   ├── __init__.py
+│   ├── test_sensors.py
+│   └── test_storage.py
+├── data/
+│   ├── config.json
+│   └── readings.db
+└── README.md</div>
+
+                <h3>System Architecture</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.1: System Overview</span>
+                        <button class="code-figure-run" onclick="runCode('code8')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code8"># System Architecture Overview
+print("=== Sensor Monitoring System Architecture ===")
+print()
+print("┌─────────────────────────────────────────────────┐")
+print("│              MAIN APPLICATION                   │")
+print("│                 (main.py)                       │")
+print("└─────────────────┬───────────────────────────────┘")
+print("                  │")
+print("    ┌─────────────┼─────────────┐")
+print("    │             │             │")
+print("    ▼             ▼             ▼")
+print("┌────────┐  ┌──────────┐  ┌──────────┐")
+print("│SENSORS │  │ STORAGE  │  │PROCESSING│")
+print("│        │  │          │  │          │")
+print("│ • Temp │  │ • JSON   │  │ • Stats  │")
+print("│ • Humid│  │ • CSV    │  │ • Alerts │")
+print("│ • Press│  │ • SQLite │  │ • Trends │")
+print("└────────┘  └──────────┘  └──────────┘")
+print()
+print("Key Features:")
+print("  ✓ Abstract base classes for extensibility")
+print("  ✓ Multiple storage backends")
+print("  ✓ Real-time data processing")
+print("  ✓ Alert management")
+print("  ✓ Configuration via JSON")</textarea>
+                    <div class="code-output" id="outputcode8">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <p>The final project should demonstrate your understanding of Python programming. Make sure to include proper documentation, error handling, and follow PEP 8 style guidelines.</p>
+                </div>
+            </section>
+
+            <!-- Section 3: Sensor Classes -->
+            <section id="part3" class="section">
+                <div class="section-header">
+                    <div class="section-number">3</div>
+                    <h2>Step 1: Sensor Classes (sensors.py)</h2>
+                </div>
+                <p>The sensor module contains the complete sensor class hierarchy with abstract base classes, inheritance, properties, and custom exceptions.</p>
+
+                <h3>Custom Exceptions</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.1: Custom Sensor Exceptions</span>
+                        <button class="code-figure-run" onclick="runCode('code9')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code9"># sensors.py - Custom exceptions
+
+class SensorError(Exception):
+    """Base exception for sensor errors."""
+    pass
+
+class SensorReadError(SensorError):
+    """Error reading from sensor."""
+    pass
+
+class SensorValidationError(SensorError):
+    """Sensor data validation error."""
+    pass
+
+class SensorNotFoundError(SensorError):
+    """Sensor not found in system."""
+    pass
+
+class SensorConfigError(SensorError):
+    """Sensor configuration error."""
+    pass
+
+# Example usage
+def read_sensor(sensor_id, is_connected=True):
+    """Simulate reading a sensor with error handling."""
+    if not sensor_id:
+        raise SensorValidationError("Sensor ID cannot be empty")
+    if not is_connected:
+        raise SensorReadError(f"Sensor {sensor_id} is not responding")
+    return 25.5
+
+# Test the exceptions
+print("=== Testing Custom Exceptions ===")
+
+try:
+    read_sensor("TEMP_001", is_connected=False)
+except SensorReadError as e:
+    print(f"✗ SensorReadError: {e}")
+
+try:
+    read_sensor("", is_connected=True)
+except SensorValidationError as e:
+    print(f"✗ SensorValidationError: {e}")
+
+try:
+    result = read_sensor("TEMP_001", is_connected=True)
+    print(f"✓ Read successful: {result}°C")
+except SensorError as e:
+    print(f"✗ Error: {e}")</textarea>
+                    <div class="code-output" id="outputcode9">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Abstract Base Sensor Class</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.2: BaseSensor Abstract Class</span>
+                        <button class="code-figure-run" onclick="runCode('code10')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code10">from abc import ABC, abstractmethod
+from datetime import datetime
+import random
+
+class BaseSensor(ABC):
+    """Abstract base class for all sensors."""
+    
+    _sensor_count = 0
+    _all_sensors = []
+    
+    def __init__(self, sensor_id, location="Unknown"):
+        self.sensor_id = sensor_id
+        self.location = location
+        self._value = None
+        self._last_read = None
+        self._readings = []
+        self._is_active = True
+        
+        BaseSensor._sensor_count += 1
+        BaseSensor._all_sensors.append(self)
+    
+    @property
+    @abstractmethod
+    def sensor_type(self):
+        """Return sensor type name."""
+        pass
+    
+    @property
+    @abstractmethod
+    def unit(self):
+        """Return measurement unit."""
+        pass
+    
+    @abstractmethod
+    def _simulate_reading(self):
+        """Simulate a sensor reading."""
+        pass
+    
+    @property
+    def value(self):
+        return self._value
+    
+    @property
+    def is_active(self):
+        return self._is_active
+    
+    @property
+    def reading_count(self):
+        return len(self._readings)
+    
+    def activate(self):
+        self._is_active = True
+        
+    def deactivate(self):
+        self._is_active = False
+    
+    def read(self):
+        """Take a sensor reading."""
+        if not self._is_active:
+            raise SensorReadError(f"Sensor {self.sensor_id} is not active")
+        
+        self._value = self._simulate_reading()
+        self._last_read = datetime.now()
+        
+        reading = {
+            'timestamp': self._last_read.isoformat(),
+            'value': self._value,
+            'unit': self.unit
+        }
+        self._readings.append(reading)
+        return self._value
+    
+    def get_readings(self, limit=None):
+        if limit:
+            return self._readings[-limit:]
+        return self._readings.copy()
+    
+    def get_statistics(self):
+        if not self._readings:
+            return None
+        
+        values = [r['value'] for r in self._readings]
+        return {
+            'count': len(values),
+            'min': round(min(values), 2),
+            'max': round(max(values), 2),
+            'avg': round(sum(values) / len(values), 2)
+        }
+    
+    def __str__(self):
+        status = "Active" if self._is_active else "Inactive"
+        value_str = f"{self._value} {self.unit}" if self._value else "No reading"
+        return f"{self.sensor_type} {self.sensor_id}: {value_str} [{status}]"
+    
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.sensor_id}', '{self.location}')"
+    
+    @classmethod
+    def get_sensor_count(cls):
+        return cls._sensor_count
+    
+    @classmethod
+    def get_all_sensors(cls):
+        return cls._all_sensors.copy()
+
+print("BaseSensor abstract class defined successfully!")
+print("Abstract methods: sensor_type, unit, _simulate_reading")
+print("Concrete methods: read, get_readings, get_statistics")</textarea>
+                    <div class="code-output" id="outputcode10">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Concrete Sensor Classes</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.3: Concrete Sensor Implementations</span>
+                        <button class="code-figure-run" onclick="runCode('code11')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code11">class TemperatureSensor(BaseSensor):
+    """Temperature sensor measuring in Celsius."""
+    
+    def __init__(self, sensor_id, location="Unknown", base_temp=25.0):
+        super().__init__(sensor_id, location)
+        self.base_temp = base_temp
+    
+    @property
+    def sensor_type(self):
+        return "Temperature"
+    
+    @property
+    def unit(self):
+        return "°C"
+    
+    def _simulate_reading(self):
+        return round(self.base_temp + random.uniform(-3, 3), 2)
+    
+    def to_fahrenheit(self):
+        if self._value is None:
+            return None
+        return round(self._value * 9/5 + 32, 2)
+
+
+class HumiditySensor(BaseSensor):
+    """Humidity sensor measuring percentage."""
+    
+    def __init__(self, sensor_id, location="Unknown", base_humidity=50.0):
+        super().__init__(sensor_id, location)
+        self.base_humidity = base_humidity
+    
+    @property
+    def sensor_type(self):
+        return "Humidity"
+    
+    @property
+    def unit(self):
+        return "%"
+    
+    def _simulate_reading(self):
+        value = self.base_humidity + random.uniform(-10, 10)
+        return round(max(0, min(100, value)), 1)
+
+
+class PressureSensor(BaseSensor):
+    """Atmospheric pressure sensor measuring in hPa."""
+    
+    def __init__(self, sensor_id, location="Unknown"):
+        super().__init__(sensor_id, location)
+    
+    @property
+    def sensor_type(self):
+        return "Pressure"
+    
+    @property
+    def unit(self):
+        return "hPa"
+    
+    def _simulate_reading(self):
+        return round(1013.25 + random.uniform(-15, 15), 2)
+
+
+# Test the sensors
+print("=== Testing Concrete Sensors ===\n")
+
+temp = TemperatureSensor("TEMP_001", "Room A", base_temp=22.0)
+humid = HumiditySensor("HUMI_001", "Room A")
+pres = PressureSensor("PRES_001", "Room A")
+
+# Take multiple readings
+for i in range(5):
+    temp.read()
+    humid.read()
+    pres.read()
+
+print(temp)
+print(f"  Fahrenheit: {temp.to_fahrenheit()}°F")
+print(f"  Stats: {temp.get_statistics()}")
+print()
+print(humid)
+print(f"  Stats: {humid.get_statistics()}")
+print()
+print(pres)
+print(f"  Stats: {pres.get_statistics()}")
+print(f"\nTotal sensors created: {BaseSensor.get_sensor_count()}")</textarea>
+                    <div class="code-output" id="outputcode11">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Sensor Factory Pattern</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.4: Sensor Factory</span>
+                        <button class="code-figure-run" onclick="runCode('code12')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code12">class SensorFactory:
+    """Factory for creating sensors by type."""
+    
+    _sensor_types = {
+        'temperature': TemperatureSensor,
+        'humidity': HumiditySensor,
+        'pressure': PressureSensor
+    }
+    
+    @classmethod
+    def create(cls, sensor_type, sensor_id, location="Unknown", **kwargs):
+        """Create a sensor by type name."""
+        sensor_type = sensor_type.lower()
+        if sensor_type not in cls._sensor_types:
+            raise ValueError(f"Unknown sensor type: {sensor_type}")
+        
+        return cls._sensor_types[sensor_type](sensor_id, location, **kwargs)
+    
+    @classmethod
+    def register_type(cls, type_name, sensor_class):
+        """Register a new sensor type."""
+        cls._sensor_types[type_name.lower()] = sensor_class
+        print(f"Registered new sensor type: {type_name}")
+    
+    @classmethod
+    def available_types(cls):
+        """List available sensor types."""
+        return list(cls._sensor_types.keys())
+
+# Test factory
+print("=== Sensor Factory Demo ===\n")
+print(f"Available types: {SensorFactory.available_types()}")
+
+# Create sensors using factory
+print("\nCreating sensors via factory:")
+sensors = [
+    SensorFactory.create('temperature', 'TEMP_100', 'Lab', base_temp=24.0),
+    SensorFactory.create('humidity', 'HUMI_100', 'Lab'),
+    SensorFactory.create('pressure', 'PRES_100', 'Lab'),
+]
+
+for sensor in sensors:
+    sensor.read()
+    print(f"  Created: {sensor}")
+
+# Try creating unknown type
+try:
+    SensorFactory.create('unknown', 'XXX_001')
+except ValueError as e:
+    print(f"\nError: {e}")</textarea>
+                    <div class="code-output" id="outputcode12">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <div class="note-box">
+                    <p>The Factory Pattern allows creating objects without specifying the exact class. This makes it easy to add new sensor types without changing client code.</p>
+                </div>
+            </section>
+
+            <!-- Section 4: Data Storage -->
+            <section id="part4" class="section">
+                <div class="section-header">
+                    <div class="section-number">4</div>
+                    <h2>Step 2: Data Storage (storage.py)</h2>
+                </div>
+                <p>The storage module provides multiple backends for sensor data: JSON files, CSV files, and SQLite databases.</p>
+
+                <h3>Abstract Storage Interface</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.1: Storage Interface</span>
+                        <button class="code-figure-run" onclick="runCode('code13')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code13">from abc import ABC, abstractmethod
+
+class StorageInterface(ABC):
+    """Abstract interface for data storage."""
+    
+    @abstractmethod
+    def save(self, data):
+        """Save data to storage."""
+        pass
+    
+    @abstractmethod
+    def load(self):
+        """Load data from storage."""
+        pass
+    
+    @abstractmethod
+    def append(self, record):
+        """Append a single record."""
+        pass
+    
+    @abstractmethod
+    def query(self, **criteria):
+        """Query data with criteria."""
+        pass
+    
+    @abstractmethod
+    def clear(self):
+        """Clear all data."""
+        pass
+
+print("StorageInterface abstract class defined!")
+print("Methods: save, load, append, query, clear")</textarea>
+                    <div class="code-output" id="outputcode13">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>JSON Storage Implementation</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.2: JSON Storage</span>
+                        <button class="code-figure-run" onclick="runCode('code14')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code14">import json
+
+class JSONStorage(StorageInterface):
+    """JSON storage (in-memory for demo)."""
+    
+    def __init__(self):
+        self._data = []
+    
+    def save(self, data):
+        self._data = data
+    
+    def load(self):
+        return self._data.copy()
+    
+    def append(self, record):
+        self._data.append(record)
+    
+    def query(self, **criteria):
+        results = self._data
+        for key, value in criteria.items():
+            results = [r for r in results if r.get(key) == value]
+        return results
+    
+    def clear(self):
+        self._data = []
+    
+    def to_json(self, indent=2):
+        return json.dumps(self._data, indent=indent)
+    
+    def from_json(self, json_str):
+        self._data = json.loads(json_str)
+    
+    def __len__(self):
+        return len(self._data)
+
+# Test JSON storage
+print("=== JSON Storage Demo ===\n")
+storage = JSONStorage()
+
+# Add records
+storage.append({'sensor_id': 'TEMP_001', 'value': 25.5, 'unit': '°C'})
+storage.append({'sensor_id': 'TEMP_001', 'value': 25.7, 'unit': '°C'})
+storage.append({'sensor_id': 'HUMI_001', 'value': 65.2, 'unit': '%'})
+storage.append({'sensor_id': 'TEMP_001', 'value': 25.3, 'unit': '°C'})
+
+print("All records:")
+print(storage.to_json())
+
+print(f"\nQuery TEMP_001 readings:")
+results = storage.query(sensor_id='TEMP_001')
+for r in results:
+    print(f"  {r['value']} {r['unit']}")
+
+print(f"\nTotal records: {len(storage)}")</textarea>
+                    <div class="code-output" id="outputcode14">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>CSV Storage Implementation</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.3: CSV Storage</span>
+                        <button class="code-figure-run" onclick="runCode('code15')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code15">import csv
+from io import StringIO
+
+class CSVStorage(StorageInterface):
+    """CSV storage (in-memory for demo)."""
+    
+    def __init__(self, fieldnames=None):
+        self._data = []
+        self.fieldnames = fieldnames
+    
+    def save(self, data):
+        self._data = data
+    
+    def load(self):
+        return self._data.copy()
+    
+    def append(self, record):
+        self._data.append(record)
+    
+    def query(self, **criteria):
+        results = self._data
+        for key, value in criteria.items():
+            results = [r for r in results if r.get(key) == value]
+        return results
+    
+    def clear(self):
+        self._data = []
+    
+    def to_csv_string(self):
+        if not self._data:
+            return ""
+        
+        fieldnames = self.fieldnames or list(self._data[0].keys())
+        lines = [','.join(fieldnames)]
+        
+        for row in self._data:
+            values = [str(row.get(f, '')) for f in fieldnames]
+            lines.append(','.join(values))
+        
+        return '\n'.join(lines)
+    
+    def from_csv_string(self, csv_str):
+        reader = csv.DictReader(StringIO(csv_str))
+        self._data = list(reader)
+
+# Test CSV storage
+print("=== CSV Storage Demo ===\n")
+csv_storage = CSVStorage(['sensor_id', 'value', 'unit', 'timestamp'])
+
+csv_storage.append({
+    'sensor_id': 'TEMP_001', 
+    'value': 25.5, 
+    'unit': '°C', 
+    'timestamp': '2025-01-15 10:00:00'
+})
+csv_storage.append({
+    'sensor_id': 'TEMP_001', 
+    'value': 25.7, 
+    'unit': '°C', 
+    'timestamp': '2025-01-15 10:01:00'
+})
+csv_storage.append({
+    'sensor_id': 'HUMI_001', 
+    'value': 65.2, 
+    'unit': '%', 
+    'timestamp': '2025-01-15 10:01:00'
+})
+
+print("CSV format:")
+print(csv_storage.to_csv_string())</textarea>
+                    <div class="code-output" id="outputcode15">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>SQLite Database Storage</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.4: SQLite Database Storage</span>
+                        <button class="code-figure-run" onclick="runCode('code16')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code16">import sqlite3
+
+class DatabaseStorage:
+    """SQLite database storage."""
+    
+    def __init__(self, db_path=':memory:'):
+        self.db_path = db_path
+        self._init_db()
+    
+    def _get_connection(self):
+        conn = sqlite3.connect(self.db_path)
+        conn.row_factory = sqlite3.Row
+        return conn
+    
+    def _init_db(self):
+        with self._get_connection() as conn:
+            conn.execute('''
+                CREATE TABLE IF NOT EXISTS sensors (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    sensor_id TEXT UNIQUE NOT NULL,
+                    sensor_type TEXT NOT NULL,
+                    location TEXT
+                )
+            ''')
+            
+            conn.execute('''
+                CREATE TABLE IF NOT EXISTS readings (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    sensor_id TEXT NOT NULL,
+                    value REAL NOT NULL,
+                    unit TEXT NOT NULL,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+            ''')
+    
+    def register_sensor(self, sensor_id, sensor_type, location):
+        with self._get_connection() as conn:
+            conn.execute(
+                'INSERT OR REPLACE INTO sensors (sensor_id, sensor_type, location) VALUES (?, ?, ?)',
+                (sensor_id, sensor_type, location)
+            )
+    
+    def save_reading(self, sensor_id, value, unit):
+        with self._get_connection() as conn:
+            conn.execute(
+                'INSERT INTO readings (sensor_id, value, unit) VALUES (?, ?, ?)',
+                (sensor_id, value, unit)
+            )
+    
+    def get_readings(self, sensor_id=None, limit=100):
+        with self._get_connection() as conn:
+            if sensor_id:
+                cursor = conn.execute(
+                    'SELECT * FROM readings WHERE sensor_id = ? ORDER BY timestamp DESC LIMIT ?',
+                    (sensor_id, limit)
+                )
+            else:
+                cursor = conn.execute(
+                    'SELECT * FROM readings ORDER BY timestamp DESC LIMIT ?',
+                    (limit,)
+                )
+            return [dict(row) for row in cursor.fetchall()]
+    
+    def get_statistics(self, sensor_id):
+        with self._get_connection() as conn:
+            cursor = conn.execute('''
+                SELECT 
+                    COUNT(*) as count,
+                    MIN(value) as min_value,
+                    MAX(value) as max_value,
+                    ROUND(AVG(value), 2) as avg_value
+                FROM readings
+                WHERE sensor_id = ?
+            ''', (sensor_id,))
+            return dict(cursor.fetchone())
+
+# Test database storage
+print("=== SQLite Database Storage Demo ===\n")
+db = DatabaseStorage()
+
+# Register sensors
+db.register_sensor('TEMP_001', 'Temperature', 'Room A')
+db.register_sensor('HUMI_001', 'Humidity', 'Room A')
+
+# Save readings
+import random
+for i in range(10):
+    db.save_reading('TEMP_001', round(22 + random.uniform(-2, 2), 2), '°C')
+    db.save_reading('HUMI_001', round(50 + random.uniform(-5, 5), 1), '%')
+
+# Query
+print("Recent readings for TEMP_001:")
+readings = db.get_readings('TEMP_001', limit=3)
+for r in readings:
+    print(f"  {r['value']} {r['unit']}")
+
+print(f"\nStatistics for TEMP_001: {db.get_statistics('TEMP_001')}")
+print(f"Statistics for HUMI_001: {db.get_statistics('HUMI_001')}")</textarea>
+                    <div class="code-output" id="outputcode16">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <p>Use parameterized queries (with <code>?</code> placeholders) to prevent SQL injection attacks. Never concatenate user input directly into SQL strings!</p>
+                </div>
+            </section>
+
+            <!-- Section 5: Data Processing -->
+            <section id="part5" class="section">
+                <div class="section-header">
+                    <div class="section-number">5</div>
+                    <h2>Step 3: Data Processing (processing.py)</h2>
+                </div>
+                <p>The processing module handles data analysis, statistics calculation, outlier detection, and alert management.</p>
+
+                <h3>Data Processor Class</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.1: Data Processor</span>
+                        <button class="code-figure-run" onclick="runCode('code17')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code17">class DataProcessor:
+    """Process and analyze sensor data."""
+    
+    @staticmethod
+    def calculate_statistics(values):
+        """Calculate comprehensive statistics."""
+        if not values:
+            return None
+        
+        n = len(values)
+        mean = sum(values) / n
+        
+        # Variance and standard deviation
+        variance = sum((x - mean) ** 2 for x in values) / n
+        std_dev = variance ** 0.5
+        
+        # Median
+        sorted_vals = sorted(values)
+        mid = n // 2
+        if n % 2 == 0:
+            median = (sorted_vals[mid-1] + sorted_vals[mid]) / 2
+        else:
+            median = sorted_vals[mid]
+        
+        return {
+            'count': n,
+            'min': round(min(values), 4),
+            'max': round(max(values), 4),
+            'mean': round(mean, 4),
+            'median': round(median, 4),
+            'std_dev': round(std_dev, 4),
+            'range': round(max(values) - min(values), 4)
+        }
+    
+    @staticmethod
+    def detect_outliers(values, threshold=2.0):
+        """Detect outliers using z-score method."""
+        if len(values) < 3:
+            return []
+        
+        mean = sum(values) / len(values)
+        std_dev = (sum((x - mean) ** 2 for x in values) / len(values)) ** 0.5
+        
+        if std_dev == 0:
+            return []
+        
+        outliers = []
+        for i, v in enumerate(values):
+            z_score = abs(v - mean) / std_dev
+            if z_score > threshold:
+                outliers.append({
+                    'index': i, 
+                    'value': v, 
+                    'z_score': round(z_score, 2)
+                })
+        
+        return outliers
+    
+    @staticmethod
+    def moving_average(values, window=3):
+        """Calculate moving average."""
+        if len(values) < window:
+            return values
+        
+        result = []
+        for i in range(len(values) - window + 1):
+            avg = sum(values[i:i+window]) / window
+            result.append(round(avg, 4))
+        
+        return result
+    
+    @staticmethod
+    def trend_analysis(values):
+        """Simple linear trend analysis."""
+        if len(values) < 2:
+            return 'insufficient_data'
+        
+        n = len(values)
+        x_mean = (n - 1) / 2
+        y_mean = sum(values) / n
+        
+        numerator = sum((i - x_mean) * (v - y_mean) for i, v in enumerate(values))
+        denominator = sum((i - x_mean) ** 2 for i in range(n))
+        
+        if denominator == 0:
+            return 'stable'
+        
+        slope = numerator / denominator
+        
+        if abs(slope) < 0.01:
+            return 'stable'
+        elif slope > 0:
+            return 'increasing'
+        else:
+            return 'decreasing'
+
+# Test data processor
+print("=== Data Processor Demo ===\n")
+
+# Normal data with one outlier
+test_data = [22.5, 23.0, 22.8, 23.2, 50.0, 22.9, 23.1, 22.7]
+
+print("Test data:", test_data)
+print("\nStatistics:")
+stats = DataProcessor.calculate_statistics(test_data)
+for key, value in stats.items():
+    print(f"  {key}: {value}")
+
+print("\nOutliers detected:")
+outliers = DataProcessor.detect_outliers(test_data)
+for o in outliers:
+    print(f"  Index {o['index']}: value={o['value']}, z-score={o['z_score']}")
+
+# Normal data without outlier
+clean_data = [22.5, 23.0, 22.8, 23.2, 22.9, 23.1]
+print(f"\nMoving average (window=3): {DataProcessor.moving_average(clean_data)}")
+print(f"Trend: {DataProcessor.trend_analysis(clean_data)}")</textarea>
+                    <div class="code-output" id="outputcode17">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Alert Manager</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.2: Alert Manager</span>
+                        <button class="code-figure-run" onclick="runCode('code18')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code18">from datetime import datetime
+
+class AlertManager:
+    """Manage sensor alerts and thresholds."""
+    
+    def __init__(self):
+        self.thresholds = {}
+        self.alerts = []
+    
+    def set_threshold(self, sensor_type, min_val=None, max_val=None):
+        """Set alert thresholds for a sensor type."""
+        self.thresholds[sensor_type.lower()] = {
+            'min': min_val,
+            'max': max_val
+        }
+    
+    def check_value(self, sensor_id, sensor_type, value):
+        """Check if value triggers an alert."""
+        sensor_type = sensor_type.lower()
+        
+        if sensor_type not in self.thresholds:
+            return None
+        
+        threshold = self.thresholds[sensor_type]
+        alert = None
+        
+        if threshold['min'] is not None and value < threshold['min']:
+            alert = {
+                'type': 'LOW',
+                'sensor_id': sensor_id,
+                'sensor_type': sensor_type,
+                'value': value,
+                'threshold': threshold['min'],
+                'timestamp': datetime.now().isoformat(),
+                'message': f"Value {value} below minimum {threshold['min']}"
+            }
+        elif threshold['max'] is not None and value > threshold['max']:
+            alert = {
+                'type': 'HIGH',
+                'sensor_id': sensor_id,
+                'sensor_type': sensor_type,
+                'value': value,
+                'threshold': threshold['max'],
+                'timestamp': datetime.now().isoformat(),
+                'message': f"Value {value} above maximum {threshold['max']}"
+            }
+        
+        if alert:
+            self.alerts.append(alert)
+        
+        return alert
+    
+    def get_alerts(self, sensor_id=None, limit=10):
+        """Get recent alerts."""
+        alerts = self.alerts
+        if sensor_id:
+            alerts = [a for a in alerts if a['sensor_id'] == sensor_id]
+        return alerts[-limit:]
+    
+    def clear_alerts(self):
+        """Clear all alerts."""
+        self.alerts = []
+        
+    def alert_count(self):
+        return len(self.alerts)
+
+# Test alert manager
+print("=== Alert Manager Demo ===\n")
+
+alert_mgr = AlertManager()
+alert_mgr.set_threshold('temperature', min_val=15, max_val=30)
+alert_mgr.set_threshold('humidity', min_val=30, max_val=70)
+
+# Simulate readings
+test_readings = [
+    ('TEMP_001', 'temperature', 22.5),   # Normal
+    ('TEMP_001', 'temperature', 35.0),   # HIGH alert!
+    ('TEMP_001', 'temperature', 10.0),   # LOW alert!
+    ('HUMI_001', 'humidity', 55.0),      # Normal
+    ('HUMI_001', 'humidity', 80.0),      # HIGH alert!
+]
+
+print("Checking readings:")
+for sensor_id, sensor_type, value in test_readings:
+    alert = alert_mgr.check_value(sensor_id, sensor_type, value)
+    if alert:
+        print(f"  ⚠️  ALERT [{alert['type']}]: {alert['message']}")
+    else:
+        print(f"  ✓  {sensor_id}: {value} - OK")
+
+print(f"\nTotal alerts: {alert_mgr.alert_count()}")</textarea>
+                    <div class="code-output" id="outputcode18">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 6: Main Application -->
+            <section id="part6" class="section">
+                <div class="section-header">
+                    <div class="section-number">6</div>
+                    <h2>Step 4: Main Application (main.py)</h2>
+                </div>
+                <p>The main application ties everything together - sensors, storage, processing, and alerts into a complete monitoring system.</p>
+
+                <h3>Configuration Manager</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.1: Configuration Manager</span>
+                        <button class="code-figure-run" onclick="runCode('code19')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code19">class Config:
+    """Configuration management."""
+    
+    DEFAULT_CONFIG = {
+        'database': {
+            'path': 'sensor_data.db'
+        },
+        'sensors': {
+            'default_interval': 1.0,
+            'max_readings': 1000
+        },
+        'alerts': {
+            'enabled': True,
+            'thresholds': {
+                'temperature': {'min': 15, 'max': 35},
+                'humidity': {'min': 20, 'max': 80},
+                'pressure': {'min': 980, 'max': 1040}
+            }
+        }
+    }
+    
+    def __init__(self, config_dict=None):
+        self._config = self._merge(self.DEFAULT_CONFIG, config_dict or {})
+    
+    def _merge(self, default, override):
+        """Recursively merge override into default."""
+        result = default.copy()
+        for key, value in override.items():
+            if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+                result[key] = self._merge(result[key], value)
+            else:
+                result[key] = value
+        return result
+    
+    def get(self, key, default=None):
+        """Get value using dot notation (e.g., 'alerts.enabled')."""
+        keys = key.split('.')
+        value = self._config
+        
+        for k in keys:
+            if isinstance(value, dict) and k in value:
+                value = value[k]
+            else:
+                return default
+        
+        return value
+    
+    def set(self, key, value):
+        """Set value using dot notation."""
+        keys = key.split('.')
+        config = self._config
+        
+        for k in keys[:-1]:
+            if k not in config:
+                config[k] = {}
+            config = config[k]
+        
+        config[keys[-1]] = value
+
+# Test config
+print("=== Configuration Manager Demo ===\n")
+config = Config()
+
+print("Default configuration values:")
+print(f"  database.path: {config.get('database.path')}")
+print(f"  sensors.default_interval: {config.get('sensors.default_interval')}")
+print(f"  alerts.enabled: {config.get('alerts.enabled')}")
+print(f"  alerts.thresholds.temperature: {config.get('alerts.thresholds.temperature')}")
+print(f"  unknown.key: {config.get('unknown.key', 'default_value')}")
+
+# Override config
+config.set('alerts.enabled', False)
+print(f"\nAfter setting alerts.enabled=False: {config.get('alerts.enabled')}")</textarea>
+                    <div class="code-output" id="outputcode19">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Complete Sensor Monitor System</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.2: Sensor Monitor System</span>
+                        <button class="code-figure-run" onclick="runCode('code20')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code20">class SensorMonitor:
+    """Complete sensor monitoring system."""
+    
+    def __init__(self):
+        self.config = Config()
+        self.storage = JSONStorage()
+        self.processor = DataProcessor()
+        self.alert_mgr = AlertManager()
+        self.sensors = {}
+        self._setup_alerts()
+    
+    def _setup_alerts(self):
+        """Configure alerts from config."""
+        thresholds = self.config.get('alerts.thresholds', {})
+        for sensor_type, values in thresholds.items():
+            self.alert_mgr.set_threshold(
+                sensor_type, 
+                min_val=values.get('min'),
+                max_val=values.get('max')
+            )
+    
+    def add_sensor(self, sensor):
+        """Add a sensor to the monitor."""
+        self.sensors[sensor.sensor_id] = sensor
+        print(f"  + Added: {sensor.sensor_id} ({sensor.sensor_type})")
+    
+    def remove_sensor(self, sensor_id):
+        """Remove a sensor."""
+        if sensor_id in self.sensors:
+            del self.sensors[sensor_id]
+            print(f"  - Removed: {sensor_id}")
+    
+    def read_all(self):
+        """Read from all active sensors."""
+        readings = []
+        for sensor in self.sensors.values():
+            if sensor.is_active:
+                try:
+                    value = sensor.read()
+                    reading = {
+                        'sensor_id': sensor.sensor_id,
+                        'sensor_type': sensor.sensor_type,
+                        'value': value,
+                        'unit': sensor.unit,
+                        'location': sensor.location
+                    }
+                    readings.append(reading)
+                    self.storage.append(reading)
+                    
+                    # Check for alerts
+                    self.alert_mgr.check_value(
+                        sensor.sensor_id,
+                        sensor.sensor_type,
+                        value
+                    )
+                except Exception as e:
+                    print(f"  Error reading {sensor.sensor_id}: {e}")
+        return readings
+    
+    def run_cycle(self, count=1):
+        """Run monitoring cycles."""
+        print(f"\n--- Running {count} monitoring cycle(s) ---")
+        for i in range(count):
+            self.read_all()
+        print(f"--- Completed {count} cycle(s) ---")
+    
+    def print_report(self):
+        """Print monitoring report."""
+        print("\n" + "=" * 55)
+        print("           SENSOR MONITORING REPORT")
+        print("=" * 55)
+        
+        for sensor_id, sensor in self.sensors.items():
+            stats = sensor.get_statistics()
+            print(f"\n{sensor}")
+            if stats:
+                print(f"  Readings: {stats['count']}")
+                print(f"  Range: {stats['min']} - {stats['max']} {sensor.unit}")
+                print(f"  Average: {stats['avg']} {sensor.unit}")
+        
+        alerts = self.alert_mgr.get_alerts()
+        if alerts:
+            print("\n" + "-" * 55)
+            print(f"ALERTS ({len(alerts)})")
+            print("-" * 55)
+            for alert in alerts[-5:]:
+                print(f"  [{alert['type']}] {alert['sensor_id']}: {alert['message']}")
+        
+        print("\n" + "=" * 55)
+
+# Run the complete system
+print("=" * 55)
+print("       SENSOR MONITORING SYSTEM")
+print("=" * 55)
+
+monitor = SensorMonitor()
+
+# Add sensors
+print("\nAdding sensors:")
+monitor.add_sensor(TemperatureSensor('TEMP_101', 'Server Room', base_temp=28.0))
+monitor.add_sensor(TemperatureSensor('TEMP_102', 'Office', base_temp=22.0))
+monitor.add_sensor(HumiditySensor('HUMI_101', 'Server Room', base_humidity=45.0))
+monitor.add_sensor(PressureSensor('PRES_101', 'Building A'))
+
+# Run monitoring
+monitor.run_cycle(count=5)
+
+# Print report
+monitor.print_report()</textarea>
+                    <div class="code-output" id="outputcode20">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 7: Submission Guidelines -->
+            <section id="part7" class="section">
+                <div class="section-header">
+                    <div class="section-number">7</div>
+                    <h2>Project Submission Guidelines</h2>
+                </div>
+                <p>Follow these guidelines to ensure your final project meets all requirements.</p>
+
+                <h3>Required Deliverables</h3>
+                <ol>
+                    <li><strong>Source Code</strong> - All <code>.py</code> files with proper module structure</li>
+                    <li><strong>Documentation</strong> - README.md with setup and usage instructions</li>
+                    <li><strong>Tests</strong> - Test files demonstrating functionality</li>
+                    <li><strong>Sample Data</strong> - Example configuration and data files</li>
+                    <li><strong>Demo</strong> - Working demonstration of the system</li>
+                </ol>
+
+                <h3>Code Quality Checklist</h3>
+                <ul class="checklist">
+                    <li>Proper docstrings for all classes and functions</li>
+                    <li>Type hints where appropriate</li>
+                    <li>Error handling for all external operations</li>
+                    <li>No hardcoded values (use configuration)</li>
+                    <li>Clean code with meaningful variable names</li>
+                    <li>Follows PEP 8 style guidelines</li>
+                    <li>No duplicate code (DRY principle)</li>
+                    <li>Proper use of OOP concepts</li>
+                    <li>Comprehensive test coverage</li>
+                    <li>Clear README documentation</li>
+                </ul>
+
+                <h3>Grading Rubric</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Category</th><th>Excellent (90-100%)</th><th>Good (80-89%)</th><th>Satisfactory (70-79%)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>OOP Design</strong></td><td>Excellent hierarchy, proper inheritance</td><td>Good design, minor issues</td><td>Basic OOP, some flaws</td></tr>
+                            <tr><td><strong>Functionality</strong></td><td>All features work perfectly</td><td>Most features work</td><td>Basic features work</td></tr>
+                            <tr><td><strong>Error Handling</strong></td><td>Comprehensive, graceful recovery</td><td>Good coverage</td><td>Basic try/except</td></tr>
+                            <tr><td><strong>Code Quality</strong></td><td>Clean, documented, PEP 8</td><td>Mostly clean</td><td>Some issues</td></tr>
+                            <tr><td><strong>Testing</strong></td><td>Comprehensive tests</td><td>Good coverage</td><td>Basic tests</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Common Issues to Avoid</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Issue</th><th>Solution</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Missing <code>super().__init__()</code></td><td>Always call parent's __init__ in child classes</td></tr>
+                            <tr><td>SQL injection vulnerability</td><td>Use parameterized queries with ? placeholders</td></tr>
+                            <tr><td>File not closed</td><td>Use context managers (with statement)</td></tr>
+                            <tr><td>Mutable default arguments</td><td>Use None and create inside function</td></tr>
+                            <tr><td>No error handling</td><td>Wrap external operations in try/except</td></tr>
+                            <tr><td>Circular imports</td><td>Reorganize module dependencies</td></tr>
+                            <tr><td>Global variables</td><td>Use class attributes or configuration</td></tr>
+                            <tr><td>Magic numbers</td><td>Define constants with meaningful names</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Sample README Template</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.1: README.md Template</span>
+                        <button class="code-figure-run" onclick="runCode('code21')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code21">readme_template = """
+# Sensor Monitoring System
+
+## Description
+A comprehensive sensor monitoring system built with Python.
+
+## Features
+- Multiple sensor types (Temperature, Humidity, Pressure)
+- Multiple storage backends (JSON, CSV, SQLite)
+- Real-time data processing and statistics
+- Configurable alert thresholds
+- Extensible architecture using OOP
+
+## Installation
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+```python
+from sensor_monitoring import SensorMonitor, TemperatureSensor
+
+monitor = SensorMonitor()
+monitor.add_sensor(TemperatureSensor('TEMP_001', 'Room A'))
+monitor.run_cycle(count=10)
+monitor.print_report()
+```
+
+## Project Structure
+```
+sensor_monitoring/
+├── sensors.py      # Sensor classes
+├── storage.py      # Storage backends
+├── processing.py   # Data processing
+├── main.py         # Main application
+└── tests/          # Test files
+```
+
+## Author
+[Your Name] - [Your Student ID]
+
+## License
+MIT License
+"""
+print(readme_template)</textarea>
+                    <div class="code-output" id="outputcode21">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <p>Make sure to test your project thoroughly before submission. A working demo is essential for full credit!</p>
+                </div>
+            </section>
+
+            <!-- Section 8: Next Steps -->
+            <section id="part8" class="section">
+                <div class="section-header">
+                    <div class="section-number">8</div>
+                    <h2>Course Completion &amp; Next Steps</h2>
+                </div>
+
+                <div class="celebration-box">
+                    <p>🎉 Congratulations! You've completed <strong>Computer Programming II</strong>! 🎉<br>
+                    You now have a solid foundation in Python programming for engineering applications.</p>
+                </div>
+
+                <h3>Skills Acquired</h3>
+                <div class="skills-grid">
+                    <div class="skill-item">Python fundamentals and syntax</div>
+                    <div class="skill-item">Control flow and loops</div>
+                    <div class="skill-item">Functions and modular programming</div>
+                    <div class="skill-item">Data structures (lists, dicts, sets)</div>
+                    <div class="skill-item">String manipulation and formatting</div>
+                    <div class="skill-item">File I/O operations</div>
+                    <div class="skill-item">Error handling and debugging</div>
+                    <div class="skill-item">Object-oriented programming</div>
+                    <div class="skill-item">Modules and packages</div>
+                    <div class="skill-item">External data (CSV, JSON, SQL)</div>
+                    <div class="skill-item">API interaction basics</div>
+                    <div class="skill-item">Software design principles</div>
+                </div>
+
+                <h3>Recommended Learning Paths</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Path</th><th>Topics</th><th>Resources</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Data Science</strong></td><td>NumPy, Pandas, Matplotlib, Scikit-learn</td><td>Kaggle, DataCamp</td></tr>
+                            <tr><td><strong>Web Development</strong></td><td>Flask/Django, REST APIs, Databases</td><td>Real Python, MDN</td></tr>
+                            <tr><td><strong>Automation</strong></td><td>Scripting, Testing, DevOps, CI/CD</td><td>Automate the Boring Stuff</td></tr>
+                            <tr><td><strong>Scientific Computing</strong></td><td>SciPy, SymPy, Jupyter Notebooks</td><td>Scientific Python Lectures</td></tr>
+                            <tr><td><strong>Machine Learning</strong></td><td>TensorFlow, PyTorch, Deep Learning</td><td>Fast.ai, Coursera</td></tr>
+                            <tr><td><strong>Embedded Systems</strong></td><td>MicroPython, Raspberry Pi, IoT</td><td>Official docs, Adafruit</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Useful Resources</h3>
+                <ul>
+                    <li><strong>Official Documentation</strong>: <a href="https://docs.python.org" target="_blank">docs.python.org</a></li>
+                    <li><strong>Real Python</strong>: <a href="https://realpython.com" target="_blank">realpython.com</a> - Tutorials and articles</li>
+                    <li><strong>Python Weekly</strong>: Newsletter with latest Python news</li>
+                    <li><strong>Stack Overflow</strong>: Community Q&amp;A for problem-solving</li>
+                    <li><strong>GitHub</strong>: Open source projects to learn from</li>
+                    <li><strong>PyPI</strong>: <a href="https://pypi.org" target="_blank">pypi.org</a> - Python Package Index</li>
+                </ul>
+
+                <h3>Final Project Integration Example</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 8.1: Complete Integration Demo</span>
+                        <button class="code-figure-run" onclick="runCode('code22')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code22"># Final Integration Demo
+print("=" * 60)
+print("    COMPLETE SENSOR MONITORING SYSTEM DEMONSTRATION")
+print("=" * 60)
+
+# Create monitor with all components
+monitor = SensorMonitor()
+
+# Create diverse sensor network
+sensors_config = [
+    ('temperature', 'TEMP_A1', 'Server Room', {'base_temp': 26.0}),
+    ('temperature', 'TEMP_A2', 'Office Floor', {'base_temp': 22.0}),
+    ('temperature', 'TEMP_A3', 'Warehouse', {'base_temp': 18.0}),
+    ('humidity', 'HUMI_A1', 'Server Room', {'base_humidity': 40.0}),
+    ('humidity', 'HUMI_A2', 'Office Floor', {'base_humidity': 55.0}),
+    ('pressure', 'PRES_A1', 'Building A', {}),
+]
+
+print("\n--- Initializing Sensor Network ---")
+for sensor_type, sensor_id, location, kwargs in sensors_config:
+    sensor = SensorFactory.create(sensor_type, sensor_id, location, **kwargs)
+    monitor.add_sensor(sensor)
+
+print(f"\nTotal sensors deployed: {len(monitor.sensors)}")
+
+# Run monitoring cycles
+monitor.run_cycle(count=10)
+
+# Generate comprehensive report
+monitor.print_report()
+
+# Export data summary
+print("\n--- Data Export Summary ---")
+print(f"  Total readings stored: {len(monitor.storage)}")
+print(f"  Total alerts triggered: {monitor.alert_mgr.alert_count()}")
+
+# Show data processor capabilities
+print("\n--- Data Analysis Example ---")
+temp_sensor = monitor.sensors.get('TEMP_A1')
+if temp_sensor:
+    values = [r['value'] for r in temp_sensor.get_readings()]
+    stats = DataProcessor.calculate_statistics(values)
+    trend = DataProcessor.trend_analysis(values)
+    print(f"  TEMP_A1 Statistics: {stats}")
+    print(f"  TEMP_A1 Trend: {trend}")
+
+print("\n" + "=" * 60)
+print("    DEMONSTRATION COMPLETE")
+print("=" * 60)</textarea>
+                    <div class="code-output" id="outputcode22">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <p>The best way to improve is to keep coding! Work on personal projects, contribute to open source, and never stop learning. Good luck on your programming journey!</p>
+                </div>
+            </section>
+
+            <!-- Summary Box -->
+            <div class="summary-box">
+                <h3>🎓 Course Summary</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">📊 14 weeks of learning</div>
+                    <div class="summary-item">🐍 Python fundamentals</div>
+                    <div class="summary-item">🏗️ OOP principles</div>
+                    <div class="summary-item">📁 File handling</div>
+                    <div class="summary-item">🗄️ Database operations</div>
+                    <div class="summary-item">🔧 Error handling</div>
+                    <div class="summary-item">📦 Modules &amp; packages</div>
+                    <div class="summary-item">🚀 Ready for more!</div>
+                </div>
+            </div>
+
+            <!-- Exercises Section -->
+            <section id="exercises" class="section">
+                <div class="section-header">
+                    <div class="section-number">🏋️</div>
+                    <h2>Final Project Exercises</h2>
+                </div>
+
+                <!-- Exercise 1 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">1</span>Add Light Sensor</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p>Extend the sensor system by creating a <code>LightSensor</code> class that measures light intensity in lux.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">Expected Output</div>
+                            <pre>Light LIGHT_001: 523.4 lux [Active]
+Light level: normal
+Stats: {'count': 5, 'min': 234.5, 'max': 876.2, 'avg': 523.4}</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex1">class LightSensor(BaseSensor):
+    """Light intensity sensor measuring in lux."""
+    
+    def __init__(self, sensor_id, location="Unknown"):
+        super().__init__(sensor_id, location)
+    
+    @property
+    def sensor_type(self):
+        return "Light"
+    
+    @property
+    def unit(self):
+        return "lux"
+    
+    def _simulate_reading(self):
+        return round(random.uniform(100, 1000), 1)
+    
+    def get_light_level(self):
+        """Classify light level based on reading."""
+        if self._value is None:
+            return "unknown"
+        if self._value < 300:
+            return "dim"
+        elif self._value <= 700:
+            return "normal"
+        else:
+            return "bright"
+
+# Test
+light = LightSensor("LIGHT_001", "Office")
+for _ in range(5):
+    light.read()
+print(light)
+print(f"Light level: {light.get_light_level()}")
+print(f"Stats: {light.get_statistics()}")</textarea>
+                            <div class="code-output" id="outputex1">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 2 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">2</span>Export to CSV</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p>Create a function that exports all sensor readings to CSV format.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex2">def export_to_csv(sensors):
+    """Export sensor data to CSV string."""
+    lines = ['sensor_id,sensor_type,location,value,unit,timestamp']
+    
+    for sensor_id, sensor in sensors.items():
+        for reading in sensor.get_readings():
+            line = f"{sensor_id},{sensor.sensor_type},{sensor.location},{reading['value']},{reading['unit']},{reading['timestamp']}"
+            lines.append(line)
+    
+    return '\n'.join(lines)
+
+# Test
+test_sensors = {
+    'TEMP_001': TemperatureSensor('TEMP_001', 'Room A', base_temp=22.0),
+    'HUMI_001': HumiditySensor('HUMI_001', 'Room A')
+}
+
+for s in test_sensors.values():
+    for _ in range(3):
+        s.read()
+
+csv_output = export_to_csv(test_sensors)
+print(csv_output)</textarea>
+                            <div class="code-output" id="outputex2">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 3 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">3</span>Data Validator</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p>Create a <code>DataValidator</code> class that validates sensor readings against valid ranges.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints3">
+                                <ul>
+                                    <li>Store valid ranges per sensor type</li>
+                                    <li>Track previous reading for pattern detection</li>
+                                    <li>Return a list of validation issues</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex3">class DataValidator:
+    """Validate sensor data."""
+    
+    VALID_RANGES = {
+        'temperature': {'min': -40, 'max': 85},
+        'humidity': {'min': 0, 'max': 100},
+        'pressure': {'min': 300, 'max': 1100},
+        'light': {'min': 0, 'max': 100000}
+    }
+    
+    def __init__(self):
+        self._last_values = {}
+    
+    def validate(self, sensor_id, sensor_type, value):
+        """Validate a sensor reading."""
+        issues = []
+        sensor_type = sensor_type.lower()
+        
+        # Range check
+        if sensor_type in self.VALID_RANGES:
+            r = self.VALID_RANGES[sensor_type]
+            if value < r['min'] or value > r['max']:
+                issues.append(f"Out of range [{r['min']}, {r['max']}]")
+        
+        # Pattern check (identical readings)
+        if sensor_id in self._last_values:
+            if self._last_values[sensor_id] == value:
+                issues.append("Identical consecutive readings")
+        
+        self._last_values[sensor_id] = value
+        return issues
+
+# Test
+validator = DataValidator()
+
+test_readings = [
+    ('TEMP_001', 'temperature', 25.5),    # Valid
+    ('TEMP_001', 'temperature', 100),     # Out of range
+    ('TEMP_001', 'temperature', 25.5),    # Valid
+    ('TEMP_001', 'temperature', 25.5),    # Duplicate
+]
+
+print("Validating readings:")
+for sensor_id, sensor_type, value in test_readings:
+    issues = validator.validate(sensor_id, sensor_type, value)
+    if issues:
+        print(f"  ✗ {sensor_id} = {value}: {issues}")
+    else:
+        print(f"  ✓ {sensor_id} = {value}: Valid")</textarea>
+                            <div class="code-output" id="outputex3">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 4 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">4</span>Sensor Registry</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p>Create a <code>SensorRegistry</code> class that manages sensor registration, lookup, and filtering.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex4">class SensorRegistry:
+    """Manage sensor registration and lookup."""
+    
+    def __init__(self):
+        self._sensors = {}
+    
+    def register(self, sensor):
+        """Register a sensor."""
+        self._sensors[sensor.sensor_id] = sensor
+        return sensor.sensor_id
+    
+    def unregister(self, sensor_id):
+        """Remove a sensor."""
+        if sensor_id in self._sensors:
+            del self._sensors[sensor_id]
+            return True
+        return False
+    
+    def get(self, sensor_id):
+        """Get sensor by ID."""
+        return self._sensors.get(sensor_id)
+    
+    def get_by_type(self, sensor_type):
+        """Get all sensors of a type."""
+        return [s for s in self._sensors.values() 
+                if s.sensor_type.lower() == sensor_type.lower()]
+    
+    def get_by_location(self, location):
+        """Get all sensors at a location."""
+        return [s for s in self._sensors.values() 
+                if s.location.lower() == location.lower()]
+    
+    def list_all(self):
+        """List all sensors."""
+        return list(self._sensors.values())
+    
+    @property
+    def count(self):
+        return len(self._sensors)
+
+# Test
+registry = SensorRegistry()
+registry.register(TemperatureSensor('T1', 'Room A'))
+registry.register(TemperatureSensor('T2', 'Room B'))
+registry.register(HumiditySensor('H1', 'Room A'))
+registry.register(PressureSensor('P1', 'Room A'))
+
+print(f"Total sensors: {registry.count}")
+print(f"Temperature sensors: {len(registry.get_by_type('temperature'))}")
+print(f"Room A sensors: {len(registry.get_by_location('Room A'))}")
+print(f"Get T1: {registry.get('T1')}")</textarea>
+                            <div class="code-output" id="outputex4">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 5 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">5</span>Report Generator</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p>Create a <code>ReportGenerator</code> class that generates comprehensive summary reports.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints5')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints5">
+                                <ul>
+                                    <li>Include sensor counts by type</li>
+                                    <li>Show statistics for each sensor</li>
+                                    <li>List any alerts triggered</li>
+                                    <li>Calculate overall system health</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex5">class ReportGenerator:
+    """Generate sensor monitoring reports."""
+    
+    def __init__(self, sensors, alerts=None):
+        self.sensors = sensors
+        self.alerts = alerts or []
+    
+    def generate_summary(self):
+        """Generate text summary report."""
+        lines = []
+        lines.append("=" * 50)
+        lines.append("SENSOR MONITORING REPORT")
+        lines.append("=" * 50)
+        
+        # Count by type
+        types = {}
+        for s in self.sensors.values():
+            types[s.sensor_type] = types.get(s.sensor_type, 0) + 1
+        
+        lines.append(f"\nTotal Sensors: {len(self.sensors)}")
+        for t, count in types.items():
+            lines.append(f"  • {t}: {count}")
+        
+        # Stats per sensor
+        lines.append("\nSensor Statistics:")
+        for sensor_id, sensor in self.sensors.items():
+            stats = sensor.get_statistics()
+            if stats:
+                lines.append(f"  {sensor_id}: avg={stats['avg']}, range=[{stats['min']}, {stats['max']}]")
+        
+        # Alerts summary
+        if self.alerts:
+            lines.append(f"\nAlerts Triggered: {len(self.alerts)}")
+            for a in self.alerts[-3:]:
+                lines.append(f"  [{a['type']}] {a['sensor_id']}: {a['message']}")
+        
+        lines.append("\n" + "=" * 50)
+        return '\n'.join(lines)
+
+# Test
+test_sensors = {
+    'T1': TemperatureSensor('T1', 'A'),
+    'T2': TemperatureSensor('T2', 'B'),
+    'H1': HumiditySensor('H1', 'A'),
+}
+
+for s in test_sensors.values():
+    for _ in range(5):
+        s.read()
+
+report = ReportGenerator(test_sensors)
+print(report.generate_summary())</textarea>
+                            <div class="code-output" id="outputex5">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 6 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">6</span>Notification System</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p>Create a notification system using the Observer pattern to notify subscribers when alerts occur.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex6">class NotificationSystem:
+    """Observer-based notification system."""
+    
+    def __init__(self):
+        self._subscribers = []
+    
+    def subscribe(self, callback):
+        """Add a subscriber."""
+        self._subscribers.append(callback)
+    
+    def unsubscribe(self, callback):
+        """Remove a subscriber."""
+        if callback in self._subscribers:
+            self._subscribers.remove(callback)
+    
+    def notify(self, alert):
+        """Notify all subscribers."""
+        for callback in self._subscribers:
+            callback(alert)
+
+# Subscriber callbacks
+def log_alert(alert):
+    print(f"  [LOG] {alert['type']}: {alert['message']}")
+
+def email_alert(alert):
+    print(f"  [EMAIL] Alert for {alert['sensor_id']}!")
+
+def sms_alert(alert):
+    print(f"  [SMS] Critical: {alert['sensor_id']} - {alert['type']}")
+
+# Test
+print("=== Notification System Demo ===\n")
+notifier = NotificationSystem()
+notifier.subscribe(log_alert)
+notifier.subscribe(email_alert)
+notifier.subscribe(sms_alert)
+
+# Simulate alert
+test_alert = {
+    'type': 'HIGH',
+    'sensor_id': 'TEMP_001',
+    'message': 'Temperature 38°C exceeds maximum 35°C'
+}
+
+print("Alert triggered:")
+notifier.notify(test_alert)
+
+print("\nRemoving SMS subscriber...")
+notifier.unsubscribe(sms_alert)
+print("Alert triggered again:")
+notifier.notify(test_alert)</textarea>
+                            <div class="code-output" id="outputex6">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Submit Section -->
+            <section id="submit" class="section">
+                <div class="submit-section">
+                    <h2>🎓 Submit Your Final Project</h2>
+                    <p>Complete the final project and submit your work for Week 14. Congratulations on completing the course!</p>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Student ID</label>
+                            <input type="text" id="studentId" placeholder="e.g., 2024001234" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="studentName" placeholder="e.g., Ahmet Yılmaz">
+                        </div>
+                        <div class="form-group">
+                            <label>Email (@istun.edu.tr)</label>
+                            <input type="email" id="studentEmail" placeholder="e.g., ahmet.yilmaz@istun.edu.tr">
+                        </div>
+                        <div class="form-group">
+                            <label>Class Code (from instructor)</label>
+                            <input type="text" id="classCode" placeholder="Enter code from class">
+                        </div>
+                    </div>
+                    <div class="honeypot">
+                        <input type="text" id="website" tabindex="-1" autocomplete="off">
+                    </div>
+                    <button class="submit-btn" onclick="submitWork()">🎓 Submit Final Project</button>
+                    <div class="submit-status" id="submitStatus"></div>
+                </div>
+            </section>
+
+            <!-- Navigation -->
+            <div class="page-nav">
+                <a href="Week_13.html" class="nav-btn">← Week 13: External Data</a>
+                <a href="index.html" class="nav-btn">🏠 Course Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Progress Bar
+        function updateProgress() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = Math.min(100, Math.max(0, (winScroll / height) * 100));
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        }
+        window.addEventListener('scroll', updateProgress);
+        window.addEventListener('load', updateProgress);
+
+        // Hints Toggle
+        function toggleHints(id) {
+            var hints = document.getElementById(id);
+            hints.classList.toggle('show');
+            var btn = hints.previousElementSibling;
+            btn.textContent = hints.classList.contains('show') ? '💡 Hide Hints' : '💡 Show Hints';
+        }
+
+        // Pyodide Python Execution
+        var pyodideReadyPromise = null;
+        var pyodideInstance = null;
+
+        async function initPyodide() {
+            if (pyodideInstance) return pyodideInstance;
+            if (pyodideReadyPromise) return pyodideReadyPromise;
+            
+            pyodideReadyPromise = loadPyodide().then(function(pyodide) {
+                pyodideInstance = pyodide;
+                console.log("Pyodide loaded successfully");
+                return pyodide;
+            });
+            return pyodideReadyPromise;
+        }
+
+        async function runCode(codeId) {
+            var codeEl = document.getElementById(codeId);
+            var outputEl = document.getElementById('output' + codeId);
+            var code = codeEl.value;
+            
+            outputEl.classList.add('show');
+            var outputContent = outputEl.querySelector('.code-output-content');
+            
+            if (!pyodideInstance) {
+                outputContent.textContent = 'Initializing Python (first run takes a few seconds)...';
+                try {
+                    await initPyodide();
+                } catch (e) {
+                    outputContent.textContent = 'Error loading Python: ' + e.message;
+                    return;
+                }
+            }
+            
+            outputContent.textContent = 'Running...';
+            
+            try {
+                pyodideInstance.runPython('import sys; from io import StringIO; sys.stdout = StringIO()');
+                await pyodideInstance.runPythonAsync(code);
+                var output = pyodideInstance.runPython('sys.stdout.getvalue()');
+                outputContent.textContent = output || '(no output)';
+            } catch (e) {
+                outputContent.textContent = 'Error: ' + e.message;
+            }
+        }
+
+        // Form Validation
+        var pageLoadTime = Date.now();
+
+        function validateStudentId(id) {
+            if (id.length < 6 || id.length > 10) return false;
+            if (!/^\d+$/.test(id)) return false;
+            if (/^(\d)\1+$/.test(id)) return false;
+            return true;
+        }
+
+        function validateName(name) {
+            if (name.length < 5) return false;
+            var words = name.trim().split(/\s+/);
+            if (words.length < 2) return false;
+            return true;
+        }
+
+        function validateEmail(email) {
+            return email.endsWith('@istun.edu.tr') && email.length > 15;
+        }
+
+        function submitWork() {
+            var status = document.getElementById('submitStatus');
+            status.style.display = 'none';
+            
+            var studentId = document.getElementById('studentId').value.trim();
+            var studentName = document.getElementById('studentName').value.trim();
+            var studentEmail = document.getElementById('studentEmail').value.trim().toLowerCase();
+            var classCode = document.getElementById('classCode').value.trim().toUpperCase();
+            var honeypot = document.getElementById('website').value;
+            
+            if (honeypot) {
+                status.textContent = '❌ Submission rejected.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
+            if (timeOnPage < 60) {
+                status.textContent = '❌ Please spend more time reviewing the material.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (!studentId || !studentName || !studentEmail || !classCode) {
+                status.textContent = '❌ All fields are required.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (!validateStudentId(studentId)) {
+                status.textContent = '❌ Invalid Student ID. Must be 6-10 digits.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (!validateName(studentName)) {
+                status.textContent = '❌ Please enter your full name.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (!validateEmail(studentEmail)) {
+                status.textContent = '❌ Please use your @istun.edu.tr email.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (classCode.length < 4) {
+                status.textContent = '❌ Invalid class code.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            var data = {
+                week: 'Week_14',
+                studentId: studentId,
+                studentName: studentName,
+                studentEmail: studentEmail,
+                classCode: classCode,
+                timeOnPage: timeOnPage,
+                source: 'cp2-web'
+            };
+            
+            status.textContent = '⏳ Submitting...';
+            status.style.cssText = 'display:block;background:rgba(147,51,234,0.2);color:#a78bfa';
+            
+            var scriptUrl = 'https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec';
+            
+            fetch(scriptUrl, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify(data)
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(result) {
+                if (result.success) {
+                    status.textContent = '🎓 ' + result.message + ' Congratulations on completing the course!';
+                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                } else {
+                    status.textContent = '❌ ' + result.message;
+                    status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                }
+            })
+            .catch(function(error) {
+                fetch(scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(data)
+                })
+                .then(function() {
+                    status.textContent = '🎓 Submission received! Congratulations on completing the course!';
+                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                })
+                .catch(function() {
+                    status.textContent = '❌ Connection error. Please try again.';
+                    status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                });
+            });
+        }
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 01: Introduction to Python | Computer Programming II</title>
+    <title>Week 05: Lists and Tuples | Computer Programming II</title>
     
     <!-- Pyodide for Python execution -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
@@ -63,9 +63,7 @@
         }
         
         .topbar a:hover { opacity: 1; }
-        
         .topbar-title { font-family: system-ui, sans-serif; font-weight: 600; font-size: 1rem; }
-        
         .topbar-nav { display: flex; gap: 24px; align-items: center; }
         
         /* Progress bar */
@@ -217,6 +215,18 @@
             color: var(--accent);
         }
         
+        pre {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-code);
+            color: #e4e4e7;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 16px 0;
+        }
+        
         /* Code Figure */
         .code-figure {
             background: var(--bg-code);
@@ -354,7 +364,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 18px 24px;
-            background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(249, 115, 22, 0.05));
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
             border-bottom: 1px solid var(--border);
         }
         
@@ -367,7 +377,7 @@
         }
         
         .exercise-number {
-            background: linear-gradient(135deg, #f97316, #ea580c);
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
             width: 32px;
             height: 32px;
@@ -420,6 +430,8 @@
             color: var(--text-secondary);
             margin: 0;
             white-space: pre-wrap;
+            background: transparent;
+            padding: 0;
         }
         
         .hints-toggle {
@@ -596,18 +608,18 @@
     <nav class="topbar">
         <a href="index.html?home=true" class="topbar-title">← Course Home</a>
         <div class="topbar-nav">
-            <span style="opacity:0.7">Week 01 of 14</span>
-            <a href="Week_02.html">Next: Control Flow →</a>
+            <span style="opacity:0.7">Week 05 of 14</span>
+            <a href="Week_04.html">← Week 04</a>
+            <a href="Week_06.html">Week 06 →</a>
         </div>
     </nav>
     
     <div class="container">
         <header class="chapter-header">
-            <span class="chapter-label">Week 01</span>
-            <h1>Introduction to Python Programming</h1>
+            <span class="chapter-label">Week 05</span>
+            <h1>Lists and Tuples</h1>
             <div class="chapter-meta">
                 <span>📚 Computer Programming II</span>
-                <span>⏱️ 5 Hours</span>
                 <span>👨‍🏫 Dr. Arif Solmaz</span>
             </div>
         </header>
@@ -615,1456 +627,1161 @@
         <div class="objectives-box">
             <h3>🎯 Learning Objectives</h3>
             <ul>
-                <li>Understand what Python is and why it's used in engineering</li>
-                <li>Write and execute your first Python programs</li>
-                <li>Use the print() function effectively for output</li>
-                <li>Write meaningful comments in code</li>
-                <li>Create and manipulate variables</li>
-                <li>Work with basic data types: int, float, str, bool</li>
-                <li>Perform arithmetic operations and understand precedence</li>
-                <li>Use assignment operators for efficient code</li>
-                <li>Convert between different data types</li>
-                <li>Get user input and format strings with f-strings</li>
-                <li>Perform basic string operations</li>
-                <li>Identify and fix common Python errors</li>
+                <li>Understand lists as ordered, mutable collections</li>
+                <li>Create lists using various methods</li>
+                <li>Access elements using positive and negative indexing</li>
+                <li>Extract portions using slicing with start:stop:step</li>
+                <li>Use list methods: append, insert, remove, pop, sort</li>
+                <li>Apply built-in functions: len, sum, min, max, sorted</li>
+                <li>Write efficient list comprehensions</li>
+                <li>Work with nested lists (2D arrays/matrices)</li>
+                <li>Understand tuples as immutable sequences</li>
+                <li>Apply tuple unpacking and packing</li>
+                <li>Choose between lists and tuples appropriately</li>
+                <li>Apply data structures to engineering problems</li>
             </ul>
         </div>
         
         <div class="content">
-            <!-- Section 1: What is Python? -->
+            <!-- Section 1: Introduction to Lists -->
             <section id="part1" class="section">
                 <div class="section-header">
                     <div class="section-number">1</div>
-                    <h2>What is Python?</h2>
+                    <h2>Introduction to Lists</h2>
                 </div>
                 
-                <p>Python is a <strong>high-level, interpreted programming language</strong> created by Guido van Rossum and first released in 1991. The name "Python" comes from the British comedy group "Monty Python," not from the snake! Python is known for its clean, readable syntax that emphasizes code readability and allows programmers to express concepts in fewer lines of code than other languages like C++ or Java.</p>
+                <p>A <strong>list</strong> is one of Python's most versatile and commonly used data structures. It's an <strong>ordered</strong>, <strong>mutable</strong> collection that can hold items of any data type. Lists are fundamental to programming and are used extensively in engineering for storing sensor data, measurements, coordinates, and more.</p>
                 
-                <h3>Key Characteristics of Python</h3>
-                
-                <ul>
-                    <li><strong>High-level language:</strong> Python handles memory management automatically, letting you focus on problem-solving</li>
-                    <li><strong>Interpreted:</strong> Code runs line by line without needing compilation, making testing and debugging easier</li>
-                    <li><strong>Dynamically typed:</strong> Variables can change type, and you don't need to declare types explicitly</li>
-                    <li><strong>Object-oriented:</strong> Supports classes, objects, and inheritance for organized code</li>
-                    <li><strong>Cross-platform:</strong> The same code runs on Windows, macOS, and Linux</li>
-                </ul>
-                
-                <h3>Why Python for Engineers?</h3>
-                
-                <p>Python has become the language of choice for engineers and scientists worldwide. Here's why:</p>
+                <h3>What is a List?</h3>
+                <p>Think of a list as a container that holds multiple items in a specific order. Each item has a position (index), and you can add, remove, or change items at any time.</p>
                 
                 <div class="table-container">
                     <table>
                         <thead>
-                            <tr>
-                                <th>Feature</th>
-                                <th>Benefit for Engineers</th>
-                            </tr>
+                            <tr><th>Feature</th><th>Description</th><th>Example</th></tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><strong>Easy to learn</strong></td>
-                                <td>Focus on problem-solving, not syntax complexity</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Rich scientific libraries</strong></td>
-                                <td>NumPy, SciPy, Pandas for numerical computing and data analysis</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Visualization tools</strong></td>
-                                <td>Matplotlib, Plotly for creating graphs and charts</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Automation capabilities</strong></td>
-                                <td>Automate repetitive tasks, file processing, and data collection</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Hardware integration</strong></td>
-                                <td>Control Arduino, Raspberry Pi, and industrial equipment</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Machine Learning</strong></td>
-                                <td>TensorFlow, PyTorch for AI and predictive modeling</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Large community</strong></td>
-                                <td>Extensive documentation, tutorials, and support</td>
-                            </tr>
+                            <tr><td><strong>Ordered</strong></td><td>Items maintain their position/sequence</td><td>[1, 2, 3] stays in that order</td></tr>
+                            <tr><td><strong>Mutable</strong></td><td>Can be modified after creation</td><td>Can add/remove/change items</td></tr>
+                            <tr><td><strong>Heterogeneous</strong></td><td>Can contain different data types</td><td>[1, "hello", 3.14, True]</td></tr>
+                            <tr><td><strong>Dynamic</strong></td><td>Can grow or shrink in size</td><td>No fixed size limit</td></tr>
+                            <tr><td><strong>Indexed</strong></td><td>Each item has a position number</td><td>First item is at index 0</td></tr>
                         </tbody>
                     </table>
                 </div>
                 
-                <h3>Python in Industry</h3>
-                
-                <p>Python is used by major companies and organizations worldwide:</p>
-                
-                <ul>
-                    <li><strong>NASA:</strong> Mission planning and data analysis</li>
-                    <li><strong>SpaceX:</strong> Flight software and simulation</li>
-                    <li><strong>Google:</strong> YouTube, search algorithms, AI research</li>
-                    <li><strong>Tesla:</strong> Autopilot development and factory automation</li>
-                    <li><strong>Netflix:</strong> Recommendation systems and content delivery</li>
-                    <li><strong>Dropbox:</strong> Built almost entirely in Python</li>
-                </ul>
-                
-                <div class="tip-box info-box">
-                    <p>Python consistently ranks as one of the top 3 most popular programming languages worldwide. According to the TIOBE Index and Stack Overflow surveys, Python has been the fastest-growing major programming language for several years.</p>
-                </div>
-                
-                <h3>Python 2 vs Python 3</h3>
-                
-                <p>Python has two major versions. <strong>Python 2</strong> was officially retired on January 1, 2020. All new projects should use <strong>Python 3</strong>, which is what we'll use throughout this course. Python 3 includes many improvements:</p>
-                
-                <ul>
-                    <li>Better Unicode support for international text</li>
-                    <li>Cleaner syntax and more consistent behavior</li>
-                    <li>Improved integer division behavior</li>
-                    <li>Modern features like f-strings and type hints</li>
-                </ul>
-            </section>
-
-            <!-- Section 2: The print() Function -->
-            <section id="part2" class="section">
-                <div class="section-header">
-                    <div class="section-number">2</div>
-                    <h2>The print() Function</h2>
-                </div>
-                
-                <p>The <code>print()</code> function is your primary tool for displaying output in Python. It's one of the most commonly used functions and essential for debugging, displaying results, and communicating with users.</p>
-                
-                <h3>Your First Python Program</h3>
-                
-                <p>Let's start with the classic "Hello, World!" program that has been used to introduce programming languages since the 1970s:</p>
+                <h3>Creating Lists</h3>
+                <p>There are several ways to create lists in Python:</p>
                 
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 2.1: Hello World</span>
+                        <span class="code-figure-label">Figure 1.1: Creating Lists</span>
                         <button class="code-figure-run" onclick="runCode('code1')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code1">print("Hello, World!")</textarea>
+                    <textarea class="code-editor" id="code1"># Method 1: Square bracket notation (most common)
+empty_list = []
+numbers = [1, 2, 3, 4, 5]
+fruits = ["apple", "banana", "cherry"]
+mixed = [1, "hello", 3.14, True, None]
+
+print("Empty list:", empty_list)
+print("Numbers:", numbers)
+print("Fruits:", fruits)
+print("Mixed types:", mixed)
+print("\nType:", type(numbers))</textarea>
                     <div class="code-output" id="outputcode1">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <p>🎉 <strong>Congratulations!</strong> If you clicked "Run" above, you just executed your first Python program! The <code>print()</code> function sent the text "Hello, World!" to the output.</p>
-                
-                <h3>Printing Different Types of Values</h3>
-                
-                <p>The <code>print()</code> function can display text (strings), numbers, and other data types:</p>
-                
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 2.2: Printing Different Values</span>
+                        <span class="code-figure-label">Figure 1.2: Other Ways to Create Lists</span>
                         <button class="code-figure-run" onclick="runCode('code2')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code2"># Printing text (strings) - use quotes
-print("Welcome to Python Programming!")
-print('Single quotes work too!')
+                    <textarea class="code-editor" id="code2"># Method 2: list() constructor
+from_string = list("Python")
+print("From string:", from_string)
 
-# Printing integers (whole numbers) - no quotes
-print(42)
-print(-17)
+from_range = list(range(1, 6))
+print("From range:", from_range)
 
-# Printing floats (decimal numbers)
-print(3.14159)
-print(-273.15)
+from_tuple = list((10, 20, 30))
+print("From tuple:", from_tuple)
 
-# Printing multiple items separated by commas
-print("The answer is", 42)
-print("Pi equals approximately", 3.14159)</textarea>
+# Method 3: List multiplication
+zeros = [0] * 5
+print("\nZeros:", zeros)
+
+pattern = [1, 2] * 4
+print("Pattern:", pattern)</textarea>
                     <div class="code-output" id="outputcode2">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <div class="warning-box info-box">
-                    <p><strong>Remember:</strong> Text (strings) must be enclosed in quotes. You can use either single quotes <code>'text'</code> or double quotes <code>"text"</code>, but they must match! Numbers don't need quotes.</p>
+                <h3>List Visualization</h3>
+                <p>Understanding how lists are stored in memory helps you work with them effectively:</p>
+                
+                <pre>
+fruits = ["apple", "banana", "cherry", "date"]
+
+Index:      0         1          2         3
+         +--------+--------+--------+--------+
+Value:   | apple  | banana | cherry |  date  |
+         +--------+--------+--------+--------+
+Neg Idx:   -4        -3        -2        -1</pre>
+                
+                <div class="note-box info-box">
+                    <p><strong>Memory Tip:</strong> Lists store references to objects, not the objects themselves. This means lists can efficiently hold large objects without copying them.</p>
+                </div>
+            </section>
+            
+            <!-- Section 2: Indexing and Access -->
+            <section id="part2" class="section">
+                <div class="section-header">
+                    <div class="section-number">2</div>
+                    <h2>Indexing and Access</h2>
                 </div>
                 
-                <h3>The sep Parameter</h3>
+                <p>Every element in a list has a unique position called an <strong>index</strong>. Python uses zero-based indexing, meaning the first element is at index 0.</p>
                 
-                <p>When you print multiple items, Python separates them with spaces by default. The <code>sep</code> parameter lets you customize this separator:</p>
-                
+                <h3>Positive Indexing</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 2.3: Custom Separators</span>
+                        <span class="code-figure-label">Figure 2.1: Positive Indexing</span>
                         <button class="code-figure-run" onclick="runCode('code3')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code3"># Default separator is a space
-print("A", "B", "C")
+                    <textarea class="code-editor" id="code3"># Access elements by positive index
+fruits = ["apple", "banana", "cherry", "date", "elderberry"]
 
-# Custom separator: hyphen
-print("A", "B", "C", sep="-")
+print("Index 0:", fruits[0])    # First element
+print("Index 1:", fruits[1])    # Second element
+print("Index 2:", fruits[2])    # Third element
+print("Index 4:", fruits[4])    # Fifth (last) element
 
-# Custom separator: slash (for dates)
-print(2026, 2, 3, sep="/")
-
-# Custom separator: comma and space
-print("apple", "banana", "cherry", sep=", ")
-
-# No separator
-print("H", "e", "l", "l", "o", sep="")</textarea>
+# Get the length
+print(f"\nList length: {len(fruits)}")
+print(f"Last valid index: {len(fruits) - 1}")</textarea>
                     <div class="code-output" id="outputcode3">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>The end Parameter</h3>
-                
-                <p>By default, <code>print()</code> adds a newline character at the end, moving the cursor to the next line. The <code>end</code> parameter lets you change this behavior:</p>
+                <h3>Negative Indexing</h3>
+                <p>Python also supports negative indexing, which counts from the end of the list:</p>
                 
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 2.4: Custom Line Endings</span>
+                        <span class="code-figure-label">Figure 2.2: Negative Indexing</span>
                         <button class="code-figure-run" onclick="runCode('code4')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code4"># Default: each print on new line
-print("Line 1")
-print("Line 2")
+                    <textarea class="code-editor" id="code4"># Access elements by negative index
+fruits = ["apple", "banana", "cherry", "date", "elderberry"]
 
-print("---")
+print("Index -1:", fruits[-1])   # Last element
+print("Index -2:", fruits[-2])   # Second to last
+print("Index -3:", fruits[-3])   # Third to last
+print("Index -5:", fruits[-5])   # First element
 
-# Custom end: space (continue on same line)
-print("Hello", end=" ")
-print("World!")
-
-# Custom end: nothing
-print("A", end="")
-print("B", end="")
-print("C")
-
-# Custom end: custom string
-print("Loading", end="...")
-print("Done!")</textarea>
+# Useful for getting the last element
+print(f"\nLast fruit: {fruits[-1]}")</textarea>
                     <div class="code-output" id="outputcode4">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>Escape Characters</h3>
-                
-                <p>Escape characters let you include special characters in strings. They start with a backslash <code>\</code>:</p>
-                
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Escape Sequence</th>
-                                <th>Description</th>
-                                <th>Example Output</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td><code>\n</code></td><td>Newline</td><td>Line 1<br>Line 2</td></tr>
-                            <tr><td><code>\t</code></td><td>Tab</td><td>Column1    Column2</td></tr>
-                            <tr><td><code>\\</code></td><td>Backslash</td><td>C:\Users</td></tr>
-                            <tr><td><code>\'</code></td><td>Single quote</td><td>It's working</td></tr>
-                            <tr><td><code>\"</code></td><td>Double quote</td><td>He said "Hello"</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                
+                <h3>Modifying Elements</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 2.5: Escape Characters</span>
+                        <span class="code-figure-label">Figure 2.3: Modifying List Elements</span>
                         <button class="code-figure-run" onclick="runCode('code5')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code5"># Newline character
-print("Line 1\nLine 2\nLine 3")
+                    <textarea class="code-editor" id="code5"># Lists are mutable - we can change elements
+colors = ["red", "green", "blue"]
+print("Original:", colors)
 
-# Tab character (for alignment)
-print("Name\tAge\tCity")
-print("Ali\t21\tIstanbul")
-print("Ayşe\t22\tAnkara")
+# Change an element
+colors[1] = "yellow"
+print("After colors[1] = 'yellow':", colors)
 
-# Backslash (for file paths)
-print("C:\\Users\\Student\\Documents")
+# Change last element
+colors[-1] = "purple"
+print("After colors[-1] = 'purple':", colors)
 
-# Quotes inside strings
-print("He said \"Hello!\"")
-print('It\'s a beautiful day')</textarea>
+# Change first element
+colors[0] = "orange"
+print("After colors[0] = 'orange':", colors)</textarea>
                     <div class="code-output" id="outputcode5">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>Multi-line Strings</h3>
-                
-                <p>For text spanning multiple lines, use triple quotes:</p>
-                
+                <h3>Checking Membership</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 2.6: Multi-line Strings</span>
+                        <span class="code-figure-label">Figure 2.4: Membership Testing</span>
                         <button class="code-figure-run" onclick="runCode('code6')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code6"># Multi-line string with triple quotes
-message = """Dear Student,
+                    <textarea class="code-editor" id="code6"># Check if an element exists in a list
+fruits = ["apple", "banana", "cherry"]
 
-Welcome to Computer Programming II!
-This course will teach you Python.
+print("'banana' in list:", "banana" in fruits)
+print("'grape' in list:", "grape" in fruits)
+print("'grape' NOT in list:", "grape" not in fruits)
 
-Best regards,
-Dr. Solmaz"""
+# Finding index
+print(f"\nIndex of 'cherry': {fruits.index('cherry')}")
 
-print(message)</textarea>
+# Counting occurrences
+grades = [85, 90, 85, 78, 92, 85]
+print(f"85 appears {grades.count(85)} times")</textarea>
                     <div class="code-output" id="outputcode6">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
+                
+                <div class="warning-box info-box">
+                    <p>Accessing an index that doesn't exist raises an <code>IndexError</code>. Always check the list length or use try/except when working with dynamic indices.</p>
+                </div>
             </section>
             
-            <!-- Section 3: Comments -->
+            <!-- Section 3: Slicing -->
             <section id="part3" class="section">
                 <div class="section-header">
                     <div class="section-number">3</div>
-                    <h2>Comments in Python</h2>
+                    <h2>Slicing Techniques</h2>
                 </div>
                 
-                <p>Comments are notes in your code that Python ignores during execution. They're essential for making your code readable and maintainable. Good comments explain <em>why</em> you're doing something, not just <em>what</em> you're doing.</p>
+                <p><strong>Slicing</strong> allows you to extract a portion (subset) of a list. It's one of Python's most powerful features for working with sequences.</p>
                 
-                <h3>Single-Line Comments</h3>
+                <h3>Slice Syntax</h3>
+                <pre>list[start:stop:step]
+
+• start: Starting index (inclusive, default 0)
+• stop: Ending index (exclusive, default len(list))
+• step: Step size (default 1)</pre>
                 
-                <p>Use the hash symbol <code>#</code> to create single-line comments. Everything after <code>#</code> on that line is ignored:</p>
-                
+                <h4>Basic Slicing</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 3.1: Single-Line Comments</span>
+                        <span class="code-figure-label">Figure 3.1: Basic Slicing</span>
                         <button class="code-figure-run" onclick="runCode('code7')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code7"># This is a single-line comment
-print("This line runs")  # Inline comment
+                    <textarea class="code-editor" id="code7"># Basic slicing examples
+numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+print("Full list:", numbers)
 
-# Calculate the area of a circle
-# Using the formula: A = π × r²
-radius = 5  # meters
-pi = 3.14159
-area = pi * radius * radius
-
-print("Radius:", radius, "m")
-print("Area:", area, "m²")</textarea>
+print("\n[2:5] =", numbers[2:5])     # Index 2, 3, 4
+print("[:4] =", numbers[:4])         # First 4 elements
+print("[6:] =", numbers[6:])         # From index 6 to end
+print("[:] =", numbers[:])           # Full copy
+print("[-3:] =", numbers[-3:])       # Last 3 elements</textarea>
                     <div class="code-output" id="outputcode7">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>Multi-Line Comments (Docstrings)</h3>
-                
-                <p>For longer explanations, use triple quotes. These are called docstrings and are commonly used to document functions and modules:</p>
-                
+                <h4>Slicing with Step</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 3.2: Multi-Line Comments</span>
+                        <span class="code-figure-label">Figure 3.2: Slicing with Step</span>
                         <button class="code-figure-run" onclick="runCode('code8')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code8">"""
-Program: Temperature Converter
-Author: Dr. Arif Solmaz
-Date: February 2026
-Description: Converts Fahrenheit to Celsius
-"""
+                    <textarea class="code-editor" id="code8"># Using step in slicing
+numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-# Conversion formula: C = (F - 32) × 5/9
-fahrenheit = 98.6
-celsius = (fahrenheit - 32) * 5/9
+print("Every 2nd [::2] =", numbers[::2])
+print("Every 3rd [::3] =", numbers[::3])
+print("[1:8:2] =", numbers[1:8:2])
 
-print(f"{fahrenheit}°F = {celsius:.2f}°C")</textarea>
+# Reverse with negative step
+print("\nReversed [::-1] =", numbers[::-1])
+print("Every 2nd reversed [::-2] =", numbers[::-2])</textarea>
                     <div class="code-output" id="outputcode8">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>Comment Best Practices</h3>
-                
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>✅ Good Comments</th>
-                                <th>❌ Bad Comments</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code># Convert kg to pounds (1 kg = 2.205 lb)</code></td>
-                                <td><code># Multiply by 2.205</code></td>
-                            </tr>
-                            <tr>
-                                <td><code># Handle edge case: negative input</code></td>
-                                <td><code># if statement</code></td>
-                            </tr>
-                            <tr>
-                                <td><code># API rate limit: max 100 requests/minute</code></td>
-                                <td><code># Set x to 100</code></td>
-                            </tr>
-                            <tr>
-                                <td><code># TODO: Add error handling for invalid input</code></td>
-                                <td><code># The next line prints something</code></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="tip-box info-box">
-                    <p><strong>Pro Tip:</strong> Write comments as if the person reading your code is a slightly confused colleague who needs to understand your reasoning. Your future self will thank you!</p>
-                </div>
-            </section>
-            
-            <!-- Section 4: Variables -->
-            <section id="part4" class="section">
-                <div class="section-header">
-                    <div class="section-number">4</div>
-                    <h2>Variables</h2>
-                </div>
-                
-                <p>Variables are containers for storing data values. Think of them as labeled boxes where you can put information for later use. In Python, you don't need to declare the type of a variable—Python figures it out automatically.</p>
-                
-                <h3>Creating Variables</h3>
-                
-                <p>Use the assignment operator <code>=</code> to create a variable and give it a value:</p>
-                
+                <h4>Slice Assignment</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 4.1: Creating Variables</span>
+                        <span class="code-figure-label">Figure 3.3: Slice Assignment</span>
                         <button class="code-figure-run" onclick="runCode('code9')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code9"># Creating variables
-message = "Hello, Python!"
-print(message)
+                    <textarea class="code-editor" id="code9"># You can assign to slices!
+letters = ['a', 'b', 'c', 'd', 'e']
+print("Original:", letters)
 
-# Integer variable
-age = 21
-print("Age:", age)
+# Replace a slice
+letters[1:3] = ['X', 'Y', 'Z']
+print("After [1:3] = ['X','Y','Z']:", letters)
 
-# Float variable (decimal number)
-temperature = 36.6
-print("Temperature:", temperature, "°C")
+# Delete with empty list
+letters[2:4] = []
+print("After [2:4] = []:", letters)
 
-# Boolean variable (True/False)
-is_student = True
-print("Is student:", is_student)</textarea>
+# Insert with slice
+numbers = [1, 2, 5, 6]
+numbers[2:2] = [3, 4]  # Insert at position 2
+print("\nInsert [3,4] at position 2:", numbers)</textarea>
                     <div class="code-output" id="outputcode9">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>Multiple Assignments</h3>
-                
-                <p>Python allows you to assign values to multiple variables in one line:</p>
-                
+                <h4>Engineering: Time-Series Data</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 4.2: Multiple Assignments</span>
+                        <span class="code-figure-label">Figure 3.4: Time-Series Slicing</span>
                         <button class="code-figure-run" onclick="runCode('code10')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code10"># Assign different values to multiple variables
-x, y, z = 10, 20, 30
-print("x =", x)
-print("y =", y)
-print("z =", z)
+                    <textarea class="code-editor" id="code10"># Extract time periods from 24-hour temperature data
+hourly_temps = [18, 17, 16, 16, 15, 15, 16, 18, 20, 22, 24, 26,
+                28, 29, 30, 29, 28, 26, 24, 22, 21, 20, 19, 18]
 
-# Assign the same value to multiple variables
-a = b = c = 0
-print("a =", a, ", b =", b, ", c =", c)
+morning = hourly_temps[6:12]      # 6AM - 11AM
+afternoon = hourly_temps[12:18]   # 12PM - 5PM
+evening = hourly_temps[18:24]     # 6PM - 11PM
 
-# Swap two variables (Python makes this easy!)
-first = "Apple"
-second = "Banana"
-print("Before swap:", first, second)
+print(f"Morning temps (06:00-11:00): {morning}")
+print(f"Afternoon temps (12:00-17:00): {afternoon}")
+print(f"Evening temps (18:00-23:00): {evening}")
 
-first, second = second, first
-print("After swap:", first, second)</textarea>
+print(f"\nMorning avg: {sum(morning)/len(morning):.1f}°C")
+print(f"Afternoon avg: {sum(afternoon)/len(afternoon):.1f}°C")
+print(f"Peak temp: {max(hourly_temps)}°C at {hourly_temps.index(max(hourly_temps))}:00")</textarea>
                     <div class="code-output" id="outputcode10">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
+            </section>
+
+            <!-- Section 4: List Methods -->
+            <section id="part4" class="section">
+                <div class="section-header">
+                    <div class="section-number">4</div>
+                    <h2>List Methods</h2>
+                </div>
                 
-                <h3>Variable Naming Rules</h3>
-                
-                <p>Python has specific rules for naming variables:</p>
+                <p>Lists come with many built-in methods for modification. These methods change the list in place (mutate it).</p>
                 
                 <div class="table-container">
                     <table>
                         <thead>
-                            <tr>
-                                <th>Rule</th>
-                                <th>✅ Valid</th>
-                                <th>❌ Invalid</th>
-                            </tr>
+                            <tr><th>Method</th><th>Description</th><th>Example</th></tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Must start with letter or underscore</td>
-                                <td><code>name</code>, <code>_private</code></td>
-                                <td><code>1name</code>, <code>@value</code></td>
-                            </tr>
-                            <tr>
-                                <td>Can contain letters, numbers, underscores</td>
-                                <td><code>student1</code>, <code>total_sum</code></td>
-                                <td><code>total-sum</code>, <code>my value</code></td>
-                            </tr>
-                            <tr>
-                                <td>Case-sensitive</td>
-                                <td><code>Age</code> ≠ <code>age</code> ≠ <code>AGE</code></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>Cannot be Python keywords</td>
-                                <td><code>my_class</code>, <code>for_loop</code></td>
-                                <td><code>class</code>, <code>for</code>, <code>if</code></td>
-                            </tr>
+                            <tr><td><code>append(x)</code></td><td>Add item to end</td><td><code>list.append(4)</code></td></tr>
+                            <tr><td><code>insert(i, x)</code></td><td>Insert at position</td><td><code>list.insert(0, "first")</code></td></tr>
+                            <tr><td><code>extend(iter)</code></td><td>Add all from iterable</td><td><code>list.extend([4, 5])</code></td></tr>
+                            <tr><td><code>remove(x)</code></td><td>Remove first occurrence</td><td><code>list.remove("apple")</code></td></tr>
+                            <tr><td><code>pop(i)</code></td><td>Remove and return at index</td><td><code>list.pop(0)</code></td></tr>
+                            <tr><td><code>clear()</code></td><td>Remove all items</td><td><code>list.clear()</code></td></tr>
+                            <tr><td><code>sort()</code></td><td>Sort in place</td><td><code>list.sort()</code></td></tr>
+                            <tr><td><code>reverse()</code></td><td>Reverse in place</td><td><code>list.reverse()</code></td></tr>
+                            <tr><td><code>copy()</code></td><td>Return shallow copy</td><td><code>new = list.copy()</code></td></tr>
                         </tbody>
                     </table>
                 </div>
                 
-                <h3>Naming Conventions</h3>
-                
-                <p>While Python allows various naming styles, following conventions makes your code more readable:</p>
-                
-                <ul>
-                    <li><strong>snake_case</strong> for variables and functions: <code>student_name</code>, <code>calculate_area</code></li>
-                    <li><strong>UPPERCASE</strong> for constants: <code>PI</code>, <code>MAX_SIZE</code>, <code>GRAVITY</code></li>
-                    <li><strong>PascalCase</strong> for class names: <code>Student</code>, <code>TemperatureSensor</code></li>
-                    <li>Use <strong>descriptive names</strong>: <code>total_price</code> is better than <code>tp</code></li>
-                </ul>
-                
+                <h3>Adding Elements</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 4.3: Good Variable Names</span>
+                        <span class="code-figure-label">Figure 4.1: Adding Elements</span>
                         <button class="code-figure-run" onclick="runCode('code11')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code11"># Good: Descriptive variable names
-student_name = "Mehmet Yılmaz"
-student_age = 21
-is_enrolled = True
-course_credits = 4
+                    <textarea class="code-editor" id="code11"># append() - add one item to end
+fruits = ["apple", "banana"]
+print("Original:", fruits)
 
-print(f"Student: {student_name}")
-print(f"Age: {student_age}")
-print(f"Enrolled: {is_enrolled}")
-print(f"Credits: {course_credits}")
+fruits.append("cherry")
+print("After append('cherry'):", fruits)
 
-# Engineering example with units in comments
-voltage = 12.0       # Volts (V)
-current = 2.5        # Amperes (A)
-resistance = 4.8     # Ohms (Ω)
+# insert() - add at specific position
+fruits.insert(0, "apricot")
+print("After insert(0, 'apricot'):", fruits)
 
-print(f"\nVoltage: {voltage} V")
-print(f"Current: {current} A")
-print(f"Resistance: {resistance} Ω")</textarea>
+fruits.insert(2, "blueberry")
+print("After insert(2, 'blueberry'):", fruits)
+
+# extend() - add multiple items
+fruits.extend(["date", "elderberry"])
+print("After extend(['date', 'elderberry']):", fruits)</textarea>
                     <div class="code-output" id="outputcode11">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>Changing Variable Values</h3>
-                
-                <p>Variables can be reassigned at any time. Python is dynamically typed, so you can even change the type:</p>
-                
+                <h3>Removing Elements</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 4.4: Changing Variables</span>
+                        <span class="code-figure-label">Figure 4.2: Removing Elements</span>
                         <button class="code-figure-run" onclick="runCode('code12')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code12"># Variables can change value
-counter = 10
-print("Initial counter:", counter)
+                    <textarea class="code-editor" id="code12"># Various ways to remove elements
+numbers = [10, 20, 30, 40, 50, 30]
+print("Original:", numbers)
 
-counter = 20
-print("New counter:", counter)
+# remove() - remove first occurrence of value
+numbers.remove(30)
+print("After remove(30):", numbers)
 
-# Incrementing (common operation)
-score = 0
-print("Initial score:", score)
+# pop() - remove and return by index
+last = numbers.pop()       # Remove last
+print(f"Popped last: {last}, list: {numbers}")
 
-score = score + 10  # Add 10
-print("After +10:", score)
+first = numbers.pop(0)     # Remove first
+print(f"Popped first: {first}, list: {numbers}")
 
-score = score + 5   # Add 5 more
-print("After +5:", score)
+# del - delete by index or slice
+del numbers[1]
+print("After del numbers[1]:", numbers)
 
-# Python even allows type changes (be careful!)
-x = 100
-print("x as integer:", x, "- Type:", type(x))
-
-x = "Hello"
-print("x as string:", x, "- Type:", type(x))</textarea>
+# clear() - remove all
+numbers.clear()
+print("After clear():", numbers)</textarea>
                     <div class="code-output" id="outputcode12">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <div class="warning-box info-box">
-                    <p>While Python allows changing variable types, it's generally considered bad practice. Keep variables consistent in type to avoid confusion and bugs.</p>
-                </div>
-            </section>
-
-            <!-- Section 5: Data Types -->
-            <section id="part5" class="section">
-                <div class="section-header">
-                    <div class="section-number">5</div>
-                    <h2>Data Types</h2>
-                </div>
-                
-                <p>Every value in Python has a <strong>data type</strong>. Understanding data types is crucial because it determines what operations you can perform on the data. Python has several built-in data types, but we'll focus on the four most fundamental ones.</p>
-                
-                <h3>The Four Basic Data Types</h3>
-                
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Examples</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td><code>int</code></td><td>Integer</td><td>Whole numbers (positive or negative)</td><td><code>42</code>, <code>-17</code>, <code>0</code></td></tr>
-                            <tr><td><code>float</code></td><td>Float</td><td>Decimal numbers</td><td><code>3.14</code>, <code>-0.5</code>, <code>2.0</code></td></tr>
-                            <tr><td><code>str</code></td><td>String</td><td>Text (sequence of characters)</td><td><code>"Hello"</code>, <code>'World'</code></td></tr>
-                            <tr><td><code>bool</code></td><td>Boolean</td><td>True or False values</td><td><code>True</code>, <code>False</code></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <h3>Integer (int) - Whole Numbers</h3>
-                
-                <p>Integers are whole numbers without decimal points. Python can handle extremely large integers:</p>
-                
+                <h3>Sorting</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 5.1: Integers</span>
+                        <span class="code-figure-label">Figure 4.3: Sorting Lists</span>
                         <button class="code-figure-run" onclick="runCode('code13')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code13"># Positive integers
-students = 35
-year = 2026
+                    <textarea class="code-editor" id="code13"># sort() - modifies list in place
+numbers = [64, 34, 25, 12, 22, 11, 90]
+print("Original:", numbers)
 
-print("Students:", students, "- Type:", type(students))
-print("Year:", year)
+numbers.sort()
+print("Sorted ascending:", numbers)
 
-# Negative integers
-temperature = -5
-altitude = -100  # Below sea level
+numbers.sort(reverse=True)
+print("Sorted descending:", numbers)
 
-print("Temperature:", temperature, "°C")
-print("Altitude:", altitude, "m")
-
-# Python handles very large integers easily
-distance_to_sun = 149600000000  # meters
-print("Distance to Sun:", distance_to_sun, "m")
-
-# Underscores for readability (Python 3.6+)
-population = 84_000_000  # Turkey's population
-print("Population:", population)</textarea>
+# sorted() - returns new list, original unchanged
+words = ["banana", "Apple", "cherry", "Date"]
+print("\nOriginal words:", words)
+print("sorted():", sorted(words))
+print("sorted(key=str.lower):", sorted(words, key=str.lower))
+print("Original still:", words)</textarea>
                     <div class="code-output" id="outputcode13">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>Float - Decimal Numbers</h3>
-                
-                <p>Floats (floating-point numbers) represent decimal values. They're essential for scientific calculations:</p>
-                
+                <h3>Reversing</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 5.2: Floats</span>
+                        <span class="code-figure-label">Figure 4.4: Reversing Lists</span>
                         <button class="code-figure-run" onclick="runCode('code14')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code14"># Basic floats
-pi = 3.14159
-gravity = 9.81  # m/s²
+                    <textarea class="code-editor" id="code14"># reverse() - modifies list in place
+letters = ['a', 'b', 'c', 'd', 'e']
+print("Original:", letters)
 
-print("Pi:", pi, "- Type:", type(pi))
-print("Gravity:", gravity, "m/s²")
+letters.reverse()
+print("After reverse():", letters)
 
-# Scientific notation (for very large or small numbers)
-speed_of_light = 3e8        # 3 × 10^8 m/s
-planck_constant = 6.626e-34 # kg⋅m²/s
-
-print("Speed of light:", speed_of_light, "m/s")
-print("Planck constant:", planck_constant, "J⋅s")
-
-# Division always produces a float
-result = 10 / 4
-print("10 / 4 =", result, "- Type:", type(result))
-
-# Even when dividing evenly
-result2 = 10 / 2
-print("10 / 2 =", result2, "- Type:", type(result2))</textarea>
+# reversed() - returns iterator
+numbers = [1, 2, 3, 4, 5]
+print("\nOriginal numbers:", numbers)
+print("list(reversed()):", list(reversed(numbers)))
+print("Slice [::-1]:", numbers[::-1])
+print("Original still:", numbers)</textarea>
                     <div class="code-output" id="outputcode14">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <div class="note-box info-box">
-                    <p><strong>Float Precision:</strong> Due to how computers store decimal numbers, floats can have tiny rounding errors. For example, <code>0.1 + 0.2</code> equals <code>0.30000000000000004</code> instead of exactly <code>0.3</code>. This is normal and affects all programming languages.</p>
+                <div class="tip-box info-box">
+                    <p><strong>sort() vs sorted():</strong> <code>sort()</code> modifies the original list and returns None. <code>sorted()</code> returns a new sorted list and leaves the original unchanged.</p>
+                </div>
+            </section>
+            
+            <!-- Section 5: List Operations and Functions -->
+            <section id="part5" class="section">
+                <div class="section-header">
+                    <div class="section-number">5</div>
+                    <h2>List Operations and Built-in Functions</h2>
                 </div>
                 
-                <h3>String (str) - Text</h3>
-                
-                <p>Strings are sequences of characters enclosed in quotes. They're used for text, labels, and any character-based data:</p>
-                
+                <h3>List Concatenation and Repetition</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 5.3: Strings</span>
+                        <span class="code-figure-label">Figure 5.1: Concatenation and Repetition</span>
                         <button class="code-figure-run" onclick="runCode('code15')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code15"># Single or double quotes
-name = "Ahmet Yılmaz"
-city = 'Istanbul'
+                    <textarea class="code-editor" id="code15"># Concatenation with +
+list1 = [1, 2, 3]
+list2 = [4, 5, 6]
+combined = list1 + list2
+print("list1 + list2 =", combined)
 
-print("Name:", name, "- Type:", type(name))
-print("City:", city)
+# Repetition with *
+zeros = [0] * 5
+print("[0] * 5 =", zeros)
 
-# Empty string
-empty = ""
-print("Empty string:", repr(empty), "- Length:", len(empty))
+pattern = [1, 2] * 3
+print("[1, 2] * 3 =", pattern)
 
-# String with numbers (still a string!)
-phone = "0532-123-4567"
-student_id = "2024001234"
-
-print("Phone:", phone, "- Type:", type(phone))
-print("Student ID:", student_id)
-
-# Quotes inside quotes
-message1 = "She said 'Hello!'"
-message2 = 'He replied "Hi there!"'
-
-print(message1)
-print(message2)</textarea>
+# += operator (in-place)
+numbers = [1, 2]
+numbers += [3, 4]
+print("\n[1,2] += [3,4] =", numbers)</textarea>
                     <div class="code-output" id="outputcode15">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>Boolean (bool) - True/False</h3>
-                
-                <p>Booleans represent truth values and are fundamental for decision-making in programs:</p>
-                
+                <h3>Built-in Functions for Lists</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 5.4: Booleans</span>
+                        <span class="code-figure-label">Figure 5.2: Built-in Functions</span>
                         <button class="code-figure-run" onclick="runCode('code16')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code16"># Boolean values (note the capital T and F)
-is_student = True
-has_passed = False
+                    <textarea class="code-editor" id="code16"># Common built-in functions
+numbers = [45, 22, 89, 34, 67, 12, 78]
 
-print("Is student:", is_student, "- Type:", type(is_student))
-print("Has passed:", has_passed)
+print("List:", numbers)
+print(f"len():  {len(numbers)}")
+print(f"min():  {min(numbers)}")
+print(f"max():  {max(numbers)}")
+print(f"sum():  {sum(numbers)}")
+print(f"Average: {sum(numbers)/len(numbers):.2f}")
 
-# Booleans from comparisons
-age = 21
-is_adult = age >= 18
-print("Age:", age, "- Is adult:", is_adult)
+# any() and all()
+bools = [True, False, True]
+print(f"\nany({bools}): {any(bools)}")
+print(f"all({bools}): {all(bools)}")
 
-# Multiple boolean variables
-temperature = 25
-is_cold = temperature < 10
-is_hot = temperature > 30
-is_comfortable = not is_cold and not is_hot
-
-print(f"Temperature: {temperature}°C")
-print(f"Is cold: {is_cold}")
-print(f"Is hot: {is_hot}")
-print(f"Is comfortable: {is_comfortable}")</textarea>
+# Check if any number > 50
+print(f"any(n > 50): {any(n > 50 for n in numbers)}")
+print(f"all(n > 0): {all(n > 0 for n in numbers)}")</textarea>
                     <div class="code-output" id="outputcode16">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>Checking Data Types</h3>
-                
-                <p>Use the <code>type()</code> function to check a variable's data type:</p>
-                
+                <h3>Iterating with enumerate() and zip()</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 5.5: Type Checking</span>
+                        <span class="code-figure-label">Figure 5.3: enumerate and zip</span>
                         <button class="code-figure-run" onclick="runCode('code17')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code17"># Check types of different values
-print(type(42))           # int
-print(type(3.14))         # float
-print(type("Hello"))      # str
-print(type(True))         # bool
+                    <textarea class="code-editor" id="code17"># enumerate() - get index and value
+fruits = ["apple", "banana", "cherry"]
+print("Using enumerate():")
+for index, fruit in enumerate(fruits):
+    print(f"  {index}: {fruit}")
 
-# Check types of variables
-voltage = 220
-current = 0.5
-unit = "Volts"
-is_ac = True
+# Start from different number
+print("\nStarting from 1:")
+for num, fruit in enumerate(fruits, start=1):
+    print(f"  {num}. {fruit}")
 
-print(f"voltage ({voltage}): {type(voltage)}")
-print(f"current ({current}): {type(current)}")
-print(f"unit ({unit}): {type(unit)}")
-print(f"is_ac ({is_ac}): {type(is_ac)}")</textarea>
+# zip() - combine multiple lists
+names = ["Alice", "Bob", "Charlie"]
+scores = [85, 92, 78]
+grades = ["B", "A", "C"]
+
+print("\nUsing zip():")
+for name, score, grade in zip(names, scores, grades):
+    print(f"  {name}: {score} ({grade})")</textarea>
                     <div class="code-output" id="outputcode17">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>List Copying</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.4: Shallow vs Deep Copy</span>
+                        <button class="code-figure-run" onclick="runCode('code18')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code18"># Be careful with assignment!
+original = [1, 2, 3]
+reference = original  # NOT a copy! Same object
+
+reference[0] = 999
+print("After changing reference[0]:")
+print("  original:", original)
+print("  reference:", reference)
+
+# Proper ways to copy
+original = [1, 2, 3]
+copy1 = original.copy()
+copy2 = original[:]
+copy3 = list(original)
+
+copy1[0] = 100
+print("\nAfter changing copy1[0]:")
+print("  original:", original)
+print("  copy1:", copy1)</textarea>
+                    <div class="code-output" id="outputcode18">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
             </section>
             
-            <!-- Section 6: Arithmetic Operations -->
+            <!-- Section 6: List Comprehensions -->
             <section id="part6" class="section">
                 <div class="section-header">
                     <div class="section-number">6</div>
-                    <h2>Arithmetic Operations</h2>
+                    <h2>List Comprehensions</h2>
                 </div>
                 
-                <p>Python supports all standard mathematical operations. These are essential for any engineering calculations.</p>
+                <p>A <strong>list comprehension</strong> is a concise way to create lists. It's one of Python's most powerful and elegant features.</p>
                 
-                <h3>Basic Operators</h3>
-                
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Operator</th>
-                                <th>Name</th>
-                                <th>Example</th>
-                                <th>Result</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td><code>+</code></td><td>Addition</td><td><code>5 + 3</code></td><td><code>8</code></td></tr>
-                            <tr><td><code>-</code></td><td>Subtraction</td><td><code>10 - 4</code></td><td><code>6</code></td></tr>
-                            <tr><td><code>*</code></td><td>Multiplication</td><td><code>6 * 7</code></td><td><code>42</code></td></tr>
-                            <tr><td><code>/</code></td><td>Division</td><td><code>15 / 4</code></td><td><code>3.75</code></td></tr>
-                            <tr><td><code>//</code></td><td>Floor Division</td><td><code>15 // 4</code></td><td><code>3</code></td></tr>
-                            <tr><td><code>%</code></td><td>Modulus (Remainder)</td><td><code>15 % 4</code></td><td><code>3</code></td></tr>
-                            <tr><td><code>**</code></td><td>Exponentiation</td><td><code>2 ** 5</code></td><td><code>32</code></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 6.1: Basic Arithmetic</span>
-                        <button class="code-figure-run" onclick="runCode('code18')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code18"># Basic arithmetic operations
-a, b = 17, 5
+                <h3>Basic Syntax</h3>
+                <pre>[expression for item in iterable]
 
-print(f"a = {a}, b = {b}")
-print(f"Addition: {a} + {b} = {a + b}")
-print(f"Subtraction: {a} - {b} = {a - b}")
-print(f"Multiplication: {a} * {b} = {a * b}")
-print(f"Division: {a} / {b} = {a / b}")
-print(f"Floor Division: {a} // {b} = {a // b}")
-print(f"Modulus: {a} % {b} = {a % b}")
-print(f"Exponentiation: {a} ** 2 = {a ** 2}")</textarea>
-                    <div class="code-output" id="outputcode18">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
+# With condition:
+[expression for item in iterable if condition]</pre>
                 
-                <h3>Division Types Explained</h3>
-                
-                <p>Python has two types of division, which behave differently:</p>
-                
+                <h4>Basic Comprehensions</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 6.2: Division Types</span>
+                        <span class="code-figure-label">Figure 6.1: Basic Comprehensions</span>
                         <button class="code-figure-run" onclick="runCode('code19')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code19"># Regular division (/) - always returns float
-print("Regular Division (/):")
-print(f"10 / 3 = {10 / 3}")   # 3.333...
-print(f"10 / 2 = {10 / 2}")   # 5.0 (still float!)
+                    <textarea class="code-editor" id="code19"># Traditional loop vs comprehension
+# Loop version:
+squares_loop = []
+for x in range(1, 6):
+    squares_loop.append(x ** 2)
+print("Loop:", squares_loop)
 
-# Floor division (//) - rounds down to integer
-print("\nFloor Division (//):")
-print(f"10 // 3 = {10 // 3}")  # 3 (rounds down)
-print(f"10 // 2 = {10 // 2}")  # 5
+# Comprehension version:
+squares_comp = [x ** 2 for x in range(1, 6)]
+print("Comprehension:", squares_comp)
 
-# Modulus (%) - gives remainder
-print("\nModulus (%):")
-print(f"10 % 3 = {10 % 3}")    # 1 (10 = 3*3 + 1)
-print(f"25 % 7 = {25 % 7}")    # 4 (25 = 7*3 + 4)
+# More examples
+doubles = [n * 2 for n in range(1, 6)]
+print("Doubles:", doubles)
 
-# Practical use: Check if number is even/odd
-number = 42
-if number % 2 == 0:
-    print(f"\n{number} is even")
-else:
-    print(f"\n{number} is odd")</textarea>
+cubes = [n ** 3 for n in range(1, 5)]
+print("Cubes:", cubes)</textarea>
                     <div class="code-output" id="outputcode19">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>Operator Precedence (Order of Operations)</h3>
-                
-                <p>Python follows standard mathematical order of operations (PEMDAS/BODMAS):</p>
-                
-                <ol>
-                    <li><strong>P</strong>arentheses <code>()</code></li>
-                    <li><strong>E</strong>xponents <code>**</code></li>
-                    <li><strong>M</strong>ultiplication <code>*</code>, <strong>D</strong>ivision <code>/</code>, Floor Division <code>//</code>, Modulus <code>%</code></li>
-                    <li><strong>A</strong>ddition <code>+</code>, <strong>S</strong>ubtraction <code>-</code></li>
-                </ol>
-                
+                <h4>Comprehensions with Conditions</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 6.3: Operator Precedence</span>
+                        <span class="code-figure-label">Figure 6.2: Filtering with Conditions</span>
                         <button class="code-figure-run" onclick="runCode('code20')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code20"># Without parentheses - follows precedence
-result1 = 2 + 3 * 4
-print(f"2 + 3 * 4 = {result1}")  # 3*4 first, then +2 = 14
+                    <textarea class="code-editor" id="code20"># Filter with if condition
+numbers = range(1, 11)
 
-# With parentheses - override precedence
-result2 = (2 + 3) * 4
-print(f"(2 + 3) * 4 = {result2}")  # 2+3 first, then *4 = 20
+evens = [n for n in numbers if n % 2 == 0]
+print("Even numbers:", evens)
 
-# Exponents before multiplication
-result3 = 2 * 3 ** 2
-print(f"2 * 3 ** 2 = {result3}")  # 3^2 first, then *2 = 18
+odds = [n for n in numbers if n % 2 != 0]
+print("Odd numbers:", odds)
 
-result4 = (2 * 3) ** 2
-print(f"(2 * 3) ** 2 = {result4}")  # 2*3 first, then ^2 = 36
+# Multiple conditions
+divisible_by_2_or_3 = [n for n in range(1, 21) if n % 2 == 0 or n % 3 == 0]
+print("Divisible by 2 or 3:", divisible_by_2_or_3)
 
-# Complex expression
-result5 = 10 + 20 * 3 / 4 - 5
-print(f"10 + 20 * 3 / 4 - 5 = {result5}")  # = 10 + 15 - 5 = 20</textarea>
+# Filter strings
+words = ["apple", "banana", "cherry", "date", "elderberry"]
+long_words = [w for w in words if len(w) > 5]
+print("Words > 5 chars:", long_words)</textarea>
                     <div class="code-output" id="outputcode20">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <div class="tip-box info-box">
-                    <p><strong>Best Practice:</strong> When in doubt, use parentheses! They make your code clearer and ensure calculations happen in the order you intend.</p>
-                </div>
-                
-                <h3>Engineering Calculations</h3>
-                
+                <h4>Conditional Expressions</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 6.4: Engineering Examples</span>
+                        <span class="code-figure-label">Figure 6.3: If-Else in Comprehensions</span>
                         <button class="code-figure-run" onclick="runCode('code21')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code21"># Ohm's Law: V = I × R
-voltage = 12.0  # Volts
-current = 2.5   # Amperes
-resistance = voltage / current
-print(f"Ohm's Law: {voltage}V / {current}A = {resistance}Ω")
+                    <textarea class="code-editor" id="code21"># if-else in the expression (not filter)
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-# Kinetic Energy: KE = ½mv²
-mass = 10.0    # kg
-velocity = 5.0  # m/s
-kinetic_energy = 0.5 * mass * velocity ** 2
-print(f"Kinetic Energy: {kinetic_energy} Joules")
+# Label each number
+labels = ["even" if n % 2 == 0 else "odd" for n in numbers]
+print("Labels:", labels)
 
-# Area of a circle: A = πr²
-pi = 3.14159
-radius = 7.5  # meters
-area = pi * radius ** 2
-print(f"Circle Area (r={radius}m): {area:.2f} m²")
+# Replace negatives with zero
+data = [-5, 3, -2, 8, -1, 6]
+positive = [x if x > 0 else 0 for x in data]
+print("Positive only:", positive)
 
-# Pythagorean theorem: c = √(a² + b²)
-a = 3
-b = 4
-c = (a ** 2 + b ** 2) ** 0.5  # Square root using ** 0.5
-print(f"Pythagorean: √({a}² + {b}²) = {c}")</textarea>
+# Categorize grades
+scores = [45, 72, 88, 55, 91, 67]
+grades = ["Pass" if s >= 60 else "Fail" for s in scores]
+print("Scores:", scores)
+print("Grades:", grades)</textarea>
                     <div class="code-output" id="outputcode21">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
-            </section>
-
-            <!-- Section 7: Assignment Operators -->
-            <section id="part7" class="section">
-                <div class="section-header">
-                    <div class="section-number">7</div>
-                    <h2>Assignment Operators</h2>
-                </div>
                 
-                <p>Assignment operators provide shorthand ways to update variable values. Instead of writing <code>x = x + 5</code>, you can write <code>x += 5</code>. This makes code more concise and readable.</p>
-                
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Operator</th>
-                                <th>Example</th>
-                                <th>Equivalent To</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td><code>=</code></td><td><code>x = 5</code></td><td>Assign 5 to x</td></tr>
-                            <tr><td><code>+=</code></td><td><code>x += 3</code></td><td><code>x = x + 3</code></td></tr>
-                            <tr><td><code>-=</code></td><td><code>x -= 3</code></td><td><code>x = x - 3</code></td></tr>
-                            <tr><td><code>*=</code></td><td><code>x *= 3</code></td><td><code>x = x * 3</code></td></tr>
-                            <tr><td><code>/=</code></td><td><code>x /= 3</code></td><td><code>x = x / 3</code></td></tr>
-                            <tr><td><code>//=</code></td><td><code>x //= 3</code></td><td><code>x = x // 3</code></td></tr>
-                            <tr><td><code>%=</code></td><td><code>x %= 3</code></td><td><code>x = x % 3</code></td></tr>
-                            <tr><td><code>**=</code></td><td><code>x **= 3</code></td><td><code>x = x ** 3</code></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                
+                <h4>Engineering: Data Processing</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 7.1: Assignment Operators</span>
+                        <span class="code-figure-label">Figure 6.4: Engineering Applications</span>
                         <button class="code-figure-run" onclick="runCode('code22')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code22"># Assignment operators in action
-score = 100
-print(f"Initial score: {score}")
+                    <textarea class="code-editor" id="code22"># Sensor data processing
+raw_readings = [23.5, 24.1, -999, 23.8, 24.0, -999, 23.9]
+# -999 indicates sensor error
 
-score += 20  # Add 20
-print(f"After += 20: {score}")
+# Filter out errors
+valid = [r for r in raw_readings if r != -999]
+print("Valid readings:", valid)
+print(f"Average: {sum(valid)/len(valid):.2f}")
 
-score -= 15  # Subtract 15
-print(f"After -= 15: {score}")
+# Convert Celsius to Fahrenheit
+celsius = [0, 10, 20, 30, 40]
+fahrenheit = [c * 9/5 + 32 for c in celsius]
+print(f"\nCelsius: {celsius}")
+print(f"Fahrenheit: {fahrenheit}")
 
-score *= 2   # Multiply by 2
-print(f"After *= 2: {score}")
-
-score //= 3  # Floor divide by 3
-print(f"After //= 3: {score}")
-
-# Practical example: Temperature adjustment
-temperature = 20.0
-print(f"\nTemperature: {temperature}°C")
-
-temperature += 5.5  # Heat up
-print(f"After heating: {temperature}°C")
-
-temperature -= 3.0  # Cool down
-print(f"After cooling: {temperature}°C")</textarea>
+# Normalize data (0-1 scale)
+data = [25, 50, 75, 100, 125]
+min_val, max_val = min(data), max(data)
+normalized = [(x - min_val) / (max_val - min_val) for x in data]
+print(f"\nOriginal: {data}")
+print(f"Normalized: {normalized}")</textarea>
                     <div class="code-output" id="outputcode22">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
-                
-                <h3>String Concatenation with +=</h3>
-                
-                <p>The <code>+=</code> operator also works with strings for concatenation:</p>
-                
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 7.2: String Concatenation</span>
-                        <button class="code-figure-run" onclick="runCode('code23')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code23"># Building a string piece by piece
-message = "Hello"
-print(f"Start: '{message}'")
-
-message += ", "
-print(f"After ', ': '{message}'")
-
-message += "World"
-print(f"After 'World': '{message}'")
-
-message += "!"
-print(f"Final: '{message}'")</textarea>
-                    <div class="code-output" id="outputcode23">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
             </section>
             
-            <!-- Section 8: Type Conversion -->
-            <section id="part8" class="section">
+            <!-- Section 7: Nested Lists -->
+            <section id="part7" class="section">
                 <div class="section-header">
-                    <div class="section-number">8</div>
-                    <h2>Type Conversion</h2>
+                    <div class="section-number">7</div>
+                    <h2>Nested Lists (2D Arrays)</h2>
                 </div>
                 
-                <p>Sometimes you need to convert data from one type to another. Python provides built-in functions for type conversion:</p>
+                <p>A <strong>nested list</strong> is a list containing other lists. This creates a 2D structure similar to matrices in mathematics or spreadsheet data.</p>
                 
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Function</th>
-                                <th>Converts To</th>
-                                <th>Example</th>
-                                <th>Result</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td><code>int()</code></td><td>Integer</td><td><code>int("42")</code></td><td><code>42</code></td></tr>
-                            <tr><td><code>float()</code></td><td>Float</td><td><code>float("3.14")</code></td><td><code>3.14</code></td></tr>
-                            <tr><td><code>str()</code></td><td>String</td><td><code>str(42)</code></td><td><code>"42"</code></td></tr>
-                            <tr><td><code>bool()</code></td><td>Boolean</td><td><code>bool(1)</code></td><td><code>True</code></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                
+                <h3>Creating 2D Lists</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 8.1: String to Number</span>
+                        <span class="code-figure-label">Figure 7.1: Creating 2D Lists</span>
+                        <button class="code-figure-run" onclick="runCode('code23')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code23"># 2D list (matrix)
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+print("Matrix:")
+for row in matrix:
+    print(row)
+
+# Dimensions
+rows = len(matrix)
+cols = len(matrix[0])
+print(f"\nDimensions: {rows} x {cols}")
+
+# Access individual elements
+print(f"\nmatrix[0][0] = {matrix[0][0]}")  # Row 0, Col 0
+print(f"matrix[1][2] = {matrix[1][2]}")  # Row 1, Col 2
+print(f"matrix[2][1] = {matrix[2][1]}")  # Row 2, Col 1</textarea>
+                    <div class="code-output" id="outputcode23">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Iterating 2D Lists</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.2: Iterating 2D Lists</span>
                         <button class="code-figure-run" onclick="runCode('code24')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code24"># String to Integer
-age_str = "25"
-age_int = int(age_str)
-print(f"String '{age_str}' → Integer {age_int}")
-print(f"Age + 5 = {age_int + 5}")  # Now we can do math!
+                    <textarea class="code-editor" id="code24">matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
 
-# String to Float
-pi_str = "3.14159"
-pi_float = float(pi_str)
-print(f"\nString '{pi_str}' → Float {pi_float}")
+# Method 1: Nested loops
+print("All elements:")
+for row in matrix:
+    for element in row:
+        print(element, end=" ")
+    print()  # New line after each row
 
-# Float to Integer (truncates, doesn't round!)
-value = 9.7
-print(f"\nFloat {value} → Integer {int(value)}")  # 9, not 10!
+# Method 2: With indices
+print("\nWith indices:")
+for i in range(len(matrix)):
+    for j in range(len(matrix[i])):
+        print(f"[{i}][{j}]={matrix[i][j]}", end="  ")
+    print()
 
-# Integer to Float
-count = 42
-print(f"Integer {count} → Float {float(count)}")</textarea>
+# Sum all elements
+total = sum(sum(row) for row in matrix)
+print(f"\nSum of all elements: {total}")</textarea>
                     <div class="code-output" id="outputcode24">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <div class="warning-box info-box">
-                    <p><strong>Warning:</strong> <code>int()</code> truncates towards zero, it doesn't round! Use <code>round()</code> if you need rounding. Also, <code>int("3.14")</code> will cause an error—convert to float first, then to int.</p>
-                </div>
-                
+                <h3>Matrix Operations</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 8.2: Number to String</span>
+                        <span class="code-figure-label">Figure 7.3: Matrix Operations</span>
                         <button class="code-figure-run" onclick="runCode('code25')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code25"># Number to String (for concatenation)
-score = 95
-grade = "A"
+                    <textarea class="code-editor" id="code25"># Row and column sums
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
 
-# This would cause an error:
-# message = "Your score is " + score  # Can't add str + int!
+# Row sums
+print("Row sums:")
+for i, row in enumerate(matrix):
+    print(f"  Row {i}: {sum(row)}")
 
-# Solution: Convert to string first
-message = "Your score is " + str(score) + " (" + grade + ")"
-print(message)
+# Column sums
+print("\nColumn sums:")
+for j in range(len(matrix[0])):
+    col_sum = sum(matrix[i][j] for i in range(len(matrix)))
+    print(f"  Col {j}: {col_sum}")
 
-# Building file paths
-year = 2026
-month = 2
-filename = "report_" + str(year) + "_" + str(month).zfill(2) + ".txt"
-print(f"Filename: {filename}")
+# Diagonal sum (main diagonal)
+diag_sum = sum(matrix[i][i] for i in range(len(matrix)))
+print(f"\nMain diagonal sum: {diag_sum}")
 
-# Creating formatted output
-price = 49.99
-currency = "TL"
-print("Total: " + str(price) + " " + currency)</textarea>
+# Transpose
+transposed = [[matrix[j][i] for j in range(len(matrix))] 
+              for i in range(len(matrix[0]))]
+print("\nTransposed:")
+for row in transposed:
+    print(row)</textarea>
                     <div class="code-output" id="outputcode25">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>Boolean Conversions</h3>
-                
-                <p>Understanding how values convert to booleans is crucial for conditions:</p>
-                
+                <h4>Creating Empty 2D Lists</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 8.3: Boolean Conversions</span>
+                        <span class="code-figure-label">Figure 7.4: Creating Empty 2D Lists</span>
                         <button class="code-figure-run" onclick="runCode('code26')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code26"># "Falsy" values (convert to False)
-print("Values that are False:")
-print(f"bool(0) = {bool(0)}")
-print(f"bool(0.0) = {bool(0.0)}")
-print(f'bool("") = {bool("")}')  # Empty string
-print(f"bool(None) = {bool(None)}")
+                    <textarea class="code-editor" id="code26"># CORRECT way to create 2D list
+rows, cols = 3, 4
+matrix = [[0 for _ in range(cols)] for _ in range(rows)]
+print("Empty 3x4 matrix:")
+for row in matrix:
+    print(row)
 
-print("\nValues that are True:")
-# "Truthy" values (everything else is True)
-print(f"bool(1) = {bool(1)}")
-print(f"bool(-5) = {bool(-5)}")  # Any non-zero number
-print(f"bool(3.14) = {bool(3.14)}")
-print(f'bool("Hello") = {bool("Hello")}')  # Non-empty string
-print(f'bool(" ") = {bool(" ")}')  # Even a space!</textarea>
+# Modify one element
+matrix[1][2] = 99
+print("\nAfter matrix[1][2] = 99:")
+for row in matrix:
+    print(row)
+
+# WRONG way (creates references to same list!)
+# wrong = [[0] * cols] * rows  # Don't do this!
+# Changing one row would change all rows</textarea>
                     <div class="code-output" id="outputcode26">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
             </section>
-            
-            <!-- Section 9: User Input -->
-            <section id="part9" class="section">
+
+            <!-- Section 8: Introduction to Tuples -->
+            <section id="part8" class="section">
                 <div class="section-header">
-                    <div class="section-number">9</div>
-                    <h2>User Input and F-Strings</h2>
+                    <div class="section-number">8</div>
+                    <h2>Introduction to Tuples</h2>
                 </div>
                 
-                <p>Interactive programs need to get information from users. The <code>input()</code> function reads text from the keyboard. Note: In this browser environment, input() won't work interactively, but we'll show how it works.</p>
+                <p>A <strong>tuple</strong> is an ordered, <strong>immutable</strong> sequence of elements. Once created, a tuple cannot be modified. Tuples use parentheses <code>()</code> instead of square brackets.</p>
                 
-                <h3>The input() Function</h3>
+                <h3>Tuples vs Lists</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Feature</th><th>List</th><th>Tuple</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Syntax</strong></td><td><code>[1, 2, 3]</code></td><td><code>(1, 2, 3)</code></td></tr>
+                            <tr><td><strong>Mutability</strong></td><td>Mutable (can change)</td><td>Immutable (cannot change)</td></tr>
+                            <tr><td><strong>Use case</strong></td><td>Data that may change</td><td>Data that shouldn't change</td></tr>
+                            <tr><td><strong>Performance</strong></td><td>Slightly slower</td><td>Slightly faster</td></tr>
+                            <tr><td><strong>Methods</strong></td><td>Many (append, etc.)</td><td>Few (count, index)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
                 
+                <h3>Creating Tuples</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 9.1: Simulated Input</span>
+                        <span class="code-figure-label">Figure 8.1: Creating Tuples</span>
                         <button class="code-figure-run" onclick="runCode('code27')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code27"># In a real Python environment, you would use:
-# name = input("Enter your name: ")
+                    <textarea class="code-editor" id="code27"># Creating tuples
+empty = ()
+single = (42,)  # Note the comma!
+coordinates = (10, 20)
+rgb = (255, 128, 0)
+mixed = (1, "hello", 3.14, True)
 
-# For demonstration, we'll simulate the input:
-name = "Ahmet"  # Simulating: input("Enter your name: ")
-print(f"Hello, {name}!")
+print("Empty tuple:", empty)
+print("Single element:", single, "- type:", type(single))
+print("Coordinates:", coordinates)
+print("RGB:", rgb)
+print("Mixed:", mixed)
 
-# input() ALWAYS returns a string!
-age_str = "21"  # Simulating: input("Enter your age: ")
-print(f"Age as string: '{age_str}' - Type: {type(age_str)}")
+# Without parentheses (tuple packing)
+point = 5, 10, 15
+print("\nPacked tuple:", point, "- type:", type(point))
 
-# Convert for math operations
-age = int(age_str)
-birth_year = 2026 - age
-print(f"You were born around {birth_year}")
-
-# Simulating a complete calculator
-num1 = "10"  # input("Enter first number: ")
-num2 = "3"   # input("Enter second number: ")
-
-# Convert and calculate
-result = int(num1) + int(num2)
-print(f"{num1} + {num2} = {result}")</textarea>
+# From list
+from_list = tuple([1, 2, 3])
+print("From list:", from_list)</textarea>
                     <div class="code-output" id="outputcode27">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <div class="note-box info-box">
-                    <p><strong>Important:</strong> <code>input()</code> always returns a string! If you need to do math with the input, you must convert it using <code>int()</code> or <code>float()</code>.</p>
+                <div class="warning-box info-box">
+                    <p><strong>Single-element tuple:</strong> Must include a trailing comma: <code>(42,)</code> is a tuple, but <code>(42)</code> is just the integer 42 in parentheses.</p>
                 </div>
                 
-                <h3>F-Strings (Formatted String Literals)</h3>
-                
-                <p>F-strings (introduced in Python 3.6) are the modern, preferred way to format strings. They're readable, fast, and powerful:</p>
-                
+                <h3>Accessing Tuple Elements</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 9.2: F-String Basics</span>
+                        <span class="code-figure-label">Figure 8.2: Tuple Indexing and Slicing</span>
                         <button class="code-figure-run" onclick="runCode('code28')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code28"># Basic f-string usage
-name = "Zeynep"
-age = 22
-city = "Ankara"
+                    <textarea class="code-editor" id="code28"># Indexing works just like lists
+colors = ("red", "green", "blue", "yellow")
 
-# Old way (concatenation)
-message1 = "Hello, my name is " + name + " and I am " + str(age) + " years old."
-print(message1)
+print("Index 0:", colors[0])
+print("Index -1:", colors[-1])
+print("Slice [1:3]:", colors[1:3])
 
-# New way (f-strings) - much cleaner!
-message2 = f"Hello, my name is {name} and I am {age} years old."
-print(message2)
-
-# Expressions inside f-strings
-a = 5
-b = 3
-print(f"{a} + {b} = {a + b}")
-print(f"{a} × {b} = {a * b}")
-
-# F-strings with any expression
-radius = 5
-print(f"Circle area with r={radius}: {3.14159 * radius ** 2:.2f}")</textarea>
+# Length, min, max work too
+numbers = (5, 2, 8, 1, 9)
+print(f"\nTuple: {numbers}")
+print(f"Length: {len(numbers)}")
+print(f"Min: {min(numbers)}")
+print(f"Max: {max(numbers)}")
+print(f"Sum: {sum(numbers)}")</textarea>
                     <div class="code-output" id="outputcode28">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>F-String Formatting Options</h3>
-                
+                <h3>Tuple Immutability</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 9.3: F-String Formatting</span>
+                        <span class="code-figure-label">Figure 8.3: Tuples are Immutable</span>
                         <button class="code-figure-run" onclick="runCode('code29')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code29"># Decimal places
-pi = 3.14159265359
-print(f"Pi: {pi}")           # All decimals
-print(f"Pi: {pi:.2f}")       # 2 decimal places
-print(f"Pi: {pi:.4f}")       # 4 decimal places
-print(f"Pi: {pi:.0f}")       # No decimals (rounded)
+                    <textarea class="code-editor" id="code29"># Tuples cannot be modified
+point = (10, 20, 30)
+print("Original:", point)
 
-# Padding and alignment
-name = "Ali"
-print(f"|{name:10}|")    # Left align (default), width 10
-print(f"|{name:>10}|")   # Right align, width 10
-print(f"|{name:^10}|")   # Center align, width 10
-print(f"|{name:*^10}|")  # Center with * fill
+# This would cause an error:
+# point[0] = 99  # TypeError!
 
-# Number formatting
-price = 1234.5
-print(f"Price: {price:,.2f} TL")   # Thousands separator
+# But you can create a new tuple
+point = point + (40,)
+print("New tuple with 40:", point)
 
-# Percentage
-ratio = 0.856
-print(f"Success rate: {ratio:.1%}")  # As percentage
+# Or convert to list, modify, convert back
+coords = (1, 2, 3)
+temp_list = list(coords)
+temp_list[1] = 99
+coords = tuple(temp_list)
+print("Modified via list:", coords)
 
-# Scientific notation
-big = 1234567890
-print(f"Scientific: {big:.2e}")</textarea>
+# Check if element exists
+print(f"\n20 in point: {20 in point}")
+print(f"Index of 20: {point.index(20)}")</textarea>
                     <div class="code-output" id="outputcode29">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
+            </section>
+            
+            <!-- Section 9: Tuple Operations -->
+            <section id="part9" class="section">
+                <div class="section-header">
+                    <div class="section-number">9</div>
+                    <h2>Tuple Operations and Unpacking</h2>
+                </div>
                 
-                <h3>Engineering Formatting Examples</h3>
+                <h3>Tuple Unpacking</h3>
+                <p>One of the most useful features of tuples is <strong>unpacking</strong> - assigning multiple variables at once.</p>
                 
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 9.4: Engineering Applications</span>
+                        <span class="code-figure-label">Figure 9.1: Tuple Unpacking</span>
                         <button class="code-figure-run" onclick="runCode('code30')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code30"># Measurement report
-length = 12.3456
-width = 8.7654
-area = length * width
+                    <textarea class="code-editor" id="code30"># Basic unpacking
+coordinates = (10, 20, 30)
+x, y, z = coordinates
+print(f"x={x}, y={y}, z={z}")
 
-print("=== Measurement Report ===")
-print(f"Length: {length:8.2f} m")
-print(f"Width:  {width:8.2f} m")
-print(f"Area:   {area:8.2f} m²")
+# Swap variables (Python magic!)
+a, b = 5, 10
+print(f"\nBefore swap: a={a}, b={b}")
+a, b = b, a
+print(f"After swap: a={a}, b={b}")
 
-# Power calculation
-voltage = 220
-current = 2.5
-power = voltage * current
+# Unpacking in for loops
+points = [(1, 2), (3, 4), (5, 6)]
+print("\nPoints:")
+for x, y in points:
+    print(f"  x={x}, y={y}")
 
-print(f"\n=== Power Calculation ===")
-print(f"Voltage: {voltage:6} V")
-print(f"Current: {current:6.1f} A")
-print(f"Power:   {power:6.1f} W")
+# Unpacking function returns
+def get_stats(numbers):
+    return min(numbers), max(numbers), sum(numbers)/len(numbers)
 
-# Scientific values
-avogadro = 6.022e23
-print(f"\nAvogadro's number: {avogadro:.3e}")</textarea>
+data = [23, 45, 67, 89, 12]
+minimum, maximum, average = get_stats(data)
+print(f"\nMin: {minimum}, Max: {maximum}, Avg: {average:.1f}")</textarea>
                     <div class="code-output" id="outputcode30">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
-            </section>
-
-            <!-- Section 10: Basic String Operations -->
-            <section id="part10" class="section">
-                <div class="section-header">
-                    <div class="section-number">10</div>
-                    <h2>Basic String Operations</h2>
-                </div>
                 
-                <p>Strings are one of the most commonly used data types. Python provides many powerful ways to work with strings.</p>
-                
-                <h3>String Concatenation</h3>
-                
+                <h3>Extended Unpacking with *</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 10.1: String Concatenation</span>
+                        <span class="code-figure-label">Figure 9.2: Extended Unpacking</span>
                         <button class="code-figure-run" onclick="runCode('code31')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code31"># Concatenation with + operator
-first_name = "Mehmet"
-last_name = "Yılmaz"
-full_name = first_name + " " + last_name
-print(f"Full name: {full_name}")
+                    <textarea class="code-editor" id="code31"># Use * to capture remaining elements
+numbers = (1, 2, 3, 4, 5, 6, 7)
 
-# String repetition with * operator
-line = "-" * 30
-print(line)
-print("    REPORT TITLE    ")
-print(line)
+first, *middle, last = numbers
+print(f"First: {first}")
+print(f"Middle: {middle}")
+print(f"Last: {last}")
 
-# Building patterns
-star = "★ "
-print(star * 5)</textarea>
+# Get first and rest
+head, *tail = numbers
+print(f"\nHead: {head}")
+print(f"Tail: {tail}")
+
+# Get all except last
+*init, last = numbers
+print(f"\nInit: {init}")
+print(f"Last: {last}")</textarea>
                     <div class="code-output" id="outputcode31">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>String Length and Indexing</h3>
-                
+                <h3>Named Tuples</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 10.2: Length and Indexing</span>
+                        <span class="code-figure-label">Figure 9.3: Named Tuples</span>
                         <button class="code-figure-run" onclick="runCode('code32')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code32"># String length
-message = "Hello, Python!"
-print(f"String: '{message}'")
-print(f"Length: {len(message)} characters")
+                    <textarea class="code-editor" id="code32">from collections import namedtuple
 
-# Indexing (positions start at 0!)
-#          H  e  l  l  o  ,     P  y  t  h  o  n  !
-# Index:   0  1  2  3  4  5  6  7  8  9  10 11 12 13
+# Create a named tuple class
+Point = namedtuple('Point', ['x', 'y', 'z'])
+Color = namedtuple('Color', ['red', 'green', 'blue'])
 
-print(f"\nFirst character: '{message[0]}'")
-print(f"Second character: '{message[1]}'")
-print(f"Last character: '{message[-1]}'")   # Negative index!
-print(f"Second to last: '{message[-2]}'")</textarea>
+# Create instances
+p1 = Point(10, 20, 30)
+orange = Color(255, 165, 0)
+
+# Access by name or index
+print(f"Point: x={p1.x}, y={p1.y}, z={p1.z}")
+print(f"Point: p1[0]={p1[0]}")
+
+print(f"\nOrange: R={orange.red}, G={orange.green}, B={orange.blue}")
+
+# Still immutable!
+# p1.x = 99  # AttributeError!
+
+# Useful for readable code
+Student = namedtuple('Student', ['name', 'id', 'gpa'])
+alice = Student("Alice", "12345", 3.8)
+print(f"\n{alice.name} (ID: {alice.id}): GPA = {alice.gpa}")</textarea>
                     <div class="code-output" id="outputcode32">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>String Methods</h3>
-                
+                <h3>Tuple Methods</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 10.3: Common String Methods</span>
+                        <span class="code-figure-label">Figure 9.4: Tuple Methods</span>
                         <button class="code-figure-run" onclick="runCode('code33')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code33">text = "  Hello, World!  "
+                    <textarea class="code-editor" id="code33"># Tuples have only 2 methods
+grades = (85, 90, 78, 85, 92, 85, 88)
 
-# Case methods
-print(f"upper(): '{text.upper()}'")
-print(f"lower(): '{text.lower()}'")
-print(f"title(): '{text.title()}'")
+# count() - count occurrences
+count_85 = grades.count(85)
+print(f"Number of 85s: {count_85}")
 
-# Whitespace removal
-print(f"strip(): '{text.strip()}'")    # Both ends
-print(f"lstrip(): '{text.lstrip()}'")  # Left only
-print(f"rstrip(): '{text.rstrip()}'")  # Right only
+# index() - find first occurrence
+first_85 = grades.index(85)
+print(f"First 85 at index: {first_85}")
 
-# Search and replace
-message = "Python is awesome. Python is fun."
-print(f"\nOriginal: '{message}'")
-print(f"replace(): '{message.replace('Python', 'Programming')}'")
-print(f"count('Python'): {message.count('Python')}")
-print(f"find('is'): {message.find('is')}")  # Index of first occurrence</textarea>
+# Membership testing
+print(f"\n90 in grades: {90 in grades}")
+print(f"100 in grades: {100 in grades}")
+
+# Concatenation creates new tuple
+t1 = (1, 2, 3)
+t2 = (4, 5, 6)
+combined = t1 + t2
+print(f"\nCombined: {combined}")</textarea>
                     <div class="code-output" id="outputcode33">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
@@ -2072,175 +1789,238 @@ print(f"find('is'): {message.find('is')}")  # Index of first occurrence</textare
                 </div>
             </section>
             
-            <!-- Section 11: Common Errors -->
-            <section id="part11" class="section">
+            <!-- Section 10: When to Use Each -->
+            <section id="part10" class="section">
                 <div class="section-header">
-                    <div class="section-number">11</div>
-                    <h2>Common Python Errors</h2>
+                    <div class="section-number">10</div>
+                    <h2>Lists vs Tuples: When to Use Each</h2>
                 </div>
                 
-                <p>Learning to read and fix errors is a crucial programming skill. Here are the most common errors beginners encounter:</p>
+                <h3>Use Lists When:</h3>
+                <ul>
+                    <li>Data needs to be modified (add, remove, change)</li>
+                    <li>Order matters but may change</li>
+                    <li>Working with homogeneous data (all same type)</li>
+                    <li>Building collections dynamically</li>
+                </ul>
                 
-                <h3>SyntaxError</h3>
-                
-                <p>Occurs when Python can't understand your code structure:</p>
+                <h3>Use Tuples When:</h3>
+                <ul>
+                    <li>Data should not change (coordinates, constants)</li>
+                    <li>Returning multiple values from functions</li>
+                    <li>Using as dictionary keys (lists can't be keys!)</li>
+                    <li>Representing fixed structures (RGB, coordinates)</li>
+                    <li>Slight performance optimization needed</li>
+                </ul>
                 
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 11.1: SyntaxError Examples</span>
+                        <span class="code-figure-label">Figure 10.1: Practical Examples</span>
                         <button class="code-figure-run" onclick="runCode('code34')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code34"># Common SyntaxErrors and fixes:
+                    <textarea class="code-editor" id="code34"># LIST: shopping cart (items change)
+cart = ["apple", "bread"]
+cart.append("milk")
+cart.remove("bread")
+print("Shopping cart:", cart)
 
-# ERROR: Missing closing quote
-# print("Hello)
+# TUPLE: coordinates (shouldn't change)
+origin = (0, 0, 0)
+destination = (10, 20, 5)
+print(f"From {origin} to {destination}")
 
-# FIX:
-print("Hello")
+# TUPLE: function returning multiple values
+def divide_with_remainder(a, b):
+    return a // b, a % b
 
-# ERROR: Missing colon
-# if x > 5
-#     print("Big")
+quotient, remainder = divide_with_remainder(17, 5)
+print(f"\n17 ÷ 5 = {quotient} remainder {remainder}")
 
-# FIX: (We'll learn if statements next week!)
-x = 10
-if x > 5:
-    print("Big")
-
-# ERROR: Mismatched parentheses
-# result = (5 + 3 * 2
-
-# FIX:
-result = (5 + 3) * 2
-print(f"Result: {result}")</textarea>
+# TUPLE: dictionary key (lists can't be keys!)
+locations = {
+    (0, 0): "Origin",
+    (10, 20): "Office",
+    (5, 5): "Cafe"
+}
+print(f"\nLocation at (10, 20): {locations[(10, 20)]}")</textarea>
                     <div class="code-output" id="outputcode34">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>NameError</h3>
-                
-                <p>Occurs when you use a variable that doesn't exist:</p>
-                
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 11.2: NameError Examples</span>
+                        <span class="code-figure-label">Figure 10.2: Performance Comparison</span>
                         <button class="code-figure-run" onclick="runCode('code35')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code35"># NameError: variable doesn't exist
+                    <textarea class="code-editor" id="code35">import sys
 
-# ERROR:
-# print(undefined_variable)  # Would cause NameError
+# Memory comparison
+my_list = [1, 2, 3, 4, 5]
+my_tuple = (1, 2, 3, 4, 5)
 
-# FIX: Define the variable first
-my_variable = 100
-print(my_variable)
+print(f"List size: {sys.getsizeof(my_list)} bytes")
+print(f"Tuple size: {sys.getsizeof(my_tuple)} bytes")
+print(f"Tuple is {sys.getsizeof(my_list) - sys.getsizeof(my_tuple)} bytes smaller")
 
-# Common cause: Typos!
-# student_name = "Ali"
-# print(studnet_name)  # Typo! NameError
+# Tuples are hashable, lists are not
+print(f"\nHash of tuple: {hash(my_tuple)}")
+# print(hash(my_list))  # TypeError: unhashable type: 'list'
 
-# FIX: Spell correctly
-student_name = "Ali"
-print(student_name)
-
-# Case sensitivity matters!
-Age = 25
-# print(age)  # Error! 'age' is not 'Age'
-print(Age)   # Correct</textarea>
+# This means tuples can be used in sets
+point_set = {(0, 0), (1, 1), (2, 2), (0, 0)}  # Duplicates removed
+print(f"Unique points: {point_set}")</textarea>
                     <div class="code-output" id="outputcode35">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
+            </section>
+            
+            <!-- Section 11: Engineering Applications -->
+            <section id="part11" class="section">
+                <div class="section-header">
+                    <div class="section-number">11</div>
+                    <h2>Engineering Applications</h2>
+                </div>
                 
-                <h3>TypeError</h3>
-                
-                <p>Occurs when you try to do something with the wrong data type:</p>
-                
+                <h4>Sensor Data Processing</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 11.3: TypeError Examples</span>
+                        <span class="code-figure-label">Figure 11.1: Sensor Data</span>
                         <button class="code-figure-run" onclick="runCode('code36')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code36"># TypeError: Can't add string and integer
-# result = "Age: " + 25  # Error!
+                    <textarea class="code-editor" id="code36"># Processing temperature sensor readings
+readings = [23.5, 24.1, 23.8, 24.2, 23.9, 24.0, 23.7, 24.3]
 
-# FIX: Convert to string
-result = "Age: " + str(25)
-print(result)
+def analyze_sensor_data(data):
+    """Analyze sensor readings and return statistics"""
+    n = len(data)
+    avg = sum(data) / n
+    variance = sum((x - avg) ** 2 for x in data) / n
+    std_dev = variance ** 0.5
+    
+    return {
+        'count': n,
+        'min': min(data),
+        'max': max(data),
+        'average': round(avg, 2),
+        'std_dev': round(std_dev, 2),
+        'range': round(max(data) - min(data), 2)
+    }
 
-# Or use f-string (recommended)
-age = 25
-result = f"Age: {age}"
-print(result)
-
-# TypeError: Can't multiply string by string
-# area = "5" * "3"  # Error!
-
-# FIX: Convert to numbers
-area = int("5") * int("3")
-print(f"Area: {area}")</textarea>
+stats = analyze_sensor_data(readings)
+print("📊 Sensor Analysis:")
+for key, value in stats.items():
+    print(f"  {key}: {value}")</textarea>
                     <div class="code-output" id="outputcode36">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h3>ZeroDivisionError</h3>
-                
+                <h4>3D Coordinates and Vectors</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 11.4: ZeroDivisionError</span>
+                        <span class="code-figure-label">Figure 11.2: Vector Operations</span>
                         <button class="code-figure-run" onclick="runCode('code37')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code37"># ZeroDivisionError: Can't divide by zero
+                    <textarea class="code-editor" id="code37">import math
 
-# ERROR:
-# result = 10 / 0  # Would crash!
+def vector_add(v1, v2):
+    """Add two vectors"""
+    return tuple(a + b for a, b in zip(v1, v2))
 
-# FIX: Check before dividing
-numerator = 10
-denominator = 0
+def vector_magnitude(v):
+    """Calculate vector magnitude"""
+    return math.sqrt(sum(x**2 for x in v))
 
-if denominator != 0:
-    result = numerator / denominator
-    print(f"Result: {result}")
-else:
-    print("Error: Cannot divide by zero!")
+def vector_dot(v1, v2):
+    """Calculate dot product"""
+    return sum(a * b for a, b in zip(v1, v2))
 
-# Safe division
-denominator = 5
-if denominator != 0:
-    result = numerator / denominator
-    print(f"{numerator} / {denominator} = {result}")</textarea>
+# Example vectors
+v1 = (3, 4, 0)
+v2 = (1, 2, 2)
+
+print(f"Vector 1: {v1}")
+print(f"Vector 2: {v2}")
+print(f"Sum: {vector_add(v1, v2)}")
+print(f"|v1|: {vector_magnitude(v1):.2f}")
+print(f"|v2|: {vector_magnitude(v2):.2f}")
+print(f"v1 · v2: {vector_dot(v1, v2)}")</textarea>
                     <div class="code-output" id="outputcode37">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <div class="tip-box info-box">
-                    <p><strong>Debugging Tip:</strong> Read error messages carefully! Python tells you exactly what went wrong and on which line. The error type (like <code>TypeError</code>) and the description help you identify and fix the problem.</p>
+                <h4>Matrix Multiplication</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 11.3: Matrix Multiplication</span>
+                        <button class="code-figure-run" onclick="runCode('code38')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code38">def matrix_multiply(A, B):
+    """Multiply two matrices"""
+    rows_A, cols_A = len(A), len(A[0])
+    rows_B, cols_B = len(B), len(B[0])
+    
+    if cols_A != rows_B:
+        return None
+    
+    # Create result matrix
+    result = [[0 for _ in range(cols_B)] for _ in range(rows_A)]
+    
+    for i in range(rows_A):
+        for j in range(cols_B):
+            for k in range(cols_A):
+                result[i][j] += A[i][k] * B[k][j]
+    
+    return result
+
+# Example: 2x3 × 3x2 = 2x2
+A = [[1, 2, 3],
+     [4, 5, 6]]
+
+B = [[7, 8],
+     [9, 10],
+     [11, 12]]
+
+print("Matrix A:")
+for row in A: print(row)
+
+print("\nMatrix B:")
+for row in B: print(row)
+
+C = matrix_multiply(A, B)
+print("\nA × B =")
+for row in C: print(row)</textarea>
+                    <div class="code-output" id="outputcode38">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
                 </div>
             </section>
             
             <!-- Summary Box -->
             <div class="summary-box">
-                <h3>📋 Week 1 Summary</h3>
+                <h3>📋 Week 5 Summary</h3>
                 <div class="summary-grid">
-                    <div class="summary-item"><span class="icon">🖨️</span><span><code>print()</code> - Display output</span></div>
-                    <div class="summary-item"><span class="icon">💬</span><span><code>#</code> - Comments</span></div>
-                    <div class="summary-item"><span class="icon">📦</span><span>Variables store data</span></div>
-                    <div class="summary-item"><span class="icon">🔢</span><span><code>int, float, str, bool</code></span></div>
-                    <div class="summary-item"><span class="icon">➕</span><span><code>+ - * / // % **</code></span></div>
-                    <div class="summary-item"><span class="icon">📝</span><span><code>+=, -=, *=, /=</code></span></div>
-                    <div class="summary-item"><span class="icon">🔄</span><span><code>int(), float(), str()</code></span></div>
-                    <div class="summary-item"><span class="icon">✨</span><span><code>f"..."</code> - F-strings</span></div>
+                    <div class="summary-item"><span class="icon">📝</span><span><code>[1, 2, 3]</code> - List</span></div>
+                    <div class="summary-item"><span class="icon">🔒</span><span><code>(1, 2, 3)</code> - Tuple</span></div>
+                    <div class="summary-item"><span class="icon">📍</span><span>Indexing: <code>[0], [-1]</code></span></div>
+                    <div class="summary-item"><span class="icon">✂️</span><span>Slicing: <code>[start:stop:step]</code></span></div>
+                    <div class="summary-item"><span class="icon">➕</span><span><code>append(), insert(), extend()</code></span></div>
+                    <div class="summary-item"><span class="icon">➖</span><span><code>remove(), pop(), del</code></span></div>
+                    <div class="summary-item"><span class="icon">🔄</span><span><code>sort(), reverse()</code></span></div>
+                    <div class="summary-item"><span class="icon">⚡</span><span>Comprehensions</span></div>
+                    <div class="summary-item"><span class="icon">📊</span><span>2D Lists / Matrices</span></div>
+                    <div class="summary-item"><span class="icon">📦</span><span>Tuple Unpacking</span></div>
                 </div>
             </div>
-            
+
             <!-- Exercises Section -->
             <section id="exercises" class="section">
                 <div class="section-header">
@@ -2248,37 +2028,28 @@ if denominator != 0:
                     <h2>Practice Exercises</h2>
                 </div>
                 
-                <p>Complete these 15 exercises to reinforce your learning. Each exercise includes the expected output and hints to help you. Work through them carefully!</p>
+                <p>Complete these 15 exercises to master lists and tuples in Python.</p>
                 
                 <!-- Exercise 1 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">1</span>Personal Info</div>
+                        <div class="exercise-title"><span class="exercise-number">1</span>Create a List</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Create variables for your name, age, and city. Print them using an f-string in the format shown below.</p>
+                        <p class="exercise-description">Create a list called <code>numbers</code> containing 1 through 5, then print it.</p>
                         <div class="expected-output">
-                            <div class="expected-output-label">✓ Expected Output (example)</div>
-                            <pre>My name is Mehmet, I am 21 years old, and I live in Istanbul.</pre>
-                        </div>
-                        <div class="hints-container">
-                            <button class="hints-toggle" onclick="toggleHints('hints1')">💡 Show Hints</button>
-                            <div class="hints-content" id="hints1">
-                                <ul>
-                                    <li>Create three variables: <code>name</code>, <code>age</code>, and <code>city</code></li>
-                                    <li>Use an f-string: <code>f"My name is {name}..."</code></li>
-                                </ul>
-                            </div>
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>[1, 2, 3, 4, 5]</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex1"># Create variables and print with f-string
+                            <textarea class="code-editor" id="ex1"># Create the list
 
-</textarea>
+print(numbers)</textarea>
                             <div class="code-output" id="outputex1">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2290,32 +2061,22 @@ if denominator != 0:
                 <!-- Exercise 2 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">2</span>Rectangle Calculator</div>
+                        <div class="exercise-title"><span class="exercise-number">2</span>Access Last Element</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Calculate the area and perimeter of a rectangle with length=8 and width=5.</p>
+                        <p class="exercise-description">Print the last element of the list using negative indexing.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>Area = 40
-Perimeter = 26</pre>
-                        </div>
-                        <div class="hints-container">
-                            <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
-                            <div class="hints-content" id="hints2">
-                                <ul>
-                                    <li>Area = length × width</li>
-                                    <li>Perimeter = 2 × (length + width)</li>
-                                </ul>
-                            </div>
+                            <pre>elderberry</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex2"># Rectangle: length=8, width=5
-
+                            <textarea class="code-editor" id="ex2">fruits = ["apple", "banana", "cherry", "date", "elderberry"]
+# Print the last element using negative indexing
 </textarea>
                             <div class="code-output" id="outputex2">
                                 <div class="code-output-label">Output</div>
@@ -2328,31 +2089,24 @@ Perimeter = 26</pre>
                 <!-- Exercise 3 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">3</span>Temperature Converter</div>
-                        <span class="difficulty medium">Medium</span>
+                        <div class="exercise-title"><span class="exercise-number">3</span>Slice Middle Elements</div>
+                        <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Convert 98.6°F to Celsius. Formula: C = (F - 32) × 5/9</p>
+                        <p class="exercise-description">Extract elements at indices 2, 3, 4 (the middle three numbers).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>98.6°F = 37.00°C</pre>
-                        </div>
-                        <div class="hints-container">
-                            <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
-                            <div class="hints-content" id="hints3">
-                                <ul>
-                                    <li>Use <code>{celsius:.2f}</code> for 2 decimal places</li>
-                                </ul>
-                            </div>
+                            <pre>[30, 40, 50]</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex3"># Convert 98.6°F to Celsius
-
-</textarea>
+                            <textarea class="code-editor" id="ex3">numbers = [10, 20, 30, 40, 50, 60, 70]
+# Slice to get [30, 40, 50]
+middle = 
+print(middle)</textarea>
                             <div class="code-output" id="outputex3">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2364,23 +2118,26 @@ Perimeter = 26</pre>
                 <!-- Exercise 4 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">4</span>Speed Calculator</div>
+                        <div class="exercise-title"><span class="exercise-number">4</span>Append and Extend</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Calculate average speed. Distance = 150 km, Time = 2.5 hours.</p>
+                        <p class="exercise-description">Add "date" using append, then add ["elderberry", "fig"] using extend.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>Average speed = 60.0 km/h</pre>
+                            <pre>['apple', 'banana', 'cherry', 'date', 'elderberry', 'fig']</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex4"># Speed = Distance / Time
+                            <textarea class="code-editor" id="ex4">fruits = ["apple", "banana", "cherry"]
+# Add "date"
 
-</textarea>
+# Add ["elderberry", "fig"]
+
+print(fruits)</textarea>
                             <div class="code-output" id="outputex4">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2392,23 +2149,26 @@ Perimeter = 26</pre>
                 <!-- Exercise 5 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">5</span>Compound Interest</div>
+                        <div class="exercise-title"><span class="exercise-number">5</span>List Sum and Average</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Calculate compound interest. Principal=1000 TL, Rate=5%, Time=3 years. Formula: A = P × (1 + r)^t</p>
+                        <p class="exercise-description">Calculate and print the sum and average of the list.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>Final amount = 1157.63 TL</pre>
+                            <pre>Sum: 45
+Average: 9.0</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex5"># Compound interest: A = P × (1 + r)^t
+                            <textarea class="code-editor" id="ex5">numbers = [5, 10, 15, 7, 8]
+# Calculate sum and average
 
-</textarea>
+print(f"Sum: {total}")
+print(f"Average: {avg}")</textarea>
                             <div class="code-output" id="outputex5">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2420,23 +2180,24 @@ Perimeter = 26</pre>
                 <!-- Exercise 6 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">6</span>BMI Calculator</div>
-                        <span class="difficulty medium">Medium</span>
+                        <div class="exercise-title"><span class="exercise-number">6</span>Reverse a List</div>
+                        <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Calculate BMI. Weight=70 kg, Height=1.75 m. Formula: BMI = weight / height²</p>
+                        <p class="exercise-description">Reverse the list using slicing (not the reverse() method).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>BMI = 22.86</pre>
+                            <pre>[5, 4, 3, 2, 1]</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex6"># BMI = weight / height²
-
-</textarea>
+                            <textarea class="code-editor" id="ex6">numbers = [1, 2, 3, 4, 5]
+# Reverse using slicing
+reversed_list = 
+print(reversed_list)</textarea>
                             <div class="code-output" id="outputex6">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2448,28 +2209,23 @@ Perimeter = 26</pre>
                 <!-- Exercise 7 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">7</span>All Operations</div>
+                        <div class="exercise-title"><span class="exercise-number">7</span>List Comprehension Squares</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Given num1=17, num2=5, print sum, difference, product, quotient, floor division, and remainder.</p>
+                        <p class="exercise-description">Use a list comprehension to create squares of 1-5.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>Sum: 22
-Difference: 12
-Product: 85
-Quotient: 3.4
-Floor Division: 3
-Remainder: 2</pre>
+                            <pre>[1, 4, 9, 16, 25]</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex7"># num1=17, num2=5
-
-</textarea>
+                            <textarea class="code-editor" id="ex7"># Create squares using comprehension
+squares = 
+print(squares)</textarea>
                             <div class="code-output" id="outputex7">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2481,24 +2237,24 @@ Remainder: 2</pre>
                 <!-- Exercise 8 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">8</span>Circle Properties</div>
+                        <div class="exercise-title"><span class="exercise-number">8</span>Filter Even Numbers</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Calculate circle area and circumference. Radius=7, π=3.14159</p>
+                        <p class="exercise-description">Use a list comprehension to filter only even numbers.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>Area = 153.94 m²
-Circumference = 43.98 m</pre>
+                            <pre>[2, 4, 6, 8, 10]</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex8"># Area = π × r², Circumference = 2 × π × r
-
-</textarea>
+                            <textarea class="code-editor" id="ex8">numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+# Filter even numbers using comprehension
+evens = 
+print(evens)</textarea>
                             <div class="code-output" id="outputex8">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2510,22 +2266,28 @@ Circumference = 43.98 m</pre>
                 <!-- Exercise 9 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">9</span>Ohm's Law</div>
-                        <span class="difficulty easy">Easy</span>
+                        <div class="exercise-title"><span class="exercise-number">9</span>2D List Row Sum</div>
+                        <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Calculate resistance using Ohm's Law. V=24 Volts, I=3 Amperes. R = V / I</p>
+                        <p class="exercise-description">Calculate and print the sum of each row in the matrix.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>Resistance = 8.0 Ohms</pre>
+                            <pre>Row 0 sum: 6
+Row 1 sum: 15
+Row 2 sum: 24</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex9"># Ohm's Law: R = V / I
-
+                            <textarea class="code-editor" id="ex9">matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+# Print sum of each row
 </textarea>
                             <div class="code-output" id="outputex9">
                                 <div class="code-output-label">Output</div>
@@ -2538,23 +2300,24 @@ Circumference = 43.98 m</pre>
                 <!-- Exercise 10 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">10</span>Power Calculation</div>
+                        <div class="exercise-title"><span class="exercise-number">10</span>Tuple Unpacking</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Calculate electrical power. V=220 Volts, I=2.5 Amperes. P = V × I</p>
+                        <p class="exercise-description">Unpack the coordinates tuple into x, y, z variables.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>Power = 550.0 Watts</pre>
+                            <pre>x=10, y=20, z=30</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex10"># Power: P = V × I
+                            <textarea class="code-editor" id="ex10">coordinates = (10, 20, 30)
+# Unpack into x, y, z
 
-</textarea>
+print(f"x={x}, y={y}, z={z}")</textarea>
                             <div class="code-output" id="outputex10">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2566,23 +2329,28 @@ Circumference = 43.98 m</pre>
                 <!-- Exercise 11 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">11</span>Kinetic Energy</div>
-                        <span class="difficulty medium">Medium</span>
+                        <div class="exercise-title"><span class="exercise-number">11</span>Swap Variables</div>
+                        <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Calculate kinetic energy. Mass=5 kg, Velocity=12 m/s. KE = ½mv²</p>
+                        <p class="exercise-description">Swap the values of a and b using tuple unpacking.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>Kinetic Energy = 360.0 Joules</pre>
+                            <pre>Before: a=5, b=10
+After: a=10, b=5</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex11"># KE = ½mv²
+                            <textarea class="code-editor" id="ex11">a = 5
+b = 10
+print(f"Before: a={a}, b={b}")
 
-</textarea>
+# Swap a and b
+
+print(f"After: a={a}, b={b}")</textarea>
                             <div class="code-output" id="outputex11">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2594,31 +2362,24 @@ Circumference = 43.98 m</pre>
                 <!-- Exercise 12 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">12</span>Pythagorean Theorem</div>
+                        <div class="exercise-title"><span class="exercise-number">12</span>Sort and Find Max</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Find hypotenuse. Side a=3, Side b=4. c = √(a² + b²)</p>
+                        <p class="exercise-description">Sort the list and print the top 3 scores.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>Hypotenuse = 5.0</pre>
-                        </div>
-                        <div class="hints-container">
-                            <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
-                            <div class="hints-content" id="hints12">
-                                <ul>
-                                    <li>Square root: use <code>** 0.5</code></li>
-                                </ul>
-                            </div>
+                            <pre>Top 3 scores: [95, 92, 88]</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex12"># c = √(a² + b²)
-
-</textarea>
+                            <textarea class="code-editor" id="ex12">scores = [78, 92, 65, 88, 72, 95, 81]
+# Get top 3 scores (highest first)
+top3 = 
+print(f"Top 3 scores: {top3}")</textarea>
                             <div class="code-output" id="outputex12">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2630,31 +2391,24 @@ Circumference = 43.98 m</pre>
                 <!-- Exercise 13 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">13</span>Minutes Converter</div>
+                        <div class="exercise-title"><span class="exercise-number">13</span>Enumerate Loop</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Convert 185 minutes to hours and minutes.</p>
+                        <p class="exercise-description">Use enumerate to print each fruit with its position (starting from 1).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>185 minutes = 3 hours and 5 minutes</pre>
-                        </div>
-                        <div class="hints-container">
-                            <button class="hints-toggle" onclick="toggleHints('hints13')">💡 Show Hints</button>
-                            <div class="hints-content" id="hints13">
-                                <ul>
-                                    <li>Hours: use floor division <code>//</code></li>
-                                    <li>Remaining minutes: use modulus <code>%</code></li>
-                                </ul>
-                            </div>
+                            <pre>1. apple
+2. banana
+3. cherry</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex13')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex13"># Convert 185 minutes
-
+                            <textarea class="code-editor" id="ex13">fruits = ["apple", "banana", "cherry"]
+# Use enumerate starting from 1
 </textarea>
                             <div class="code-output" id="outputex13">
                                 <div class="code-output-label">Output</div>
@@ -2667,24 +2421,32 @@ Circumference = 43.98 m</pre>
                 <!-- Exercise 14 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">14</span>String Operations</div>
-                        <span class="difficulty easy">Easy</span>
+                        <div class="exercise-title"><span class="exercise-number">14</span>Flatten 2D List</div>
+                        <span class="difficulty hard">Challenge</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Given text = "python programming", print it in uppercase, then print its length.</p>
+                        <p class="exercise-description">Flatten a 2D list into a 1D list using list comprehension.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>PYTHON PROGRAMMING
-Length: 18</pre>
+                            <pre>[1, 2, 3, 4, 5, 6, 7, 8, 9]</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints14')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints14">
+                                <ul>
+                                    <li>Use nested comprehension: <code>[item for sublist in matrix for item in sublist]</code></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex14')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex14"># String: "python programming"
-
-</textarea>
+                            <textarea class="code-editor" id="ex14">matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+# Flatten using comprehension
+flat = 
+print(flat)</textarea>
                             <div class="code-output" id="outputex14">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2696,28 +2458,33 @@ Length: 18</pre>
                 <!-- Exercise 15 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">15</span>Engineering Report</div>
+                        <div class="exercise-title"><span class="exercise-number">15</span>Matrix Transpose</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Create a formatted engineering report showing voltage=220V, current=5A, calculate power and resistance.</p>
+                        <p class="exercise-description">Transpose the matrix (swap rows and columns).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>=== ELECTRICAL REPORT ===
-Voltage:    220.00 V
-Current:      5.00 A
-Power:     1100.00 W
-Resistance:  44.00 Ω
-=========================</pre>
+                            <pre>[[1, 4], [2, 5], [3, 6]]</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints15')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints15">
+                                <ul>
+                                    <li>Use zip() with * unpacking: <code>list(map(list, zip(*matrix)))</code></li>
+                                    <li>Or nested comprehension</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex15')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex15"># Create formatted engineering report
-
-</textarea>
+                            <textarea class="code-editor" id="ex15">matrix = [[1, 2, 3], [4, 5, 6]]
+# Transpose the matrix
+transposed = 
+print(transposed)</textarea>
                             <div class="code-output" id="outputex15">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2726,7 +2493,7 @@ Resistance:  44.00 Ω
                     </div>
                 </div>
             </section>
-
+            
             <!-- Submit Section -->
             <section id="submit" class="section">
                 <div class="section-header">
@@ -2761,7 +2528,7 @@ Resistance:  44.00 Ω
                         <input type="text" id="website" tabindex="-1" autocomplete="off">
                     </div>
                     
-                    <button class="submit-btn" onclick="submitWork()">Submit Week 01</button>
+                    <button class="submit-btn" onclick="submitWork()">Submit Week 05</button>
                     
                     <div class="submit-status" id="submitStatus"></div>
                 </div>
@@ -2769,8 +2536,9 @@ Resistance:  44.00 Ω
             
             <!-- Navigation -->
             <div class="page-nav">
-                <a href="index.html?home=true" class="nav-btn">← Course Home</a>
-                <a href="Week_02.html" class="nav-btn">Next: Control Flow →</a>
+                <a href="Week_04.html" class="nav-btn">← Week 04</a>
+                <a href="index.html?home=true" class="nav-btn">Course Home</a>
+                <a href="Week_06.html" class="nav-btn">Week 06 →</a>
             </div>
         </div>
     </div>
@@ -2820,20 +2588,14 @@ Resistance:  44.00 Ω
             outputContent.textContent = 'Running...';
             
             try {
-                // Capture stdout
                 pyodide.runPython(`
 import sys
 from io import StringIO
 sys.stdout = StringIO()
 `);
-                
-                // Run the user code
                 await pyodide.runPythonAsync(code);
-                
-                // Get the output
                 const output = pyodide.runPython(`sys.stdout.getvalue()`);
                 outputContent.textContent = output || '(no output)';
-                
             } catch (e) {
                 outputContent.textContent = 'Error: ' + e.message;
             }
@@ -2871,14 +2633,12 @@ sys.stdout = StringIO()
             const classCode = document.getElementById('classCode').value.trim().toUpperCase();
             const honeypot = document.getElementById('website').value;
             
-            // Bot check
             if (honeypot) {
                 status.textContent = '❌ Submission rejected.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            // Time check
             const timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
             if (timeOnPage < 60) {
                 status.textContent = '❌ Please spend more time reviewing the material.';
@@ -2886,35 +2646,30 @@ sys.stdout = StringIO()
                 return;
             }
             
-            // Required fields
             if (!studentId || !studentName || !studentEmail || !classCode) {
                 status.textContent = '❌ All fields are required.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            // Validate student ID
             if (!validateStudentId(studentId)) {
                 status.textContent = '❌ Invalid Student ID (must be 6-10 digits).';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            // Validate name
             if (!validateName(studentName)) {
                 status.textContent = '❌ Please enter your full name (first and last).';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            // Validate email
             if (!validateEmail(studentEmail)) {
                 status.textContent = '❌ Please use your @istun.edu.tr email.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            // Validate class code
             if (classCode.length < 4) {
                 status.textContent = '❌ Invalid class code.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
@@ -2922,7 +2677,7 @@ sys.stdout = StringIO()
             }
             
             const data = {
-                week: 'Week_01',
+                week: 'Week_05',
                 studentId: studentId,
                 studentName: studentName,
                 studentEmail: studentEmail,
@@ -2953,7 +2708,6 @@ sys.stdout = StringIO()
                 }
             })
             .catch(error => {
-                // Fallback to no-cors
                 fetch(scriptUrl, {
                     method: 'POST',
                     mode: 'no-cors',

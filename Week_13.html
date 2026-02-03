@@ -1,0 +1,3771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 13: Working with External Data | Computer Programming II</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-cream: #faf9f7;
+            --bg-dark: #1a1a2e;
+            --bg-code: #1e1e2e;
+            --text-primary: #1a1a2e;
+            --text-secondary: #444;
+            --text-muted: #666;
+            --accent: #7c3aed;
+            --accent-light: rgba(124, 58, 237, 0.1);
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --border: #e5e5e5;
+            --card-bg: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Crimson Pro', Georgia, serif; font-size: 19px; line-height: 1.8; background: var(--bg-cream); color: var(--text-primary); }
+        .topbar { background: var(--bg-dark); color: white; padding: 14px 24px; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
+        .topbar a { color: white; text-decoration: none; font-family: system-ui, sans-serif; font-size: 0.9rem; opacity: 0.9; }
+        .topbar a:hover { opacity: 1; }
+        .topbar-title { font-family: system-ui, sans-serif; font-weight: 600; font-size: 1rem; }
+        .topbar-nav { display: flex; gap: 24px; align-items: center; }
+        .progress-container { position: fixed; top: 52px; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 99; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa); width: 0%; transition: width 0.15s ease-out; }
+        .container { max-width: 900px; margin: 0 auto; padding: 50px 24px 80px; }
+        .chapter-header { text-align: center; margin-bottom: 50px; padding-bottom: 40px; border-bottom: 2px solid var(--border); }
+        .chapter-label { display: inline-block; background: var(--accent); color: white; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-family: system-ui, sans-serif; font-weight: 500; margin-bottom: 20px; }
+        .chapter-header h1 { font-size: 2.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; }
+        .chapter-meta { display: flex; justify-content: center; gap: 30px; color: var(--text-muted); font-size: 1rem; }
+        .objectives-box { background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(124, 58, 237, 0.2); border-left: 4px solid var(--accent); border-radius: 8px; padding: 28px; margin-bottom: 50px; }
+        .objectives-box h3 { font-size: 1.2rem; margin-bottom: 16px; color: var(--accent); }
+        .objectives-box ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px 30px; list-style: none; }
+        .objectives-box li { color: var(--text-secondary); font-size: 0.95rem; padding-left: 28px; position: relative; }
+        .objectives-box li::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: bold; }
+        .section { margin-bottom: 60px; scroll-margin-top: 70px; }
+        .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+        .section-number { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: var(--accent); color: white; border-radius: 10px; font-size: 1.2rem; font-weight: 700; font-family: system-ui, sans-serif; }
+        .section-header h2 { font-size: 1.6rem; font-weight: 600; color: var(--text-primary); }
+        .content p { color: var(--text-secondary); margin-bottom: 18px; }
+        .content h3 { font-size: 1.25rem; font-weight: 600; margin: 35px 0 16px; color: var(--text-primary); }
+        .content h4 { font-size: 1.1rem; font-weight: 600; margin: 25px 0 12px; color: var(--accent); }
+        .content ul, .content ol { color: var(--text-secondary); margin: 16px 0 20px 28px; }
+        .content li { margin-bottom: 8px; }
+        code { font-family: 'JetBrains Mono', monospace; background: rgba(124, 58, 237, 0.1); padding: 2px 8px; border-radius: 4px; font-size: 0.85em; color: var(--accent); }
+        .code-figure { background: var(--bg-code); border-radius: 10px; margin: 20px 0; overflow: hidden; border: 1px solid #333; }
+        .code-figure-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(255,255,255,0.05); border-bottom: 1px solid #333; }
+        .code-figure-label { font-family: system-ui, sans-serif; font-size: 0.8rem; color: #a78bfa; font-weight: 500; }
+        .code-figure-run { background: var(--success); color: white; border: none; padding: 6px 14px; border-radius: 6px; font-family: system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+        .code-figure-run:hover { background: #047857; }
+        .code-editor { width: 100%; min-height: 120px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; }
+        .code-output.show { display: block; }
+        .code-output-label { font-family: system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--success); text-transform: uppercase; margin-bottom: 8px; }
+        .code-output-content { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #d4d4d8; white-space: pre-wrap; }
+        .info-box { padding: 18px 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid; }
+        .info-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .tip-box { background: rgba(5, 150, 105, 0.08); border-color: var(--success); }
+        .tip-box::before { content: '💡 Tip'; display: block; font-weight: 600; color: var(--success); margin-bottom: 8px; font-size: 0.9rem; }
+        .warning-box { background: rgba(217, 119, 6, 0.08); border-color: var(--warning); }
+        .warning-box::before { content: '⚠️ Important'; display: block; font-weight: 600; color: var(--warning); margin-bottom: 8px; font-size: 0.9rem; }
+        .note-box { background: rgba(124, 58, 237, 0.08); border-color: var(--accent); }
+        .note-box::before { content: '📝 Note'; display: block; font-weight: 600; color: var(--accent); margin-bottom: 8px; font-size: 0.9rem; }
+        .table-container { overflow-x: auto; margin: 24px 0; border-radius: 10px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        th { background: var(--bg-dark); color: white; padding: 14px 18px; text-align: left; font-weight: 600; font-family: system-ui, sans-serif; }
+        td { padding: 14px 18px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+        tr:last-child td { border-bottom: none; }
+        .exercise-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 28px 0; overflow: hidden; }
+        .exercise-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05)); border-bottom: 1px solid var(--border); }
+        .exercise-title { font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 12px; }
+        .exercise-number { background: linear-gradient(135deg, #7c3aed, #7c3aed); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; font-family: system-ui, sans-serif; }
+        .difficulty { padding: 5px 14px; border-radius: 15px; font-size: 0.8rem; font-weight: 600; font-family: system-ui, sans-serif; }
+        .difficulty.easy { background: rgba(5, 150, 105, 0.12); color: var(--success); }
+        .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
+        .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
+        .exercise-body { padding: 24px; }
+        .expected-output { background: rgba(5, 150, 105, 0.06); border: 1px solid rgba(5, 150, 105, 0.15); border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
+        .expected-output-label { font-size: 0.8rem; font-weight: 600; color: var(--success); text-transform: uppercase; margin-bottom: 10px; font-family: system-ui, sans-serif; }
+        .expected-output pre { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-secondary); margin: 0; background: transparent; padding: 0; }
+        .hints-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--accent-light); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 8px; color: var(--accent); font-size: 0.9rem; cursor: pointer; font-family: inherit; }
+        .hints-content { display: none; background: rgba(124, 58, 237, 0.05); border: 1px solid rgba(124, 58, 237, 0.12); border-radius: 8px; padding: 18px 24px; margin-top: 14px; }
+        .hints-content.show { display: block; }
+        .hints-content ul { margin: 0; padding-left: 20px; }
+        .submit-section { background: var(--bg-dark); border-radius: 14px; padding: 40px; margin: 60px 0; color: white; }
+        .submit-section h2 { font-size: 1.6rem; margin-bottom: 10px; color: white; }
+        .submit-section > p { color: rgba(255,255,255,0.7); margin-bottom: 28px; }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 8px; color: rgba(255,255,255,0.8); font-family: system-ui, sans-serif; }
+        .form-group input { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; font-size: 1rem; font-family: inherit; }
+        .form-group input:focus { outline: none; border-color: var(--accent); }
+        .honeypot { position: absolute; left: -9999px; }
+        .submit-btn { background: var(--accent); color: white; border: none; padding: 16px 40px; border-radius: 8px; font-size: 1.05rem; font-weight: 600; cursor: pointer; font-family: system-ui, sans-serif; }
+        .submit-status { margin-top: 20px; padding: 16px 20px; border-radius: 8px; font-family: system-ui, sans-serif; display: none; }
+        .page-nav { display: flex; justify-content: space-between; padding: 30px 0; border-top: 2px solid var(--border); margin-top: 60px; }
+        .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); text-decoration: none; font-size: 0.95rem; }
+        .summary-box { background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 12px; padding: 30px; margin: 50px 0; }
+        .summary-box h3 { color: var(--accent); margin-bottom: 20px; font-size: 1.3rem; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+        .summary-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--card-bg); border-radius: 8px; font-size: 0.95rem; }
+        .file-tree { background: var(--bg-code); border-radius: 10px; padding: 20px; margin: 20px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: #e4e4e7; white-space: pre; }
+        @media (max-width: 700px) { .chapter-header h1 { font-size: 2rem; } .form-grid { grid-template-columns: 1fr; } .topbar-nav { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+    <nav class="topbar">
+        <a href="index.html?home=true" class="topbar-title">← Course Home</a>
+        <div class="topbar-nav">
+            <span style="opacity:0.7">Week 13 of 14</span>
+            <a href="Week_12.html">← Week 12</a>
+            <a href="Week_14.html">Week 14 →</a>
+        </div>
+    </nav>
+    <div class="container">
+        <header class="chapter-header">
+            <span class="chapter-label">Week 13</span>
+            <h1>Working with External Data</h1>
+            <div class="chapter-meta">
+                <span>📚 Computer Programming II</span>
+                <span>👨‍🏫 Dr. Arif Solmaz</span>
+            </div>
+        </header>
+        <div class="objectives-box">
+            <h3>🎯 Learning Objectives</h3>
+            <ul>
+                <li>Read and write CSV files for data logging</li>
+                <li>Work with JSON data for configuration and APIs</li>
+                <li>Parse and create XML files for data interchange</li>
+                <li>Make HTTP requests to web APIs</li>
+                <li>Handle API responses and errors gracefully</li>
+                <li>Work with SQLite databases for data storage</li>
+                <li>Validate and clean external data</li>
+                <li>Build data pipelines for engineering applications</li>
+            </ul>
+        </div>
+        <div class="content">
+            <!-- Section 1: Working with CSV Files -->
+            <section id="part1" class="section">
+                <div class="section-header">
+                    <div class="section-number">1</div>
+                    <h2>Working with CSV Files</h2>
+                </div>
+                <p>CSV (Comma-Separated Values) is one of the most common data formats used in engineering and data science. Python's built-in <code>csv</code> module makes it easy to read and write CSV files. CSV files are simple, human-readable, and compatible with spreadsheet software like Excel.</p>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Method</th><th>Description</th><th>Use Case</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>csv.reader()</code></td><td>Read CSV as lists of values</td><td>Simple row-by-row processing</td></tr>
+                            <tr><td><code>csv.writer()</code></td><td>Write lists to CSV format</td><td>Creating data logs</td></tr>
+                            <tr><td><code>csv.DictReader()</code></td><td>Read CSV as dictionaries</td><td>Working with named columns</td></tr>
+                            <tr><td><code>csv.DictWriter()</code></td><td>Write dictionaries to CSV</td><td>Structured data output</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Writing CSV Data</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.1: Creating CSV Data</span>
+                        <button class="code-figure-run" onclick="runCode('code1')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code1">import csv
+from io import StringIO
+
+# Create sample sensor data
+sensor_data = [
+    ['timestamp', 'sensor_id', 'temperature', 'humidity', 'pressure'],
+    ['2025-01-15 10:00:00', 'SENSOR_001', 25.5, 65.2, 1013.25],
+    ['2025-01-15 10:01:00', 'SENSOR_001', 25.7, 64.8, 1013.30],
+    ['2025-01-15 10:02:00', 'SENSOR_001', 25.6, 65.0, 1013.28],
+    ['2025-01-15 10:03:00', 'SENSOR_002', 22.3, 70.1, 1012.95],
+]
+
+# Write to a string buffer (simulates file writing)
+output = StringIO()
+writer = csv.writer(output)
+writer.writerows(sensor_data)
+
+# Display the CSV content
+print("Generated CSV:")
+print(output.getvalue())</textarea>
+                    <div class="code-output" id="outputcode1">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Reading CSV with csv.reader</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.2: Reading CSV as Lists</span>
+                        <button class="code-figure-run" onclick="runCode('code2')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code2">import csv
+from io import StringIO
+
+# Sample CSV data
+csv_data = """timestamp,sensor_id,temperature,humidity
+2025-01-15 10:00:00,TEMP_001,25.5,65.2
+2025-01-15 10:01:00,TEMP_001,25.7,64.8
+2025-01-15 10:02:00,PRES_001,25.6,65.0"""
+
+# Read CSV data
+reader = csv.reader(StringIO(csv_data))
+
+# Get header
+header = next(reader)
+print(f"Columns: {header}")
+print()
+
+# Process rows
+for row in reader:
+    timestamp, sensor_id, temp, humidity = row
+    print(f"{sensor_id}: {temp}°C, {humidity}% at {timestamp}")</textarea>
+                    <div class="code-output" id="outputcode2">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Using DictReader for Named Access</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.3: DictReader for Named Columns</span>
+                        <button class="code-figure-run" onclick="runCode('code3')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code3">import csv
+from io import StringIO
+
+csv_data = """sensor_id,value,unit,timestamp
+TEMP_001,25.5,celsius,2025-01-15 10:00
+TEMP_001,26.0,celsius,2025-01-15 10:01
+PRES_001,1013.25,hPa,2025-01-15 10:00
+HUMI_001,65.2,percent,2025-01-15 10:00"""
+
+# DictReader automatically uses first row as keys
+reader = csv.DictReader(StringIO(csv_data))
+
+print("Readings by sensor:")
+for row in reader:
+    print(f"  {row['sensor_id']}: {row['value']} {row['unit']}")</textarea>
+                    <div class="code-output" id="outputcode3">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Writing with DictWriter</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.4: DictWriter for Structured Output</span>
+                        <button class="code-figure-run" onclick="runCode('code4')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code4">import csv
+from io import StringIO
+
+# Sensor readings as dictionaries
+readings = [
+    {'sensor_id': 'TEMP_001', 'value': 25.5, 'unit': 'celsius', 'valid': True},
+    {'sensor_id': 'TEMP_002', 'value': 26.0, 'unit': 'celsius', 'valid': True},
+    {'sensor_id': 'PRES_001', 'value': 1013.25, 'unit': 'hPa', 'valid': True},
+]
+
+# Define fieldnames (column order)
+fieldnames = ['sensor_id', 'value', 'unit', 'valid']
+
+# Write to CSV
+output = StringIO()
+writer = csv.DictWriter(output, fieldnames=fieldnames)
+
+writer.writeheader()  # Write column headers
+writer.writerows(readings)  # Write all rows
+
+print("Generated CSV with DictWriter:")
+print(output.getvalue())</textarea>
+                    <div class="code-output" id="outputcode4">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Engineering Example: Sensor Data Analysis</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.5: Analyzing CSV Sensor Data</span>
+                        <button class="code-figure-run" onclick="runCode('code5')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code5">import csv
+from io import StringIO
+from collections import defaultdict
+
+csv_data = """sensor_id,temperature
+TEMP_001,25.5
+TEMP_001,25.7
+TEMP_001,25.6
+TEMP_001,26.0
+TEMP_002,22.1
+TEMP_002,22.3
+TEMP_002,22.0"""
+
+# Group readings by sensor
+sensor_readings = defaultdict(list)
+
+reader = csv.DictReader(StringIO(csv_data))
+for row in reader:
+    sensor_id = row['sensor_id']
+    temp = float(row['temperature'])
+    sensor_readings[sensor_id].append(temp)
+
+# Calculate statistics
+print("Sensor Statistics:")
+print("-" * 50)
+for sensor_id, temps in sensor_readings.items():
+    count = len(temps)
+    min_t = min(temps)
+    max_t = max(temps)
+    avg_t = sum(temps) / count
+    print(f"{sensor_id}:")
+    print(f"  Count: {count} readings")
+    print(f"  Range: {min_t:.1f}°C - {max_t:.1f}°C")
+    print(f"  Average: {avg_t:.2f}°C")</textarea>
+                    <div class="code-output" id="outputcode5">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <p>Always use <code>newline=''</code> when opening files for CSV writing on Windows to prevent extra blank lines between rows!</p>
+                </div>
+            </section>
+
+            <!-- Section 2: Working with JSON -->
+            <section id="part2" class="section">
+                <div class="section-header">
+                    <div class="section-number">2</div>
+                    <h2>Working with JSON</h2>
+                </div>
+                <p>JSON (JavaScript Object Notation) is widely used for APIs, configuration files, and data exchange. Python's <code>json</code> module provides easy serialization and deserialization. JSON maps directly to Python dictionaries and lists.</p>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Function</th><th>Input</th><th>Output</th><th>Use Case</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>json.dumps()</code></td><td>Python object</td><td>JSON string</td><td>Convert to string</td></tr>
+                            <tr><td><code>json.loads()</code></td><td>JSON string</td><td>Python object</td><td>Parse string</td></tr>
+                            <tr><td><code>json.dump()</code></td><td>Python object + file</td><td>Write to file</td><td>Save to disk</td></tr>
+                            <tr><td><code>json.load()</code></td><td>File object</td><td>Python object</td><td>Read from disk</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Python Dict to JSON String</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.1: Converting Python to JSON</span>
+                        <button class="code-figure-run" onclick="runCode('code6')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code6">import json
+
+# Python dictionary
+sensor_data = {
+    'sensor_id': 'TEMP_001',
+    'readings': [25.5, 26.0, 25.8, 25.9],
+    'metadata': {
+        'location': 'Room A',
+        'unit': 'celsius',
+        'calibrated': True
+    },
+    'active': True,
+    'error_count': 0
+}
+
+# Convert to JSON string with pretty formatting
+json_str = json.dumps(sensor_data, indent=2)
+print("JSON Output:")
+print(json_str)
+
+# Compact JSON (no whitespace)
+compact = json.dumps(sensor_data, separators=(',', ':'))
+print(f"\nCompact: {len(compact)} chars")</textarea>
+                    <div class="code-output" id="outputcode6">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>JSON String to Python Dict</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.2: Parsing JSON to Python</span>
+                        <button class="code-figure-run" onclick="runCode('code7')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code7">import json
+
+# JSON string (could come from API or file)
+json_string = '''
+{
+    "sensor_id": "PRES_001",
+    "value": 1013.25,
+    "unit": "hPa",
+    "valid": true,
+    "error": null,
+    "readings": [1013.2, 1013.3, 1013.25]
+}
+'''
+
+# Parse JSON to Python
+data = json.loads(json_string)
+
+print(f"Type: {type(data)}")
+print(f"Sensor: {data['sensor_id']}")
+print(f"Value: {data['value']} {data['unit']}")
+print(f"Valid: {data['valid']}")
+print(f"Readings: {data['readings']}")
+
+# JSON null becomes Python None
+print(f"Error: {data['error']} (type: {type(data['error']).__name__})")</textarea>
+                    <div class="code-output" id="outputcode7">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>JSON Type Mapping</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>JSON Type</th><th>Python Type</th><th>Example</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>object</td><td>dict</td><td><code>{"key": "value"}</code></td></tr>
+                            <tr><td>array</td><td>list</td><td><code>[1, 2, 3]</code></td></tr>
+                            <tr><td>string</td><td>str</td><td><code>"hello"</code></td></tr>
+                            <tr><td>number (int)</td><td>int</td><td><code>42</code></td></tr>
+                            <tr><td>number (real)</td><td>float</td><td><code>3.14</code></td></tr>
+                            <tr><td>true/false</td><td>True/False</td><td><code>true</code></td></tr>
+                            <tr><td>null</td><td>None</td><td><code>null</code></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Configuration Manager with JSON</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.3: JSON Configuration Manager</span>
+                        <button class="code-figure-run" onclick="runCode('code8')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code8">import json
+
+class ConfigManager:
+    """Manage application configuration with JSON."""
+    
+    def __init__(self, defaults=None):
+        self.config = defaults or {}
+    
+    def get(self, key, default=None):
+        """Get a configuration value."""
+        keys = key.split('.')
+        value = self.config
+        for k in keys:
+            if isinstance(value, dict) and k in value:
+                value = value[k]
+            else:
+                return default
+        return value
+    
+    def set(self, key, value):
+        """Set a configuration value."""
+        self.config[key] = value
+    
+    def to_json(self):
+        """Export configuration as JSON."""
+        return json.dumps(self.config, indent=2)
+    
+    def from_json(self, json_str):
+        """Import configuration from JSON."""
+        self.config = json.loads(json_str)
+
+# Create config with defaults
+config = ConfigManager({
+    'sensor': {
+        'sampling_rate': 1.0,
+        'timeout': 30
+    },
+    'logging': {
+        'level': 'INFO',
+        'file': 'sensor.log'
+    }
+})
+
+print(f"Sampling rate: {config.get('sensor.sampling_rate')}")
+print(f"Log level: {config.get('logging.level')}")
+print(f"\nFull config:\n{config.to_json()}")</textarea>
+                    <div class="code-output" id="outputcode8">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Handling Custom Objects</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.4: Custom JSON Encoding</span>
+                        <button class="code-figure-run" onclick="runCode('code9')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code9">import json
+from datetime import datetime
+
+class SensorReading:
+    def __init__(self, sensor_id, value, timestamp=None):
+        self.sensor_id = sensor_id
+        self.value = value
+        self.timestamp = timestamp or datetime.now()
+
+# Custom encoder for complex objects
+class SensorEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, SensorReading):
+            return {
+                '__type__': 'SensorReading',
+                'sensor_id': obj.sensor_id,
+                'value': obj.value,
+                'timestamp': obj.timestamp.isoformat()
+            }
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super().default(obj)
+
+# Create readings
+readings = [
+    SensorReading('TEMP_001', 25.5),
+    SensorReading('PRES_001', 1013.25)
+]
+
+# Encode with custom encoder
+json_output = json.dumps(readings, cls=SensorEncoder, indent=2)
+print("Encoded sensor readings:")
+print(json_output)</textarea>
+                    <div class="code-output" id="outputcode9">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <p>Remember: <code>dumps</code>/<code>loads</code> work with <strong>s</strong>trings, while <code>dump</code>/<code>load</code> work with files directly!</p>
+                </div>
+            </section>
+
+            <!-- Section 3: Working with XML -->
+            <section id="part3" class="section">
+                <div class="section-header">
+                    <div class="section-number">3</div>
+                    <h2>Working with XML</h2>
+                </div>
+                <p>XML (eXtensible Markup Language) is used in many engineering applications, especially for configuration files, data interchange between systems, and industry standards like OPC-UA. Python's <code>xml.etree.ElementTree</code> module provides a simple API for parsing and creating XML.</p>
+
+                <h3>Creating XML Elements</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.1: Building XML Structure</span>
+                        <button class="code-figure-run" onclick="runCode('code10')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code10">import xml.etree.ElementTree as ET
+
+# Create root element
+root = ET.Element('sensors')
+root.set('version', '1.0')
+root.set('timestamp', '2025-01-15T10:00:00')
+
+# Add sensor elements
+sensor1 = ET.SubElement(root, 'sensor')
+sensor1.set('id', 'TEMP_001')
+sensor1.set('type', 'temperature')
+
+value1 = ET.SubElement(sensor1, 'value')
+value1.text = '25.5'
+
+unit1 = ET.SubElement(sensor1, 'unit')
+unit1.text = 'celsius'
+
+# Add another sensor
+sensor2 = ET.SubElement(root, 'sensor')
+sensor2.set('id', 'PRES_001')
+sensor2.set('type', 'pressure')
+
+value2 = ET.SubElement(sensor2, 'value')
+value2.text = '1013.25'
+
+unit2 = ET.SubElement(sensor2, 'unit')
+unit2.text = 'hPa'
+
+# Convert to string
+xml_str = ET.tostring(root, encoding='unicode')
+print("Generated XML:")
+print(xml_str)</textarea>
+                    <div class="code-output" id="outputcode10">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Parsing XML</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.2: Parsing XML Data</span>
+                        <button class="code-figure-run" onclick="runCode('code11')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code11">import xml.etree.ElementTree as ET
+
+# XML data to parse
+xml_string = '''
+<readings timestamp="2025-01-15T10:00:00">
+    <reading sensor="TEMP_001">
+        <value>25.5</value>
+        <unit>celsius</unit>
+    </reading>
+    <reading sensor="TEMP_001">
+        <value>25.7</value>
+        <unit>celsius</unit>
+    </reading>
+    <reading sensor="PRES_001">
+        <value>1013.25</value>
+        <unit>hPa</unit>
+    </reading>
+</readings>
+'''
+
+# Parse XML
+root = ET.fromstring(xml_string)
+
+# Get root attributes
+print(f"Timestamp: {root.get('timestamp')}")
+print()
+
+# Find all readings
+print("Parsed readings:")
+for reading in root.findall('reading'):
+    sensor = reading.get('sensor')
+    value = float(reading.find('value').text)
+    unit = reading.find('unit').text
+    print(f"  {sensor}: {value} {unit}")</textarea>
+                    <div class="code-output" id="outputcode11">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>XML to Dictionary Converter</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.3: Converting XML to Dict</span>
+                        <button class="code-figure-run" onclick="runCode('code12')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code12">import xml.etree.ElementTree as ET
+import json
+
+def xml_to_dict(element):
+    """Convert XML element to dictionary recursively."""
+    result = {}
+    
+    # Add attributes with @ prefix
+    for key, value in element.attrib.items():
+        result[f'@{key}'] = value
+    
+    # Process child elements
+    for child in element:
+        child_data = xml_to_dict(child)
+        
+        # Handle multiple children with same tag
+        if child.tag in result:
+            if not isinstance(result[child.tag], list):
+                result[child.tag] = [result[child.tag]]
+            result[child.tag].append(child_data)
+        else:
+            result[child.tag] = child_data
+    
+    # If no children, use text content
+    if not result and element.text:
+        return element.text.strip()
+    
+    return result
+
+xml_string = '''
+<sensor id="TEMP_001" type="temperature">
+    <value>25.5</value>
+    <unit>celsius</unit>
+    <config>
+        <min>-40</min>
+        <max>85</max>
+    </config>
+</sensor>
+'''
+
+root = ET.fromstring(xml_string)
+sensor_dict = xml_to_dict(root)
+
+print("XML converted to dictionary:")
+print(json.dumps(sensor_dict, indent=2))</textarea>
+                    <div class="code-output" id="outputcode12">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>XPath Queries</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.4: Using XPath for Queries</span>
+                        <button class="code-figure-run" onclick="runCode('code13')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code13">import xml.etree.ElementTree as ET
+
+xml_data = '''
+<system>
+    <sensors>
+        <sensor id="TEMP_001" type="temperature">
+            <value>25.5</value>
+        </sensor>
+        <sensor id="TEMP_002" type="temperature">
+            <value>26.0</value>
+        </sensor>
+        <sensor id="PRES_001" type="pressure">
+            <value>1013.25</value>
+        </sensor>
+    </sensors>
+    <config>
+        <interval>5</interval>
+    </config>
+</system>
+'''
+
+root = ET.fromstring(xml_data)
+
+# Find all sensors
+print("All sensors:")
+for sensor in root.findall('.//sensor'):
+    print(f"  {sensor.get('id')}: {sensor.get('type')}")
+
+# Find temperature sensors only
+print("\nTemperature sensors:")
+for sensor in root.findall(".//sensor[@type='temperature']"):
+    sid = sensor.get('id')
+    value = sensor.find('value').text
+    print(f"  {sid}: {value}°C")
+
+# Find specific element
+interval = root.find('.//config/interval')
+print(f"\nInterval: {interval.text}s")</textarea>
+                    <div class="code-output" id="outputcode13">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <p>Use XPath expressions like <code>.//element</code> to find elements anywhere in the tree, and <code>[@attr='value']</code> to filter by attributes!</p>
+                </div>
+            </section>
+
+            <!-- Section 4: HTTP Requests -->
+            <section id="part4" class="section">
+                <div class="section-header">
+                    <div class="section-number">4</div>
+                    <h2>Making HTTP Requests</h2>
+                </div>
+                <p>HTTP requests allow your Python programs to communicate with web APIs, fetch data from servers, and interact with web services. While the <code>requests</code> library is popular, Python's built-in <code>urllib</code> can also handle HTTP operations.</p>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Method</th><th>Description</th><th>Engineering Use Case</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>GET</code></td><td>Retrieve data</td><td>Fetch sensor readings from API</td></tr>
+                            <tr><td><code>POST</code></td><td>Send/create data</td><td>Submit new sensor reading</td></tr>
+                            <tr><td><code>PUT</code></td><td>Update existing data</td><td>Update sensor configuration</td></tr>
+                            <tr><td><code>DELETE</code></td><td>Remove data</td><td>Remove old sensor from system</td></tr>
+                            <tr><td><code>PATCH</code></td><td>Partial update</td><td>Update specific sensor field</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Simulated REST API Client</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.1: REST API Client Pattern</span>
+                        <button class="code-figure-run" onclick="runCode('code14')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code14"># Simulated REST API client (for demonstration)
+import json
+
+class MockAPIClient:
+    """Simulated REST API client for sensor data."""
+    
+    def __init__(self, base_url):
+        self.base_url = base_url
+        self._data = {
+            'sensors': [
+                {'id': 'TEMP_001', 'value': 25.5, 'unit': 'celsius'},
+                {'id': 'PRES_001', 'value': 1013.25, 'unit': 'hPa'},
+            ]
+        }
+    
+    def get(self, endpoint):
+        """Simulate GET request."""
+        print(f"GET {self.base_url}{endpoint}")
+        
+        if endpoint == '/sensors':
+            return {'status': 200, 'data': self._data['sensors']}
+        elif endpoint.startswith('/sensors/'):
+            sensor_id = endpoint.split('/')[-1]
+            for s in self._data['sensors']:
+                if s['id'] == sensor_id:
+                    return {'status': 200, 'data': s}
+            return {'status': 404, 'error': 'Sensor not found'}
+        return {'status': 404, 'error': 'Unknown endpoint'}
+    
+    def post(self, endpoint, data):
+        """Simulate POST request."""
+        print(f"POST {self.base_url}{endpoint}")
+        print(f"  Body: {json.dumps(data)}")
+        
+        if endpoint == '/sensors':
+            self._data['sensors'].append(data)
+            return {'status': 201, 'data': data}
+        return {'status': 400, 'error': 'Bad request'}
+
+# Use the API client
+api = MockAPIClient('http://api.sensors.io')
+
+# GET all sensors
+print("--- Fetching all sensors ---")
+response = api.get('/sensors')
+print(f"Response: {response}\n")
+
+# GET specific sensor
+print("--- Fetching TEMP_001 ---")
+response = api.get('/sensors/TEMP_001')
+print(f"Response: {response}\n")
+
+# POST new sensor
+print("--- Adding new sensor ---")
+new_sensor = {'id': 'HUMI_001', 'value': 65.0, 'unit': 'percent'}
+response = api.post('/sensors', new_sensor)
+print(f"Response: {response}")</textarea>
+                    <div class="code-output" id="outputcode14">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>API Response Handler</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.2: Handling API Responses</span>
+                        <button class="code-figure-run" onclick="runCode('code15')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code15">class APIResponse:
+    """Wrapper for API responses."""
+    
+    def __init__(self, status_code, data=None, error=None):
+        self.status_code = status_code
+        self.data = data
+        self.error = error
+    
+    @property
+    def ok(self):
+        """Check if request was successful."""
+        return 200 <= self.status_code < 300
+    
+    def json(self):
+        """Return data as JSON."""
+        return self.data
+    
+    def raise_for_status(self):
+        """Raise exception if request failed."""
+        if not self.ok:
+            raise Exception(f"HTTP {self.status_code}: {self.error}")
+
+def fetch_sensor_data(sensor_id):
+    """Fetch sensor data with error handling."""
+    # Simulate API responses
+    responses = {
+        'TEMP_001': APIResponse(200, {'id': 'TEMP_001', 'value': 25.5}),
+        'TEMP_002': APIResponse(200, {'id': 'TEMP_002', 'value': 26.0}),
+        'UNKNOWN': APIResponse(404, error='Sensor not found'),
+    }
+    
+    return responses.get(sensor_id, APIResponse(404, error='Not found'))
+
+# Test with different sensors
+test_ids = ['TEMP_001', 'TEMP_002', 'UNKNOWN']
+
+for sensor_id in test_ids:
+    print(f"Fetching {sensor_id}...")
+    response = fetch_sensor_data(sensor_id)
+    
+    if response.ok:
+        data = response.json()
+        print(f"  Success: {data}")
+    else:
+        print(f"  Error ({response.status_code}): {response.error}")
+    print()</textarea>
+                    <div class="code-output" id="outputcode15">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Retry Logic Pattern</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.3: Implementing Retry Logic</span>
+                        <button class="code-figure-run" onclick="runCode('code16')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code16">import time
+import random
+
+def retry_request(func, max_retries=3, delay=1.0):
+    """Retry a function with exponential backoff."""
+    last_exception = None
+    
+    for attempt in range(max_retries):
+        try:
+            result = func()
+            return result
+        except Exception as e:
+            last_exception = e
+            wait_time = delay * (2 ** attempt)  # Exponential backoff
+            print(f"  Attempt {attempt + 1} failed: {e}")
+            print(f"  Retrying in {wait_time}s...")
+            time.sleep(0.1)  # Short sleep for demo
+    
+    raise last_exception
+
+# Simulate unreliable API
+call_count = 0
+
+def unreliable_api_call():
+    """Simulates an API that fails sometimes."""
+    global call_count
+    call_count += 1
+    
+    # Succeed on 3rd attempt
+    if call_count < 3:
+        raise ConnectionError("Server temporarily unavailable")
+    
+    return {'status': 'success', 'data': {'value': 25.5}}
+
+# Test retry logic
+print("Testing retry logic:")
+try:
+    result = retry_request(unreliable_api_call)
+    print(f"Final result: {result}")
+except Exception as e:
+    print(f"All retries failed: {e}")</textarea>
+                    <div class="code-output" id="outputcode16">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <p>Always implement timeout and retry logic for production API clients to handle network failures gracefully!</p>
+                </div>
+            </section>
+
+            <!-- Section 5: SQLite Databases -->
+            <section id="part5" class="section">
+                <div class="section-header">
+                    <div class="section-number">5</div>
+                    <h2>Working with SQLite Databases</h2>
+                </div>
+                <p>SQLite is a lightweight, serverless database included with Python. It's perfect for embedded applications, local data storage, and engineering data logging. The entire database is stored in a single file.</p>
+
+                <h3>Database Operations</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.1: Simulated Database Operations</span>
+                        <button class="code-figure-run" onclick="runCode('code17')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code17"># Simulated SQLite operations (actual sqlite3 not available in browser)
+class MockDatabase:
+    """Simulated database for demonstration."""
+    
+    def __init__(self, name):
+        self.name = name
+        self.tables = {}
+        print(f"Connected to database: {name}")
+    
+    def create_table(self, name, columns):
+        """Create a table with specified columns."""
+        self.tables[name] = {'columns': columns, 'rows': []}
+        print(f"Created table '{name}' with columns: {columns}")
+    
+    def insert(self, table, values):
+        """Insert a row into a table."""
+        if table in self.tables:
+            row_id = len(self.tables[table]['rows']) + 1
+            self.tables[table]['rows'].append((row_id, *values))
+            return row_id
+        raise ValueError(f"Table '{table}' not found")
+    
+    def select_all(self, table):
+        """Get all rows from a table."""
+        if table in self.tables:
+            return self.tables[table]['rows']
+        return []
+
+# Create database and table
+db = MockDatabase('sensors.db')
+db.create_table('readings', ['id', 'sensor_id', 'value', 'unit', 'timestamp'])
+
+# Insert data
+print("\nInserting readings...")
+readings = [
+    ('TEMP_001', 25.5, 'celsius', '2025-01-15 10:00'),
+    ('TEMP_001', 25.7, 'celsius', '2025-01-15 10:01'),
+    ('PRES_001', 1013.25, 'hPa', '2025-01-15 10:00'),
+]
+
+for r in readings:
+    row_id = db.insert('readings', r)
+    print(f"  Inserted row {row_id}: {r[0]} = {r[1]}")
+
+# Query data
+print("\nAll readings:")
+for row in db.select_all('readings'):
+    print(f"  {row}")</textarea>
+                    <div class="code-output" id="outputcode17">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>SQL Query Patterns</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.2: Common SQL Patterns</span>
+                        <button class="code-figure-run" onclick="runCode('code18')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code18"># Common SQL patterns for sensor data applications
+sql_patterns = {
+    'Create Table': '''
+CREATE TABLE IF NOT EXISTS readings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sensor_id TEXT NOT NULL,
+    value REAL NOT NULL,
+    unit TEXT NOT NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+)''',
+    
+    'Insert (Parameterized)': '''
+INSERT INTO readings (sensor_id, value, unit) 
+VALUES (?, ?, ?)''',
+    
+    'Select All': '''
+SELECT * FROM readings 
+ORDER BY timestamp DESC''',
+    
+    'Select by Sensor': '''
+SELECT * FROM readings 
+WHERE sensor_id = ? 
+ORDER BY timestamp DESC''',
+    
+    'Aggregate Statistics': '''
+SELECT 
+    sensor_id,
+    COUNT(*) as reading_count,
+    AVG(value) as avg_value,
+    MIN(value) as min_value,
+    MAX(value) as max_value
+FROM readings
+GROUP BY sensor_id''',
+    
+    'Time Range Query': '''
+SELECT * FROM readings
+WHERE timestamp BETWEEN ? AND ?
+ORDER BY timestamp'''
+}
+
+print("Common SQL Patterns for Sensor Data:")
+print("=" * 50)
+
+for name, sql in sql_patterns.items():
+    print(f"\n{name}:")
+    print(sql.strip())</textarea>
+                    <div class="code-output" id="outputcode18">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Database Wrapper Class</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.3: Sensor Database Class</span>
+                        <button class="code-figure-run" onclick="runCode('code19')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code19">class SensorDatabase:
+    """Database wrapper for sensor readings."""
+    
+    def __init__(self):
+        self.readings = []
+        self._id_counter = 0
+    
+    def add_reading(self, sensor_id, value, unit):
+        """Add a new reading."""
+        self._id_counter += 1
+        reading = {
+            'id': self._id_counter,
+            'sensor_id': sensor_id,
+            'value': value,
+            'unit': unit
+        }
+        self.readings.append(reading)
+        return self._id_counter
+    
+    def get_readings(self, sensor_id=None, limit=100):
+        """Get readings, optionally filtered by sensor."""
+        if sensor_id:
+            result = [r for r in self.readings if r['sensor_id'] == sensor_id]
+        else:
+            result = self.readings
+        return result[:limit]
+    
+    def get_statistics(self, sensor_id):
+        """Calculate statistics for a sensor."""
+        values = [r['value'] for r in self.readings 
+                  if r['sensor_id'] == sensor_id]
+        
+        if not values:
+            return None
+        
+        return {
+            'sensor_id': sensor_id,
+            'count': len(values),
+            'min': min(values),
+            'max': max(values),
+            'avg': sum(values) / len(values)
+        }
+    
+    def get_all_statistics(self):
+        """Get statistics for all sensors."""
+        sensor_ids = set(r['sensor_id'] for r in self.readings)
+        return [self.get_statistics(sid) for sid in sensor_ids]
+
+# Test the database wrapper
+db = SensorDatabase()
+
+# Add readings
+for i in range(5):
+    db.add_reading('TEMP_001', 25.0 + i * 0.2, 'celsius')
+
+for i in range(3):
+    db.add_reading('PRES_001', 1013.0 + i * 0.1, 'hPa')
+
+# Get readings for specific sensor
+print("TEMP_001 readings:")
+for r in db.get_readings('TEMP_001'):
+    print(f"  {r}")
+
+# Get statistics
+print("\nAll sensor statistics:")
+for stats in db.get_all_statistics():
+    print(f"  {stats['sensor_id']}: avg={stats['avg']:.2f}, count={stats['count']}")</textarea>
+                    <div class="code-output" id="outputcode19">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <p>Always use <strong>parameterized queries</strong> (<code>?</code> placeholders) to prevent SQL injection attacks. Never concatenate user input directly into SQL strings!</p>
+                </div>
+            </section>
+
+            <!-- Section 6: Data Validation -->
+            <section id="part6" class="section">
+                <div class="section-header">
+                    <div class="section-number">6</div>
+                    <h2>Data Validation</h2>
+                </div>
+                <p>Always validate external data before processing. Invalid data can cause crashes, security issues, and incorrect results. Good validation catches problems early and provides clear error messages.</p>
+
+                <h3>Basic Validation Functions</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.1: Field Validation</span>
+                        <button class="code-figure-run" onclick="runCode('code20')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code20">def validate_sensor_id(sensor_id):
+    """Validate sensor ID format."""
+    if not isinstance(sensor_id, str):
+        return False, "Sensor ID must be a string"
+    if len(sensor_id) < 3:
+        return False, "Sensor ID too short (min 3 chars)"
+    if not sensor_id.replace('_', '').isalnum():
+        return False, "Sensor ID contains invalid characters"
+    return True, "Valid"
+
+def validate_temperature(value, min_val=-40, max_val=85):
+    """Validate temperature reading."""
+    if not isinstance(value, (int, float)):
+        return False, "Temperature must be a number"
+    if value < min_val or value > max_val:
+        return False, f"Temperature out of range [{min_val}, {max_val}]"
+    return True, "Valid"
+
+def validate_timestamp(timestamp):
+    """Validate timestamp format."""
+    import re
+    pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
+    if not isinstance(timestamp, str):
+        return False, "Timestamp must be a string"
+    if not re.match(pattern, timestamp):
+        return False, "Invalid format (expected: YYYY-MM-DD HH:MM:SS)"
+    return True, "Valid"
+
+# Test validation
+test_cases = [
+    ('TEMP_001', 25.5, '2025-01-15 10:00:00'),  # Valid
+    ('T', 25.5, '2025-01-15 10:00:00'),          # Invalid ID
+    ('TEMP_002', 100, '2025-01-15 10:00:00'),    # Out of range
+    ('TEMP_003', 25.5, '2025/01/15'),            # Invalid timestamp
+]
+
+print("Validation Results:")
+print("-" * 60)
+for sensor_id, temp, ts in test_cases:
+    id_ok, id_msg = validate_sensor_id(sensor_id)
+    temp_ok, temp_msg = validate_temperature(temp)
+    ts_ok, ts_msg = validate_timestamp(ts)
+    
+    status = "✓" if all([id_ok, temp_ok, ts_ok]) else "✗"
+    print(f"{status} ID={sensor_id}, Temp={temp}, TS={ts}")
+    if not id_ok: print(f"   → ID: {id_msg}")
+    if not temp_ok: print(f"   → Temp: {temp_msg}")
+    if not ts_ok: print(f"   → TS: {ts_msg}")</textarea>
+                    <div class="code-output" id="outputcode20">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Validation with Dataclasses</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.2: Structured Validation</span>
+                        <button class="code-figure-run" onclick="runCode('code21')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code21">from dataclasses import dataclass, field
+from typing import Optional, List
+
+class ValidationError(Exception):
+    """Raised when data validation fails."""
+    pass
+
+@dataclass
+class SensorReading:
+    """Validated sensor reading."""
+    sensor_id: str
+    value: float
+    unit: str
+    timestamp: Optional[str] = None
+    
+    def __post_init__(self):
+        """Validate fields after initialization."""
+        errors = []
+        
+        # Validate sensor_id
+        if not self.sensor_id or len(self.sensor_id) < 3:
+            errors.append("sensor_id must be at least 3 characters")
+        
+        # Validate value
+        if not isinstance(self.value, (int, float)):
+            errors.append("value must be a number")
+        elif self.value < -1000 or self.value > 10000:
+            errors.append("value out of reasonable range")
+        
+        # Validate unit
+        valid_units = ['celsius', 'fahrenheit', 'hPa', 'percent', 'psi']
+        if self.unit not in valid_units:
+            errors.append(f"unit must be one of: {valid_units}")
+        
+        if errors:
+            raise ValidationError("; ".join(errors))
+
+# Test validation
+test_data = [
+    {'sensor_id': 'TEMP_001', 'value': 25.5, 'unit': 'celsius'},
+    {'sensor_id': 'T', 'value': 25.5, 'unit': 'celsius'},
+    {'sensor_id': 'TEMP_002', 'value': 25.5, 'unit': 'kelvin'},
+]
+
+print("Creating validated readings:")
+for data in test_data:
+    try:
+        reading = SensorReading(**data)
+        print(f"  ✓ {reading}")
+    except ValidationError as e:
+        print(f"  ✗ {data} -> {e}")</textarea>
+                    <div class="code-output" id="outputcode21">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Schema Validation</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.3: Schema-Based Validation</span>
+                        <button class="code-figure-run" onclick="runCode('code22')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code22">class SchemaValidator:
+    """Validate data against a schema definition."""
+    
+    def __init__(self, schema):
+        self.schema = schema
+    
+    def validate(self, data):
+        """Validate data against schema."""
+        errors = []
+        
+        # Check required fields
+        for field, rules in self.schema.items():
+            if rules.get('required', False) and field not in data:
+                errors.append(f"Missing required field: {field}")
+                continue
+            
+            if field not in data:
+                continue
+            
+            value = data[field]
+            
+            # Type check
+            expected_type = rules.get('type')
+            if expected_type and not isinstance(value, expected_type):
+                errors.append(f"{field}: expected {expected_type.__name__}, got {type(value).__name__}")
+            
+            # Range check
+            if 'min' in rules and value < rules['min']:
+                errors.append(f"{field}: value {value} below minimum {rules['min']}")
+            if 'max' in rules and value > rules['max']:
+                errors.append(f"{field}: value {value} above maximum {rules['max']}")
+            
+            # Allowed values
+            if 'allowed' in rules and value not in rules['allowed']:
+                errors.append(f"{field}: '{value}' not in allowed values {rules['allowed']}")
+        
+        return len(errors) == 0, errors
+
+# Define schema
+sensor_schema = {
+    'sensor_id': {'required': True, 'type': str},
+    'value': {'required': True, 'type': (int, float), 'min': -100, 'max': 200},
+    'unit': {'required': True, 'type': str, 'allowed': ['celsius', 'hPa', 'percent']},
+}
+
+validator = SchemaValidator(sensor_schema)
+
+# Test data
+test_records = [
+    {'sensor_id': 'TEMP_001', 'value': 25.5, 'unit': 'celsius'},
+    {'sensor_id': 'TEMP_002', 'value': 250, 'unit': 'celsius'},
+    {'value': 25.5, 'unit': 'kelvin'},
+]
+
+print("Schema Validation Results:")
+for record in test_records:
+    valid, errors = validator.validate(record)
+    status = "✓" if valid else "✗"
+    print(f"\n{status} {record}")
+    for error in errors:
+        print(f"   → {error}")</textarea>
+                    <div class="code-output" id="outputcode22">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <p>Validate data as early as possible - at the point of entry into your system. This prevents invalid data from propagating through your application.</p>
+                </div>
+            </section>
+
+            <!-- Section 7: Data Pipelines -->
+            <section id="part7" class="section">
+                <div class="section-header">
+                    <div class="section-number">7</div>
+                    <h2>Building Data Pipelines</h2>
+                </div>
+                <p>A data pipeline processes data through a series of stages: extraction, transformation, validation, and loading (ETL). Well-designed pipelines are modular, testable, and handle errors gracefully.</p>
+
+                <h3>Simple Pipeline Pattern</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.1: Basic Data Pipeline</span>
+                        <button class="code-figure-run" onclick="runCode('code23')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code23">class DataPipeline:
+    """Simple data processing pipeline."""
+    
+    def __init__(self):
+        self.stages = []
+        self.stats = {'input': 0, 'output': 0, 'errors': 0}
+    
+    def add_stage(self, stage_func, name=None):
+        """Add a processing stage."""
+        self.stages.append({
+            'func': stage_func,
+            'name': name or stage_func.__name__
+        })
+        return self
+    
+    def process(self, data):
+        """Process data through all stages."""
+        self.stats['input'] = len(data)
+        results = []
+        
+        for item in data:
+            try:
+                processed = item
+                for stage in self.stages:
+                    processed = stage['func'](processed)
+                    if processed is None:
+                        break
+                if processed is not None:
+                    results.append(processed)
+            except Exception as e:
+                self.stats['errors'] += 1
+                print(f"Error processing {item}: {e}")
+        
+        self.stats['output'] = len(results)
+        return results
+
+# Define pipeline stages
+def clean_data(record):
+    """Clean and normalize data."""
+    record['sensor_id'] = record['sensor_id'].upper().strip()
+    return record
+
+def validate_data(record):
+    """Validate record, return None if invalid."""
+    if 'sensor_id' not in record or 'value' not in record:
+        return None
+    if not isinstance(record['value'], (int, float)):
+        return None
+    return record
+
+def enrich_data(record):
+    """Add computed fields."""
+    record['processed'] = True
+    return record
+
+# Create and run pipeline
+pipeline = DataPipeline()
+pipeline.add_stage(clean_data, 'Clean')
+pipeline.add_stage(validate_data, 'Validate')
+pipeline.add_stage(enrich_data, 'Enrich')
+
+# Test data
+raw_data = [
+    {'sensor_id': 'temp_001', 'value': 25.5},
+    {'sensor_id': 'TEMP_002', 'value': 26.0},
+    {'sensor_id': 'TEMP_003'},  # Missing value
+    {'value': 25.5},  # Missing sensor_id
+]
+
+results = pipeline.process(raw_data)
+
+print("Pipeline Results:")
+print(f"  Input: {pipeline.stats['input']}")
+print(f"  Output: {pipeline.stats['output']}")
+print(f"  Errors: {pipeline.stats['errors']}")
+print("\nProcessed records:")
+for r in results:
+    print(f"  {r}")</textarea>
+                    <div class="code-output" id="outputcode23">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Pipeline with Logging</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.2: Pipeline with Stage Logging</span>
+                        <button class="code-figure-run" onclick="runCode('code24')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code24">class LoggingPipeline:
+    """Pipeline with detailed stage logging."""
+    
+    def __init__(self, name):
+        self.name = name
+        self.stages = []
+        self.stage_stats = []
+    
+    def add_stage(self, func, name):
+        """Add a processing stage."""
+        self.stages.append({'func': func, 'name': name})
+        return self
+    
+    def process(self, data):
+        """Process data with logging."""
+        print(f"Pipeline '{self.name}' starting with {len(data)} records")
+        
+        current_data = data
+        
+        for i, stage in enumerate(self.stages):
+            input_count = len(current_data)
+            
+            # Process through stage
+            results = []
+            errors = 0
+            
+            for item in current_data:
+                try:
+                    result = stage['func'](item)
+                    if result is not None:
+                        results.append(result)
+                except Exception as e:
+                    errors += 1
+            
+            output_count = len(results)
+            dropped = input_count - output_count - errors
+            
+            print(f"  Stage {i+1} [{stage['name']}]: {input_count} → {output_count} ({dropped} dropped, {errors} errors)")
+            
+            current_data = results
+        
+        print(f"Pipeline complete: {len(current_data)} final records")
+        return current_data
+
+# Pipeline stages
+def parse_value(record):
+    record['value'] = float(record['value'])
+    return record
+
+def filter_range(record):
+    if -50 <= record['value'] <= 100:
+        return record
+    return None
+
+def add_quality(record):
+    record['quality'] = 'good' if record['value'] > 0 else 'suspect'
+    return record
+
+# Build and run pipeline
+pipeline = LoggingPipeline('SensorETL')
+pipeline.add_stage(parse_value, 'Parse')
+pipeline.add_stage(filter_range, 'Filter')
+pipeline.add_stage(add_quality, 'Quality')
+
+data = [
+    {'sensor_id': 'T1', 'value': '25.5'},
+    {'sensor_id': 'T2', 'value': '200'},  # Out of range
+    {'sensor_id': 'T3', 'value': '-10'},
+    {'sensor_id': 'T4', 'value': 'invalid'},  # Will error
+]
+
+results = pipeline.process(data)
+print("\nFinal results:")
+for r in results:
+    print(f"  {r}")</textarea>
+                    <div class="code-output" id="outputcode24">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <p>Good pipelines log statistics at each stage, making it easy to identify where data quality issues occur and monitor pipeline health!</p>
+                </div>
+            </section>
+
+            <!-- Section 8: Binary Data and Serialization -->
+            <section id="part8" class="section">
+                <div class="section-header">
+                    <div class="section-number">8</div>
+                    <h2>Binary Data and Serialization</h2>
+                </div>
+                <p>Binary formats are more compact and faster than text formats. The <code>struct</code> module handles raw binary data, while <code>pickle</code> serializes Python objects. Binary formats are common in embedded systems and high-performance applications.</p>
+
+                <h3>Working with struct</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 8.1: Binary Data with struct</span>
+                        <button class="code-figure-run" onclick="runCode('code25')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code25">import struct
+
+# Pack data into binary format
+# Format: sensor_id (int), temperature (float), pressure (float)
+sensor_id = 1
+temperature = 25.5
+pressure = 1013.25
+
+# Format string: i = int (4 bytes), f = float (4 bytes)
+format_str = 'iff'
+binary_data = struct.pack(format_str, sensor_id, temperature, pressure)
+
+print(f"Format: {format_str}")
+print(f"Record size: {struct.calcsize(format_str)} bytes")
+print(f"Packed data (hex): {binary_data.hex()}")
+print(f"Packed data (bytes): {len(binary_data)} bytes")
+
+# Unpack the binary data
+unpacked = struct.unpack(format_str, binary_data)
+print(f"\nUnpacked values:")
+print(f"  sensor_id: {unpacked[0]}")
+print(f"  temperature: {unpacked[1]:.1f}")
+print(f"  pressure: {unpacked[2]:.2f}")</textarea>
+                    <div class="code-output" id="outputcode25">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Format Characters Reference</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Format</th><th>C Type</th><th>Python Type</th><th>Size (bytes)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>b</code></td><td>signed char</td><td>int</td><td>1</td></tr>
+                            <tr><td><code>B</code></td><td>unsigned char</td><td>int</td><td>1</td></tr>
+                            <tr><td><code>h</code></td><td>short</td><td>int</td><td>2</td></tr>
+                            <tr><td><code>H</code></td><td>unsigned short</td><td>int</td><td>2</td></tr>
+                            <tr><td><code>i</code></td><td>int</td><td>int</td><td>4</td></tr>
+                            <tr><td><code>I</code></td><td>unsigned int</td><td>int</td><td>4</td></tr>
+                            <tr><td><code>f</code></td><td>float</td><td>float</td><td>4</td></tr>
+                            <tr><td><code>d</code></td><td>double</td><td>float</td><td>8</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Binary Sensor Logger</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 8.2: Binary Data Logger Class</span>
+                        <button class="code-figure-run" onclick="runCode('code26')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code26">import struct
+import time
+
+class BinarySensorLogger:
+    """Log sensor data in compact binary format."""
+    
+    # Record format: timestamp (double), sensor_id (int), value (float)
+    RECORD_FORMAT = 'dif'
+    RECORD_SIZE = struct.calcsize(RECORD_FORMAT)
+    
+    def __init__(self):
+        self.buffer = bytearray()
+        self.record_count = 0
+    
+    def write(self, timestamp, sensor_id, value):
+        """Write a reading to the log."""
+        record = struct.pack(self.RECORD_FORMAT, timestamp, sensor_id, value)
+        self.buffer.extend(record)
+        self.record_count += 1
+    
+    def read_all(self):
+        """Read all records from the log."""
+        records = []
+        offset = 0
+        
+        while offset + self.RECORD_SIZE <= len(self.buffer):
+            data = self.buffer[offset:offset + self.RECORD_SIZE]
+            timestamp, sensor_id, value = struct.unpack(self.RECORD_FORMAT, data)
+            records.append({
+                'timestamp': timestamp,
+                'sensor_id': sensor_id,
+                'value': value
+            })
+            offset += self.RECORD_SIZE
+        
+        return records
+    
+    def get_stats(self):
+        """Return buffer statistics."""
+        return {
+            'records': self.record_count,
+            'buffer_size': len(self.buffer),
+            'bytes_per_record': self.RECORD_SIZE
+        }
+
+# Test the binary logger
+logger = BinarySensorLogger()
+
+# Write some readings
+base_time = time.time()
+for i in range(10):
+    logger.write(base_time + i, 1, 25.0 + i * 0.5)
+
+# Get statistics
+stats = logger.get_stats()
+print("Binary Logger Statistics:")
+print(f"  Records: {stats['records']}")
+print(f"  Buffer size: {stats['buffer_size']} bytes")
+print(f"  Bytes per record: {stats['bytes_per_record']}")
+
+# Compare to JSON
+import json
+json_size = len(json.dumps(logger.read_all()))
+print(f"\nSize comparison:")
+print(f"  Binary: {stats['buffer_size']} bytes")
+print(f"  JSON: {json_size} bytes")
+print(f"  Savings: {(1 - stats['buffer_size']/json_size)*100:.1f}%")</textarea>
+                    <div class="code-output" id="outputcode26">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Data Format Summary</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Format</th><th>Module</th><th>Read</th><th>Write</th><th>Best For</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>CSV</td><td><code>csv</code></td><td><code>csv.reader()</code></td><td><code>csv.writer()</code></td><td>Tabular data, spreadsheets</td></tr>
+                            <tr><td>JSON</td><td><code>json</code></td><td><code>json.load()</code></td><td><code>json.dump()</code></td><td>APIs, configs, nested data</td></tr>
+                            <tr><td>XML</td><td><code>xml.etree</code></td><td><code>ET.parse()</code></td><td><code>tree.write()</code></td><td>Industry standards, complex structure</td></tr>
+                            <tr><td>SQLite</td><td><code>sqlite3</code></td><td><code>cursor.fetchall()</code></td><td><code>cursor.execute()</code></td><td>Relational data, queries</td></tr>
+                            <tr><td>Binary</td><td><code>struct</code></td><td><code>struct.unpack()</code></td><td><code>struct.pack()</code></td><td>Embedded systems, performance</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="warning-box">
+                    <p>Never use <code>pickle</code> to load data from untrusted sources - it can execute arbitrary code! Use JSON or other safe formats for external data.</p>
+                </div>
+            </section>
+
+            <!-- Summary Box -->
+            <div class="summary-box">
+                <h3>📋 Week 13 Summary</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">📄 CSV for tabular data</div>
+                    <div class="summary-item">📋 JSON for APIs and configs</div>
+                    <div class="summary-item">🏷️ XML for structured interchange</div>
+                    <div class="summary-item">🌐 HTTP for web APIs</div>
+                    <div class="summary-item">🗃️ SQLite for local storage</div>
+                    <div class="summary-item">✅ Validation for data quality</div>
+                    <div class="summary-item">🔄 Pipelines for ETL</div>
+                    <div class="summary-item">📦 Binary for performance</div>
+                </div>
+            </div>
+
+            <!-- Exercises Section -->
+            <section id="exercises" class="section">
+                <div class="section-header">
+                    <div class="section-number">🏋️</div>
+                    <h2>Practice Exercises</h2>
+                </div>
+
+                <!-- Exercise 1 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">1</span>CSV Reader</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a function that reads CSV data and returns a list of dictionaries.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">Expected Output</div>
+                            <pre>Record 1: {'name': 'Alice', 'score': '95'}
+Record 2: {'name': 'Bob', 'score': '87'}</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints1')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints1">
+                                <ul>
+                                    <li>Use csv.DictReader</li>
+                                    <li>Use StringIO to create a file-like object from string</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex1">import csv
+from io import StringIO
+
+csv_data = """name,score
+Alice,95
+Bob,87"""
+
+def read_csv_to_dicts(csv_string):
+    # Your code here
+    pass
+
+records = read_csv_to_dicts(csv_data)
+for i, record in enumerate(records, 1):
+    print(f"Record {i}: {record}")</textarea>
+                            <div class="code-output" id="outputex1">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 2 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">2</span>JSON Parser</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Parse JSON data and extract sensor values.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">Expected Output</div>
+                            <pre>TEMP_001: 25.5 celsius
+PRES_001: 1013.25 hPa</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex2">import json
+
+json_data = '''
+{
+    "sensors": [
+        {"id": "TEMP_001", "value": 25.5, "unit": "celsius"},
+        {"id": "PRES_001", "value": 1013.25, "unit": "hPa"}
+    ]
+}
+'''
+
+# Parse and print sensor values
+# Your code here
+data = json.loads(json_data)
+for sensor in data['sensors']:
+    print(f"{sensor['id']}: {sensor['value']} {sensor['unit']}")</textarea>
+                            <div class="code-output" id="outputex2">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 3 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">3</span>Data Validator</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a validate_reading function that checks sensor_id (non-empty string) and value (number in range -50 to 150).</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">Expected Output</div>
+                            <pre>TEMP_001, 25.5: Valid
+TEMP_002, 200: Invalid - value out of range
+, 25.5: Invalid - missing sensor_id</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints3">
+                                <ul>
+                                    <li>Check if sensor_id exists and is non-empty</li>
+                                    <li>Use isinstance() to check if value is a number</li>
+                                    <li>Return tuple of (is_valid, message)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex3">def validate_reading(sensor_id, value):
+    """Validate sensor reading. Returns (is_valid, message)."""
+    # Your code here
+    if not sensor_id:
+        return False, "missing sensor_id"
+    if not isinstance(value, (int, float)):
+        return False, "value must be a number"
+    if value < -50 or value > 150:
+        return False, "value out of range"
+    return True, "Valid"
+
+# Test cases
+test_cases = [
+    ('TEMP_001', 25.5),
+    ('TEMP_002', 200),
+    ('', 25.5),
+]
+
+for sensor_id, value in test_cases:
+    valid, msg = validate_reading(sensor_id, value)
+    print(f"{sensor_id}, {value}: {msg}")</textarea>
+                            <div class="code-output" id="outputex3">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 4 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">4</span>Simple Database</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a SimpleDB class with insert, select_all, and select_by_sensor methods.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">Expected Output</div>
+                            <pre>Inserted 3 records
+All: 3 records
+TEMP_001: 2 records</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex4">class SimpleDB:
+    def __init__(self):
+        self.records = []
+        self._id = 0
+    
+    def insert(self, sensor_id, value, unit):
+        self._id += 1
+        self.records.append({
+            'id': self._id,
+            'sensor_id': sensor_id,
+            'value': value,
+            'unit': unit
+        })
+        return self._id
+    
+    def select_all(self):
+        return self.records
+    
+    def select_by_sensor(self, sensor_id):
+        return [r for r in self.records if r['sensor_id'] == sensor_id]
+
+# Test
+db = SimpleDB()
+db.insert('TEMP_001', 25.5, 'celsius')
+db.insert('TEMP_001', 25.7, 'celsius')
+db.insert('PRES_001', 1013.25, 'hPa')
+
+print(f"Inserted 3 records")
+print(f"All: {len(db.select_all())} records")
+print(f"TEMP_001: {len(db.select_by_sensor('TEMP_001'))} records")</textarea>
+                            <div class="code-output" id="outputex4">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 5 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">5</span>CSV Statistics</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Calculate min, max, and average from CSV temperature data.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">Expected Output</div>
+                            <pre>Statistics: min=22.1, max=26.0, avg=24.50</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex5">import csv
+from io import StringIO
+
+csv_data = """sensor,temperature
+T1,25.5
+T1,26.0
+T2,22.1
+T2,24.5"""
+
+def calculate_stats(csv_string):
+    reader = csv.DictReader(StringIO(csv_string))
+    temps = [float(row['temperature']) for row in reader]
+    return {
+        'min': min(temps),
+        'max': max(temps),
+        'avg': sum(temps) / len(temps)
+    }
+
+stats = calculate_stats(csv_data)
+print(f"Statistics: min={stats['min']}, max={stats['max']}, avg={stats['avg']:.2f}")</textarea>
+                            <div class="code-output" id="outputex5">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 6 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">6</span>JSON Configuration</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a Config class that loads settings from JSON and provides get/set methods.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex6">import json
+
+class Config:
+    def __init__(self, json_str=None):
+        self.data = json.loads(json_str) if json_str else {}
+    
+    def get(self, key, default=None):
+        return self.data.get(key, default)
+    
+    def set(self, key, value):
+        self.data[key] = value
+    
+    def to_json(self):
+        return json.dumps(self.data, indent=2)
+
+# Test
+config = Config('{"debug": true, "timeout": 30}')
+print(f"Debug: {config.get('debug')}")
+print(f"Timeout: {config.get('timeout')}")
+config.set('version', '1.0')
+print(f"Config:\n{config.to_json()}")</textarea>
+                            <div class="code-output" id="outputex6">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 7 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">7</span>XML Parser</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Parse XML and extract sensor readings into a list of dictionaries.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex7">import xml.etree.ElementTree as ET
+
+xml_data = '''
+<sensors>
+    <sensor id="T1"><value>25.5</value></sensor>
+    <sensor id="T2"><value>26.0</value></sensor>
+</sensors>
+'''
+
+def parse_sensors(xml_string):
+    root = ET.fromstring(xml_string)
+    readings = []
+    for sensor in root.findall('sensor'):
+        readings.append({
+            'id': sensor.get('id'),
+            'value': float(sensor.find('value').text)
+        })
+    return readings
+
+sensors = parse_sensors(xml_data)
+for s in sensors:
+    print(f"{s['id']}: {s['value']}")</textarea>
+                            <div class="code-output" id="outputex7">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 8 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">8</span>Binary Packer</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Use struct to pack and unpack sensor data (id: int, value: float, status: byte).</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex8">import struct
+
+# Format: int (4 bytes), float (4 bytes), byte (1 byte)
+FORMAT = 'ifB'
+
+def pack_reading(sensor_id, value, status):
+    return struct.pack(FORMAT, sensor_id, value, status)
+
+def unpack_reading(data):
+    return struct.unpack(FORMAT, data)
+
+# Pack data
+packed = pack_reading(1, 25.5, 1)
+print(f"Packed size: {len(packed)} bytes")
+print(f"Packed (hex): {packed.hex()}")
+
+# Unpack data
+sid, val, stat = unpack_reading(packed)
+print(f"Unpacked: id={sid}, value={val}, status={stat}")</textarea>
+                            <div class="code-output" id="outputex8">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 9 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">9</span>Data Pipeline</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a data pipeline that validates, cleans, and transforms sensor readings.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints9')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints9">
+                                <ul>
+                                    <li>Clean: uppercase sensor_id, convert value to float</li>
+                                    <li>Validate: check sensor_id exists, value in range</li>
+                                    <li>Transform: add processed flag and timestamp</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex9">class DataPipeline:
+    def __init__(self):
+        self.stats = {'input': 0, 'output': 0, 'dropped': 0}
+    
+    def clean(self, record):
+        record['sensor_id'] = record.get('sensor_id', '').upper()
+        try:
+            record['value'] = float(record.get('value', 0))
+        except:
+            record['value'] = None
+        return record
+    
+    def validate(self, record):
+        if not record['sensor_id']:
+            return None
+        if record['value'] is None or record['value'] < -50 or record['value'] > 150:
+            return None
+        return record
+    
+    def transform(self, record):
+        record['processed'] = True
+        return record
+    
+    def process(self, data):
+        self.stats['input'] = len(data)
+        results = []
+        for item in data:
+            item = self.clean(item)
+            item = self.validate(item)
+            if item:
+                item = self.transform(item)
+                results.append(item)
+            else:
+                self.stats['dropped'] += 1
+        self.stats['output'] = len(results)
+        return results
+
+# Test
+pipeline = DataPipeline()
+data = [
+    {'sensor_id': 'temp_001', 'value': '25.5'},
+    {'sensor_id': 'temp_002', 'value': 200},
+    {'sensor_id': '', 'value': 25},
+]
+
+results = pipeline.process(data)
+print(f"Input: {pipeline.stats['input']}, Output: {pipeline.stats['output']}, Dropped: {pipeline.stats['dropped']}")
+for r in results:
+    print(f"  {r}")</textarea>
+                            <div class="code-output" id="outputex9">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 10 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">10</span>API Client</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a mock API client with GET and POST methods and error handling.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex10">class MockAPI:
+    def __init__(self):
+        self.data = [
+            {'id': 'T1', 'value': 25.5},
+            {'id': 'T2', 'value': 26.0}
+        ]
+    
+    def get(self, endpoint):
+        if endpoint == '/sensors':
+            return {'status': 200, 'data': self.data}
+        elif endpoint.startswith('/sensors/'):
+            sid = endpoint.split('/')[-1]
+            for s in self.data:
+                if s['id'] == sid:
+                    return {'status': 200, 'data': s}
+            return {'status': 404, 'error': 'Not found'}
+        return {'status': 400, 'error': 'Bad request'}
+    
+    def post(self, endpoint, data):
+        if endpoint == '/sensors':
+            self.data.append(data)
+            return {'status': 201, 'data': data}
+        return {'status': 400, 'error': 'Bad request'}
+
+# Test
+api = MockAPI()
+
+# GET all
+resp = api.get('/sensors')
+print(f"GET /sensors: {resp['status']}, {len(resp['data'])} sensors")
+
+# GET one
+resp = api.get('/sensors/T1')
+print(f"GET /sensors/T1: {resp}")
+
+# POST new
+resp = api.post('/sensors', {'id': 'T3', 'value': 27.0})
+print(f"POST: {resp['status']}, added {resp['data']}")</textarea>
+                            <div class="code-output" id="outputex10">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 11 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">11</span>Schema Validator</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Implement a schema validator that checks required fields, types, and value ranges.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex11">class SchemaValidator:
+    def __init__(self, schema):
+        self.schema = schema
+    
+    def validate(self, data):
+        errors = []
+        for field, rules in self.schema.items():
+            # Check required
+            if rules.get('required') and field not in data:
+                errors.append(f"Missing: {field}")
+                continue
+            if field not in data:
+                continue
+            
+            value = data[field]
+            
+            # Check type
+            if 'type' in rules and not isinstance(value, rules['type']):
+                errors.append(f"{field}: wrong type")
+            
+            # Check range
+            if 'min' in rules and value < rules['min']:
+                errors.append(f"{field}: below min")
+            if 'max' in rules and value > rules['max']:
+                errors.append(f"{field}: above max")
+        
+        return len(errors) == 0, errors
+
+# Test
+schema = {
+    'sensor_id': {'required': True, 'type': str},
+    'value': {'required': True, 'type': (int, float), 'min': -50, 'max': 150}
+}
+
+validator = SchemaValidator(schema)
+
+test_data = [
+    {'sensor_id': 'T1', 'value': 25.5},
+    {'sensor_id': 'T2', 'value': 200},
+    {'value': 25.5},
+]
+
+for data in test_data:
+    valid, errors = validator.validate(data)
+    print(f"{data}: {'✓' if valid else '✗ ' + str(errors)}")</textarea>
+                            <div class="code-output" id="outputex11">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 12 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">12</span>Data Converter</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create functions to convert between CSV, JSON, and XML formats.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex12">import csv
+import json
+import xml.etree.ElementTree as ET
+from io import StringIO
+
+def csv_to_json(csv_str):
+    reader = csv.DictReader(StringIO(csv_str))
+    return json.dumps(list(reader), indent=2)
+
+def json_to_csv(json_str, fieldnames):
+    data = json.loads(json_str)
+    output = StringIO()
+    writer = csv.DictWriter(output, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(data)
+    return output.getvalue()
+
+# Test CSV to JSON
+csv_data = """id,value
+T1,25.5
+T2,26.0"""
+
+json_output = csv_to_json(csv_data)
+print("CSV to JSON:")
+print(json_output)
+
+# Test JSON to CSV
+json_data = '[{"id": "T1", "value": 25.5}, {"id": "T2", "value": 26.0}]'
+csv_output = json_to_csv(json_data, ['id', 'value'])
+print("\nJSON to CSV:")
+print(csv_output)</textarea>
+                            <div class="code-output" id="outputex12">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Section 9: Advanced Data Patterns -->
+            <section id="part9" class="section">
+                <div class="section-header">
+                    <div class="section-number">9</div>
+                    <h2>Advanced Data Patterns</h2>
+                </div>
+                <p>Advanced patterns for building robust, scalable data processing systems in engineering applications.</p>
+
+                <h3>Repository Pattern</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.1: Repository Pattern</span>
+                        <button class="code-figure-run" onclick="runCode('code27')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code27">from abc import ABC, abstractmethod
+
+class SensorRepository(ABC):
+    """Abstract repository for sensor data."""
+    
+    @abstractmethod
+    def add(self, reading):
+        pass
+    
+    @abstractmethod
+    def get_by_id(self, sensor_id):
+        pass
+    
+    @abstractmethod
+    def get_all(self):
+        pass
+
+class MemoryRepository(SensorRepository):
+    """In-memory implementation."""
+    
+    def __init__(self):
+        self.data = []
+    
+    def add(self, reading):
+        self.data.append(reading)
+        return len(self.data)
+    
+    def get_by_id(self, sensor_id):
+        return [r for r in self.data if r['sensor_id'] == sensor_id]
+    
+    def get_all(self):
+        return self.data.copy()
+
+# Test repository
+repo = MemoryRepository()
+repo.add({'sensor_id': 'T1', 'value': 25.5})
+repo.add({'sensor_id': 'T1', 'value': 26.0})
+repo.add({'sensor_id': 'T2', 'value': 22.1})
+
+print(f"All readings: {len(repo.get_all())}")
+print(f"T1 readings: {repo.get_by_id('T1')}")</textarea>
+                    <div class="code-output" id="outputcode27">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Observer Pattern for Data Streams</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.2: Observer Pattern</span>
+                        <button class="code-figure-run" onclick="runCode('code28')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code28">class DataSubject:
+    """Observable data source."""
+    
+    def __init__(self):
+        self._observers = []
+    
+    def subscribe(self, observer):
+        self._observers.append(observer)
+    
+    def unsubscribe(self, observer):
+        self._observers.remove(observer)
+    
+    def notify(self, data):
+        for observer in self._observers:
+            observer(data)
+
+class SensorMonitor:
+    """Sensor data monitor with observers."""
+    
+    def __init__(self, sensor_id):
+        self.sensor_id = sensor_id
+        self.subject = DataSubject()
+        self.latest_value = None
+    
+    def on_reading(self, callback):
+        self.subject.subscribe(callback)
+    
+    def record(self, value):
+        self.latest_value = value
+        self.subject.notify({
+            'sensor_id': self.sensor_id,
+            'value': value
+        })
+
+# Set up monitoring
+monitor = SensorMonitor('TEMP_001')
+
+# Add observers
+def log_reading(data):
+    print(f"LOG: {data['sensor_id']} = {data['value']}")
+
+def check_alert(data):
+    if data['value'] > 30:
+        print(f"⚠️ ALERT: High temperature!")
+
+monitor.on_reading(log_reading)
+monitor.on_reading(check_alert)
+
+# Record some values
+for val in [25.5, 28.0, 32.0, 24.0]:
+    print(f"Recording: {val}")
+    monitor.record(val)
+    print()</textarea>
+                    <div class="code-output" id="outputcode28">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Data Transform Chain</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.3: Transform Chain Pattern</span>
+                        <button class="code-figure-run" onclick="runCode('code29')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code29">class Transform:
+    """Base transform class."""
+    
+    def __init__(self, next_transform=None):
+        self.next = next_transform
+    
+    def process(self, data):
+        result = self.transform(data)
+        if self.next and result is not None:
+            return self.next.process(result)
+        return result
+    
+    def transform(self, data):
+        return data
+
+class NormalizeTransform(Transform):
+    """Normalize sensor ID to uppercase."""
+    def transform(self, data):
+        data['sensor_id'] = data.get('sensor_id', '').upper()
+        return data
+
+class ValidateTransform(Transform):
+    """Validate data, return None if invalid."""
+    def transform(self, data):
+        if not data.get('sensor_id'):
+            return None
+        if not isinstance(data.get('value'), (int, float)):
+            return None
+        return data
+
+class EnrichTransform(Transform):
+    """Add computed fields."""
+    def transform(self, data):
+        data['processed'] = True
+        data['status'] = 'valid'
+        return data
+
+# Build transform chain
+chain = NormalizeTransform(
+    ValidateTransform(
+        EnrichTransform()
+    )
+)
+
+# Process data
+test_data = [
+    {'sensor_id': 'temp_001', 'value': 25.5},
+    {'sensor_id': '', 'value': 25.5},
+    {'sensor_id': 'temp_002', 'value': 'invalid'},
+]
+
+print("Transform Chain Results:")
+for data in test_data:
+    result = chain.process(data.copy())
+    print(f"  Input: {data}")
+    print(f"  Output: {result}")
+    print()</textarea>
+                    <div class="code-output" id="outputcode29">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Data Aggregator</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.4: Rolling Aggregator</span>
+                        <button class="code-figure-run" onclick="runCode('code30')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code30">from collections import deque
+
+class RollingAggregator:
+    """Calculate rolling statistics over a window."""
+    
+    def __init__(self, window_size=10):
+        self.window_size = window_size
+        self.values = deque(maxlen=window_size)
+    
+    def add(self, value):
+        self.values.append(value)
+    
+    @property
+    def count(self):
+        return len(self.values)
+    
+    @property
+    def mean(self):
+        if not self.values:
+            return 0
+        return sum(self.values) / len(self.values)
+    
+    @property
+    def min(self):
+        return min(self.values) if self.values else 0
+    
+    @property
+    def max(self):
+        return max(self.values) if self.values else 0
+    
+    def stats(self):
+        return {
+            'count': self.count,
+            'mean': round(self.mean, 2),
+            'min': self.min,
+            'max': self.max
+        }
+
+# Test rolling aggregator
+agg = RollingAggregator(window_size=5)
+
+readings = [25.0, 25.5, 26.0, 25.8, 26.2, 27.0, 26.5, 26.0]
+
+print("Rolling Statistics (window=5):")
+for i, value in enumerate(readings):
+    agg.add(value)
+    print(f"  After {value}: {agg.stats()}")</textarea>
+                    <div class="code-output" id="outputcode30">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Batch Processor</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.5: Batch Processing Pattern</span>
+                        <button class="code-figure-run" onclick="runCode('code31')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code31">class BatchProcessor:
+    """Process data in batches for efficiency."""
+    
+    def __init__(self, batch_size=5, process_func=None):
+        self.batch_size = batch_size
+        self.process_func = process_func or self._default_process
+        self.buffer = []
+        self.results = []
+        self.batches_processed = 0
+    
+    def _default_process(self, batch):
+        return batch
+    
+    def add(self, item):
+        self.buffer.append(item)
+        if len(self.buffer) >= self.batch_size:
+            self._process_batch()
+    
+    def _process_batch(self):
+        if self.buffer:
+            result = self.process_func(self.buffer)
+            self.results.extend(result if isinstance(result, list) else [result])
+            self.batches_processed += 1
+            print(f"  Processed batch {self.batches_processed}: {len(self.buffer)} items")
+            self.buffer = []
+    
+    def flush(self):
+        self._process_batch()
+    
+    def get_results(self):
+        return self.results
+
+# Process function that calculates batch statistics
+def calculate_batch_stats(batch):
+    values = [item['value'] for item in batch]
+    return [{
+        'batch_avg': sum(values) / len(values),
+        'batch_count': len(values),
+        'batch_sensors': list(set(item['sensor_id'] for item in batch))
+    }]
+
+# Test batch processor
+processor = BatchProcessor(batch_size=3, process_func=calculate_batch_stats)
+
+print("Adding readings to batch processor:")
+readings = [
+    {'sensor_id': 'T1', 'value': 25.0},
+    {'sensor_id': 'T1', 'value': 25.5},
+    {'sensor_id': 'T2', 'value': 26.0},
+    {'sensor_id': 'T1', 'value': 25.2},
+    {'sensor_id': 'T2', 'value': 26.5},
+]
+
+for r in readings:
+    processor.add(r)
+
+processor.flush()
+
+print(f"\nResults: {processor.get_results()}")</textarea>
+                    <div class="code-output" id="outputcode31">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Data Quality Monitor</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.6: Data Quality Monitoring</span>
+                        <button class="code-figure-run" onclick="runCode('code32')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code32">class DataQualityMonitor:
+    """Monitor data quality metrics."""
+    
+    def __init__(self):
+        self.metrics = {
+            'total': 0,
+            'valid': 0,
+            'invalid': 0,
+            'missing_fields': 0,
+            'out_of_range': 0,
+            'type_errors': 0
+        }
+        self.issues = []
+    
+    def check(self, record, schema):
+        """Check record against schema."""
+        self.metrics['total'] += 1
+        issues = []
+        
+        for field, rules in schema.items():
+            # Check required
+            if rules.get('required') and field not in record:
+                issues.append(f"Missing: {field}")
+                self.metrics['missing_fields'] += 1
+                continue
+            
+            if field not in record:
+                continue
+            
+            value = record[field]
+            
+            # Check type
+            if 'type' in rules and not isinstance(value, rules['type']):
+                issues.append(f"Type error: {field}")
+                self.metrics['type_errors'] += 1
+            
+            # Check range
+            if isinstance(value, (int, float)):
+                if 'min' in rules and value < rules['min']:
+                    issues.append(f"Below min: {field}")
+                    self.metrics['out_of_range'] += 1
+                if 'max' in rules and value > rules['max']:
+                    issues.append(f"Above max: {field}")
+                    self.metrics['out_of_range'] += 1
+        
+        if issues:
+            self.metrics['invalid'] += 1
+            self.issues.append({'record': record, 'issues': issues})
+        else:
+            self.metrics['valid'] += 1
+        
+        return len(issues) == 0
+    
+    def report(self):
+        valid_pct = (self.metrics['valid'] / self.metrics['total'] * 100) if self.metrics['total'] > 0 else 0
+        return {
+            **self.metrics,
+            'valid_pct': round(valid_pct, 1)
+        }
+
+# Test quality monitor
+schema = {
+    'sensor_id': {'required': True, 'type': str},
+    'value': {'required': True, 'type': (int, float), 'min': -50, 'max': 150}
+}
+
+monitor = DataQualityMonitor()
+
+test_records = [
+    {'sensor_id': 'T1', 'value': 25.5},
+    {'sensor_id': 'T2', 'value': 200},
+    {'value': 25.5},
+    {'sensor_id': 'T3', 'value': 'invalid'},
+    {'sensor_id': 'T4', 'value': 30.0},
+]
+
+print("Checking data quality:")
+for record in test_records:
+    valid = monitor.check(record, schema)
+    status = "✓" if valid else "✗"
+    print(f"  {status} {record}")
+
+print(f"\nQuality Report: {monitor.report()}")</textarea>
+                    <div class="code-output" id="outputcode32">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 10: Data Integration Patterns -->
+            <section id="part10" class="section">
+                <div class="section-header">
+                    <div class="section-number">10</div>
+                    <h2>Data Integration Patterns</h2>
+                </div>
+                <p>Patterns for integrating data from multiple sources and formats in engineering systems.</p>
+
+                <h3>Data Adapter Pattern</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 10.1: Data Adapter</span>
+                        <button class="code-figure-run" onclick="runCode('code33')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code33">from abc import ABC, abstractmethod
+
+class DataAdapter(ABC):
+    """Abstract adapter for different data sources."""
+    
+    @abstractmethod
+    def read(self):
+        pass
+    
+    @abstractmethod
+    def to_standard_format(self, data):
+        pass
+
+class CSVAdapter(DataAdapter):
+    """Adapter for CSV data."""
+    
+    def __init__(self, csv_data):
+        self.csv_data = csv_data
+    
+    def read(self):
+        import csv
+        from io import StringIO
+        reader = csv.DictReader(StringIO(self.csv_data))
+        return list(reader)
+    
+    def to_standard_format(self, data):
+        return [{
+            'sensor_id': row.get('id', row.get('sensor_id', '')),
+            'value': float(row.get('value', row.get('reading', 0))),
+            'source': 'csv'
+        } for row in data]
+
+class JSONAdapter(DataAdapter):
+    """Adapter for JSON data."""
+    
+    def __init__(self, json_data):
+        self.json_data = json_data
+    
+    def read(self):
+        import json
+        return json.loads(self.json_data)
+    
+    def to_standard_format(self, data):
+        return [{
+            'sensor_id': item.get('sensor_id', item.get('name', '')),
+            'value': float(item.get('value', item.get('reading', 0))),
+            'source': 'json'
+        } for item in data]
+
+# Test adapters
+csv_data = """id,value
+T1,25.5
+T2,26.0"""
+
+json_data = '[{"sensor_id": "T3", "value": 27.0}, {"name": "T4", "reading": 28.0}]'
+
+csv_adapter = CSVAdapter(csv_data)
+json_adapter = JSONAdapter(json_data)
+
+# Process both sources
+all_data = []
+for adapter in [csv_adapter, json_adapter]:
+    raw = adapter.read()
+    normalized = adapter.to_standard_format(raw)
+    all_data.extend(normalized)
+
+print("Integrated data from multiple sources:")
+for item in all_data:
+    print(f"  {item}")</textarea>
+                    <div class="code-output" id="outputcode33">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Data Merger</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 10.2: Merging Data Sources</span>
+                        <button class="code-figure-run" onclick="runCode('code34')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code34">class DataMerger:
+    """Merge data from multiple sources by key."""
+    
+    def __init__(self, key_field='sensor_id'):
+        self.key_field = key_field
+    
+    def merge(self, *sources):
+        """Merge multiple data sources."""
+        merged = {}
+        
+        for source in sources:
+            for record in source:
+                key = record.get(self.key_field)
+                if key not in merged:
+                    merged[key] = {}
+                merged[key].update(record)
+        
+        return list(merged.values())
+
+# Data from different sources
+readings_source = [
+    {'sensor_id': 'T1', 'value': 25.5, 'timestamp': '10:00'},
+    {'sensor_id': 'T2', 'value': 26.0, 'timestamp': '10:00'},
+]
+
+metadata_source = [
+    {'sensor_id': 'T1', 'location': 'Room A', 'unit': 'celsius'},
+    {'sensor_id': 'T2', 'location': 'Room B', 'unit': 'celsius'},
+]
+
+calibration_source = [
+    {'sensor_id': 'T1', 'offset': 0.1, 'last_calibration': '2025-01-01'},
+    {'sensor_id': 'T2', 'offset': -0.2, 'last_calibration': '2025-01-01'},
+]
+
+# Merge all sources
+merger = DataMerger()
+combined = merger.merge(readings_source, metadata_source, calibration_source)
+
+print("Merged sensor data:")
+for record in combined:
+    print(f"  {record['sensor_id']}:")
+    print(f"    Value: {record['value']} {record['unit']}")
+    print(f"    Location: {record['location']}")
+    print(f"    Offset: {record['offset']}")</textarea>
+                    <div class="code-output" id="outputcode34">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+
+                <h3>Data Export Manager</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 10.3: Multi-Format Export</span>
+                        <button class="code-figure-run" onclick="runCode('code35')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code35">import json
+import csv
+from io import StringIO
+
+class DataExporter:
+    """Export data to multiple formats."""
+    
+    def __init__(self, data):
+        self.data = data
+    
+    def to_json(self, indent=2):
+        return json.dumps(self.data, indent=indent)
+    
+    def to_csv(self):
+        if not self.data:
+            return ""
+        output = StringIO()
+        writer = csv.DictWriter(output, fieldnames=self.data[0].keys())
+        writer.writeheader()
+        writer.writerows(self.data)
+        return output.getvalue()
+    
+    def to_xml(self, root_tag='data', item_tag='record'):
+        lines = [f'<{root_tag}>']
+        for item in self.data:
+            lines.append(f'  <{item_tag}>')
+            for key, value in item.items():
+                lines.append(f'    <{key}>{value}</{key}>')
+            lines.append(f'  </{item_tag}>')
+        lines.append(f'</{root_tag}>')
+        return '\n'.join(lines)
+
+# Test exporter
+data = [
+    {'sensor_id': 'T1', 'value': 25.5, 'unit': 'celsius'},
+    {'sensor_id': 'T2', 'value': 26.0, 'unit': 'celsius'},
+]
+
+exporter = DataExporter(data)
+
+print("=== JSON Export ===")
+print(exporter.to_json())
+
+print("\n=== CSV Export ===")
+print(exporter.to_csv())
+
+print("=== XML Export ===")
+print(exporter.to_xml('sensors', 'sensor'))</textarea>
+                    <div class="code-output" id="outputcode35">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            <!-- Bonus Exercises -->
+            <section id="bonus" class="section">
+                <div class="section-header">
+                    <div class="section-number">📚</div>
+                    <h2>Bonus Exercises</h2>
+                </div>
+
+                <!-- Bonus 1 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B1</span>Retry Decorator</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a decorator that retries a function up to N times on failure.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB1')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB1">import functools
+
+def retry(max_attempts=3):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            last_error = None
+            for attempt in range(max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    last_error = e
+                    print(f"Attempt {attempt + 1} failed: {e}")
+            raise last_error
+        return wrapper
+    return decorator
+
+# Test
+counter = 0
+
+@retry(max_attempts=3)
+def unreliable_function():
+    global counter
+    counter += 1
+    if counter < 3:
+        raise ConnectionError("Temporary failure")
+    return "Success!"
+
+try:
+    result = unreliable_function()
+    print(f"Result: {result}")
+except Exception as e:
+    print(f"All attempts failed: {e}")</textarea>
+                            <div class="code-output" id="outputexB1">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus 2 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B2</span>Data Cache</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Implement a cache that stores data with TTL (time-to-live).</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB2')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB2">import time
+
+class TTLCache:
+    def __init__(self, ttl_seconds=60):
+        self.ttl = ttl_seconds
+        self.cache = {}
+    
+    def set(self, key, value):
+        self.cache[key] = {
+            'value': value,
+            'expires': time.time() + self.ttl
+        }
+    
+    def get(self, key, default=None):
+        if key not in self.cache:
+            return default
+        entry = self.cache[key]
+        if time.time() > entry['expires']:
+            del self.cache[key]
+            return default
+        return entry['value']
+    
+    def clear_expired(self):
+        now = time.time()
+        expired = [k for k, v in self.cache.items() if now > v['expires']]
+        for k in expired:
+            del self.cache[k]
+        return len(expired)
+
+# Test
+cache = TTLCache(ttl_seconds=2)
+cache.set('sensor_1', 25.5)
+cache.set('sensor_2', 26.0)
+
+print(f"sensor_1: {cache.get('sensor_1')}")
+print(f"sensor_2: {cache.get('sensor_2')}")
+print(f"sensor_3: {cache.get('sensor_3', 'not found')}")</textarea>
+                            <div class="code-output" id="outputexB2">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus 3 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B3</span>Data Stream</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a DataStream class that simulates real-time sensor data with callbacks.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB3')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB3">import random
+import time
+
+class DataStream:
+    def __init__(self, sensor_id):
+        self.sensor_id = sensor_id
+        self.callbacks = []
+        self.running = False
+    
+    def subscribe(self, callback):
+        self.callbacks.append(callback)
+    
+    def emit(self, value):
+        for callback in self.callbacks:
+            callback(self.sensor_id, value)
+    
+    def generate(self, count=5):
+        """Generate simulated readings."""
+        base_value = 25.0
+        for i in range(count):
+            value = base_value + random.uniform(-2, 2)
+            self.emit(round(value, 2))
+
+# Test
+def on_reading(sensor_id, value):
+    print(f"Received: {sensor_id} = {value}")
+
+def on_alert(sensor_id, value):
+    if value > 26:
+        print(f"  ⚠️ High temperature alert!")
+
+stream = DataStream('TEMP_001')
+stream.subscribe(on_reading)
+stream.subscribe(on_alert)
+
+print("Generating stream data:")
+stream.generate(5)</textarea>
+                            <div class="code-output" id="outputexB3">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+                <!-- Bonus 4 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B4</span>Event Logger</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create an EventLogger that records events with timestamps and supports filtering.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB4')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB4">import time
+
+class EventLogger:
+    """Event logging system."""
+    
+    def __init__(self):
+        self.events = []
+    
+    def log(self, event_type, message, **data):
+        self.events.append({
+            'timestamp': time.time(),
+            'type': event_type,
+            'message': message,
+            **data
+        })
+    
+    def get_by_type(self, event_type):
+        return [e for e in self.events if e['type'] == event_type]
+    
+    def get_recent(self, count=10):
+        return self.events[-count:]
+    
+    def count_by_type(self):
+        counts = {}
+        for e in self.events:
+            counts[e['type']] = counts.get(e['type'], 0) + 1
+        return counts
+
+# Test
+logger = EventLogger()
+logger.log('INFO', 'System started')
+logger.log('DATA', 'Reading received', sensor_id='T1', value=25.5)
+logger.log('WARNING', 'High temperature', sensor_id='T2', value=35.0)
+logger.log('DATA', 'Reading received', sensor_id='T1', value=26.0)
+logger.log('ERROR', 'Connection lost', device='gateway')
+
+print(f"Total events: {len(logger.events)}")
+print(f"Event counts: {logger.count_by_type()}")
+print(f"DATA events: {len(logger.get_by_type('DATA'))}")</textarea>
+                            <div class="code-output" id="outputexB4">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus 5 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B5</span>Config Validator</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a configuration validator that checks JSON configs against a schema.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB5')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB5">import json
+
+class ConfigValidator:
+    """Validate configuration against schema."""
+    
+    def __init__(self, schema):
+        self.schema = schema
+    
+    def validate(self, config):
+        errors = []
+        self._check(config, self.schema, '', errors)
+        return len(errors) == 0, errors
+    
+    def _check(self, value, schema, path, errors):
+        # Check type
+        expected_type = schema.get('type')
+        if expected_type == 'object' and not isinstance(value, dict):
+            errors.append(f"{path}: expected object")
+            return
+        if expected_type == 'string' and not isinstance(value, str):
+            errors.append(f"{path}: expected string")
+        if expected_type == 'number' and not isinstance(value, (int, float)):
+            errors.append(f"{path}: expected number")
+        
+        # Check nested properties
+        if 'properties' in schema and isinstance(value, dict):
+            for key, prop_schema in schema['properties'].items():
+                if key in value:
+                    self._check(value[key], prop_schema, f"{path}.{key}", errors)
+                elif prop_schema.get('required'):
+                    errors.append(f"{path}.{key}: required")
+
+# Test
+schema = {
+    'type': 'object',
+    'properties': {
+        'name': {'type': 'string', 'required': True},
+        'port': {'type': 'number', 'required': True},
+        'debug': {'type': 'boolean'}
+    }
+}
+
+validator = ConfigValidator(schema)
+
+configs = [
+    {'name': 'sensor_api', 'port': 8080},
+    {'name': 123, 'port': 8080},
+    {'port': 8080},
+]
+
+for config in configs:
+    valid, errors = validator.validate(config)
+    print(f"{config}: {'✓' if valid else '✗ ' + str(errors)}")</textarea>
+                            <div class="code-output" id="outputexB5">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus 6 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B6</span>Data Buffer</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Implement a circular buffer for sensor data with overflow handling.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB6')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB6">class CircularBuffer:
+    """Fixed-size circular buffer."""
+    
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.buffer = [None] * capacity
+        self.head = 0
+        self.count = 0
+    
+    def push(self, item):
+        self.buffer[self.head] = item
+        self.head = (self.head + 1) % self.capacity
+        if self.count < self.capacity:
+            self.count += 1
+    
+    def get_all(self):
+        if self.count < self.capacity:
+            return self.buffer[:self.count]
+        # Return in order from oldest to newest
+        start = self.head
+        return self.buffer[start:] + self.buffer[:start]
+    
+    def is_full(self):
+        return self.count == self.capacity
+
+# Test
+buffer = CircularBuffer(5)
+
+for i in range(8):
+    buffer.push(f"Reading_{i}")
+    print(f"After push {i}: {buffer.get_all()}")
+
+print(f"\nBuffer full: {buffer.is_full()}")</textarea>
+                            <div class="code-output" id="outputexB6">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus 7 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B7</span>Data Compressor</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a simple run-length encoding compressor for repeated sensor values.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB7')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB7">class RLECompressor:
+    """Run-length encoding for data compression."""
+    
+    def compress(self, data):
+        if not data:
+            return []
+        
+        compressed = []
+        current = data[0]
+        count = 1
+        
+        for item in data[1:]:
+            if item == current:
+                count += 1
+            else:
+                compressed.append((current, count))
+                current = item
+                count = 1
+        
+        compressed.append((current, count))
+        return compressed
+    
+    def decompress(self, compressed):
+        result = []
+        for value, count in compressed:
+            result.extend([value] * count)
+        return result
+
+# Test
+compressor = RLECompressor()
+
+# Sensor data with repeated values
+data = [25, 25, 25, 26, 26, 27, 27, 27, 27, 25]
+
+compressed = compressor.compress(data)
+decompressed = compressor.decompress(compressed)
+
+print(f"Original: {data}")
+print(f"Compressed: {compressed}")
+print(f"Decompressed: {decompressed}")
+print(f"Size reduction: {len(data)} -> {len(compressed)} tuples")</textarea>
+                            <div class="code-output" id="outputexB7">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus 8 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B8</span>Query Builder</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a fluent query builder for filtering sensor data.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB8')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB8">class QueryBuilder:
+    """Fluent query builder for data filtering."""
+    
+    def __init__(self, data):
+        self.data = data
+        self.filters = []
+    
+    def where(self, field, op, value):
+        def make_filter(f, o, v):
+            if o == '==':
+                return lambda r: r.get(f) == v
+            elif o == '!=':
+                return lambda r: r.get(f) != v
+            elif o == '>':
+                return lambda r: r.get(f, 0) > v
+            elif o == '<':
+                return lambda r: r.get(f, 0) < v
+            elif o == 'in':
+                return lambda r: r.get(f) in v
+            return lambda r: True
+        
+        self.filters.append(make_filter(field, op, value))
+        return self
+    
+    def execute(self):
+        result = self.data
+        for f in self.filters:
+            result = [r for r in result if f(r)]
+        return result
+    
+    def first(self):
+        results = self.execute()
+        return results[0] if results else None
+
+# Test
+data = [
+    {'sensor_id': 'T1', 'value': 25.5, 'location': 'A'},
+    {'sensor_id': 'T2', 'value': 35.0, 'location': 'A'},
+    {'sensor_id': 'T3', 'value': 22.0, 'location': 'B'},
+    {'sensor_id': 'T4', 'value': 28.0, 'location': 'A'},
+]
+
+# Query with method chaining
+results = (QueryBuilder(data)
+    .where('location', '==', 'A')
+    .where('value', '>', 26)
+    .execute())
+
+print("Sensors in location A with value > 26:")
+for r in results:
+    print(f"  {r}")</textarea>
+                            <div class="code-output" id="outputexB8">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Submit Section -->
+            <section id="submit" class="section">
+                <div class="submit-section">
+                    <h2>📤 Submit Your Work</h2>
+                    <p>Complete the exercises above, then fill out this form to record your attendance for Week 13.</p>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Student ID</label>
+                            <input type="text" id="studentId" placeholder="e.g., 2024001234" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="studentName" placeholder="e.g., Ahmet Yılmaz">
+                        </div>
+                        <div class="form-group">
+                            <label>Email (@istun.edu.tr)</label>
+                            <input type="email" id="studentEmail" placeholder="e.g., ahmet.yilmaz@istun.edu.tr">
+                        </div>
+                        <div class="form-group">
+                            <label>Class Code (from instructor)</label>
+                            <input type="text" id="classCode" placeholder="Enter code from class">
+                        </div>
+                    </div>
+                    <div class="honeypot">
+                        <input type="text" id="website" tabindex="-1" autocomplete="off">
+                    </div>
+                    <button class="submit-btn" onclick="submitWork()">Submit Week 13</button>
+                    <div class="submit-status" id="submitStatus"></div>
+                </div>
+            </section>
+
+            <!-- Navigation -->
+            <div class="page-nav">
+                <a href="Week_12.html" class="nav-btn">← Week 12: Modules and Packages</a>
+                <a href="index.html?home=true" class="nav-btn">Course Home</a>
+                <a href="Week_14.html" class="nav-btn">Week 14: Advanced Topics →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Progress Bar
+        function updateProgress() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = Math.min(100, Math.max(0, (winScroll / height) * 100));
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        }
+        window.addEventListener('scroll', updateProgress);
+        window.addEventListener('load', updateProgress);
+
+        // Hints Toggle
+        function toggleHints(id) {
+            var hints = document.getElementById(id);
+            hints.classList.toggle('show');
+            var btn = hints.previousElementSibling;
+            btn.textContent = hints.classList.contains('show') ? '💡 Hide Hints' : '💡 Show Hints';
+        }
+
+        // Pyodide Python Execution
+        var pyodideReadyPromise = null;
+        var pyodideInstance = null;
+
+        async function initPyodide() {
+            if (pyodideInstance) return pyodideInstance;
+            if (pyodideReadyPromise) return pyodideReadyPromise;
+            
+            pyodideReadyPromise = loadPyodide().then(function(pyodide) {
+                pyodideInstance = pyodide;
+                console.log("Pyodide loaded successfully");
+                return pyodide;
+            });
+            return pyodideReadyPromise;
+        }
+
+        async function runCode(codeId) {
+            var codeEl = document.getElementById(codeId);
+            var outputEl = document.getElementById('output' + codeId);
+            var code = codeEl.value;
+            
+            outputEl.classList.add('show');
+            var outputContent = outputEl.querySelector('.code-output-content');
+            
+            if (!pyodideInstance) {
+                outputContent.textContent = 'Initializing Python (first run takes a few seconds)...';
+                try {
+                    await initPyodide();
+                } catch (e) {
+                    outputContent.textContent = 'Error loading Python: ' + e.message;
+                    return;
+                }
+            }
+            
+            outputContent.textContent = 'Running...';
+            
+            try {
+                pyodideInstance.runPython('import sys; from io import StringIO; sys.stdout = StringIO()');
+                await pyodideInstance.runPythonAsync(code);
+                var output = pyodideInstance.runPython('sys.stdout.getvalue()');
+                outputContent.textContent = output || '(no output)';
+            } catch (e) {
+                outputContent.textContent = 'Error: ' + e.message;
+            }
+        }
+
+        // Form Validation
+        var pageLoadTime = Date.now();
+
+        function validateStudentId(id) {
+            if (id.length < 6 || id.length > 10) return false;
+            if (!/^\d+$/.test(id)) return false;
+            if (/^(\d)\1+$/.test(id)) return false;
+            return true;
+        }
+
+        function validateName(name) {
+            if (name.length < 5) return false;
+            var words = name.trim().split(/\s+/);
+            if (words.length < 2) return false;
+            return true;
+        }
+
+        function validateEmail(email) {
+            return email.endsWith('@istun.edu.tr') && email.length > 15;
+        }
+
+        function submitWork() {
+            var status = document.getElementById('submitStatus');
+            status.style.display = 'none';
+            
+            var studentId = document.getElementById('studentId').value.trim();
+            var studentName = document.getElementById('studentName').value.trim();
+            var studentEmail = document.getElementById('studentEmail').value.trim().toLowerCase();
+            var classCode = document.getElementById('classCode').value.trim().toUpperCase();
+            var honeypot = document.getElementById('website').value;
+            
+            if (honeypot) {
+                status.textContent = '❌ Submission rejected.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
+            if (timeOnPage < 60) {
+                status.textContent = '❌ Please spend more time reviewing the material.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (!studentId || !studentName || !studentEmail || !classCode) {
+                status.textContent = '❌ All fields are required.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (!validateStudentId(studentId)) {
+                status.textContent = '❌ Invalid Student ID. Must be 6-10 digits.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (!validateName(studentName)) {
+                status.textContent = '❌ Please enter your full name.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (!validateEmail(studentEmail)) {
+                status.textContent = '❌ Please use your @istun.edu.tr email.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (classCode.length < 4) {
+                status.textContent = '❌ Invalid class code.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            var data = {
+                week: 'Week_13',
+                studentId: studentId,
+                studentName: studentName,
+                studentEmail: studentEmail,
+                classCode: classCode,
+                timeOnPage: timeOnPage,
+                source: 'cp2-web'
+            };
+            
+            status.textContent = '⏳ Submitting...';
+            status.style.cssText = 'display:block;background:rgba(147,51,234,0.2);color:#a78bfa';
+            
+            var scriptUrl = 'https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec';
+            
+            fetch(scriptUrl, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify(data)
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(result) {
+                if (result.success) {
+                    status.textContent = '✅ ' + result.message;
+                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                } else {
+                    status.textContent = '❌ ' + result.message;
+                    status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                }
+            })
+            .catch(function(error) {
+                fetch(scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(data)
+                })
+                .then(function() {
+                    status.textContent = '✅ Submission received! Thank you.';
+                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                })
+                .catch(function() {
+                    status.textContent = '❌ Connection error. Please try again.';
+                    status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                });
+            });
+        }
+    </script>
+</body>
+</html>

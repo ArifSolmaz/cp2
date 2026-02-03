@@ -1,0 +1,3041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 10: OOP Basics | Computer Programming II</title>
+    
+    <!-- Pyodide for Python execution -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-cream: #faf9f7;
+            --bg-dark: #1a1a2e;
+            --bg-code: #1e1e2e;
+            --text-primary: #1a1a2e;
+            --text-secondary: #444;
+            --text-muted: #666;
+            --accent: #7c3aed;
+            --accent-light: rgba(124, 58, 237, 0.1);
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --border: #e5e5e5;
+            --card-bg: #ffffff;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: 19px;
+            line-height: 1.8;
+            background: var(--bg-cream);
+            color: var(--text-primary);
+        }
+        
+        .topbar {
+            background: var(--bg-dark);
+            color: white;
+            padding: 14px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .topbar a { color: white; text-decoration: none; font-family: system-ui, sans-serif; font-size: 0.9rem; opacity: 0.9; transition: opacity 0.2s; }
+        .topbar a:hover { opacity: 1; }
+        .topbar-title { font-family: system-ui, sans-serif; font-weight: 600; font-size: 1rem; }
+        .topbar-nav { display: flex; gap: 24px; align-items: center; }
+        
+        .progress-container { position: fixed; top: 52px; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 99; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa); width: 0%; transition: width 0.15s ease-out; }
+        
+        .container { max-width: 900px; margin: 0 auto; padding: 50px 24px 80px; }
+        
+        .chapter-header { text-align: center; margin-bottom: 50px; padding-bottom: 40px; border-bottom: 2px solid var(--border); }
+        .chapter-label { display: inline-block; background: var(--accent); color: white; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-family: system-ui, sans-serif; font-weight: 500; margin-bottom: 20px; }
+        .chapter-header h1 { font-size: 2.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; line-height: 1.2; }
+        .chapter-meta { display: flex; justify-content: center; gap: 30px; color: var(--text-muted); font-size: 1rem; flex-wrap: wrap; }
+        .chapter-meta span { display: flex; align-items: center; gap: 6px; }
+        
+        .objectives-box { background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(124, 58, 237, 0.2); border-left: 4px solid var(--accent); border-radius: 8px; padding: 28px; margin-bottom: 50px; }
+        .objectives-box h3 { font-size: 1.2rem; margin-bottom: 16px; color: var(--accent); }
+        .objectives-box ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px 30px; list-style: none; }
+        .objectives-box li { color: var(--text-secondary); font-size: 0.95rem; padding-left: 28px; position: relative; }
+        .objectives-box li::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: bold; }
+        
+        .section { margin-bottom: 60px; scroll-margin-top: 70px; }
+        .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+        .section-number { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: var(--accent); color: white; border-radius: 10px; font-size: 1.2rem; font-weight: 700; font-family: system-ui, sans-serif; flex-shrink: 0; }
+        .section-header h2 { font-size: 1.6rem; font-weight: 600; color: var(--text-primary); }
+        
+        .content p { color: var(--text-secondary); margin-bottom: 18px; }
+        .content h3 { font-size: 1.25rem; font-weight: 600; margin: 35px 0 16px; color: var(--text-primary); }
+        .content h4 { font-size: 1.05rem; font-weight: 600; margin: 28px 0 12px; color: var(--accent); }
+        .content ul, .content ol { color: var(--text-secondary); margin: 16px 0 20px 28px; }
+        .content li { margin-bottom: 10px; }
+        .content strong { color: var(--text-primary); }
+        
+        code { font-family: 'JetBrains Mono', monospace; background: rgba(124, 58, 237, 0.1); padding: 2px 8px; border-radius: 4px; font-size: 0.85em; color: var(--accent); }
+        pre { font-family: 'JetBrains Mono', monospace; background: var(--bg-code); color: #e4e4e7; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 0.9rem; line-height: 1.5; margin: 16px 0; }
+        
+        .code-figure { background: var(--bg-code); border-radius: 10px; margin: 20px 0; overflow: hidden; border: 1px solid #333; }
+        .code-figure-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(255,255,255,0.05); border-bottom: 1px solid #333; }
+        .code-figure-label { font-family: system-ui, sans-serif; font-size: 0.8rem; color: #a78bfa; font-weight: 500; }
+        .code-figure-run { background: var(--success); color: white; border: none; padding: 6px 14px; border-radius: 6px; font-family: system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .code-figure-run:hover { background: #047857; transform: translateY(-1px); }
+        .code-editor { width: 100%; min-height: 120px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; }
+        .code-output.show { display: block; }
+        .code-output-label { font-family: system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .code-output-content { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #d4d4d8; white-space: pre-wrap; }
+        
+        .info-box { padding: 18px 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid; }
+        .info-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .tip-box { background: rgba(5, 150, 105, 0.08); border-color: var(--success); }
+        .tip-box::before { content: '💡 Tip'; display: block; font-weight: 600; color: var(--success); margin-bottom: 8px; font-size: 0.9rem; }
+        .warning-box { background: rgba(217, 119, 6, 0.08); border-color: var(--warning); }
+        .warning-box::before { content: '⚠️ Important'; display: block; font-weight: 600; color: var(--warning); margin-bottom: 8px; font-size: 0.9rem; }
+        .note-box { background: var(--accent-light); border-color: var(--accent); }
+        .note-box::before { content: '📝 Note'; display: block; font-weight: 600; color: var(--accent); margin-bottom: 8px; font-size: 0.9rem; }
+        
+        .table-container { overflow-x: auto; margin: 24px 0; border-radius: 10px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        th { background: var(--bg-dark); color: white; padding: 14px 18px; text-align: left; font-weight: 600; font-family: system-ui, sans-serif; font-size: 0.9rem; }
+        td { padding: 14px 18px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(124, 58, 237, 0.03); }
+        
+        .exercise-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 28px 0; overflow: hidden; }
+        .exercise-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05)); border-bottom: 1px solid var(--border); }
+        .exercise-title { font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 12px; }
+        .exercise-number { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; font-family: system-ui, sans-serif; }
+        .difficulty { padding: 5px 14px; border-radius: 15px; font-size: 0.8rem; font-weight: 600; font-family: system-ui, sans-serif; }
+        .difficulty.easy { background: rgba(5, 150, 105, 0.12); color: var(--success); }
+        .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
+        .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
+        .exercise-body { padding: 24px; }
+        .exercise-description { color: var(--text-secondary); font-size: 1rem; margin-bottom: 20px; }
+        .expected-output { background: rgba(5, 150, 105, 0.06); border: 1px solid rgba(5, 150, 105, 0.15); border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
+        .expected-output-label { font-size: 0.8rem; font-weight: 600; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; font-family: system-ui, sans-serif; }
+        .expected-output pre { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-secondary); margin: 0; white-space: pre-wrap; background: transparent; padding: 0; }
+        .hints-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--accent-light); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 8px; color: var(--accent); font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .hints-toggle:hover { background: rgba(124, 58, 237, 0.15); }
+        .hints-content { display: none; background: rgba(124, 58, 237, 0.05); border: 1px solid rgba(124, 58, 237, 0.12); border-radius: 8px; padding: 18px 24px; margin-top: 14px; }
+        .hints-content.show { display: block; }
+        .hints-content ul { margin: 0; padding-left: 20px; }
+        .hints-content li { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 8px; }
+        
+        .submit-section { background: var(--bg-dark); border-radius: 14px; padding: 40px; margin: 60px 0; color: white; }
+        .submit-section h2 { font-size: 1.6rem; margin-bottom: 10px; color: white; }
+        .submit-section > p { color: rgba(255,255,255,0.7); margin-bottom: 28px; }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 8px; color: rgba(255,255,255,0.8); font-family: system-ui, sans-serif; }
+        .form-group input { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; font-size: 1rem; font-family: inherit; transition: all 0.2s; }
+        .form-group input:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,0.15); }
+        .form-group input::placeholder { color: rgba(255,255,255,0.4); }
+        .honeypot { position: absolute; left: -9999px; }
+        .submit-btn { background: var(--accent); color: white; border: none; padding: 16px 40px; border-radius: 8px; font-size: 1.05rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: system-ui, sans-serif; }
+        .submit-btn:hover { background: #6d28d9; transform: translateY(-2px); }
+        .submit-status { margin-top: 20px; padding: 16px 20px; border-radius: 8px; font-family: system-ui, sans-serif; display: none; }
+        
+        .page-nav { display: flex; justify-content: space-between; padding: 30px 0; border-top: 2px solid var(--border); margin-top: 60px; }
+        .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: all 0.2s; }
+        .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+        
+        .summary-box { background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 12px; padding: 30px; margin: 50px 0; }
+        .summary-box h3 { color: var(--accent); margin-bottom: 20px; font-size: 1.3rem; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .summary-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--card-bg); border-radius: 8px; font-size: 0.95rem; }
+        .summary-item .icon { font-size: 1.3rem; }
+        
+        @media (max-width: 700px) {
+            .chapter-header h1 { font-size: 2rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .chapter-meta { flex-direction: column; gap: 10px; }
+            .topbar-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+    
+    <nav class="topbar">
+        <a href="index.html?home=true" class="topbar-title">← Course Home</a>
+        <div class="topbar-nav">
+            <span style="opacity:0.7">Week 10 of 14</span>
+            <a href="Week_09.html">← Week 09</a>
+            <a href="Week_11.html">Week 11 →</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <header class="chapter-header">
+            <span class="chapter-label">Week 10</span>
+            <h1>Object-Oriented Programming Basics</h1>
+            <div class="chapter-meta">
+                <span>📚 Computer Programming II</span>
+                <span>👨‍🏫 Dr. Arif Solmaz</span>
+            </div>
+        </header>
+        
+        <div class="objectives-box">
+            <h3>🎯 Learning Objectives</h3>
+            <ul>
+                <li>Understand the principles of Object-Oriented Programming</li>
+                <li>Create classes and instantiate objects</li>
+                <li>Define instance and class attributes</li>
+                <li>Write instance, class, and static methods</li>
+                <li>Use the __init__ constructor effectively</li>
+                <li>Implement special methods (dunder methods)</li>
+                <li>Understand encapsulation and properties</li>
+                <li>Apply composition for complex objects</li>
+            </ul>
+        </div>
+        
+        <div class="content">
+            <!-- Section 1: Introduction to OOP -->
+            <section id="part1" class="section">
+                <div class="section-header">
+                    <div class="section-number">1</div>
+                    <h2>Introduction to OOP</h2>
+                </div>
+                
+                <p>Object-Oriented Programming (OOP) is a programming paradigm that organizes code around <strong>objects</strong> that combine data (attributes) and behavior (methods). Instead of writing separate functions and variables scattered throughout your program, OOP bundles related data and functionality together into cohesive units.</p>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Concept</th><th>Description</th><th>Real-World Analogy</th><th>Python Example</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Class</strong></td><td>Blueprint/template for creating objects</td><td>Blueprint for a house</td><td><code>class Sensor:</code></td></tr>
+                            <tr><td><strong>Object</strong></td><td>Instance of a class (actual entity)</td><td>An actual house built from blueprint</td><td><code>sensor1 = Sensor()</code></td></tr>
+                            <tr><td><strong>Attribute</strong></td><td>Data stored in an object</td><td>House color, number of rooms</td><td><code>sensor.value = 25.5</code></td></tr>
+                            <tr><td><strong>Method</strong></td><td>Function belonging to an object</td><td>Open door, turn on lights</td><td><code>sensor.read()</code></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3>Why Object-Oriented Programming?</h3>
+                <p>Before OOP, programmers used procedural programming where data and functions were separate. This worked for small programs but became difficult to manage as programs grew larger. OOP addresses these challenges by providing better organization, reusability, and modeling of real-world concepts.</p>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.1: Procedural vs OOP Approach</span>
+                        <button class="code-figure-run" onclick="runCode('code1')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code1"># PROCEDURAL APPROACH - Data and functions are separate
+# Data stored in dictionaries
+sensor1 = {
+    'id': 'TEMP_001',
+    'type': 'temperature',
+    'value': 25.5,
+    'unit': 'celsius'
+}
+
+sensor2 = {
+    'id': 'TEMP_002',
+    'type': 'temperature',
+    'value': 26.3,
+    'unit': 'celsius'
+}
+
+# Functions that work with sensor dictionaries
+def read_sensor(sensor):
+    return f"{sensor['id']}: {sensor['value']} {sensor['unit']}"
+
+def update_sensor(sensor, new_value):
+    sensor['value'] = new_value
+    return sensor
+
+# Using procedural approach
+print("=== Procedural Approach ===")
+print(read_sensor(sensor1))
+update_sensor(sensor1, 27.0)
+print(read_sensor(sensor1))</textarea>
+                    <div class="code-output" id="outputcode1">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.2: OOP Approach - Data and Behavior Together</span>
+                        <button class="code-figure-run" onclick="runCode('code2')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code2"># OOP APPROACH - Data and functions bundled together
+class Sensor:
+    """A class representing a sensor device."""
+    
+    def __init__(self, sensor_id, sensor_type, value, unit):
+        """Initialize sensor with its properties."""
+        self.id = sensor_id
+        self.type = sensor_type
+        self.value = value
+        self.unit = unit
+    
+    def read(self):
+        """Return a formatted reading string."""
+        return f"{self.id}: {self.value} {self.unit}"
+    
+    def update(self, new_value):
+        """Update the sensor value."""
+        self.value = new_value
+
+# Create objects (instances) of the Sensor class
+sensor1 = Sensor('TEMP_001', 'temperature', 25.5, 'celsius')
+sensor2 = Sensor('TEMP_002', 'temperature', 26.3, 'celsius')
+
+# Using OOP approach - much cleaner!
+print("=== OOP Approach ===")
+print(sensor1.read())
+sensor1.update(27.0)
+print(sensor1.read())
+print(sensor2.read())</textarea>
+                    <div class="code-output" id="outputcode2">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Four Pillars of OOP</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.3: OOP Core Principles</span>
+                        <button class="code-figure-run" onclick="runCode('code3')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code3"># The Four Pillars of Object-Oriented Programming
+pillars = {
+    "Encapsulation": {
+        "description": "Bundling data and methods that operate on that data within a single unit (class)",
+        "benefit": "Hides internal details, reduces complexity",
+        "example": "Sensor hides how it stores/validates data internally"
+    },
+    "Abstraction": {
+        "description": "Showing only essential features while hiding implementation details",
+        "benefit": "Simplifies interaction with complex systems",
+        "example": "sensor.read() - user doesn't need to know how reading works"
+    },
+    "Inheritance": {
+        "description": "Creating new classes based on existing classes",
+        "benefit": "Code reuse, hierarchical organization",
+        "example": "TemperatureSensor inherits from Sensor (Week 11)"
+    },
+    "Polymorphism": {
+        "description": "Objects of different classes can be treated uniformly",
+        "benefit": "Flexibility, extensibility",
+        "example": "Different sensors with same read() interface (Week 11)"
+    }
+}
+
+print("=== The Four Pillars of OOP ===\n")
+for i, (pillar, info) in enumerate(pillars.items(), 1):
+    print(f"{i}. {pillar}")
+    print(f"   Definition: {info['description']}")
+    print(f"   Benefit: {info['benefit']}")
+    print(f"   Example: {info['example']}")
+    print()</textarea>
+                    <div class="code-output" id="outputcode3">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="tip-box info-box">
+                    <p>Think of a class as a cookie cutter and objects as the cookies. The cookie cutter (class) defines the shape and structure, but each cookie (object) can have different decorations (attribute values). You make the cookie cutter once and use it to create many cookies!</p>
+                </div>
+            </section>
+            
+            <!-- Section 2: Creating Classes and Objects -->
+            <section id="part2" class="section">
+                <div class="section-header">
+                    <div class="section-number">2</div>
+                    <h2>Creating Classes and Objects</h2>
+                </div>
+                
+                <p>A class is defined using the <code>class</code> keyword followed by the class name. By convention, class names use PascalCase (each word capitalized). Objects are created by calling the class like a function.</p>
+                
+                <pre>class ClassName:
+    """Docstring describing the class."""
+    # Class body goes here
+    pass
+
+# Create an object (instance)
+object_name = ClassName()</pre>
+                
+                <h3>Simplest Class Definition</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.1: Basic Class Definition</span>
+                        <button class="code-figure-run" onclick="runCode('code4')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code4"># Simplest possible class
+class Empty:
+    """An empty class - just a placeholder."""
+    pass
+
+# Create instances of the empty class
+obj1 = Empty()
+obj2 = Empty()
+
+# Each instance is a separate object
+print(f"obj1 type: {type(obj1)}")
+print(f"obj2 type: {type(obj2)}")
+print(f"obj1 is obj2: {obj1 is obj2}")  # Different objects
+print(f"obj1 id: {id(obj1)}")
+print(f"obj2 id: {id(obj2)}")</textarea>
+                    <div class="code-output" id="outputcode4">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Adding Attributes to Objects</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.2: Instance Attributes</span>
+                        <button class="code-figure-run" onclick="runCode('code5')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code5"># Adding attributes to objects dynamically
+class Person:
+    """A class representing a person."""
+    pass
+
+# Create instances and add attributes
+person1 = Person()
+person1.name = "Ali"
+person1.age = 25
+person1.city = "Istanbul"
+
+person2 = Person()
+person2.name = "Ayşe"
+person2.age = 30
+person2.city = "Ankara"
+
+# Access attributes using dot notation
+print(f"Person 1: {person1.name}, {person1.age} years old, from {person1.city}")
+print(f"Person 2: {person2.name}, {person2.age} years old, from {person2.city}")
+
+# Check what attributes an object has
+print(f"\nPerson1 attributes: {vars(person1)}")
+print(f"Person2 attributes: {vars(person2)}")</textarea>
+                    <div class="code-output" id="outputcode5">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Adding Methods to Classes</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.3: Class with Methods</span>
+                        <button class="code-figure-run" onclick="runCode('code6')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code6"># Class with methods
+class Dog:
+    """A class representing a dog."""
+    
+    def bark(self):
+        """Make the dog bark."""
+        print("Woof! Woof!")
+    
+    def sit(self):
+        """Make the dog sit."""
+        print("*sits down*")
+    
+    def speak(self, message):
+        """Make the dog speak with a message."""
+        print(f"Dog says: {message}")
+
+# Create a dog instance
+buddy = Dog()
+buddy.name = "Buddy"  # Add attribute
+
+# Call methods
+print(f"{buddy.name}:")
+buddy.bark()
+buddy.sit()
+buddy.speak("I want treats!")</textarea>
+                    <div class="code-output" id="outputcode6">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="warning-box info-box">
+                    <p>The first parameter of every instance method must be <code>self</code>. This special parameter refers to the instance calling the method. Python passes it automatically—you don't include it when calling the method.</p>
+                </div>
+            </section>
+            
+            <!-- Section 3: The __init__ Constructor -->
+            <section id="part3" class="section">
+                <div class="section-header">
+                    <div class="section-number">3</div>
+                    <h2>The __init__ Constructor</h2>
+                </div>
+                
+                <p>The <code>__init__</code> method (pronounced "dunder init") is a special method that initializes a new object. It's called automatically when you create an instance. This is where you typically set up initial attribute values.</p>
+                
+                <pre>class ClassName:
+    def __init__(self, param1, param2):
+        self.attribute1 = param1
+        self.attribute2 = param2
+
+# Creating an instance calls __init__ automatically
+obj = ClassName(value1, value2)</pre>
+                
+                <h3>Basic Constructor</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.1: Using __init__ Constructor</span>
+                        <button class="code-figure-run" onclick="runCode('code7')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code7"># Using the __init__ constructor
+class Student:
+    """A class representing a student."""
+    
+    def __init__(self, name, student_id, major):
+        """Initialize student with name, ID, and major."""
+        self.name = name
+        self.student_id = student_id
+        self.major = major
+        self.courses = []  # Initialize with empty list
+        self.gpa = 0.0     # Default value
+    
+    def display_info(self):
+        """Display student information."""
+        print(f"Student: {self.name}")
+        print(f"ID: {self.student_id}")
+        print(f"Major: {self.major}")
+        print(f"GPA: {self.gpa}")
+        print(f"Courses: {', '.join(self.courses) if self.courses else 'None'}")
+
+# Create student instances
+student1 = Student("Ali Yılmaz", "2024001", "Mechatronics")
+student2 = Student("Ayşe Kaya", "2024002", "Computer Engineering")
+
+# Add some courses
+student1.courses = ["Python", "Electronics", "Mechanics"]
+student1.gpa = 3.5
+
+student2.courses = ["Data Structures", "Algorithms"]
+student2.gpa = 3.8
+
+# Display information
+print("=== Student 1 ===")
+student1.display_info()
+print("\n=== Student 2 ===")
+student2.display_info()</textarea>
+                    <div class="code-output" id="outputcode7">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Constructor with Default Parameters</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.2: Constructor with Defaults</span>
+                        <button class="code-figure-run" onclick="runCode('code8')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code8"># Constructor with default parameter values
+class Rectangle:
+    """A class representing a rectangle."""
+    
+    def __init__(self, width=1, height=1, color="white"):
+        """
+        Initialize rectangle with dimensions and color.
+        
+        Args:
+            width: Rectangle width (default 1)
+            height: Rectangle height (default 1)
+            color: Fill color (default "white")
+        """
+        self.width = width
+        self.height = height
+        self.color = color
+    
+    def area(self):
+        """Calculate and return the area."""
+        return self.width * self.height
+    
+    def perimeter(self):
+        """Calculate and return the perimeter."""
+        return 2 * (self.width + self.height)
+    
+    def describe(self):
+        """Return a description of the rectangle."""
+        return f"{self.color} rectangle: {self.width}x{self.height}"
+
+# Create rectangles with different parameters
+rect1 = Rectangle()                    # All defaults
+rect2 = Rectangle(5, 3)               # Custom size, default color
+rect3 = Rectangle(10, 5, "blue")      # All custom
+rect4 = Rectangle(width=4, color="red")  # Named arguments
+
+# Display each rectangle
+rectangles = [rect1, rect2, rect3, rect4]
+for i, rect in enumerate(rectangles, 1):
+    print(f"Rectangle {i}: {rect.describe()}")
+    print(f"  Area: {rect.area()}, Perimeter: {rect.perimeter()}")
+    print()</textarea>
+                    <div class="code-output" id="outputcode8">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Engineering Example: Sensor Class</h4>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.3: Complete Sensor Class</span>
+                        <button class="code-figure-run" onclick="runCode('code9')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code9"># Engineering: Complete sensor class with validation
+class Sensor:
+    """
+    A class representing a sensor device.
+    
+    Attributes:
+        sensor_id: Unique identifier for the sensor
+        sensor_type: Type of measurement (temperature, pressure, etc.)
+        unit: Measurement unit (celsius, hPa, etc.)
+        value: Current reading value
+        min_value: Minimum valid value
+        max_value: Maximum valid value
+    """
+    
+    def __init__(self, sensor_id, sensor_type, unit, 
+                 min_value=-float('inf'), max_value=float('inf')):
+        """Initialize sensor with validation range."""
+        self.sensor_id = sensor_id
+        self.sensor_type = sensor_type
+        self.unit = unit
+        self.min_value = min_value
+        self.max_value = max_value
+        self._value = None  # Private attribute
+        self._reading_count = 0
+    
+    def read(self, value):
+        """Record a sensor reading with validation."""
+        if value < self.min_value or value > self.max_value:
+            print(f"Warning: {value} out of range [{self.min_value}, {self.max_value}]")
+            return False
+        self._value = value
+        self._reading_count += 1
+        return True
+    
+    def get_value(self):
+        """Get the current value."""
+        return self._value
+    
+    def get_status(self):
+        """Return sensor status information."""
+        return {
+            'id': self.sensor_id,
+            'type': self.sensor_type,
+            'value': self._value,
+            'unit': self.unit,
+            'readings': self._reading_count
+        }
+
+# Create different types of sensors
+temp_sensor = Sensor("TEMP_001", "temperature", "°C", -40, 125)
+pressure_sensor = Sensor("PRES_001", "pressure", "hPa", 800, 1200)
+
+# Simulate readings
+print("=== Temperature Sensor ===")
+temp_sensor.read(25.5)
+print(f"Status: {temp_sensor.get_status()}")
+temp_sensor.read(200)  # Out of range!
+print(f"Status: {temp_sensor.get_status()}")
+
+print("\n=== Pressure Sensor ===")
+pressure_sensor.read(1013.25)
+pressure_sensor.read(1015.0)
+print(f"Status: {pressure_sensor.get_status()}")</textarea>
+                    <div class="code-output" id="outputcode9">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 4: Instance Methods -->
+            <section id="part4" class="section">
+                <div class="section-header">
+                    <div class="section-number">4</div>
+                    <h2>Instance Methods</h2>
+                </div>
+                
+                <p>Instance methods are functions defined inside a class that operate on individual objects. They always receive <code>self</code> as their first parameter, which refers to the specific instance calling the method.</p>
+                
+                <h3>Defining and Using Instance Methods</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.1: Instance Methods</span>
+                        <button class="code-figure-run" onclick="runCode('code10')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code10"># Instance methods work with object data via self
+class BankAccount:
+    """A simple bank account class."""
+    
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+        self.transactions = []
+    
+    def deposit(self, amount):
+        """Add money to the account."""
+        if amount > 0:
+            self.balance += amount
+            self.transactions.append(f"+${amount}")
+            return True
+        return False
+    
+    def withdraw(self, amount):
+        """Remove money from the account."""
+        if amount > 0 and amount <= self.balance:
+            self.balance -= amount
+            self.transactions.append(f"-${amount}")
+            return True
+        return False
+    
+    def get_balance(self):
+        """Return current balance."""
+        return self.balance
+    
+    def get_statement(self):
+        """Generate account statement."""
+        print(f"=== Account Statement ===")
+        print(f"Owner: {self.owner}")
+        print(f"Current Balance: ${self.balance}")
+        print(f"Transactions: {', '.join(self.transactions)}")
+
+# Create account and perform operations
+account = BankAccount("Ali", 100)
+account.deposit(50)
+account.deposit(30)
+account.withdraw(25)
+account.get_statement()</textarea>
+                    <div class="code-output" id="outputcode10">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Methods That Return self</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.2: Method Chaining</span>
+                        <button class="code-figure-run" onclick="runCode('code11')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code11"># Methods that return self enable method chaining
+class QueryBuilder:
+    """Build database-like queries with method chaining."""
+    
+    def __init__(self, table):
+        self.table = table
+        self.conditions = []
+        self.selected_columns = "*"
+        self.order_column = None
+    
+    def select(self, columns):
+        """Select specific columns."""
+        self.selected_columns = columns
+        return self  # Return self for chaining
+    
+    def where(self, condition):
+        """Add a WHERE condition."""
+        self.conditions.append(condition)
+        return self
+    
+    def order_by(self, column):
+        """Add ORDER BY clause."""
+        self.order_column = column
+        return self
+    
+    def build(self):
+        """Build the final query string."""
+        query = f"SELECT {self.selected_columns} FROM {self.table}"
+        if self.conditions:
+            query += " WHERE " + " AND ".join(self.conditions)
+        if self.order_column:
+            query += f" ORDER BY {self.order_column}"
+        return query
+
+# Without chaining (verbose)
+query1 = QueryBuilder("users")
+query1.select("name, email")
+query1.where("age > 18")
+print("Query 1:", query1.build())
+
+# With chaining (elegant)
+query2 = (QueryBuilder("products")
+          .select("name, price")
+          .where("category = 'electronics'")
+          .where("price < 1000")
+          .order_by("price")
+          .build())
+print("Query 2:", query2)</textarea>
+                    <div class="code-output" id="outputcode11">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 5: Instance vs Class Attributes -->
+            <section id="part5" class="section">
+                <div class="section-header">
+                    <div class="section-number">5</div>
+                    <h2>Instance vs Class Attributes</h2>
+                </div>
+                
+                <p>Python distinguishes between <strong>instance attributes</strong> (unique to each object) and <strong>class attributes</strong> (shared by all instances). Understanding this difference is crucial for proper OOP design.</p>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Attribute Type</th><th>Definition</th><th>Scope</th><th>Access</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Instance Attribute</strong></td><td>Defined in __init__ with self</td><td>Unique to each object</td><td>self.name or obj.name</td></tr>
+                            <tr><td><strong>Class Attribute</strong></td><td>Defined in class body</td><td>Shared by all objects</td><td>ClassName.name or self.name</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3>Class Attributes</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.1: Class vs Instance Attributes</span>
+                        <button class="code-figure-run" onclick="runCode('code12')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code12"># Class attribute vs instance attribute
+class Employee:
+    """A class representing an employee."""
+    
+    # Class attributes - shared by all instances
+    company = "TechCorp Inc."
+    employee_count = 0
+    
+    def __init__(self, name, department, salary):
+        # Instance attributes - unique to each object
+        self.name = name
+        self.department = department
+        self.salary = salary
+        self.employee_id = Employee.employee_count + 1
+        
+        # Increment class attribute
+        Employee.employee_count += 1
+    
+    def display(self):
+        print(f"{self.employee_id}: {self.name} - {self.department} @ {self.company}")
+
+# Create employees
+emp1 = Employee("Ali", "Engineering", 50000)
+emp2 = Employee("Ayşe", "Marketing", 45000)
+emp3 = Employee("Mehmet", "Engineering", 55000)
+
+# Display all employees
+print("=== All Employees ===")
+emp1.display()
+emp2.display()
+emp3.display()
+
+# Class attribute is shared
+print(f"\nTotal employees: {Employee.employee_count}")
+print(f"Company name: {Employee.company}")
+
+# Accessing class attribute via instance
+print(f"emp1's company: {emp1.company}")
+print(f"emp2's company: {emp2.company}")</textarea>
+                    <div class="code-output" id="outputcode12">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Modifying Class Attributes</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.2: Class Attribute Modification</span>
+                        <button class="code-figure-run" onclick="runCode('code13')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code13"># Modifying class attributes
+class Counter:
+    """Demonstrate class attribute modification."""
+    count = 0  # Class attribute
+    
+    def __init__(self, name):
+        self.name = name  # Instance attribute
+        Counter.count += 1  # Modify via class name
+    
+    def show(self):
+        print(f"{self.name}: total count = {Counter.count}")
+
+# Create instances
+c1 = Counter("First")
+c1.show()
+
+c2 = Counter("Second")
+c1.show()  # Both see the updated count
+c2.show()
+
+c3 = Counter("Third")
+
+# All instances share the class attribute
+print(f"\nAccessing via class: {Counter.count}")
+print(f"Via c1: {c1.count}")
+print(f"Via c2: {c2.count}")
+print(f"Via c3: {c3.count}")</textarea>
+                    <div class="code-output" id="outputcode13">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Engineering Example: Sensor Registry</h4>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.3: Sensor Registry Pattern</span>
+                        <button class="code-figure-run" onclick="runCode('code14')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code14"># Engineering: Sensor registry using class attributes
+class Sensor:
+    """Sensor class with automatic registration."""
+    
+    # Class attributes for registry
+    _registry = {}
+    total_sensors = 0
+    
+    def __init__(self, sensor_id, sensor_type):
+        self.sensor_id = sensor_id
+        self.sensor_type = sensor_type
+        self.value = None
+        
+        # Register this sensor
+        Sensor._registry[sensor_id] = self
+        Sensor.total_sensors += 1
+    
+    def read(self, value):
+        self.value = value
+    
+    @classmethod
+    def get_sensor(cls, sensor_id):
+        """Retrieve a sensor by ID."""
+        return cls._registry.get(sensor_id)
+    
+    @classmethod
+    def list_sensors(cls):
+        """List all registered sensors."""
+        print(f"=== Sensor Registry ({cls.total_sensors} sensors) ===")
+        for sid, sensor in cls._registry.items():
+            print(f"  {sid}: {sensor.sensor_type} = {sensor.value}")
+
+# Create sensors
+temp1 = Sensor("TEMP_001", "temperature")
+temp2 = Sensor("TEMP_002", "temperature")
+pres1 = Sensor("PRES_001", "pressure")
+
+# Take readings
+temp1.read(25.5)
+temp2.read(26.0)
+pres1.read(1013.25)
+
+# List all sensors
+Sensor.list_sensors()
+
+# Retrieve specific sensor
+sensor = Sensor.get_sensor("TEMP_001")
+print(f"\nRetrieved: {sensor.sensor_id} = {sensor.value}")</textarea>
+                    <div class="code-output" id="outputcode14">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="warning-box info-box">
+                    <p>Be careful when assigning to class attributes via an instance (e.g., <code>obj.class_attr = value</code>). This creates a new instance attribute that shadows the class attribute, rather than modifying the shared class attribute. Always use <code>ClassName.attr = value</code> to modify class attributes.</p>
+                </div>
+            </section>
+            
+            <!-- Section 6: Class and Static Methods -->
+            <section id="part6" class="section">
+                <div class="section-header">
+                    <div class="section-number">6</div>
+                    <h2>Class Methods and Static Methods</h2>
+                </div>
+                
+                <p>In addition to instance methods, Python classes can have <strong>class methods</strong> (work with class data) and <strong>static methods</strong> (utility functions that don't need class or instance data).</p>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Method Type</th><th>Decorator</th><th>First Parameter</th><th>Use Case</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Instance Method</strong></td><td>None</td><td><code>self</code></td><td>Work with instance data</td></tr>
+                            <tr><td><strong>Class Method</strong></td><td><code>@classmethod</code></td><td><code>cls</code></td><td>Work with class data, alternative constructors</td></tr>
+                            <tr><td><strong>Static Method</strong></td><td><code>@staticmethod</code></td><td>None</td><td>Utility functions, don't need class/instance</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3>Class Methods</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.1: Class Methods with @classmethod</span>
+                        <button class="code-figure-run" onclick="runCode('code15')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code15"># Class methods - work with class data, use cls parameter
+class Date:
+    """A class representing a date."""
+    
+    def __init__(self, year, month, day):
+        self.year = year
+        self.month = month
+        self.day = day
+    
+    def __str__(self):
+        return f"{self.year}-{self.month:02d}-{self.day:02d}"
+    
+    @classmethod
+    def from_string(cls, date_string):
+        """Alternative constructor: create Date from string."""
+        year, month, day = map(int, date_string.split('-'))
+        return cls(year, month, day)  # cls is the Date class
+    
+    @classmethod
+    def today(cls):
+        """Alternative constructor: create today's date."""
+        # Simplified - just return a fixed date for demo
+        return cls(2026, 2, 3)
+
+# Create dates using different constructors
+date1 = Date(2024, 12, 25)
+date2 = Date.from_string("2024-06-15")
+date3 = Date.today()
+
+print(f"Date 1 (standard): {date1}")
+print(f"Date 2 (from string): {date2}")
+print(f"Date 3 (today): {date3}")</textarea>
+                    <div class="code-output" id="outputcode15">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Static Methods</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.2: Static Methods with @staticmethod</span>
+                        <button class="code-figure-run" onclick="runCode('code16')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code16"># Static methods - utility functions, don't need self or cls
+class MathUtils:
+    """A collection of math utility functions."""
+    
+    @staticmethod
+    def is_positive(number):
+        """Check if a number is positive."""
+        return number > 0
+    
+    @staticmethod
+    def is_even(number):
+        """Check if a number is even."""
+        return number % 2 == 0
+    
+    @staticmethod
+    def clamp(value, min_val, max_val):
+        """Clamp a value between min and max."""
+        return max(min_val, min(value, max_val))
+    
+    @staticmethod
+    def celsius_to_fahrenheit(celsius):
+        """Convert Celsius to Fahrenheit."""
+        return (celsius * 9/5) + 32
+    
+    @staticmethod
+    def fahrenheit_to_celsius(fahrenheit):
+        """Convert Fahrenheit to Celsius."""
+        return (fahrenheit - 32) * 5/9
+
+# Use static methods - no instance needed!
+print("=== Static Methods Demo ===")
+print(f"Is 5 positive? {MathUtils.is_positive(5)}")
+print(f"Is 4 even? {MathUtils.is_even(4)}")
+print(f"Clamp 150 to [0, 100]: {MathUtils.clamp(150, 0, 100)}")
+print(f"25°C in Fahrenheit: {MathUtils.celsius_to_fahrenheit(25)}°F")
+print(f"77°F in Celsius: {MathUtils.fahrenheit_to_celsius(77):.1f}°C")</textarea>
+                    <div class="code-output" id="outputcode16">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Combining All Method Types</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.3: All Method Types in One Class</span>
+                        <button class="code-figure-run" onclick="runCode('code17')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code17"># Complete example using all method types
+class Temperature:
+    """Temperature class demonstrating all method types."""
+    
+    # Class attribute
+    scale = "Celsius"
+    
+    def __init__(self, value):
+        """Instance method (constructor)."""
+        self.value = value
+    
+    # Instance method
+    def display(self):
+        """Display the temperature."""
+        return f"{self.value}° {Temperature.scale}"
+    
+    # Instance method
+    def is_freezing(self):
+        """Check if temperature is below freezing."""
+        return self.value < 0
+    
+    # Class method - alternative constructor
+    @classmethod
+    def from_fahrenheit(cls, fahrenheit):
+        """Create Temperature from Fahrenheit value."""
+        celsius = (fahrenheit - 32) * 5/9
+        return cls(celsius)
+    
+    # Class method - modify class state
+    @classmethod
+    def set_scale(cls, new_scale):
+        """Change the display scale."""
+        cls.scale = new_scale
+    
+    # Static method - utility function
+    @staticmethod
+    def convert(value, from_scale, to_scale):
+        """Convert between temperature scales."""
+        if from_scale == to_scale:
+            return value
+        if from_scale == "Celsius" and to_scale == "Fahrenheit":
+            return (value * 9/5) + 32
+        if from_scale == "Fahrenheit" and to_scale == "Celsius":
+            return (value - 32) * 5/9
+        return value
+
+# Demo all method types
+temp1 = Temperature(25)  # Regular constructor
+temp2 = Temperature.from_fahrenheit(77)  # Class method constructor
+
+print("=== Temperature Demo ===")
+print(f"temp1: {temp1.display()}")
+print(f"temp2: {temp2.display()}")
+print(f"temp1 freezing? {temp1.is_freezing()}")
+
+# Use static method
+converted = Temperature.convert(100, "Celsius", "Fahrenheit")
+print(f"\n100°C = {converted}°F")
+
+# Use class method to change scale
+Temperature.set_scale("Kelvin")
+print(f"\nAfter scale change:")
+print(f"Scale is now: {Temperature.scale}")</textarea>
+                    <div class="code-output" id="outputcode17">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 7: Special Methods (Dunder Methods) -->
+            <section id="part7" class="section">
+                <div class="section-header">
+                    <div class="section-number">7</div>
+                    <h2>Special Methods (Dunder Methods)</h2>
+                </div>
+                
+                <p>Special methods (also called magic methods or dunder methods) let you customize how objects behave with built-in Python operations. They start and end with double underscores, like <code>__init__</code>, <code>__str__</code>, <code>__add__</code>.</p>
+                
+                <h3>String Representation: __str__ and __repr__</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.1: __str__ and __repr__ Methods</span>
+                        <button class="code-figure-run" onclick="runCode('code18')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code18"># __str__ and __repr__ for string representation
+class Point:
+    """A 2D point class."""
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __str__(self):
+        """Human-readable string (for print, str())."""
+        return f"Point at ({self.x}, {self.y})"
+    
+    def __repr__(self):
+        """Developer-readable string (for debugging, repr())."""
+        return f"Point(x={self.x}, y={self.y})"
+
+p = Point(3, 4)
+
+# __str__ is used by print() and str()
+print("Using print():", p)
+print("Using str():", str(p))
+
+# __repr__ is used in debugging and containers
+print("Using repr():", repr(p))
+print("In a list:", [p])
+
+# Without these methods, you'd see something like:
+# <__main__.Point object at 0x...></textarea>
+                    <div class="code-output" id="outputcode18">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Comparison Methods</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.2: Comparison Special Methods</span>
+                        <button class="code-figure-run" onclick="runCode('code19')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code19"># Comparison methods for custom objects
+class Student:
+    """Student class with comparison by grade."""
+    
+    def __init__(self, name, grade):
+        self.name = name
+        self.grade = grade
+    
+    def __str__(self):
+        return f"{self.name}: {self.grade}"
+    
+    def __eq__(self, other):
+        """Equal: =="""
+        return self.grade == other.grade
+    
+    def __ne__(self, other):
+        """Not equal: !="""
+        return self.grade != other.grade
+    
+    def __lt__(self, other):
+        """Less than: <"""
+        return self.grade < other.grade
+    
+    def __le__(self, other):
+        """Less than or equal: <="""
+        return self.grade <= other.grade
+    
+    def __gt__(self, other):
+        """Greater than: >"""
+        return self.grade > other.grade
+    
+    def __ge__(self, other):
+        """Greater than or equal: >="""
+        return self.grade >= other.grade
+
+# Create students
+s1 = Student("Ali", 85)
+s2 = Student("Ayşe", 90)
+s3 = Student("Mehmet", 85)
+
+# Compare students
+print("=== Comparing Students ===")
+print(f"s1 == s3: {s1 == s3}")  # Same grade
+print(f"s1 == s2: {s1 == s2}")  # Different grade
+print(f"s1 < s2: {s1 < s2}")
+print(f"s2 > s1: {s2 > s1}")
+
+# Now we can sort students!
+students = [s1, s2, s3]
+students.sort()
+print(f"\nSorted by grade: {[str(s) for s in students]}")</textarea>
+                    <div class="code-output" id="outputcode19">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Arithmetic Methods</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.3: Arithmetic Special Methods</span>
+                        <button class="code-figure-run" onclick="runCode('code20')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code20"># Arithmetic methods for mathematical operations
+class Vector:
+    """A 2D vector class with arithmetic operations."""
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __str__(self):
+        return f"Vector({self.x}, {self.y})"
+    
+    def __add__(self, other):
+        """Vector addition: +"""
+        return Vector(self.x + other.x, self.y + other.y)
+    
+    def __sub__(self, other):
+        """Vector subtraction: -"""
+        return Vector(self.x - other.x, self.y - other.y)
+    
+    def __mul__(self, scalar):
+        """Scalar multiplication: *"""
+        return Vector(self.x * scalar, self.y * scalar)
+    
+    def __rmul__(self, scalar):
+        """Right multiplication: scalar * vector"""
+        return self.__mul__(scalar)
+    
+    def __neg__(self):
+        """Negation: -vector"""
+        return Vector(-self.x, -self.y)
+    
+    def __abs__(self):
+        """Magnitude: abs(vector)"""
+        return (self.x**2 + self.y**2) ** 0.5
+
+# Create vectors
+v1 = Vector(3, 4)
+v2 = Vector(1, 2)
+
+print("=== Vector Arithmetic ===")
+print(f"v1 = {v1}")
+print(f"v2 = {v2}")
+print(f"v1 + v2 = {v1 + v2}")
+print(f"v1 - v2 = {v1 - v2}")
+print(f"v1 * 2 = {v1 * 2}")
+print(f"3 * v2 = {3 * v2}")
+print(f"-v1 = {-v1}")
+print(f"|v1| = {abs(v1)}")</textarea>
+                    <div class="code-output" id="outputcode20">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Container Methods</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.4: Container Special Methods</span>
+                        <button class="code-figure-run" onclick="runCode('code21')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code21"># Container methods for collection-like behavior
+class Playlist:
+    """A playlist class that acts like a container."""
+    
+    def __init__(self, name):
+        self.name = name
+        self._songs = []
+    
+    def add(self, song):
+        """Add a song to the playlist."""
+        self._songs.append(song)
+    
+    def __len__(self):
+        """Return number of songs: len(playlist)"""
+        return len(self._songs)
+    
+    def __getitem__(self, index):
+        """Get song by index: playlist[index]"""
+        return self._songs[index]
+    
+    def __setitem__(self, index, song):
+        """Set song by index: playlist[index] = song"""
+        self._songs[index] = song
+    
+    def __contains__(self, song):
+        """Check if song in playlist: song in playlist"""
+        return song in self._songs
+    
+    def __iter__(self):
+        """Iterate over songs: for song in playlist"""
+        return iter(self._songs)
+    
+    def __str__(self):
+        return f"Playlist '{self.name}' ({len(self)} songs)"
+
+# Create and use playlist
+playlist = Playlist("My Favorites")
+playlist.add("Song A")
+playlist.add("Song B")
+playlist.add("Song C")
+
+print(playlist)
+print(f"Length: {len(playlist)}")
+print(f"First song: {playlist[0]}")
+print(f"'Song B' in playlist: {'Song B' in playlist}")
+
+print("\nAll songs:")
+for song in playlist:
+    print(f"  - {song}")</textarea>
+                    <div class="code-output" id="outputcode21">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Method</th><th>Operation</th><th>Example</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>__str__</code></td><td>String conversion</td><td><code>str(obj)</code>, <code>print(obj)</code></td></tr>
+                            <tr><td><code>__repr__</code></td><td>Debug string</td><td><code>repr(obj)</code></td></tr>
+                            <tr><td><code>__len__</code></td><td>Length</td><td><code>len(obj)</code></td></tr>
+                            <tr><td><code>__getitem__</code></td><td>Index access</td><td><code>obj[key]</code></td></tr>
+                            <tr><td><code>__setitem__</code></td><td>Index assignment</td><td><code>obj[key] = value</code></td></tr>
+                            <tr><td><code>__contains__</code></td><td>Membership</td><td><code>item in obj</code></td></tr>
+                            <tr><td><code>__iter__</code></td><td>Iteration</td><td><code>for item in obj</code></td></tr>
+                            <tr><td><code>__eq__</code></td><td>Equality</td><td><code>obj1 == obj2</code></td></tr>
+                            <tr><td><code>__lt__</code></td><td>Less than</td><td><code>obj1 < obj2</code></td></tr>
+                            <tr><td><code>__add__</code></td><td>Addition</td><td><code>obj1 + obj2</code></td></tr>
+                            <tr><td><code>__call__</code></td><td>Function call</td><td><code>obj()</code></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Section 8: Properties and Encapsulation -->
+            <section id="part8" class="section">
+                <div class="section-header">
+                    <div class="section-number">8</div>
+                    <h2>Properties and Encapsulation</h2>
+                </div>
+                
+                <p>Encapsulation is the practice of hiding internal details and controlling access to data. Python uses <strong>properties</strong> to create managed attributes with getters, setters, and deleters.</p>
+                
+                <h3>Python Naming Conventions</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Convention</th><th>Meaning</th><th>Access Level</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>name</code></td><td>Public attribute</td><td>Free access from anywhere</td></tr>
+                            <tr><td><code>_name</code></td><td>Protected (convention)</td><td>Internal use only (can still access)</td></tr>
+                            <tr><td><code>__name</code></td><td>Private (name mangling)</td><td>Harder to access (becomes _ClassName__name)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3>Using @property Decorator</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 8.1: Properties for Controlled Access</span>
+                        <button class="code-figure-run" onclick="runCode('code22')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code22"># Using @property for controlled attribute access
+class Circle:
+    """Circle with computed properties."""
+    
+    def __init__(self, radius):
+        self._radius = radius  # Protected attribute
+    
+    @property
+    def radius(self):
+        """Getter for radius."""
+        return self._radius
+    
+    @radius.setter
+    def radius(self, value):
+        """Setter with validation."""
+        if value < 0:
+            raise ValueError("Radius cannot be negative")
+        self._radius = value
+    
+    @property
+    def diameter(self):
+        """Computed property - read only."""
+        return self._radius * 2
+    
+    @property
+    def area(self):
+        """Computed property - read only."""
+        import math
+        return math.pi * self._radius ** 2
+    
+    @property
+    def circumference(self):
+        """Computed property - read only."""
+        import math
+        return 2 * math.pi * self._radius
+
+# Create circle and use properties
+circle = Circle(5)
+
+print("=== Circle Properties ===")
+print(f"Radius: {circle.radius}")
+print(f"Diameter: {circle.diameter}")
+print(f"Area: {circle.area:.2f}")
+print(f"Circumference: {circle.circumference:.2f}")
+
+# Change radius - triggers setter
+circle.radius = 10
+print(f"\nAfter changing radius to 10:")
+print(f"Diameter: {circle.diameter}")
+print(f"Area: {circle.area:.2f}")
+
+# Try invalid value
+try:
+    circle.radius = -5
+except ValueError as e:
+    print(f"\nError: {e}")</textarea>
+                    <div class="code-output" id="outputcode22">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Engineering Example: Validated Sensor</h4>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 8.2: Sensor with Property Validation</span>
+                        <button class="code-figure-run" onclick="runCode('code23')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code23"># Engineering: Sensor with validated properties
+class TemperatureSensor:
+    """Temperature sensor with validated properties."""
+    
+    def __init__(self, sensor_id, min_temp=-40, max_temp=125):
+        self._sensor_id = sensor_id
+        self._min_temp = min_temp
+        self._max_temp = max_temp
+        self._value = None
+        self._status = "idle"
+    
+    @property
+    def sensor_id(self):
+        """Read-only sensor ID."""
+        return self._sensor_id
+    
+    @property
+    def value(self):
+        """Current temperature value."""
+        return self._value
+    
+    @value.setter
+    def value(self, temp):
+        """Set temperature with validation."""
+        if temp < self._min_temp or temp > self._max_temp:
+            self._status = "error"
+            raise ValueError(
+                f"Temperature {temp}°C out of range "
+                f"[{self._min_temp}, {self._max_temp}]"
+            )
+        self._value = temp
+        self._status = "ok"
+    
+    @property
+    def status(self):
+        """Current sensor status."""
+        return self._status
+    
+    @property
+    def is_valid(self):
+        """Check if sensor has valid reading."""
+        return self._status == "ok" and self._value is not None
+
+# Create and use sensor
+sensor = TemperatureSensor("TEMP_001")
+print(f"Sensor: {sensor.sensor_id}")
+print(f"Initial status: {sensor.status}")
+
+# Valid reading
+sensor.value = 25.5
+print(f"\nAfter reading 25.5°C:")
+print(f"Value: {sensor.value}°C")
+print(f"Status: {sensor.status}")
+print(f"Is valid: {sensor.is_valid}")
+
+# Invalid reading
+try:
+    sensor.value = 150
+except ValueError as e:
+    print(f"\nError: {e}")
+    print(f"Status: {sensor.status}")</textarea>
+                    <div class="code-output" id="outputcode23">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 9: Composition -->
+            <section id="part9" class="section">
+                <div class="section-header">
+                    <div class="section-number">9</div>
+                    <h2>Composition</h2>
+                </div>
+                
+                <p>Composition is a design principle where objects contain other objects as attributes. It represents a "has-a" relationship (a Car HAS an Engine) rather than an "is-a" relationship (which is inheritance, covered in Week 11).</p>
+                
+                <h3>Basic Composition Example</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.1: Composition - Car and Engine</span>
+                        <button class="code-figure-run" onclick="runCode('code24')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code24"># Composition: Car HAS an Engine
+class Engine:
+    """Engine class for a vehicle."""
+    
+    def __init__(self, horsepower, fuel_type):
+        self.horsepower = horsepower
+        self.fuel_type = fuel_type
+        self.is_running = False
+    
+    def start(self):
+        """Start the engine."""
+        self.is_running = True
+        return f"Engine started ({self.horsepower}HP, {self.fuel_type})"
+    
+    def stop(self):
+        """Stop the engine."""
+        self.is_running = False
+        return "Engine stopped"
+
+class Car:
+    """Car class that contains an Engine."""
+    
+    def __init__(self, brand, model, engine):
+        self.brand = brand
+        self.model = model
+        self.engine = engine  # Composition: Car HAS an Engine
+        self.speed = 0
+    
+    def start(self):
+        """Start the car."""
+        return self.engine.start()
+    
+    def stop(self):
+        """Stop the car."""
+        self.speed = 0
+        return self.engine.stop()
+    
+    def accelerate(self, amount):
+        """Accelerate the car."""
+        if not self.engine.is_running:
+            return "Start the engine first!"
+        self.speed += amount
+        return f"Speed: {self.speed} km/h"
+    
+    def __str__(self):
+        return f"{self.brand} {self.model} ({self.engine.horsepower}HP)"
+
+# Create engine and car
+v8_engine = Engine(300, "gasoline")
+car = Car("Ford", "Mustang", v8_engine)
+
+print(car)
+print(car.accelerate(20))  # Engine not running
+print(car.start())
+print(car.accelerate(30))
+print(car.accelerate(40))
+print(car.stop())</textarea>
+                    <div class="code-output" id="outputcode24">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Composition with Multiple Components</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.2: Computer with Multiple Components</span>
+                        <button class="code-figure-run" onclick="runCode('code25')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code25"># Composition with multiple components
+class CPU:
+    """CPU component."""
+    def __init__(self, model, cores, speed_ghz):
+        self.model = model
+        self.cores = cores
+        self.speed_ghz = speed_ghz
+    
+    def __str__(self):
+        return f"{self.model} ({self.cores} cores @ {self.speed_ghz}GHz)"
+
+class Memory:
+    """RAM memory component."""
+    def __init__(self, size_gb, speed_mhz):
+        self.size_gb = size_gb
+        self.speed_mhz = speed_mhz
+    
+    def __str__(self):
+        return f"{self.size_gb}GB @ {self.speed_mhz}MHz"
+
+class Storage:
+    """Storage component."""
+    def __init__(self, size_gb, storage_type):
+        self.size_gb = size_gb
+        self.storage_type = storage_type
+    
+    def __str__(self):
+        return f"{self.size_gb}GB {self.storage_type}"
+
+class Computer:
+    """Computer composed of multiple components."""
+    
+    def __init__(self, name, cpu, memory, storage):
+        self.name = name
+        self.cpu = cpu
+        self.memory = memory
+        self.storage = storage
+        self.is_on = False
+    
+    def power_on(self):
+        self.is_on = True
+        return f"{self.name} powered on"
+    
+    def power_off(self):
+        self.is_on = False
+        return f"{self.name} powered off"
+    
+    def specs(self):
+        """Display computer specifications."""
+        print(f"=== {self.name} Specifications ===")
+        print(f"CPU: {self.cpu}")
+        print(f"Memory: {self.memory}")
+        print(f"Storage: {self.storage}")
+        print(f"Status: {'On' if self.is_on else 'Off'}")
+
+# Create components
+cpu = CPU("Intel i7-12700K", 12, 3.6)
+ram = Memory(32, 3200)
+ssd = Storage(1000, "NVMe SSD")
+
+# Compose computer
+my_pc = Computer("Workstation", cpu, ram, ssd)
+my_pc.specs()
+print()
+print(my_pc.power_on())
+my_pc.specs()</textarea>
+                    <div class="code-output" id="outputcode25">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Engineering Example: Sensor Station</h4>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.3: Sensor Station with Composition</span>
+                        <button class="code-figure-run" onclick="runCode('code26')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code26"># Engineering: Sensor station using composition
+class Sensor:
+    """Individual sensor component."""
+    
+    def __init__(self, sensor_id, sensor_type, unit):
+        self.sensor_id = sensor_id
+        self.sensor_type = sensor_type
+        self.unit = unit
+        self.value = None
+    
+    def read(self, value):
+        """Record a reading."""
+        self.value = value
+    
+    def __str__(self):
+        if self.value is not None:
+            return f"{self.sensor_id}: {self.value} {self.unit}"
+        return f"{self.sensor_id}: No reading"
+
+class DataLogger:
+    """Data logging component."""
+    
+    def __init__(self, name):
+        self.name = name
+        self.readings = []
+    
+    def log(self, sensor):
+        """Log a sensor reading."""
+        if sensor.value is not None:
+            self.readings.append({
+                'id': sensor.sensor_id,
+                'type': sensor.sensor_type,
+                'value': sensor.value,
+                'unit': sensor.unit
+            })
+    
+    def get_readings(self):
+        return self.readings
+    
+    def clear(self):
+        self.readings = []
+
+class SensorStation:
+    """Weather station composed of multiple sensors and a logger."""
+    
+    def __init__(self, station_id):
+        self.station_id = station_id
+        self.sensors = []  # Composition: has multiple sensors
+        self.logger = DataLogger(f"{station_id}_logger")  # Composition: has a logger
+    
+    def add_sensor(self, sensor):
+        """Add a sensor to the station."""
+        self.sensors.append(sensor)
+    
+    def read_all(self, values):
+        """Read values into all sensors and log them."""
+        for sensor, value in zip(self.sensors, values):
+            sensor.read(value)
+            self.logger.log(sensor)
+    
+    def status(self):
+        """Display station status."""
+        print(f"=== Station {self.station_id} ===")
+        for sensor in self.sensors:
+            print(f"  {sensor}")
+        print(f"  Total logged readings: {len(self.logger.readings)}")
+
+# Create sensor station
+station = SensorStation("WEATHER_01")
+
+# Add sensors (composition)
+station.add_sensor(Sensor("TEMP", "temperature", "°C"))
+station.add_sensor(Sensor("HUMI", "humidity", "%"))
+station.add_sensor(Sensor("PRES", "pressure", "hPa"))
+station.add_sensor(Sensor("WIND", "wind_speed", "km/h"))
+
+# Simulate readings
+station.read_all([25.5, 65.0, 1013.25, 12.5])
+station.read_all([26.0, 63.5, 1013.50, 15.0])
+station.read_all([25.8, 64.0, 1013.40, 14.0])
+
+station.status()
+print(f"\nLast 2 logged readings:")
+for reading in station.logger.get_readings()[-2:]:
+    print(f"  {reading}")</textarea>
+                    <div class="code-output" id="outputcode26">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="tip-box info-box">
+                    <p>Composition promotes code reuse and flexibility. You can easily swap components (e.g., use a different logger or sensor) without changing the main class. It also makes testing easier—you can test components independently.</p>
+                </div>
+            </section>
+            
+            <!-- Section 10: Practical Applications -->
+            <section id="part10" class="section">
+                <div class="section-header">
+                    <div class="section-number">10</div>
+                    <h2>Practical Applications</h2>
+                </div>
+                
+                <p>Let's see how OOP concepts come together in complete, real-world applications.</p>
+                
+                <h3>Inventory Management System</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 10.1: Product Inventory System</span>
+                        <button class="code-figure-run" onclick="runCode('code27')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code27"># Complete example: Inventory Management System
+class Product:
+    """A product in the inventory."""
+    
+    product_count = 0  # Class attribute
+    
+    def __init__(self, product_id, name, price, quantity=0):
+        self.product_id = product_id
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+        Product.product_count += 1
+    
+    @property
+    def total_value(self):
+        """Calculate total value of this product."""
+        return self.price * self.quantity
+    
+    def restock(self, amount):
+        """Add stock."""
+        if amount > 0:
+            self.quantity += amount
+            return True
+        return False
+    
+    def sell(self, amount):
+        """Sell stock."""
+        if amount > 0 and amount <= self.quantity:
+            self.quantity -= amount
+            return True
+        return False
+    
+    def __str__(self):
+        return f"{self.product_id}: {self.name} (${self.price}) x {self.quantity}"
+
+class Inventory:
+    """Inventory management system."""
+    
+    def __init__(self, name):
+        self.name = name
+        self.products = {}
+    
+    def add_product(self, product):
+        """Add a product to inventory."""
+        self.products[product.product_id] = product
+    
+    def remove_product(self, product_id):
+        """Remove a product from inventory."""
+        if product_id in self.products:
+            del self.products[product_id]
+            return True
+        return False
+    
+    def get_product(self, product_id):
+        """Get a product by ID."""
+        return self.products.get(product_id)
+    
+    @property
+    def total_value(self):
+        """Calculate total inventory value."""
+        return sum(p.total_value for p in self.products.values())
+    
+    def low_stock_alert(self, threshold=5):
+        """Return products with low stock."""
+        return [p for p in self.products.values() if p.quantity <= threshold]
+    
+    def report(self):
+        """Generate inventory report."""
+        print(f"=== {self.name} Inventory Report ===")
+        print(f"Total products: {len(self.products)}")
+        print(f"Total value: ${self.total_value:.2f}")
+        print("\nProducts:")
+        for product in self.products.values():
+            print(f"  {product}")
+        
+        low_stock = self.low_stock_alert()
+        if low_stock:
+            print(f"\n⚠️ Low stock alert ({len(low_stock)} items):")
+            for p in low_stock:
+                print(f"  - {p.name}: {p.quantity} remaining")
+
+# Create inventory and products
+store = Inventory("Electronics Store")
+
+store.add_product(Product("P001", "Laptop", 999.99, 10))
+store.add_product(Product("P002", "Mouse", 29.99, 50))
+store.add_product(Product("P003", "Keyboard", 79.99, 3))
+store.add_product(Product("P004", "Monitor", 399.99, 8))
+
+# Sell some items
+store.get_product("P001").sell(3)
+store.get_product("P002").sell(45)
+
+# Generate report
+store.report()</textarea>
+                    <div class="code-output" id="outputcode27">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Robot Control System</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 10.2: Simple Robot Simulation</span>
+                        <button class="code-figure-run" onclick="runCode('code28')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code28"># Engineering: Simple robot control system
+class Motor:
+    """Motor component for robot movement."""
+    
+    def __init__(self, name, max_speed):
+        self.name = name
+        self.max_speed = max_speed
+        self.current_speed = 0
+    
+    def set_speed(self, speed):
+        """Set motor speed with limits."""
+        self.current_speed = max(0, min(speed, self.max_speed))
+    
+    def stop(self):
+        """Stop the motor."""
+        self.current_speed = 0
+    
+    def __str__(self):
+        return f"{self.name}: {self.current_speed}/{self.max_speed}"
+
+class Gripper:
+    """Gripper component for object manipulation."""
+    
+    def __init__(self):
+        self.is_open = True
+        self.holding = None
+    
+    def open(self):
+        """Open the gripper."""
+        self.is_open = True
+        dropped = self.holding
+        self.holding = None
+        return dropped
+    
+    def close(self):
+        """Close the gripper."""
+        self.is_open = False
+    
+    def grab(self, item):
+        """Grab an item."""
+        if self.is_open:
+            self.close()
+            self.holding = item
+            return True
+        return False
+    
+    def __str__(self):
+        state = "open" if self.is_open else "closed"
+        return f"Gripper: {state}, holding: {self.holding}"
+
+class Robot:
+    """A robot composed of motors and a gripper."""
+    
+    def __init__(self, name):
+        self.name = name
+        self.left_motor = Motor("left", 100)
+        self.right_motor = Motor("right", 100)
+        self.gripper = Gripper()
+        self.position = [0, 0]
+    
+    def move_forward(self, speed):
+        """Move robot forward."""
+        self.left_motor.set_speed(speed)
+        self.right_motor.set_speed(speed)
+        self.position[1] += 1
+        return f"Moving forward at speed {speed}"
+    
+    def turn_left(self):
+        """Turn robot left."""
+        self.left_motor.set_speed(0)
+        self.right_motor.set_speed(50)
+        return "Turning left"
+    
+    def turn_right(self):
+        """Turn robot right."""
+        self.left_motor.set_speed(50)
+        self.right_motor.set_speed(0)
+        return "Turning right"
+    
+    def stop(self):
+        """Stop the robot."""
+        self.left_motor.stop()
+        self.right_motor.stop()
+        return "Robot stopped"
+    
+    def pick_up(self, item):
+        """Pick up an item."""
+        if self.gripper.grab(item):
+            return f"Picked up: {item}"
+        return "Gripper is not open"
+    
+    def put_down(self):
+        """Put down the held item."""
+        item = self.gripper.open()
+        if item:
+            return f"Put down: {item}"
+        return "Nothing to put down"
+    
+    def status(self):
+        """Display robot status."""
+        print(f"=== Robot {self.name} ===")
+        print(f"Position: {self.position}")
+        print(f"Motors: {self.left_motor}, {self.right_motor}")
+        print(f"{self.gripper}")
+
+# Create and control robot
+robot = Robot("R2D2")
+robot.status()
+
+print("\n--- Executing Commands ---")
+print(robot.move_forward(50))
+print(robot.pick_up("red cube"))
+print(robot.move_forward(75))
+print(robot.turn_left())
+print(robot.put_down())
+print(robot.stop())
+
+print()
+robot.status()</textarea>
+                    <div class="code-output" id="outputcode28">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Summary -->
+            <div class="summary-box">
+                <h3>📋 Week 10 Summary</h3>
+                <div class="summary-grid">
+                    <div class="summary-item"><span class="icon">🏗️</span><span>Classes & Objects</span></div>
+                    <div class="summary-item"><span class="icon">🔧</span><span>__init__ Constructor</span></div>
+                    <div class="summary-item"><span class="icon">📊</span><span>Instance Attributes</span></div>
+                    <div class="summary-item"><span class="icon">🏢</span><span>Class Attributes</span></div>
+                    <div class="summary-item"><span class="icon">⚙️</span><span>Instance Methods</span></div>
+                    <div class="summary-item"><span class="icon">🔄</span><span>@classmethod</span></div>
+                    <div class="summary-item"><span class="icon">📌</span><span>@staticmethod</span></div>
+                    <div class="summary-item"><span class="icon">✨</span><span>Special Methods</span></div>
+                    <div class="summary-item"><span class="icon">🔒</span><span>Properties</span></div>
+                    <div class="summary-item"><span class="icon">🧩</span><span>Composition</span></div>
+                </div>
+            </div>
+
+            <!-- Exercises Section -->
+            <section id="exercises" class="section">
+                <div class="section-header">
+                    <div class="section-number">📝</div>
+                    <h2>Practice Exercises</h2>
+                </div>
+                
+                <p>Complete these 15 exercises to master Object-Oriented Programming basics. Start with the easy exercises and work your way up to the challenges.</p>
+                
+                <!-- Exercise 1 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">1</span>Basic Class Definition</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a simple <code>Book</code> class with <code>title</code> and <code>author</code> attributes. Include a method <code>display()</code> that prints the book information.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>"Python Basics" by John Smith</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex1"># Create a Book class
+class Book:
+    # Your code here
+    pass
+
+# Test
+book = Book("Python Basics", "John Smith")
+book.display()</textarea>
+                            <div class="code-output" id="outputex1">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 2 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">2</span>Constructor with Defaults</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>Counter</code> class with an optional starting value (default 0). Include <code>increment()</code>, <code>decrement()</code>, and <code>get_value()</code> methods.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Initial: 0
+After increment: 1
+After increment: 2
+After decrement: 1</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex2"># Create a Counter class
+class Counter:
+    # Your code here
+    pass
+
+# Test
+counter = Counter()
+print(f"Initial: {counter.get_value()}")
+counter.increment()
+print(f"After increment: {counter.get_value()}")
+counter.increment()
+print(f"After increment: {counter.get_value()}")
+counter.decrement()
+print(f"After decrement: {counter.get_value()}")</textarea>
+                            <div class="code-output" id="outputex2">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 3 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">3</span>__str__ Method</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>Person</code> class with <code>name</code> and <code>age</code> attributes. Implement the <code>__str__</code> method to return a formatted string.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Ali (25 years old)</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex3"># Create a Person class with __str__
+class Person:
+    # Your code here
+    pass
+
+# Test
+person = Person("Ali", 25)
+print(person)</textarea>
+                            <div class="code-output" id="outputex3">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 4 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">4</span>Class Attributes</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>Student</code> class with a class attribute <code>school</code> and instance attributes <code>name</code> and <code>grade</code>. Track the total number of students created.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Ali from ISTUN, Grade: 85
+Ayşe from ISTUN, Grade: 90
+Total students: 2</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex4"># Create Student class with class attributes
+class Student:
+    school = "ISTUN"
+    count = 0
+    # Your code here
+
+# Test
+s1 = Student("Ali", 85)
+s2 = Student("Ayşe", 90)
+print(f"{s1.name} from {s1.school}, Grade: {s1.grade}")
+print(f"{s2.name} from {s2.school}, Grade: {s2.grade}")
+print(f"Total students: {Student.count}")</textarea>
+                            <div class="code-output" id="outputex4">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 5 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">5</span>Rectangle Class</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>Rectangle</code> class with <code>width</code> and <code>height</code> attributes. Include methods <code>area()</code> and <code>perimeter()</code>.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Rectangle 5x3
+Area: 15
+Perimeter: 16</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex5"># Create Rectangle class
+class Rectangle:
+    # Your code here
+    pass
+
+# Test
+rect = Rectangle(5, 3)
+print(f"Rectangle {rect.width}x{rect.height}")
+print(f"Area: {rect.area()}")
+print(f"Perimeter: {rect.perimeter()}")</textarea>
+                            <div class="code-output" id="outputex5">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 6 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">6</span>Static Method</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>Temperature</code> class with a static method <code>celsius_to_fahrenheit(celsius)</code>.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>0°C = 32.0°F
+25°C = 77.0°F
+100°C = 212.0°F</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex6"># Create Temperature class with static method
+class Temperature:
+    # Your code here
+    pass
+
+# Test
+for c in [0, 25, 100]:
+    f = Temperature.celsius_to_fahrenheit(c)
+    print(f"{c}°C = {f}°F")</textarea>
+                            <div class="code-output" id="outputex6">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 7 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">7</span>Class Method Constructor</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>Point</code> class with <code>x</code> and <code>y</code> coordinates. Add a class method <code>from_tuple()</code> that creates a Point from a tuple.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Point(3, 4)
+Point(5, 10)</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex7"># Create Point class with class method
+class Point:
+    # Your code here
+    pass
+
+# Test
+p1 = Point(3, 4)
+p2 = Point.from_tuple((5, 10))
+print(p1)
+print(p2)</textarea>
+                            <div class="code-output" id="outputex7">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 8 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">8</span>Comparison Methods</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>Product</code> class with <code>name</code> and <code>price</code>. Implement <code>__eq__</code>, <code>__lt__</code>, and <code>__gt__</code> to compare products by price.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Laptop == Phone: False
+Laptop > Phone: True
+Mouse < Phone: True</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex8"># Create Product class with comparison methods
+class Product:
+    # Your code here
+    pass
+
+# Test
+laptop = Product("Laptop", 1000)
+phone = Product("Phone", 800)
+mouse = Product("Mouse", 50)
+
+print(f"Laptop == Phone: {laptop == phone}")
+print(f"Laptop > Phone: {laptop > phone}")
+print(f"Mouse < Phone: {mouse < phone}")</textarea>
+                            <div class="code-output" id="outputex8">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 9 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">9</span>Property with Validation</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>Circle</code> class with a <code>radius</code> property that validates the value is positive.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints9')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints9">
+                                <ul>
+                                    <li>Use @property decorator for the getter</li>
+                                    <li>Use @radius.setter for the setter</li>
+                                    <li>Raise ValueError if radius is not positive</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Radius: 5
+Area: 78.54
+Error: Radius must be positive</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex9">import math
+
+# Create Circle class with validated property
+class Circle:
+    # Your code here
+    pass
+
+# Test
+circle = Circle(5)
+print(f"Radius: {circle.radius}")
+print(f"Area: {circle.area:.2f}")
+
+try:
+    circle.radius = -3
+except ValueError as e:
+    print(f"Error: {e}")</textarea>
+                            <div class="code-output" id="outputex9">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 10 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">10</span>Container Methods</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>Stack</code> class with <code>push()</code>, <code>pop()</code>, <code>__len__</code>, and <code>__str__</code> methods.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Stack: [1, 2, 3]
+Length: 3
+Popped: 3
+Stack: [1, 2]</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex10"># Create Stack class
+class Stack:
+    # Your code here
+    pass
+
+# Test
+stack = Stack()
+stack.push(1)
+stack.push(2)
+stack.push(3)
+print(stack)
+print(f"Length: {len(stack)}")
+print(f"Popped: {stack.pop()}")
+print(stack)</textarea>
+                            <div class="code-output" id="outputex10">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 11 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">11</span>Arithmetic Methods</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>Money</code> class with <code>amount</code> and <code>currency</code>. Implement <code>__add__</code> and <code>__sub__</code> (same currency only).</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>100 USD + 50 USD = 150 USD
+100 USD - 30 USD = 70 USD</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex11"># Create Money class with arithmetic
+class Money:
+    # Your code here
+    pass
+
+# Test
+m1 = Money(100, "USD")
+m2 = Money(50, "USD")
+m3 = Money(30, "USD")
+
+print(f"{m1} + {m2} = {m1 + m2}")
+print(f"{m1} - {m3} = {m1 - m3}")</textarea>
+                            <div class="code-output" id="outputex11">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 12 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">12</span>Composition: Engine and Car</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create an <code>Engine</code> class with <code>horsepower</code> and a <code>Car</code> class that contains an Engine. The car should have a <code>specs()</code> method.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints12">
+                                <ul>
+                                    <li>Car __init__ should accept an Engine object</li>
+                                    <li>Store the engine as self.engine</li>
+                                    <li>Access engine properties via self.engine.horsepower</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Toyota Camry with 200HP engine</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex12"># Create Engine and Car classes
+class Engine:
+    # Your code here
+    pass
+
+class Car:
+    # Your code here
+    pass
+
+# Test
+engine = Engine(200)
+car = Car("Toyota", "Camry", engine)
+print(car.specs())</textarea>
+                            <div class="code-output" id="outputex12">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 13 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">13</span>Complete BankAccount</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a complete <code>BankAccount</code> class with deposit, withdraw (with validation), transfer, and transaction history.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints13')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints13">
+                                <ul>
+                                    <li>Use a list to store transaction history</li>
+                                    <li>Withdraw should check if sufficient funds</li>
+                                    <li>Transfer should withdraw from source and deposit to target</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex13')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex13"># Complete BankAccount class
+class BankAccount:
+    # Your code here
+    pass
+
+# Test
+acc1 = BankAccount("Ali", 1000)
+acc2 = BankAccount("Ayşe", 500)
+
+acc1.deposit(200)
+acc1.withdraw(150)
+acc1.transfer(300, acc2)
+
+print(f"Ali's balance: ${acc1.balance}")
+print(f"Ayşe's balance: ${acc2.balance}")
+print(f"\nAli's transactions: {acc1.get_history()}")</textarea>
+                            <div class="code-output" id="outputex13">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 14 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">14</span>Sensor with Full Features</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>Sensor</code> class with class-level registry, properties with validation, and methods for reading and averaging values.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints14')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints14">
+                                <ul>
+                                    <li>Use class attribute for registry dictionary</li>
+                                    <li>Store readings in a list</li>
+                                    <li>Implement average() method using stored readings</li>
+                                    <li>Use @classmethod for get_sensor()</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex14')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex14"># Complete Sensor class
+class Sensor:
+    _registry = {}
+    # Your code here
+
+# Test
+temp = Sensor("TEMP_001", "temperature", -40, 125)
+temp.read(25.5)
+temp.read(26.0)
+temp.read(25.8)
+
+print(f"Sensor: {temp.sensor_id}")
+print(f"Latest: {temp.value}")
+print(f"Average: {temp.average():.2f}")
+
+# Test registry
+retrieved = Sensor.get_sensor("TEMP_001")
+print(f"Retrieved: {retrieved.sensor_id}")</textarea>
+                            <div class="code-output" id="outputex14">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 15 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">15</span>Complete Vector Class</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a complete <code>Vector</code> class with arithmetic operations, magnitude, dot product, and normalization.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints15')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints15">
+                                <ul>
+                                    <li>Implement __add__, __sub__, __mul__ for arithmetic</li>
+                                    <li>Magnitude: sqrt(x² + y²)</li>
+                                    <li>Dot product: x1*x2 + y1*y2</li>
+                                    <li>Normalize: divide by magnitude</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex15')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex15">import math
+
+# Complete Vector class
+class Vector:
+    # Your code here
+    pass
+
+# Test
+v1 = Vector(3, 4)
+v2 = Vector(1, 2)
+
+print(f"v1 = {v1}")
+print(f"v2 = {v2}")
+print(f"v1 + v2 = {v1 + v2}")
+print(f"v1 - v2 = {v1 - v2}")
+print(f"v1 * 2 = {v1 * 2}")
+print(f"|v1| = {v1.magnitude()}")
+print(f"v1 · v2 = {v1.dot(v2)}")
+print(f"v1 normalized = {v1.normalize()}")</textarea>
+                            <div class="code-output" id="outputex15">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Submit Section -->
+            <section id="submit" class="section">
+                <div class="section-header">
+                    <div class="section-number">📤</div>
+                    <h2>Submit Your Work</h2>
+                </div>
+                
+                <div class="submit-section">
+                    <h2>📋 Submission Form</h2>
+                    <p>Complete the exercises above, then fill out this form to record your attendance and participation for Week 10.</p>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Student ID</label>
+                            <input type="text" id="studentId" placeholder="e.g., 2024001234" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="studentName" placeholder="e.g., Ahmet Yılmaz">
+                        </div>
+                        <div class="form-group">
+                            <label>Email (@istun.edu.tr)</label>
+                            <input type="email" id="studentEmail" placeholder="e.g., ahmet.yilmaz@istun.edu.tr">
+                        </div>
+                        <div class="form-group">
+                            <label>Class Code (from instructor)</label>
+                            <input type="text" id="classCode" placeholder="Enter code from class">
+                        </div>
+                    </div>
+                    
+                    <div class="honeypot">
+                        <input type="text" id="website" tabindex="-1" autocomplete="off">
+                    </div>
+                    
+                    <button class="submit-btn" onclick="submitWork()">Submit Week 10</button>
+                    
+                    <div class="submit-status" id="submitStatus"></div>
+                </div>
+            </section>
+            
+            <!-- Navigation -->
+            <div class="page-nav">
+                <a href="Week_09.html" class="nav-btn">← Week 09: Error Handling</a>
+                <a href="index.html?home=true" class="nav-btn">Course Home</a>
+                <a href="Week_11.html" class="nav-btn">Week 11: Inheritance →</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // =========================================
+        // Progress Bar
+        // =========================================
+        function updateProgress() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = Math.min(100, Math.max(0, (winScroll / height) * 100));
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        }
+        window.addEventListener('scroll', updateProgress);
+        window.addEventListener('load', updateProgress);
+        
+        // =========================================
+        // Hints Toggle
+        // =========================================
+        function toggleHints(id) {
+            const hints = document.getElementById(id);
+            hints.classList.toggle('show');
+            const btn = hints.previousElementSibling;
+            btn.textContent = hints.classList.contains('show') ? '💡 Hide Hints' : '💡 Show Hints';
+        }
+        
+        // =========================================
+        // Pyodide Python Execution
+        // =========================================
+        let pyodideReady = false;
+        let pyodide = null;
+        
+        async function initPyodide() {
+            if (!pyodideReady) {
+                try {
+                    pyodide = await loadPyodide();
+                    pyodideReady = true;
+                    console.log("Pyodide loaded successfully");
+                } catch (e) {
+                    console.error("Failed to load Pyodide:", e);
+                    throw e;
+                }
+            }
+            return pyodide;
+        }
+        
+        async function runCode(codeId) {
+            const codeEl = document.getElementById(codeId);
+            const outputEl = document.getElementById('output' + codeId);
+            const code = codeEl.value;
+            
+            outputEl.classList.add('show');
+            const outputContent = outputEl.querySelector('.code-output-content');
+            
+            if (!pyodideReady) {
+                outputContent.textContent = 'Initializing Python (first run takes a few seconds)...';
+                try {
+                    await initPyodide();
+                } catch (e) {
+                    outputContent.textContent = 'Error loading Python: ' + e.message;
+                    return;
+                }
+            }
+            
+            outputContent.textContent = 'Running...';
+            
+            try {
+                // Reset stdout
+                pyodide.runPython(`
+import sys
+from io import StringIO
+sys.stdout = StringIO()
+`);
+                // Run the user's code
+                await pyodide.runPythonAsync(code);
+                
+                // Get the output
+                const output = pyodide.runPython(`sys.stdout.getvalue()`);
+                outputContent.textContent = output || '(no output)';
+            } catch (e) {
+                outputContent.textContent = 'Error: ' + e.message;
+            }
+        }
+        
+        // =========================================
+        // Form Validation
+        // =========================================
+        const pageLoadTime = Date.now();
+        
+        function validateStudentId(id) {
+            if (id.length < 6 || id.length > 10) return false;
+            if (!/^\d+$/.test(id)) return false;
+            if (/^(\d)\1+$/.test(id)) return false;
+            return true;
+        }
+        
+        function validateName(name) {
+            if (name.length < 5) return false;
+            const words = name.trim().split(/\s+/);
+            if (words.length < 2) return false;
+            if (!/^[A-Za-zğüşıöçĞÜŞİÖÇ\s]+$/.test(name)) return false;
+            return true;
+        }
+        
+        function validateEmail(email) {
+            return email.endsWith('@istun.edu.tr') && email.length > 15;
+        }
+        
+        // =========================================
+        // Form Submission
+        // =========================================
+        function submitWork() {
+            const status = document.getElementById('submitStatus');
+            status.style.display = 'none';
+            
+            const studentId = document.getElementById('studentId').value.trim();
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentEmail = document.getElementById('studentEmail').value.trim().toLowerCase();
+            const classCode = document.getElementById('classCode').value.trim().toUpperCase();
+            const honeypot = document.getElementById('website').value;
+            
+            // Anti-spam check
+            if (honeypot) {
+                status.textContent = '❌ Submission rejected.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Time check
+            const timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
+            if (timeOnPage < 60) {
+                status.textContent = '❌ Please spend more time reviewing the material before submitting.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Required fields
+            if (!studentId || !studentName || !studentEmail || !classCode) {
+                status.textContent = '❌ All fields are required.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Student ID validation
+            if (!validateStudentId(studentId)) {
+                status.textContent = '❌ Invalid Student ID. Must be 6-10 digits.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Name validation
+            if (!validateName(studentName)) {
+                status.textContent = '❌ Please enter your full name (first and last name).';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Email validation
+            if (!validateEmail(studentEmail)) {
+                status.textContent = '❌ Please use your @istun.edu.tr email address.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Class code validation
+            if (classCode.length < 4) {
+                status.textContent = '❌ Invalid class code.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Prepare data
+            const data = {
+                week: 'Week_10',
+                studentId: studentId,
+                studentName: studentName,
+                studentEmail: studentEmail,
+                classCode: classCode,
+                timeOnPage: timeOnPage,
+                source: 'cp2-web'
+            };
+            
+            status.textContent = '⏳ Submitting...';
+            status.style.cssText = 'display:block;background:rgba(124,58,237,0.2);color:#a78bfa';
+            
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec';
+            
+            // Try CORS first, fall back to no-cors
+            fetch(scriptUrl, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    status.textContent = '✅ ' + result.message;
+                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                } else {
+                    status.textContent = '❌ ' + result.message;
+                    status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                }
+            })
+            .catch(error => {
+                // Fallback to no-cors mode
+                fetch(scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(data)
+                })
+                .then(() => {
+                    status.textContent = '✅ Submission received! Thank you.';
+                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                })
+                .catch(() => {
+                    status.textContent = '❌ Connection error. Please try again later.';
+                    status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                });
+            });
+        }
+    </script>
+</body>
+</html>

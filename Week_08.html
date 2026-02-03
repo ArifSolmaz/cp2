@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 03: Loops in Python | Computer Programming II</title>
+    <title>Week 08: File Handling | Computer Programming II</title>
     
     <!-- Pyodide for Python execution -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
@@ -63,9 +63,7 @@
         }
         
         .topbar a:hover { opacity: 1; }
-        
         .topbar-title { font-family: system-ui, sans-serif; font-weight: 600; font-size: 1rem; }
-        
         .topbar-nav { display: flex; gap: 24px; align-items: center; }
         
         /* Progress bar */
@@ -610,16 +608,16 @@
     <nav class="topbar">
         <a href="index.html?home=true" class="topbar-title">← Course Home</a>
         <div class="topbar-nav">
-            <span style="opacity:0.7">Week 03 of 14</span>
-            <a href="Week_02.html">← Week 02</a>
-            <a href="Week_04.html">Week 04 →</a>
+            <span style="opacity:0.7">Week 08 of 14</span>
+            <a href="Week_07.html">← Week 07</a>
+            <a href="Week_09.html">Week 09 →</a>
         </div>
     </nav>
     
     <div class="container">
         <header class="chapter-header">
-            <span class="chapter-label">Week 03</span>
-            <h1>Loops in Python</h1>
+            <span class="chapter-label">Week 08</span>
+            <h1>File Handling</h1>
             <div class="chapter-meta">
                 <span>📚 Computer Programming II</span>
                 <span>👨‍🏫 Dr. Arif Solmaz</span>
@@ -629,404 +627,406 @@
         <div class="objectives-box">
             <h3>🎯 Learning Objectives</h3>
             <ul>
-                <li>Understand the concept and importance of loops</li>
-                <li>Use for loops to iterate over sequences</li>
-                <li>Master the range() function for numeric sequences</li>
-                <li>Apply enumerate() and zip() effectively</li>
-                <li>Implement while loops for condition-based iteration</li>
-                <li>Control loop flow with break and continue</li>
-                <li>Create nested loops for complex patterns</li>
-                <li>Apply common loop patterns in engineering problems</li>
+                <li>Open, read, and write text files</li>
+                <li>Use context managers (with statement)</li>
+                <li>Handle different file modes (r, w, a, x)</li>
+                <li>Work with CSV files using csv module</li>
+                <li>Read and write JSON data</li>
+                <li>Navigate file paths and directories</li>
+                <li>Handle file exceptions gracefully</li>
+                <li>Process engineering data files</li>
             </ul>
         </div>
         
         <div class="content">
-            <!-- Section 1: Introduction to Loops -->
+            <!-- Section 1: Opening and Closing Files -->
             <section id="part1" class="section">
                 <div class="section-header">
                     <div class="section-number">1</div>
-                    <h2>Introduction to Loops</h2>
+                    <h2>Opening and Closing Files</h2>
                 </div>
                 
-                <p>Loops are one of the most fundamental and powerful concepts in programming. They allow you to execute a block of code <strong>multiple times</strong> without writing it repeatedly. Think of loops as automation tools – they let you write code once and run it as many times as needed.</p>
+                <p>Files must be opened before reading/writing and closed when done. Python provides several modes for opening files, each serving a specific purpose.</p>
                 
-                <h3>Why Do We Need Loops?</h3>
-                <p>Imagine you need to print numbers from 1 to 1000. Without loops, you would need to write 1000 print statements! With loops, you can do it in just 2 lines of code.</p>
-                
-                <ul>
-                    <li><strong>Automation</strong> – Write code once, run it many times</li>
-                    <li><strong>Processing collections</strong> – Work through lists, strings, files, databases</li>
-                    <li><strong>Calculations</strong> – Sum numbers, find averages, accumulate results</li>
-                    <li><strong>Pattern generation</strong> – Create sequences, shapes, and complex structures</li>
-                    <li><strong>Data analysis</strong> – Process sensor readings, log files, user inputs</li>
-                </ul>
-                
-                <h3>Types of Loops in Python</h3>
                 <div class="table-container">
                     <table>
                         <thead>
-                            <tr>
-                                <th>Loop Type</th>
-                                <th>Best Used When</th>
-                                <th>Example Use Case</th>
-                            </tr>
+                            <tr><th>Mode</th><th>Description</th></tr>
                         </thead>
                         <tbody>
-                            <tr><td><code>for</code></td><td>Number of iterations is <strong>known</strong></td><td>Processing all items in a list</td></tr>
-                            <tr><td><code>while</code></td><td>Number of iterations is <strong>unknown</strong></td><td>Input validation, waiting for condition</td></tr>
+                            <tr><td><code>'r'</code></td><td>Read (default) - file must exist</td></tr>
+                            <tr><td><code>'w'</code></td><td>Write - creates new or truncates existing</td></tr>
+                            <tr><td><code>'a'</code></td><td>Append - adds to end of file</td></tr>
+                            <tr><td><code>'x'</code></td><td>Exclusive create - fails if file exists</td></tr>
+                            <tr><td><code>'r+'</code></td><td>Read and write</td></tr>
+                            <tr><td><code>'b'</code></td><td>Binary mode (add to other modes)</td></tr>
                         </tbody>
                     </table>
                 </div>
                 
-                <div class="tip-box info-box">
-                    <p><strong>Rule of Thumb:</strong> If you know how many times you need to repeat, use <code>for</code>. If you need to repeat until something happens, use <code>while</code>.</p>
-                </div>
+                <h3>Context Manager (Recommended)</h3>
+                <p>The <code>with</code> statement automatically closes the file when done, even if an error occurs.</p>
                 
-                <h4>Loop vs. Manual Repetition</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 1.1: Loop vs Manual</span>
+                        <span class="code-figure-label">Figure 1.1: Context Manager</span>
                         <button class="code-figure-run" onclick="runCode('code1')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code1"># WITHOUT loops (bad practice):
-print("Hello 1")
-print("Hello 2")
-print("Hello 3")
+                    <textarea class="code-editor" id="code1"># Create a sample file using context manager
+with open('example.txt', 'w') as file:
+    file.write('Hello, World!\n')
+    file.write('This is a test file.\n')
+    file.write('Python file handling is easy!')
 
-print("\n--- With a loop (good practice) ---\n")
+print("File created successfully!")
 
-# WITH loops (good practice):
-for i in range(1, 4):
-    print(f"Hello {i}")
-
-# The loop version is shorter, cleaner, and easier to modify!</textarea>
+# Read the file
+with open('example.txt', 'r') as file:
+    content = file.read()
+    print("\nFile content:")
+    print(content)</textarea>
                     <div class="code-output" id="outputcode1">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
-            </section>
-            
-            <!-- Section 2: The for Loop -->
-            <section id="part2" class="section">
-                <div class="section-header">
-                    <div class="section-number">2</div>
-                    <h2>The for Loop</h2>
-                </div>
                 
-                <p>The <code>for</code> loop is the most common loop in Python. It iterates over any <strong>iterable</strong> object – strings, lists, tuples, ranges, dictionaries, and more.</p>
-                
-                <h3>Basic Syntax</h3>
-                <pre>for variable in iterable:
-    # Code to execute for each item
-    # (indented with 4 spaces)</pre>
-                
-                <h4>Simple for Loop Examples</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 2.1: Basic for Loop</span>
+                        <span class="code-figure-label">Figure 1.2: File Auto-Close</span>
                         <button class="code-figure-run" onclick="runCode('code2')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code2"># Iterate over a list
-fruits = ["apple", "banana", "cherry"]
+                    <textarea class="code-editor" id="code2"># File is automatically closed outside 'with' block
+with open('example.txt', 'r') as file:
+    print(f"Inside with block - closed: {file.closed}")
 
-for fruit in fruits:
-    print(f"I like {fruit}")
-
-print("\n--- Iterating over a string ---\n")
-
-# Iterate over a string
-word = "Python"
-for letter in word:
-    print(letter, end=" ")</textarea>
+print(f"Outside with block - closed: {file.closed}")</textarea>
                     <div class="code-output" id="outputcode2">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h4>Sum of Numbers</h4>
+                <div class="warning-box info-box">
+                    <p>Always use the <code>with</code> statement for file operations. It ensures files are properly closed even if an exception occurs.</p>
+                </div>
+            </section>
+            
+            <!-- Section 2: Reading Files -->
+            <section id="part2" class="section">
+                <div class="section-header">
+                    <div class="section-number">2</div>
+                    <h2>Reading Files</h2>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Method</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>read()</code></td><td>Read entire file as string</td></tr>
+                            <tr><td><code>read(n)</code></td><td>Read n characters</td></tr>
+                            <tr><td><code>readline()</code></td><td>Read one line</td></tr>
+                            <tr><td><code>readlines()</code></td><td>Read all lines into a list</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 2.2: Sum Calculation</span>
+                        <span class="code-figure-label">Figure 2.1: Reading Methods</span>
                         <button class="code-figure-run" onclick="runCode('code3')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code3"># Calculate sum of numbers
-numbers = [10, 20, 30, 40, 50]
-total = 0
+                    <textarea class="code-editor" id="code3"># Create multi-line file
+with open('lines.txt', 'w') as f:
+    f.write('Line 1: Hello\n')
+    f.write('Line 2: World\n')
+    f.write('Line 3: Python\n')
 
-for num in numbers:
-    total += num
-    print(f"Added {num}, running total: {total}")
+# read() - entire file
+with open('lines.txt', 'r') as f:
+    print("=== read() ===")
+    print(f.read())
 
-print(f"\nFinal sum: {total}")
-print(f"Average: {total / len(numbers)}")</textarea>
+# readline() - one line at a time
+with open('lines.txt', 'r') as f:
+    print("=== readline() ===")
+    print(f"First: {f.readline()}", end='')
+    print(f"Second: {f.readline()}", end='')</textarea>
                     <div class="code-output" id="outputcode3">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
-            </section>
-            
-            <!-- Section 3: The range() Function -->
-            <section id="part3" class="section">
-                <div class="section-header">
-                    <div class="section-number">3</div>
-                    <h2>The range() Function</h2>
-                </div>
                 
-                <p>The <code>range()</code> function generates a sequence of numbers. It's commonly used with <code>for</code> loops when you need to iterate a specific number of times.</p>
-                
-                <h3>range() Syntax</h3>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Syntax</th>
-                                <th>Description</th>
-                                <th>Example</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td><code>range(stop)</code></td><td>0 to stop-1</td><td><code>range(5)</code> → 0,1,2,3,4</td></tr>
-                            <tr><td><code>range(start, stop)</code></td><td>start to stop-1</td><td><code>range(2, 6)</code> → 2,3,4,5</td></tr>
-                            <tr><td><code>range(start, stop, step)</code></td><td>start to stop-1, by step</td><td><code>range(0, 10, 2)</code> → 0,2,4,6,8</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <h4>range() Examples</h4>
+                <h3>Iterating Through Files</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 3.1: range() Variations</span>
+                        <span class="code-figure-label">Figure 2.2: File Iteration</span>
                         <button class="code-figure-run" onclick="runCode('code4')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code4"># range(stop) - 0 to stop-1
-print("range(5):", list(range(5)))
+                    <textarea class="code-editor" id="code4"># Memory-efficient iteration
+with open('lines.txt', 'r') as f:
+    print("=== Iterating ===")
+    for line_num, line in enumerate(f, 1):
+        print(f"{line_num}: {line.strip()}")
 
-# range(start, stop) - start to stop-1
-print("range(2, 7):", list(range(2, 7)))
-
-# range(start, stop, step) - with step
-print("range(0, 10, 2):", list(range(0, 10, 2)))
-
-# Negative step (counting down)
-print("range(10, 0, -1):", list(range(10, 0, -1)))</textarea>
+# Read into clean list (no newlines)
+with open('lines.txt', 'r') as f:
+    lines = [line.strip() for line in f]
+    print(f"\nClean list: {lines}")</textarea>
                     <div class="code-output" id="outputcode4">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h4>Multiplication Table</h4>
+                <div class="tip-box info-box">
+                    <p>For large files, iterate line by line instead of using <code>read()</code> or <code>readlines()</code>. This doesn't load the entire file into memory.</p>
+                </div>
+            </section>
+            
+            <!-- Section 3: Writing Files -->
+            <section id="part3" class="section">
+                <div class="section-header">
+                    <div class="section-number">3</div>
+                    <h2>Writing Files</h2>
+                </div>
+                
+                <h3>write() and writelines()</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 3.2: Multiplication Table</span>
+                        <span class="code-figure-label">Figure 3.1: Write Methods</span>
                         <button class="code-figure-run" onclick="runCode('code5')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code5"># Print multiplication table for 7
-print("📊 Multiplication Table for 7:")
-print("-" * 20)
+                    <textarea class="code-editor" id="code5"># write() - write string
+with open('output.txt', 'w') as f:
+    f.write('First line\n')
+    f.write('Second line\n')
 
-for i in range(1, 11):
-    result = 7 * i
-    print(f"  7 × {i:2d} = {result:2d}")</textarea>
+# writelines() - write list of strings
+items = ['apple\n', 'banana\n', 'cherry\n']
+with open('output.txt', 'w') as f:
+    f.writelines(items)
+
+# Verify
+with open('output.txt', 'r') as f:
+    print(f.read())</textarea>
                     <div class="code-output" id="outputcode5">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h4>Countdown Example</h4>
+                <h3>Append Mode</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 3.3: Countdown</span>
+                        <span class="code-figure-label">Figure 3.2: Append Mode</span>
                         <button class="code-figure-run" onclick="runCode('code6')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code6"># 🚀 Launch countdown
-print("🚀 Launch sequence:")
-for i in range(10, 0, -1):
-    print(f"  T-{i}...")
-print("  🚀 LIFTOFF!")</textarea>
+                    <textarea class="code-editor" id="code6"># Create initial file
+with open('log.txt', 'w') as f:
+    f.write('Log started\n')
+
+# Append to file
+with open('log.txt', 'a') as f:
+    f.write('Entry 1: System OK\n')
+    f.write('Entry 2: Sensor reading\n')
+
+# View result
+with open('log.txt', 'r') as f:
+    print(f.read())</textarea>
                     <div class="code-output" id="outputcode6">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
+                
+                <div class="warning-box info-box">
+                    <p><code>writelines()</code> doesn't add newlines automatically! Include <code>\n</code> in each string or they'll run together.</p>
+                </div>
             </section>
-
-            <!-- Section 4: Iterating Collections -->
+            
+            <!-- Section 4: Working with CSV -->
             <section id="part4" class="section">
                 <div class="section-header">
                     <div class="section-number">4</div>
-                    <h2>Iterating Over Collections</h2>
+                    <h2>Working with CSV Files</h2>
                 </div>
                 
-                <p>Python's <code>for</code> loop can iterate over any iterable object including strings, lists, tuples, sets, and dictionaries.</p>
+                <p>CSV (Comma-Separated Values) is one of the most common formats for tabular data. Python's <code>csv</code> module provides tools for reading and writing CSV files.</p>
                 
-                <h4>String Processing</h4>
+                <h3>Reading CSV</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 4.1: String Iteration</span>
+                        <span class="code-figure-label">Figure 4.1: CSV Reader</span>
                         <button class="code-figure-run" onclick="runCode('code7')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code7"># Count vowels in a string
-text = "Hello World"
-vowels = "aeiouAEIOU"
-vowel_count = 0
+                    <textarea class="code-editor" id="code7">import csv
 
-for char in text:
-    if char in vowels:
-        vowel_count += 1
+# Create sample CSV
+with open('data.csv', 'w', newline='') as f:
+    f.write('name,age,city\n')
+    f.write('Ali,21,Istanbul\n')
+    f.write('Ayse,22,Ankara\n')
+    f.write('Mehmet,23,Izmir\n')
 
-print(f"Text: '{text}'")
-print(f"Vowel count: {vowel_count}")
-
-# Reverse a string
-reversed_text = ""
-for char in text:
-    reversed_text = char + reversed_text
-print(f"Reversed: '{reversed_text}'")</textarea>
+# Read with csv.reader
+with open('data.csv', 'r') as f:
+    reader = csv.reader(f)
+    header = next(reader)  # Get header
+    print(f"Header: {header}")
+    print("-" * 30)
+    for row in reader:
+        print(f"Name: {row[0]}, Age: {row[1]}, City: {row[2]}")</textarea>
                     <div class="code-output" id="outputcode7">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h4>List Operations</h4>
+                <h3>DictReader - Access by Column Name</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 4.2: List Processing</span>
+                        <span class="code-figure-label">Figure 4.2: DictReader</span>
                         <button class="code-figure-run" onclick="runCode('code8')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code8"># Find min and max manually
-numbers = [34, 12, 89, 45, 67, 23]
+                    <textarea class="code-editor" id="code8">import csv
 
-min_val = numbers[0]
-max_val = numbers[0]
-
-for num in numbers:
-    if num < min_val:
-        min_val = num
-    if num > max_val:
-        max_val = num
-
-print(f"Numbers: {numbers}")
-print(f"Minimum: {min_val}")
-print(f"Maximum: {max_val}")
-
-# Filter even numbers
-evens = []
-for num in numbers:
-    if num % 2 == 0:
-        evens.append(num)
-print(f"Even numbers: {evens}")</textarea>
+# DictReader - returns dictionaries
+with open('data.csv', 'r') as f:
+    reader = csv.DictReader(f)
+    
+    print("=== DictReader ===")
+    for row in reader:
+        print(f"{row['name']} is {row['age']} from {row['city']}")</textarea>
                     <div class="code-output" id="outputcode8">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h4>Dictionary Iteration</h4>
+                <h3>Writing CSV</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 4.3: Dictionary Iteration</span>
+                        <span class="code-figure-label">Figure 4.3: CSV Writer</span>
                         <button class="code-figure-run" onclick="runCode('code9')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code9"># Iterate over dictionary
-student_scores = {
-    "Alice": 92,
-    "Bob": 85,
-    "Charlie": 78
-}
+                    <textarea class="code-editor" id="code9">import csv
 
-# Keys only
-print("Students:")
-for name in student_scores:
-    print(f"  - {name}")
+# Write with csv.writer
+data = [
+    ['sensor_id', 'temperature', 'humidity'],
+    ['TEMP_001', 25.5, 60],
+    ['TEMP_002', 26.1, 58],
+    ['TEMP_003', 24.8, 62]
+]
 
-# Keys and values
-print("\nScores:")
-for name, score in student_scores.items():
-    print(f"  {name}: {score}")</textarea>
+with open('sensors.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerows(data)
+
+# Verify
+with open('sensors.csv', 'r') as f:
+    print(f.read())</textarea>
                     <div class="code-output" id="outputcode9">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
             </section>
-            
-            <!-- Section 5: enumerate() and zip() -->
+
+            <!-- Section 5: Working with JSON -->
             <section id="part5" class="section">
                 <div class="section-header">
                     <div class="section-number">5</div>
-                    <h2>enumerate() and zip() Functions</h2>
+                    <h2>Working with JSON Files</h2>
                 </div>
                 
-                <p><code>enumerate()</code> gives you index numbers automatically, while <code>zip()</code> lets you iterate over multiple sequences in parallel.</p>
+                <p>JSON (JavaScript Object Notation) is a popular format for structured data, widely used for configuration files, APIs, and data exchange.</p>
                 
-                <h4>Using enumerate()</h4>
+                <pre>json.dumps(data)    # Python → JSON string
+json.loads(string)  # JSON string → Python
+json.dump(data, f)  # Write JSON to file
+json.load(f)        # Read JSON from file</pre>
+                
+                <h3>Python to JSON</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 5.1: enumerate() Basics</span>
+                        <span class="code-figure-label">Figure 5.1: JSON Serialization</span>
                         <button class="code-figure-run" onclick="runCode('code10')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code10"># enumerate() provides index + value
-fruits = ["apple", "banana", "cherry"]
+                    <textarea class="code-editor" id="code10">import json
 
-print("With enumerate():")
-for index, fruit in enumerate(fruits):
-    print(f"  {index}: {fruit}")
+# Python dict to JSON string
+data = {
+    'name': 'Ali',
+    'age': 21,
+    'courses': ['Math', 'Physics', 'Programming'],
+    'active': True
+}
 
-print("\nWith enumerate(start=1):")
-for rank, fruit in enumerate(fruits, start=1):
-    print(f"  #{rank}: {fruit}")</textarea>
+# Basic conversion
+json_str = json.dumps(data)
+print(f"JSON string: {json_str}")
+
+# Pretty print with indent
+json_pretty = json.dumps(data, indent=2)
+print(f"\nPretty JSON:\n{json_pretty}")</textarea>
                     <div class="code-output" id="outputcode10">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h4>Using zip()</h4>
+                <h3>JSON to Python</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 5.2: zip() Basics</span>
+                        <span class="code-figure-label">Figure 5.2: JSON Parsing</span>
                         <button class="code-figure-run" onclick="runCode('code11')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code11"># zip() combines multiple lists
-names = ["Alice", "Bob", "Charlie"]
-scores = [92, 87, 95]
+                    <textarea class="code-editor" id="code11">import json
 
-print("📊 Student Scores:")
-for name, score in zip(names, scores):
-    print(f"  {name}: {score}")
+# JSON string to Python dict
+json_string = '{"name": "Ayse", "age": 22, "active": true}'
 
-# Three lists together
-subjects = ["Math", "Science", "English"]
-grades = ["A", "B+", "A-"]
-print("\nGrade Report:")
-for name, subject, grade in zip(names, subjects, grades):
-    print(f"  {name} got {grade} in {subject}")</textarea>
+data = json.loads(json_string)
+print(f"Python dict: {data}")
+print(f"Name: {data['name']}")
+print(f"Type: {type(data)}")</textarea>
                     <div class="code-output" id="outputcode11">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h4>Temperature Converter</h4>
+                <h3>JSON Files</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 5.3: Temperature Converter</span>
+                        <span class="code-figure-label">Figure 5.3: JSON File Operations</span>
                         <button class="code-figure-run" onclick="runCode('code12')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code12"># Convert Celsius to Fahrenheit
-celsius = [0, 10, 20, 30, 40]
+                    <textarea class="code-editor" id="code12">import json
 
-print("#   Celsius   Fahrenheit")
-print("-" * 25)
-for i, c in enumerate(celsius, start=1):
-    f = c * 9/5 + 32
-    print(f"{i}   {c:5.1f}°C → {f:6.1f}°F")</textarea>
+# Write JSON to file
+config = {
+    'database': {'host': 'localhost', 'port': 5432},
+    'debug': True,
+    'max_connections': 100
+}
+
+with open('config.json', 'w') as f:
+    json.dump(config, f, indent=2)
+
+print("JSON file created!")
+
+# Read JSON from file
+with open('config.json', 'r') as f:
+    loaded = json.load(f)
+
+print(f"Host: {loaded['database']['host']}")
+print(f"Debug: {loaded['debug']}")</textarea>
                     <div class="code-output" id="outputcode12">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
@@ -1034,119 +1034,155 @@ for i, c in enumerate(celsius, start=1):
                 </div>
             </section>
             
-            <!-- Section 6: The while Loop -->
+            <!-- Section 6: File Paths and Directories -->
             <section id="part6" class="section">
                 <div class="section-header">
                     <div class="section-number">6</div>
-                    <h2>The while Loop</h2>
+                    <h2>File Paths and Directories</h2>
                 </div>
                 
-                <p>The <code>while</code> loop repeats as long as a condition is <code>True</code>. Use it when you don't know in advance how many iterations are needed.</p>
+                <p>Python's <code>os</code> and <code>os.path</code> modules provide cross-platform file path operations.</p>
                 
-                <h3>Basic Syntax</h3>
-                <pre>while condition:
-    # Code to execute while condition is True
-    # Must include something that changes the condition!</pre>
-                
-                <div class="warning-box info-box">
-                    <p><strong>Infinite Loop Warning!</strong> Always ensure the condition will eventually become <code>False</code>, or your program will run forever.</p>
-                </div>
-                
-                <h4>Basic while Loop</h4>
+                <h3>Path Operations</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 6.1: Basic while</span>
+                        <span class="code-figure-label">Figure 6.1: Path Operations</span>
                         <button class="code-figure-run" onclick="runCode('code13')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code13"># Count to 5 using while
-count = 1
+                    <textarea class="code-editor" id="code13">import os
+import os.path
 
-while count <= 5:
-    print(f"Count: {count}")
-    count += 1  # Don't forget this!
+# Current directory
+print(f"Current dir: {os.getcwd()}")
 
-print("Done counting!")</textarea>
+# Path operations
+filepath = "/home/user/data/sensors.csv"
+print(f"\nPath: {filepath}")
+print(f"Directory: {os.path.dirname(filepath)}")
+print(f"Filename: {os.path.basename(filepath)}")
+print(f"Extension: {os.path.splitext(filepath)[1]}")
+
+# Join paths (cross-platform)
+new_path = os.path.join("data", "2024", "sensors.csv")
+print(f"\nJoined: {new_path}")</textarea>
                     <div class="code-output" id="outputcode13">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h4>Sum Until Threshold</h4>
+                <h3>File Existence Checks</h3>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 6.2: Sum Until Threshold</span>
+                        <span class="code-figure-label">Figure 6.2: File Checks</span>
                         <button class="code-figure-run" onclick="runCode('code14')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code14"># Add numbers until sum exceeds 100
-total = 0
-number = 1
+                    <textarea class="code-editor" id="code14">import os
 
-while total <= 100:
-    total += number
-    print(f"Added {number}, total = {total}")
-    number += 1
+# Create test file
+with open('test.txt', 'w') as f:
+    f.write('test')
 
-print(f"\nFirst sum over 100: {total}")
-print(f"Numbers added: {number - 1}")</textarea>
+# Check existence
+print(f"test.txt exists: {os.path.exists('test.txt')}")
+print(f"missing.txt exists: {os.path.exists('missing.txt')}")
+print(f"test.txt is file: {os.path.isfile('test.txt')}")
+
+# Get file size
+size = os.path.getsize('test.txt')
+print(f"File size: {size} bytes")</textarea>
                     <div class="code-output" id="outputcode14">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
+            </section>
+            
+            <!-- Section 7: Exception Handling -->
+            <section id="part7" class="section">
+                <div class="section-header">
+                    <div class="section-number">7</div>
+                    <h2>File Exception Handling</h2>
+                </div>
                 
-                <h4>Guess the Number Game</h4>
+                <p>File operations can fail for many reasons. Always handle exceptions to make your code robust.</p>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Exception</th><th>When Raised</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>FileNotFoundError</code></td><td>File doesn't exist (read mode)</td></tr>
+                            <tr><td><code>PermissionError</code></td><td>No read/write permission</td></tr>
+                            <tr><td><code>IsADirectoryError</code></td><td>Trying to open directory as file</td></tr>
+                            <tr><td><code>FileExistsError</code></td><td>File exists (exclusive mode 'x')</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 6.3: Number Guessing</span>
+                        <span class="code-figure-label">Figure 7.1: Exception Handling</span>
                         <button class="code-figure-run" onclick="runCode('code15')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code15"># Simple guessing game simulation
-secret = 7
-guesses = [3, 9, 5, 7]  # Simulated guesses
-attempts = 0
+                    <textarea class="code-editor" id="code15">def read_file_safely(filename):
+    """Read file with proper exception handling"""
+    try:
+        with open(filename, 'r') as f:
+            return f.read()
+    except FileNotFoundError:
+        print(f"Error: '{filename}' not found")
+        return None
+    except PermissionError:
+        print(f"Error: No permission to read '{filename}'")
+        return None
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return None
 
-for guess in guesses:
-    attempts += 1
-    print(f"Guess {attempts}: {guess}")
-    
-    if guess == secret:
-        print(f"🎉 Correct! Found in {attempts} attempts!")
-        break
-    elif guess < secret:
-        print("  Too low!")
-    else:
-        print("  Too high!")</textarea>
+# Test with existing file
+content = read_file_safely('example.txt')
+if content:
+    print(f"Content: {content[:30]}...")
+
+# Test with missing file
+content = read_file_safely('missing.txt')</textarea>
                     <div class="code-output" id="outputcode15">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
+            </section>
+            
+            <!-- Section 8: Binary Files -->
+            <section id="part8" class="section">
+                <div class="section-header">
+                    <div class="section-number">8</div>
+                    <h2>Binary Files</h2>
+                </div>
                 
-                <h4>while-else Clause</h4>
+                <p>Binary mode (<code>'rb'</code>, <code>'wb'</code>) is used for non-text files like images, audio, or any file where you need exact byte control.</p>
+                
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 6.4: while-else</span>
+                        <span class="code-figure-label">Figure 8.1: Binary Operations</span>
                         <button class="code-figure-run" onclick="runCode('code16')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code16"># while-else: else runs if loop completes normally
-n = 5
-while n > 0:
-    print(f"n = {n}")
-    n -= 1
-else:
-    print("Loop completed normally!")
+                    <textarea class="code-editor" id="code16"># Write binary data
+data = bytes([0x48, 0x65, 0x6C, 0x6C, 0x6F])  # "Hello"
 
-print("\n--- With break (else won't run) ---")
-n = 5
-while n > 0:
-    if n == 3:
-        print("Breaking at n=3")
-        break
-    print(f"n = {n}")
-    n -= 1
-else:
-    print("This won't print!")</textarea>
+with open('binary.bin', 'wb') as f:
+    f.write(data)
+
+print(f"Wrote {len(data)} bytes")
+
+# Read binary data
+with open('binary.bin', 'rb') as f:
+    content = f.read()
+
+print(f"Read: {content}")
+print(f"As string: {content.decode('utf-8')}")</textarea>
                     <div class="code-output" id="outputcode16">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
@@ -1154,460 +1190,114 @@ else:
                 </div>
             </section>
             
-            <!-- Section 7: break Statement -->
-            <section id="part7" class="section">
+            <!-- Section 9: Engineering Applications -->
+            <section id="part9" class="section">
                 <div class="section-header">
-                    <div class="section-number">7</div>
-                    <h2>The break Statement</h2>
+                    <div class="section-number">9</div>
+                    <h2>Engineering Applications</h2>
                 </div>
                 
-                <p>The <code>break</code> statement immediately exits the loop, skipping any remaining iterations. It's useful for stopping a loop when a condition is met.</p>
-                
-                <h4>Find First Match</h4>
+                <h4>Sensor Data Logger</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 7.1: Find First Match</span>
+                        <span class="code-figure-label">Figure 9.1: Data Logger</span>
                         <button class="code-figure-run" onclick="runCode('code17')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code17"># Find first even number
-numbers = [7, 3, 9, 4, 2, 8]
+                    <textarea class="code-editor" id="code17">import csv
+from datetime import datetime
 
-for num in numbers:
-    print(f"Checking {num}...")
-    if num % 2 == 0:
-        print(f"✓ Found first even: {num}")
-        break
+def log_sensor_reading(sensor_id, value, unit, filename='sensor_log.csv'):
+    """Log sensor reading to CSV file"""
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    
+    # Check if file exists
+    import os
+    file_exists = os.path.exists(filename)
+    
+    with open(filename, 'a', newline='') as f:
+        writer = csv.writer(f)
+        if not file_exists:
+            writer.writerow(['timestamp', 'sensor_id', 'value', 'unit'])
+        writer.writerow([timestamp, sensor_id, value, unit])
 
-print("Search complete")</textarea>
+# Simulate sensor readings
+readings = [
+    ('TEMP_001', 25.5, 'C'),
+    ('PRESS_001', 101.3, 'kPa'),
+    ('HUMID_001', 65.0, '%')
+]
+
+for sensor_id, value, unit in readings:
+    log_sensor_reading(sensor_id, value, unit)
+
+# View log
+with open('sensor_log.csv', 'r') as f:
+    print(f.read())</textarea>
                     <div class="code-output" id="outputcode17">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
                 
-                <h4>Prime Number Check</h4>
+                <h4>Configuration Manager</h4>
                 <div class="code-figure">
                     <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 7.2: Prime Check</span>
+                        <span class="code-figure-label">Figure 9.2: Config Manager</span>
                         <button class="code-figure-run" onclick="runCode('code18')">▶ Run</button>
                     </div>
-                    <textarea class="code-editor" id="code18"># Check if a number is prime
-num = 17
-is_prime = True
+                    <textarea class="code-editor" id="code18">import json
+import os
 
-if num < 2:
-    is_prime = False
-else:
-    for i in range(2, int(num**0.5) + 1):
-        if num % i == 0:
-            is_prime = False
-            print(f"{num} is divisible by {i}")
-            break
+class ConfigManager:
+    def __init__(self, filename='config.json'):
+        self.filename = filename
+        self.config = self.load()
+    
+    def load(self):
+        if os.path.exists(self.filename):
+            with open(self.filename, 'r') as f:
+                return json.load(f)
+        return {}
+    
+    def save(self):
+        with open(self.filename, 'w') as f:
+            json.dump(self.config, f, indent=2)
+    
+    def get(self, key, default=None):
+        return self.config.get(key, default)
+    
+    def set(self, key, value):
+        self.config[key] = value
+        self.save()
 
-if is_prime:
-    print(f"{num} is prime!")
-else:
-    print(f"{num} is not prime")</textarea>
+# Usage
+config = ConfigManager('app_config.json')
+config.set('sensor_interval', 5)
+config.set('max_readings', 1000)
+config.set('debug', True)
+
+print(f"Interval: {config.get('sensor_interval')}")
+print(f"Debug: {config.get('debug')}")
+print(f"Missing: {config.get('missing', 'default')}")</textarea>
                     <div class="code-output" id="outputcode18">
                         <div class="code-output-label">Output</div>
                         <div class="code-output-content"></div>
                     </div>
                 </div>
             </section>
-
-            <!-- Section 8: continue Statement -->
-            <section id="part8" class="section">
-                <div class="section-header">
-                    <div class="section-number">8</div>
-                    <h2>The continue Statement</h2>
-                </div>
-                
-                <p>The <code>continue</code> statement skips the rest of the current iteration and moves to the next one. Unlike <code>break</code>, it doesn't exit the loop entirely.</p>
-                
-                <h4>Skip Negative Numbers</h4>
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 8.1: Skip with continue</span>
-                        <button class="code-figure-run" onclick="runCode('code19')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code19"># Sum only positive numbers
-numbers = [10, -5, 20, -3, 15, -8, 25]
-total = 0
-
-for num in numbers:
-    if num < 0:
-        print(f"Skipping {num} (negative)")
-        continue
-    total += num
-    print(f"Added {num}, total = {total}")
-
-print(f"\nSum of positives: {total}")</textarea>
-                    <div class="code-output" id="outputcode19">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
-                
-                <h4>Print Odd Numbers Only</h4>
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 8.2: Filter with continue</span>
-                        <button class="code-figure-run" onclick="runCode('code20')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code20"># Print only odd numbers from 1-10
-print("Odd numbers 1-10:")
-for i in range(1, 11):
-    if i % 2 == 0:  # Skip even numbers
-        continue
-    print(i, end=" ")
-print()  # New line</textarea>
-                    <div class="code-output" id="outputcode20">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
-                
-                <h4>break vs continue Comparison</h4>
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 8.3: break vs continue</span>
-                        <button class="code-figure-run" onclick="runCode('code21')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code21"># Compare break and continue
-print("With CONTINUE (skip 3):")
-for i in range(1, 6):
-    if i == 3:
-        continue
-    print(i, end=" ")
-
-print("\n\nWith BREAK (stop at 3):")
-for i in range(1, 6):
-    if i == 3:
-        break
-    print(i, end=" ")
-print()</textarea>
-                    <div class="code-output" id="outputcode21">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
-            </section>
             
-            <!-- Section 9: Nested Loops -->
-            <section id="part9" class="section">
-                <div class="section-header">
-                    <div class="section-number">9</div>
-                    <h2>Nested Loops</h2>
-                </div>
-                
-                <p>A nested loop is a loop inside another loop. The inner loop completes all its iterations for each iteration of the outer loop.</p>
-                
-                <h4>Multiplication Table</h4>
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 9.1: Multiplication Table</span>
-                        <button class="code-figure-run" onclick="runCode('code22')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code22"># Print multiplication table
-print("    ", end="")
-for j in range(1, 6):
-    print(f"{j:4}", end="")
-print("\n" + "-" * 25)
-
-for i in range(1, 6):
-    print(f"{i} |", end="")
-    for j in range(1, 6):
-        print(f"{i*j:4}", end="")
-    print()</textarea>
-                    <div class="code-output" id="outputcode22">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
-                
-                <h4>Pattern Printing</h4>
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 9.2: Star Pattern</span>
-                        <button class="code-figure-run" onclick="runCode('code23')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code23"># Right triangle pattern
-rows = 5
-
-print("Right Triangle:")
-for i in range(1, rows + 1):
-    for j in range(i):
-        print("*", end="")
-    print()
-
-print("\nPyramid:")
-for i in range(1, rows + 1):
-    # Spaces
-    for j in range(rows - i):
-        print(" ", end="")
-    # Stars
-    for k in range(2 * i - 1):
-        print("*", end="")
-    print()</textarea>
-                    <div class="code-output" id="outputcode23">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
-                
-                <h4>Matrix Operations</h4>
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 9.3: Matrix Sum</span>
-                        <button class="code-figure-run" onclick="runCode('code24')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code24"># 2D list (matrix) operations
-matrix = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-]
-
-print("Matrix:")
-for row in matrix:
-    print(row)
-
-# Sum all elements
-total = 0
-for row in matrix:
-    for element in row:
-        total += element
-
-print(f"\nSum of all elements: {total}")</textarea>
-                    <div class="code-output" id="outputcode24">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Section 10: Common Loop Patterns -->
-            <section id="part10" class="section">
-                <div class="section-header">
-                    <div class="section-number">10</div>
-                    <h2>Common Loop Patterns</h2>
-                </div>
-                
-                <p>Here are frequently used loop patterns that you'll encounter in programming.</p>
-                
-                <h4>Accumulator Pattern</h4>
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 10.1: Accumulator</span>
-                        <button class="code-figure-run" onclick="runCode('code25')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code25"># Accumulator pattern: building up a result
-numbers = [4, 2, 8, 5, 1]
-
-# Sum
-total = 0
-for num in numbers:
-    total += num
-print(f"Sum: {total}")
-
-# Product
-product = 1
-for num in numbers:
-    product *= num
-print(f"Product: {product}")
-
-# String building
-chars = ['H', 'e', 'l', 'l', 'o']
-word = ""
-for char in chars:
-    word += char
-print(f"Word: {word}")</textarea>
-                    <div class="code-output" id="outputcode25">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
-                
-                <h4>Counter Pattern</h4>
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 10.2: Counter</span>
-                        <button class="code-figure-run" onclick="runCode('code26')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code26"># Count occurrences
-text = "mississippi"
-target = "s"
-count = 0
-
-for char in text:
-    if char == target:
-        count += 1
-
-print(f"'{target}' appears {count} times in '{text}'")</textarea>
-                    <div class="code-output" id="outputcode26">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
-                
-                <h4>Search Pattern</h4>
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 10.3: Search</span>
-                        <button class="code-figure-run" onclick="runCode('code27')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code27"># Linear search
-numbers = [15, 42, 7, 23, 36, 9]
-target = 23
-found_index = -1
-
-for i, num in enumerate(numbers):
-    if num == target:
-        found_index = i
-        break
-
-if found_index != -1:
-    print(f"Found {target} at index {found_index}")
-else:
-    print(f"{target} not found")</textarea>
-                    <div class="code-output" id="outputcode27">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
-                
-                <h4>Filter Pattern</h4>
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 10.4: Filter</span>
-                        <button class="code-figure-run" onclick="runCode('code28')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code28"># Filter elements matching criteria
-scores = [45, 92, 73, 88, 56, 81, 67, 95]
-passing_score = 70
-
-passed = []
-failed = []
-
-for score in scores:
-    if score >= passing_score:
-        passed.append(score)
-    else:
-        failed.append(score)
-
-print(f"All scores: {scores}")
-print(f"Passed (≥{passing_score}): {passed}")
-print(f"Failed (<{passing_score}): {failed}")</textarea>
-                    <div class="code-output" id="outputcode28">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Section 11: Engineering Applications -->
-            <section id="part11" class="section">
-                <div class="section-header">
-                    <div class="section-number">11</div>
-                    <h2>Engineering Applications</h2>
-                </div>
-                
-                <h4>Sensor Data Analysis</h4>
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 11.1: Sensor Analysis</span>
-                        <button class="code-figure-run" onclick="runCode('code29')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code29"># Analyze temperature sensor readings
-readings = [22.5, 23.1, 25.8, 24.2, 28.5, 22.0, 26.3]
-threshold = 26.0
-
-print("🌡️ Temperature Analysis")
-print("=" * 30)
-
-# Calculate statistics
-total = 0
-max_temp = readings[0]
-min_temp = readings[0]
-alerts = 0
-
-for temp in readings:
-    total += temp
-    if temp > max_temp:
-        max_temp = temp
-    if temp < min_temp:
-        min_temp = temp
-    if temp > threshold:
-        alerts += 1
-
-avg = total / len(readings)
-
-print(f"Readings: {len(readings)}")
-print(f"Average: {avg:.1f}°C")
-print(f"Maximum: {max_temp}°C")
-print(f"Minimum: {min_temp}°C")
-print(f"Threshold alerts: {alerts}")</textarea>
-                    <div class="code-output" id="outputcode29">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
-                
-                <h4>Factorial Calculation</h4>
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 11.2: Factorial</span>
-                        <button class="code-figure-run" onclick="runCode('code30')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code30"># Calculate factorial: n! = n × (n-1) × ... × 1
-n = 5
-factorial = 1
-
-for i in range(1, n + 1):
-    factorial *= i
-    print(f"{i}! = {factorial}")
-
-print(f"\n{n}! = {factorial}")</textarea>
-                    <div class="code-output" id="outputcode30">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
-                
-                <h4>Fibonacci Sequence</h4>
-                <div class="code-figure">
-                    <div class="code-figure-header">
-                        <span class="code-figure-label">Figure 11.3: Fibonacci</span>
-                        <button class="code-figure-run" onclick="runCode('code31')">▶ Run</button>
-                    </div>
-                    <textarea class="code-editor" id="code31"># Generate Fibonacci sequence
-n_terms = 10
-a, b = 0, 1
-
-print(f"Fibonacci sequence ({n_terms} terms):")
-for i in range(n_terms):
-    print(a, end=" ")
-    a, b = b, a + b
-print()</textarea>
-                    <div class="code-output" id="outputcode31">
-                        <div class="code-output-label">Output</div>
-                        <div class="code-output-content"></div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Summary Box -->
+            <!-- Summary -->
             <div class="summary-box">
-                <h3>📋 Week 3 Summary</h3>
+                <h3>📋 Week 8 Summary</h3>
                 <div class="summary-grid">
-                    <div class="summary-item"><span class="icon">🔄</span><span><code>for item in iterable</code></span></div>
-                    <div class="summary-item"><span class="icon">🔢</span><span><code>range(start, stop, step)</code></span></div>
-                    <div class="summary-item"><span class="icon">⏳</span><span><code>while condition</code></span></div>
-                    <div class="summary-item"><span class="icon">🔗</span><span><code>enumerate()</code>, <code>zip()</code></span></div>
-                    <div class="summary-item"><span class="icon">🛑</span><span><code>break</code> - exit loop</span></div>
-                    <div class="summary-item"><span class="icon">⏭️</span><span><code>continue</code> - skip iteration</span></div>
-                    <div class="summary-item"><span class="icon">📊</span><span>Nested loops for 2D data</span></div>
-                    <div class="summary-item"><span class="icon">🔍</span><span>Accumulator, Counter, Filter</span></div>
+                    <div class="summary-item"><span class="icon">📂</span><span>Use with statement</span></div>
+                    <div class="summary-item"><span class="icon">📖</span><span>read(), readline()</span></div>
+                    <div class="summary-item"><span class="icon">✏️</span><span>write(), writelines()</span></div>
+                    <div class="summary-item"><span class="icon">📊</span><span>csv module for CSV</span></div>
+                    <div class="summary-item"><span class="icon">📋</span><span>json module for JSON</span></div>
+                    <div class="summary-item"><span class="icon">📁</span><span>os.path operations</span></div>
+                    <div class="summary-item"><span class="icon">⚠️</span><span>Handle exceptions</span></div>
+                    <div class="summary-item"><span class="icon">🔄</span><span>Modes: r, w, a, rb, wb</span></div>
                 </div>
             </div>
 
@@ -1618,32 +1308,26 @@ print()</textarea>
                     <h2>Practice Exercises</h2>
                 </div>
                 
-                <p>Complete these 15 exercises to master loops in Python.</p>
+                <p>Complete these 15 exercises to master file handling in Python.</p>
                 
                 <!-- Exercise 1 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">1</span>Print 1 to 10</div>
+                        <div class="exercise-title"><span class="exercise-number">1</span>Create and Write File</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Use a for loop to print numbers from 1 to 10, each on a new line.</p>
-                        <div class="expected-output">
-                            <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>1
-2
-3
-...
-10</pre>
-                        </div>
+                        <p class="exercise-description">Create a file named "greeting.txt" and write "Hello, Python!" to it.</p>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex1"># Print numbers 1 to 10
+                            <textarea class="code-editor" id="ex1"># Create file and write greeting
 
-</textarea>
+# Verify by reading
+with open('greeting.txt', 'r') as f:
+    print(f.read())</textarea>
                             <div class="code-output" id="outputex1">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -1655,24 +1339,29 @@ print()</textarea>
                 <!-- Exercise 2 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">2</span>Sum of List</div>
+                        <div class="exercise-title"><span class="exercise-number">2</span>Read File Lines</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Calculate and print the sum of numbers = [5, 10, 15, 20, 25] using a for loop.</p>
+                        <p class="exercise-description">Create a file with 3 lines and read them into a list.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>Sum: 75</pre>
+                            <pre>['Line 1', 'Line 2', 'Line 3']</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex2">numbers = [5, 10, 15, 20, 25]
-# Calculate the sum
+                            <textarea class="code-editor" id="ex2"># Create file with 3 lines
+with open('lines.txt', 'w') as f:
+    f.write('Line 1\nLine 2\nLine 3\n')
 
-</textarea>
+# Read into list (remove newlines)
+with open('lines.txt', 'r') as f:
+    lines = 
+    
+print(lines)</textarea>
                             <div class="code-output" id="outputex2">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -1684,23 +1373,25 @@ print()</textarea>
                 <!-- Exercise 3 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">3</span>Even Numbers</div>
+                        <div class="exercise-title"><span class="exercise-number">3</span>Append to File</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Print all even numbers from 2 to 20 using range() with a step.</p>
-                        <div class="expected-output">
-                            <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>2 4 6 8 10 12 14 16 18 20</pre>
-                        </div>
+                        <p class="exercise-description">Append "New entry" to an existing file.</p>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex3"># Print even numbers 2-20
+                            <textarea class="code-editor" id="ex3"># Create initial file
+with open('log.txt', 'w') as f:
+    f.write('Initial entry\n')
 
-</textarea>
+# Append new entry
+
+# Verify
+with open('log.txt', 'r') as f:
+    print(f.read())</textarea>
                             <div class="code-output" id="outputex3">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -1712,34 +1403,30 @@ print()</textarea>
                 <!-- Exercise 4 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">4</span>Count Vowels</div>
-                        <span class="difficulty medium">Medium</span>
+                        <div class="exercise-title"><span class="exercise-number">4</span>Count Lines</div>
+                        <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Count the number of vowels in text = "Engineering is fun!"</p>
+                        <p class="exercise-description">Count the number of lines in a file.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>Vowel count: 6</pre>
-                        </div>
-                        <div class="hints-container">
-                            <button class="hints-toggle" onclick="toggleHints('hints4')">💡 Show Hints</button>
-                            <div class="hints-content" id="hints4">
-                                <ul>
-                                    <li>Create a string with all vowels: "aeiouAEIOU"</li>
-                                    <li>Loop through each character in text</li>
-                                    <li>Check if character is in vowels string</li>
-                                </ul>
-                            </div>
+                            <pre>Line count: 5</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex4">text = "Engineering is fun!"
-# Count vowels
+                            <textarea class="code-editor" id="ex4"># Create file
+with open('count.txt', 'w') as f:
+    for i in range(5):
+        f.write(f'Line {i+1}\n')
 
-</textarea>
+# Count lines
+with open('count.txt', 'r') as f:
+    count = 
+    
+print(f"Line count: {count}")</textarea>
                             <div class="code-output" id="outputex4">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -1751,26 +1438,26 @@ print()</textarea>
                 <!-- Exercise 5 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">5</span>Multiplication Table</div>
-                        <span class="difficulty medium">Medium</span>
+                        <div class="exercise-title"><span class="exercise-number">5</span>Check File Exists</div>
+                        <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Print the multiplication table for 5 (from 5×1 to 5×10).</p>
-                        <div class="expected-output">
-                            <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>5 x 1 = 5
-5 x 2 = 10
-...
-5 x 10 = 50</pre>
-                        </div>
+                        <p class="exercise-description">Check if a file exists before reading it.</p>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex5"># Multiplication table for 5
+                            <textarea class="code-editor" id="ex5">import os
 
-</textarea>
+filename = 'example.txt'
+
+# Check if file exists before reading
+if :
+    with open(filename, 'r') as f:
+        print(f"Content: {f.read()[:20]}...")
+else:
+    print(f"File '{filename}' not found")</textarea>
                             <div class="code-output" id="outputex5">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -1782,24 +1469,30 @@ print()</textarea>
                 <!-- Exercise 6 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">6</span>Factorial</div>
-                        <span class="difficulty medium">Medium</span>
+                        <div class="exercise-title"><span class="exercise-number">6</span>Write CSV</div>
+                        <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Calculate the factorial of n = 6 (6! = 6×5×4×3×2×1).</p>
-                        <div class="expected-output">
-                            <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>6! = 720</pre>
-                        </div>
+                        <p class="exercise-description">Write a list of students to a CSV file.</p>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex6">n = 6
-# Calculate factorial
+                            <textarea class="code-editor" id="ex6">import csv
 
-</textarea>
+students = [
+    ['id', 'name', 'grade'],
+    [1, 'Ali', 85],
+    [2, 'Ayse', 92],
+    [3, 'Mehmet', 78]
+]
+
+# Write to CSV
+
+# Verify
+with open('students.csv', 'r') as f:
+    print(f.read())</textarea>
                             <div class="code-output" id="outputex6">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -1811,24 +1504,23 @@ print()</textarea>
                 <!-- Exercise 7 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">7</span>Find Maximum</div>
+                        <div class="exercise-title"><span class="exercise-number">7</span>Read CSV to Dict</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Find the maximum value in values = [23, 67, 12, 89, 45, 34] without using max().</p>
-                        <div class="expected-output">
-                            <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>Maximum: 89</pre>
-                        </div>
+                        <p class="exercise-description">Read CSV file using DictReader and print each row.</p>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex7">values = [23, 67, 12, 89, 45, 34]
-# Find maximum without max()
+                            <textarea class="code-editor" id="ex7">import csv
 
-</textarea>
+# Read students.csv using DictReader
+with open('students.csv', 'r') as f:
+    reader = 
+    for row in reader:
+        print(f"{row['name']}: {row['grade']}")</textarea>
                             <div class="code-output" id="outputex7">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -1840,28 +1532,31 @@ print()</textarea>
                 <!-- Exercise 8 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">8</span>Countdown</div>
-                        <span class="difficulty easy">Easy</span>
+                        <div class="exercise-title"><span class="exercise-number">8</span>JSON Write and Read</div>
+                        <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Create a countdown from 5 to 1 using a while loop, then print "Blast off!"</p>
-                        <div class="expected-output">
-                            <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>5
-4
-3
-2
-1
-Blast off!</pre>
-                        </div>
+                        <p class="exercise-description">Write a dictionary to JSON file and read it back.</p>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex8"># Countdown with while loop
+                            <textarea class="code-editor" id="ex8">import json
 
-</textarea>
+settings = {
+    'theme': 'dark',
+    'font_size': 14,
+    'auto_save': True
+}
+
+# Write to JSON file
+
+# Read back
+with open('settings.json', 'r') as f:
+    loaded = 
+    
+print(f"Theme: {loaded['theme']}")</textarea>
                             <div class="code-output" id="outputex8">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -1873,24 +1568,31 @@ Blast off!</pre>
                 <!-- Exercise 9 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">9</span>Filter Positives</div>
+                        <div class="exercise-title"><span class="exercise-number">9</span>File Path Operations</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">From nums = [4, -2, 7, -5, 3, -1, 8], create a new list containing only positive numbers.</p>
+                        <p class="exercise-description">Extract filename and extension from a path.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>Positives: [4, 7, 3, 8]</pre>
+                            <pre>Filename: data.csv
+Extension: .csv</pre>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex9">nums = [4, -2, 7, -5, 3, -1, 8]
-# Filter positive numbers
+                            <textarea class="code-editor" id="ex9">import os.path
 
-</textarea>
+filepath = "/home/user/documents/data.csv"
+
+# Get filename and extension
+filename = 
+extension = 
+
+print(f"Filename: {filename}")
+print(f"Extension: {extension}")</textarea>
                             <div class="code-output" id="outputex9">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -1902,27 +1604,22 @@ Blast off!</pre>
                 <!-- Exercise 10 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">10</span>Star Triangle</div>
+                        <div class="exercise-title"><span class="exercise-number">10</span>Exception Handling</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Print a right triangle of stars with 5 rows using nested loops.</p>
-                        <div class="expected-output">
-                            <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>*
-**
-***
-****
-*****</pre>
-                        </div>
+                        <p class="exercise-description">Handle FileNotFoundError when reading a missing file.</p>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex10"># Print star triangle
+                            <textarea class="code-editor" id="ex10"># Try to read a file that doesn't exist
 
-</textarea>
+    with open('nonexistent.txt', 'r') as f:
+        print(f.read())
+
+    print("File not found - using default")</textarea>
                             <div class="code-output" id="outputex10">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -1934,24 +1631,25 @@ Blast off!</pre>
                 <!-- Exercise 11 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">11</span>First Even with break</div>
-                        <span class="difficulty easy">Easy</span>
+                        <div class="exercise-title"><span class="exercise-number">11</span>Copy File Contents</div>
+                        <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Find and print the first even number in [5, 7, 9, 4, 11, 2] using break.</p>
-                        <div class="expected-output">
-                            <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>First even: 4</pre>
-                        </div>
+                        <p class="exercise-description">Copy contents from one file to another.</p>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex11">numbers = [5, 7, 9, 4, 11, 2]
-# Find first even using break
+                            <textarea class="code-editor" id="ex11"># Create source file
+with open('source.txt', 'w') as f:
+    f.write('This is the source content.\n')
 
-</textarea>
+# Copy to destination
+
+# Verify
+with open('destination.txt', 'r') as f:
+    print(f"Copied: {f.read()}")</textarea>
                             <div class="code-output" id="outputex11">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -1963,24 +1661,28 @@ Blast off!</pre>
                 <!-- Exercise 12 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">12</span>Skip Negatives</div>
-                        <span class="difficulty easy">Easy</span>
+                        <div class="exercise-title"><span class="exercise-number">12</span>Write Multiple Files</div>
+                        <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Print only positive numbers from [1, -2, 3, -4, 5] using continue.</p>
-                        <div class="expected-output">
-                            <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>1 3 5</pre>
-                        </div>
+                        <p class="exercise-description">Create multiple numbered files in a loop.</p>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex12">numbers = [1, -2, 3, -4, 5]
-# Print positives using continue
+                            <textarea class="code-editor" id="ex12">import os
 
-</textarea>
+# Create 3 numbered files: file_1.txt, file_2.txt, file_3.txt
+for i in range(1, 4):
+    filename = f"file_{i}.txt"
+    # Write to file
+    
+# Verify files were created
+for i in range(1, 4):
+    filename = f"file_{i}.txt"
+    if os.path.exists(filename):
+        print(f"{filename} created")</textarea>
                             <div class="code-output" id="outputex12">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -1992,22 +1694,17 @@ Blast off!</pre>
                 <!-- Exercise 13 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">13</span>Fibonacci</div>
+                        <div class="exercise-title"><span class="exercise-number">13</span>CSV Data Analysis</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Generate the first 8 Fibonacci numbers: 0, 1, 1, 2, 3, 5, 8, 13</p>
-                        <div class="expected-output">
-                            <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>0 1 1 2 3 5 8 13</pre>
-                        </div>
+                        <p class="exercise-description">Calculate average grade from CSV file.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints13')">💡 Show Hints</button>
                             <div class="hints-content" id="hints13">
                                 <ul>
-                                    <li>Start with a=0, b=1</li>
-                                    <li>Each new number is a+b</li>
-                                    <li>Swap: a, b = b, a + b</li>
+                                    <li>Use DictReader to access grades by column name</li>
+                                    <li>Convert grade to int/float before summing</li>
                                 </ul>
                             </div>
                         </div>
@@ -2016,9 +1713,20 @@ Blast off!</pre>
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex13')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex13"># Generate first 8 Fibonacci numbers
+                            <textarea class="code-editor" id="ex13">import csv
 
-</textarea>
+# students.csv already exists from exercise 6
+# Calculate average grade
+with open('students.csv', 'r') as f:
+    reader = csv.DictReader(f)
+    grades = []
+    for row in reader:
+        # Add grade to list
+        pass
+    
+# Calculate and print average
+avg = sum(grades) / len(grades)
+print(f"Average grade: {avg:.1f}")</textarea>
                             <div class="code-output" id="outputex13">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2030,26 +1738,44 @@ Blast off!</pre>
                 <!-- Exercise 14 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">14</span>enumerate() Practice</div>
-                        <span class="difficulty easy">Easy</span>
+                        <div class="exercise-title"><span class="exercise-number">14</span>Log Analyzer</div>
+                        <span class="difficulty hard">Challenge</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Use enumerate() to print each item in ["apple", "banana", "cherry"] with its position starting from 1.</p>
-                        <div class="expected-output">
-                            <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>1. apple
-2. banana
-3. cherry</pre>
+                        <p class="exercise-description">Count ERROR and WARNING entries in a log file.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints14')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints14">
+                                <ul>
+                                    <li>Use <code>"ERROR" in line</code> to check for errors</li>
+                                    <li>Iterate through file line by line</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex14')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex14">fruits = ["apple", "banana", "cherry"]
-# Use enumerate with start=1
+                            <textarea class="code-editor" id="ex14"># Create sample log
+with open('app.log', 'w') as f:
+    f.write('[INFO] System started\n')
+    f.write('[ERROR] Connection failed\n')
+    f.write('[WARNING] Low memory\n')
+    f.write('[INFO] Processing complete\n')
+    f.write('[ERROR] File not found\n')
 
-</textarea>
+# Count errors and warnings
+errors = 0
+warnings = 0
+
+with open('app.log', 'r') as f:
+    for line in f:
+        # Count errors and warnings
+        pass
+
+print(f"Errors: {errors}")
+print(f"Warnings: {warnings}")</textarea>
                             <div class="code-output" id="outputex14">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2061,22 +1787,17 @@ Blast off!</pre>
                 <!-- Exercise 15 -->
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <div class="exercise-title"><span class="exercise-number">15</span>Prime Numbers</div>
+                        <div class="exercise-title"><span class="exercise-number">15</span>Config File Manager</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Print all prime numbers between 1 and 30.</p>
-                        <div class="expected-output">
-                            <div class="expected-output-label">✓ Expected Output</div>
-                            <pre>Prime numbers 1-30: 2 3 5 7 11 13 17 19 23 29</pre>
-                        </div>
+                        <p class="exercise-description">Create a function to load config with defaults if file missing.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints15')">💡 Show Hints</button>
                             <div class="hints-content" id="hints15">
                                 <ul>
-                                    <li>A prime has no divisors except 1 and itself</li>
-                                    <li>Check divisibility from 2 to √n</li>
-                                    <li>Use nested loop with break</li>
+                                    <li>Use try/except for FileNotFoundError</li>
+                                    <li>Return default config if file doesn't exist</li>
                                 </ul>
                             </div>
                         </div>
@@ -2085,9 +1806,20 @@ Blast off!</pre>
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex15')">▶ Run</button>
                             </div>
-                            <textarea class="code-editor" id="ex15"># Print primes 1-30
+                            <textarea class="code-editor" id="ex15">import json
 
-</textarea>
+def load_config(filename, defaults=None):
+    """Load config from JSON, return defaults if missing"""
+    if defaults is None:
+        defaults = {}
+    
+    # Your code here
+    pass
+
+# Test with missing file
+config = load_config('missing_config.json', 
+                     {'debug': False, 'port': 8080})
+print(f"Config: {config}")</textarea>
                             <div class="code-output" id="outputex15">
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
@@ -2096,7 +1828,7 @@ Blast off!</pre>
                     </div>
                 </div>
             </section>
-
+            
             <!-- Submit Section -->
             <section id="submit" class="section">
                 <div class="section-header">
@@ -2131,7 +1863,7 @@ Blast off!</pre>
                         <input type="text" id="website" tabindex="-1" autocomplete="off">
                     </div>
                     
-                    <button class="submit-btn" onclick="submitWork()">Submit Week 03</button>
+                    <button class="submit-btn" onclick="submitWork()">Submit Week 08</button>
                     
                     <div class="submit-status" id="submitStatus"></div>
                 </div>
@@ -2139,9 +1871,9 @@ Blast off!</pre>
             
             <!-- Navigation -->
             <div class="page-nav">
-                <a href="Week_02.html" class="nav-btn">← Week 02</a>
+                <a href="Week_07.html" class="nav-btn">← Week 07</a>
                 <a href="index.html?home=true" class="nav-btn">Course Home</a>
-                <a href="Week_04.html" class="nav-btn">Week 04 →</a>
+                <a href="Week_09.html" class="nav-btn">Week 09 →</a>
             </div>
         </div>
     </div>
@@ -2191,20 +1923,14 @@ Blast off!</pre>
             outputContent.textContent = 'Running...';
             
             try {
-                // Capture stdout
                 pyodide.runPython(`
 import sys
 from io import StringIO
 sys.stdout = StringIO()
 `);
-                
-                // Run the user code
                 await pyodide.runPythonAsync(code);
-                
-                // Get the output
                 const output = pyodide.runPython(`sys.stdout.getvalue()`);
                 outputContent.textContent = output || '(no output)';
-                
             } catch (e) {
                 outputContent.textContent = 'Error: ' + e.message;
             }
@@ -2242,14 +1968,12 @@ sys.stdout = StringIO()
             const classCode = document.getElementById('classCode').value.trim().toUpperCase();
             const honeypot = document.getElementById('website').value;
             
-            // Bot check
             if (honeypot) {
                 status.textContent = '❌ Submission rejected.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            // Time check
             const timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
             if (timeOnPage < 60) {
                 status.textContent = '❌ Please spend more time reviewing the material.';
@@ -2257,35 +1981,30 @@ sys.stdout = StringIO()
                 return;
             }
             
-            // Required fields
             if (!studentId || !studentName || !studentEmail || !classCode) {
                 status.textContent = '❌ All fields are required.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            // Validate student ID
             if (!validateStudentId(studentId)) {
                 status.textContent = '❌ Invalid Student ID (must be 6-10 digits).';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            // Validate name
             if (!validateName(studentName)) {
                 status.textContent = '❌ Please enter your full name (first and last).';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            // Validate email
             if (!validateEmail(studentEmail)) {
                 status.textContent = '❌ Please use your @istun.edu.tr email.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
                 return;
             }
             
-            // Validate class code
             if (classCode.length < 4) {
                 status.textContent = '❌ Invalid class code.';
                 status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
@@ -2293,7 +2012,7 @@ sys.stdout = StringIO()
             }
             
             const data = {
-                week: 'Week_03',
+                week: 'Week_08',
                 studentId: studentId,
                 studentName: studentName,
                 studentEmail: studentEmail,
@@ -2324,7 +2043,6 @@ sys.stdout = StringIO()
                 }
             })
             .catch(error => {
-                // Fallback to no-cors
                 fetch(scriptUrl, {
                     method: 'POST',
                     mode: 'no-cors',

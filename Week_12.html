@@ -1,0 +1,3286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 12: Modules and Packages | Computer Programming II</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-cream: #faf9f7;
+            --bg-dark: #1a1a2e;
+            --bg-code: #1e1e2e;
+            --text-primary: #1a1a2e;
+            --text-secondary: #444;
+            --text-muted: #666;
+            --accent: #7c3aed;
+            --accent-light: rgba(124, 58, 237, 0.1);
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --border: #e5e5e5;
+            --card-bg: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Crimson Pro', Georgia, serif; font-size: 19px; line-height: 1.8; background: var(--bg-cream); color: var(--text-primary); }
+        .topbar { background: var(--bg-dark); color: white; padding: 14px 24px; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
+        .topbar a { color: white; text-decoration: none; font-family: system-ui, sans-serif; font-size: 0.9rem; opacity: 0.9; }
+        .topbar a:hover { opacity: 1; }
+        .topbar-title { font-family: system-ui, sans-serif; font-weight: 600; font-size: 1rem; }
+        .topbar-nav { display: flex; gap: 24px; align-items: center; }
+        .progress-container { position: fixed; top: 52px; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 99; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa); width: 0%; transition: width 0.15s ease-out; }
+        .container { max-width: 900px; margin: 0 auto; padding: 50px 24px 80px; }
+        .chapter-header { text-align: center; margin-bottom: 50px; padding-bottom: 40px; border-bottom: 2px solid var(--border); }
+        .chapter-label { display: inline-block; background: var(--accent); color: white; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-family: system-ui, sans-serif; font-weight: 500; margin-bottom: 20px; }
+        .chapter-header h1 { font-size: 2.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; }
+        .chapter-meta { display: flex; justify-content: center; gap: 30px; color: var(--text-muted); font-size: 1rem; }
+        .objectives-box { background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(124, 58, 237, 0.2); border-left: 4px solid var(--accent); border-radius: 8px; padding: 28px; margin-bottom: 50px; }
+        .objectives-box h3 { font-size: 1.2rem; margin-bottom: 16px; color: var(--accent); }
+        .objectives-box ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px 30px; list-style: none; }
+        .objectives-box li { color: var(--text-secondary); font-size: 0.95rem; padding-left: 28px; position: relative; }
+        .objectives-box li::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: bold; }
+        .section { margin-bottom: 60px; scroll-margin-top: 70px; }
+        .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+        .section-number { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: var(--accent); color: white; border-radius: 10px; font-size: 1.2rem; font-weight: 700; font-family: system-ui, sans-serif; }
+        .section-header h2 { font-size: 1.6rem; font-weight: 600; color: var(--text-primary); }
+        .content p { color: var(--text-secondary); margin-bottom: 18px; }
+        .content h3 { font-size: 1.25rem; font-weight: 600; margin: 35px 0 16px; color: var(--text-primary); }
+        .content h4 { font-size: 1.1rem; font-weight: 600; margin: 25px 0 12px; color: var(--accent); }
+        .content ul, .content ol { color: var(--text-secondary); margin: 16px 0 20px 28px; }
+        .content li { margin-bottom: 8px; }
+        code { font-family: 'JetBrains Mono', monospace; background: rgba(124, 58, 237, 0.1); padding: 2px 8px; border-radius: 4px; font-size: 0.85em; color: var(--accent); }
+        .code-figure { background: var(--bg-code); border-radius: 10px; margin: 20px 0; overflow: hidden; border: 1px solid #333; }
+        .code-figure-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(255,255,255,0.05); border-bottom: 1px solid #333; }
+        .code-figure-label { font-family: system-ui, sans-serif; font-size: 0.8rem; color: #a78bfa; font-weight: 500; }
+        .code-figure-run { background: var(--success); color: white; border: none; padding: 6px 14px; border-radius: 6px; font-family: system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+        .code-figure-run:hover { background: #047857; }
+        .code-editor { width: 100%; min-height: 120px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; }
+        .code-output.show { display: block; }
+        .code-output-label { font-family: system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--success); text-transform: uppercase; margin-bottom: 8px; }
+        .code-output-content { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #d4d4d8; white-space: pre-wrap; }
+        .info-box { padding: 18px 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid; }
+        .info-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .tip-box { background: rgba(5, 150, 105, 0.08); border-color: var(--success); }
+        .tip-box::before { content: '💡 Tip'; display: block; font-weight: 600; color: var(--success); margin-bottom: 8px; font-size: 0.9rem; }
+        .warning-box { background: rgba(217, 119, 6, 0.08); border-color: var(--warning); }
+        .warning-box::before { content: '⚠️ Important'; display: block; font-weight: 600; color: var(--warning); margin-bottom: 8px; font-size: 0.9rem; }
+        .table-container { overflow-x: auto; margin: 24px 0; border-radius: 10px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        th { background: var(--bg-dark); color: white; padding: 14px 18px; text-align: left; font-weight: 600; font-family: system-ui, sans-serif; }
+        td { padding: 14px 18px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+        tr:last-child td { border-bottom: none; }
+        .exercise-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 28px 0; overflow: hidden; }
+        .exercise-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05)); border-bottom: 1px solid var(--border); }
+        .exercise-title { font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 12px; }
+        .exercise-number { background: linear-gradient(135deg, #7c3aed, #7c3aed); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; font-family: system-ui, sans-serif; }
+        .difficulty { padding: 5px 14px; border-radius: 15px; font-size: 0.8rem; font-weight: 600; font-family: system-ui, sans-serif; }
+        .difficulty.easy { background: rgba(5, 150, 105, 0.12); color: var(--success); }
+        .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
+        .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
+        .exercise-body { padding: 24px; }
+        .expected-output { background: rgba(5, 150, 105, 0.06); border: 1px solid rgba(5, 150, 105, 0.15); border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
+        .expected-output-label { font-size: 0.8rem; font-weight: 600; color: var(--success); text-transform: uppercase; margin-bottom: 10px; font-family: system-ui, sans-serif; }
+        .expected-output pre { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-secondary); margin: 0; background: transparent; padding: 0; }
+        .hints-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--accent-light); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 8px; color: var(--accent); font-size: 0.9rem; cursor: pointer; font-family: inherit; }
+        .hints-content { display: none; background: rgba(124, 58, 237, 0.05); border: 1px solid rgba(124, 58, 237, 0.12); border-radius: 8px; padding: 18px 24px; margin-top: 14px; }
+        .hints-content.show { display: block; }
+        .hints-content ul { margin: 0; padding-left: 20px; }
+        .submit-section { background: var(--bg-dark); border-radius: 14px; padding: 40px; margin: 60px 0; color: white; }
+        .submit-section h2 { font-size: 1.6rem; margin-bottom: 10px; color: white; }
+        .submit-section > p { color: rgba(255,255,255,0.7); margin-bottom: 28px; }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 8px; color: rgba(255,255,255,0.8); font-family: system-ui, sans-serif; }
+        .form-group input { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; font-size: 1rem; font-family: inherit; }
+        .form-group input:focus { outline: none; border-color: var(--accent); }
+        .honeypot { position: absolute; left: -9999px; }
+        .submit-btn { background: var(--accent); color: white; border: none; padding: 16px 40px; border-radius: 8px; font-size: 1.05rem; font-weight: 600; cursor: pointer; font-family: system-ui, sans-serif; }
+        .submit-status { margin-top: 20px; padding: 16px 20px; border-radius: 8px; font-family: system-ui, sans-serif; display: none; }
+        .page-nav { display: flex; justify-content: space-between; padding: 30px 0; border-top: 2px solid var(--border); margin-top: 60px; }
+        .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); text-decoration: none; font-size: 0.95rem; }
+        .summary-box { background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 12px; padding: 30px; margin: 50px 0; }
+        .summary-box h3 { color: var(--accent); margin-bottom: 20px; font-size: 1.3rem; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+        .summary-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--card-bg); border-radius: 8px; font-size: 0.95rem; }
+        .file-tree { background: var(--bg-code); border-radius: 10px; padding: 20px; margin: 20px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: #e4e4e7; white-space: pre; }
+        @media (max-width: 700px) { .chapter-header h1 { font-size: 2rem; } .form-grid { grid-template-columns: 1fr; } .topbar-nav { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+    <nav class="topbar">
+        <a href="index.html?home=true" class="topbar-title">← Course Home</a>
+        <div class="topbar-nav">
+            <span style="opacity:0.7">Week 12 of 14</span>
+            <a href="Week_11.html">← Week 11</a>
+            <a href="Week_13.html">Week 13 →</a>
+        </div>
+    </nav>
+    <div class="container">
+        <header class="chapter-header">
+            <span class="chapter-label">Week 12</span>
+            <h1>Modules and Packages</h1>
+            <div class="chapter-meta">
+                <span>📚 Computer Programming II</span>
+                <span>👨‍🏫 Dr. Arif Solmaz</span>
+            </div>
+        </header>
+        <div class="objectives-box">
+            <h3>🎯 Learning Objectives</h3>
+            <ul>
+                <li>Understand what modules and packages are</li>
+                <li>Create and import your own modules</li>
+                <li>Use different import styles effectively</li>
+                <li>Organize code into packages</li>
+                <li>Use common standard library modules</li>
+                <li>Install third-party packages with pip</li>
+                <li>Create and manage virtual environments</li>
+                <li>Structure engineering projects properly</li>
+            </ul>
+        </div>
+        <div class="content">
+            <!-- Section 1: Introduction to Modules -->
+            <section id="part1" class="section">
+                <div class="section-header">
+                    <div class="section-number">1</div>
+                    <h2>Introduction to Modules</h2>
+                </div>
+                <p>A <strong>module</strong> is a Python file (<code>.py</code>) containing code you can reuse. Modules help organize your code into logical, reusable components. As projects grow larger, modules become essential for maintaining clean, maintainable code.</p>
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Term</th><th>Description</th><th>Example</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Module</strong></td><td>A single .py file</td><td>math.py</td></tr>
+                            <tr><td><strong>Package</strong></td><td>Directory of modules</td><td>numpy/</td></tr>
+                            <tr><td><strong>Library</strong></td><td>Collection of packages</td><td>NumPy, Pandas</td></tr>
+                            <tr><td><strong>Standard Library</strong></td><td>Modules included with Python</td><td>math, os, json</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3>Using Built-in Modules</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.1: Using the math Module</span>
+                        <button class="code-figure-run" onclick="runCode('code1')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code1">import math
+
+print("=== Math Module Examples ===")
+print(f"Pi: {math.pi}")
+print(f"Euler's number (e): {math.e}")
+print(f"Square root of 16: {math.sqrt(16)}")
+print(f"2^10: {math.pow(2, 10)}")
+print(f"Sine of 90°: {math.sin(math.radians(90)):.4f}")
+print(f"Floor of 3.7: {math.floor(3.7)}")
+print(f"Ceiling of 3.2: {math.ceil(3.2)}")</textarea>
+                    <div class="code-output" id="outputcode1">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Exploring Module Contents</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.2: Exploring Modules with dir()</span>
+                        <button class="code-figure-run" onclick="runCode('code2')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code2"># Explore what's in a module
+import math
+
+# List all names in the module
+all_names = dir(math)
+print(f"Total items in math module: {len(all_names)}")
+
+# Show public items (not starting with _)
+public_names = [name for name in all_names if not name.startswith('_')]
+print(f"\nPublic items ({len(public_names)}):")
+print(public_names[:10])  # First 10
+
+# Get help on a specific function
+print(f"\nmath.factorial docstring:")
+print(math.factorial.__doc__)</textarea>
+                    <div class="code-output" id="outputcode2">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>The random Module</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.3: Random Module</span>
+                        <button class="code-figure-run" onclick="runCode('code3')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code3"># The random module for random number generation
+import random
+
+print("=== Random Module Examples ===")
+print(f"Random float [0, 1): {random.random():.4f}")
+print(f"Random int [1, 10]: {random.randint(1, 10)}")
+print(f"Random float [5, 15]: {random.uniform(5, 15):.2f}")
+
+# Random choice from a list
+colors = ['red', 'green', 'blue', 'yellow']
+print(f"Random color: {random.choice(colors)}")
+
+# Shuffle a list
+numbers = [1, 2, 3, 4, 5]
+random.shuffle(numbers)
+print(f"Shuffled numbers: {numbers}")
+
+# Random sample (without replacement)
+print(f"Random sample of 3: {random.sample(range(1, 50), 3)}")</textarea>
+                    <div class="code-output" id="outputcode3">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Import Styles -->
+            <section id="part2" class="section">
+                <div class="section-header">
+                    <div class="section-number">2</div>
+                    <h2>Import Styles</h2>
+                </div>
+                <p>Python offers several ways to import modules. Each style has its use cases and affects how you access the imported items.</p>
+                <h3>Basic Import</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.1: Basic import Statement</span>
+                        <button class="code-figure-run" onclick="runCode('code4')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code4"># Basic import - import the entire module
+import math
+import random
+import statistics
+
+# Must use module_name.function_name
+print(f"Square root: {math.sqrt(25)}")
+print(f"Random number: {random.randint(1, 100)}")
+print(f"Mean of [1,2,3,4,5]: {statistics.mean([1,2,3,4,5])}")
+
+# This style is clear about where functions come from</textarea>
+                    <div class="code-output" id="outputcode4">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Import with Alias</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.2: Import with Alias</span>
+                        <button class="code-figure-run" onclick="runCode('code5')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code5"># Import with alias - shorter name
+import math as m
+import random as rnd
+import statistics as stats
+
+# Use the alias
+print(f"Pi: {m.pi}")
+print(f"Random: {rnd.randint(1, 10)}")
+print(f"Median: {stats.median([1, 2, 3, 4, 5])}")
+
+# Common aliases in data science:
+# import numpy as np
+# import pandas as pd
+# import matplotlib.pyplot as plt</textarea>
+                    <div class="code-output" id="outputcode5">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Import Specific Items</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.3: Import Specific Items</span>
+                        <button class="code-figure-run" onclick="runCode('code6')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code6"># Import specific items from a module
+from math import pi, sqrt, sin, cos, radians
+from random import randint, choice
+
+# Use directly without module prefix
+print(f"Pi: {pi}")
+print(f"Square root of 144: {sqrt(144)}")
+print(f"Sine of 45°: {sin(radians(45)):.4f}")
+print(f"Random int: {randint(1, 100)}")
+print(f"Random choice: {choice(['apple', 'banana', 'cherry'])}")
+
+# Advantage: cleaner code
+# Disadvantage: not clear where function comes from</textarea>
+                    <div class="code-output" id="outputcode6">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Import Style</th><th>Usage</th><th>Best For</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>import module</code></td><td>module.function()</td><td>Clear code, avoid conflicts</td></tr>
+                            <tr><td><code>import module as alias</code></td><td>alias.function()</td><td>Long module names</td></tr>
+                            <tr><td><code>from module import item</code></td><td>item()</td><td>Few specific items</td></tr>
+                            <tr><td><code>from module import *</code></td><td>function()</td><td>Interactive sessions only</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="warning-box info-box">
+                    <p>Avoid <code>from module import *</code> in production code. It pollutes your namespace and makes it unclear where functions come from.</p>
+                </div>
+            </section>
+
+            <!-- Section 3: Creating Modules -->
+            <section id="part3" class="section">
+                <div class="section-header">
+                    <div class="section-number">3</div>
+                    <h2>Creating Your Own Modules</h2>
+                </div>
+                <p>Any Python file can be a module. Simply save your code as a <code>.py</code> file and import it from other files in the same directory.</p>
+                <h3>A Simple Module Example</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.1: Creating a Module (sensors.py)</span>
+                        <button class="code-figure-run" onclick="runCode('code7')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code7"># This would be saved as sensors.py
+"""Sensors module for engineering applications."""
+
+# Module-level constants
+DEFAULT_UNIT = "celsius"
+MAX_TEMP = 125
+MIN_TEMP = -40
+
+# Module-level functions
+def celsius_to_fahrenheit(celsius):
+    """Convert Celsius to Fahrenheit."""
+    return celsius * 9/5 + 32
+
+def fahrenheit_to_celsius(fahrenheit):
+    """Convert Fahrenheit to Celsius."""
+    return (fahrenheit - 32) * 5/9
+
+def validate_temperature(temp, unit="celsius"):
+    """Check if temperature is within valid range."""
+    if unit == "fahrenheit":
+        temp = fahrenheit_to_celsius(temp)
+    return MIN_TEMP <= temp <= MAX_TEMP
+
+# Module-level class
+class TemperatureSensor:
+    def __init__(self, sensor_id):
+        self.sensor_id = sensor_id
+        self.value = None
+    
+    def read(self, value):
+        self.value = value
+        return value
+    
+    def __str__(self):
+        return f"Sensor({self.sensor_id}): {self.value}°C"
+
+# Demonstrate module functionality
+print(f"DEFAULT_UNIT: {DEFAULT_UNIT}")
+print(f"25°C = {celsius_to_fahrenheit(25)}°F")
+print(f"Valid temp 50°C? {validate_temperature(50)}")
+
+sensor = TemperatureSensor("TEMP_001")
+sensor.read(25.5)
+print(sensor)</textarea>
+                    <div class="code-output" id="outputcode7">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Module with Engineering Functions</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.2: Engineering Calculations Module</span>
+                        <button class="code-figure-run" onclick="runCode('code8')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code8"># engineering.py - Common engineering calculations
+"""Engineering calculations module."""
+import math
+
+# Constants
+GRAVITY = 9.81  # m/s^2
+PI = math.pi
+
+def kinetic_energy(mass, velocity):
+    """Calculate kinetic energy: KE = 0.5 * m * v^2"""
+    return 0.5 * mass * velocity ** 2
+
+def potential_energy(mass, height, g=GRAVITY):
+    """Calculate gravitational potential energy: PE = m * g * h"""
+    return mass * g * height
+
+def ohms_law_voltage(current, resistance):
+    """Calculate voltage: V = I * R"""
+    return current * resistance
+
+def ohms_law_current(voltage, resistance):
+    """Calculate current: I = V / R"""
+    return voltage / resistance
+
+def power_electrical(voltage, current):
+    """Calculate electrical power: P = V * I"""
+    return voltage * current
+
+# Demonstrate
+print("=== Engineering Calculations ===")
+print(f"KE (10kg at 5m/s): {kinetic_energy(10, 5)} J")
+print(f"PE (10kg at 2m): {potential_energy(10, 2)} J")
+print(f"Voltage (2A, 5Ω): {ohms_law_voltage(2, 5)} V")
+print(f"Power (12V, 2A): {power_electrical(12, 2)} W")</textarea>
+                    <div class="code-output" id="outputcode8">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: The __name__ Variable -->
+            <section id="part4" class="section">
+                <div class="section-header">
+                    <div class="section-number">4</div>
+                    <h2>The __name__ Variable</h2>
+                </div>
+                <p>Every Python module has a special variable <code>__name__</code>. When a module is run directly, <code>__name__</code> equals <code>"__main__"</code>. When imported, it equals the module name.</p>
+                <h3>Understanding __name__</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.1: The __name__ Variable</span>
+                        <button class="code-figure-run" onclick="runCode('code9')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code9"># The __name__ variable
+print(f"__name__ = {__name__}")
+
+# When you run this file directly: __name__ == "__main__"
+# When this file is imported: __name__ == "module_name"
+
+# Common pattern:
+if __name__ == "__main__":
+    print("This code runs only when file is executed directly")
+    print("Not when imported as a module")
+else:
+    print("This file was imported as a module")</textarea>
+                    <div class="code-output" id="outputcode9">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Practical Use of __name__</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.2: Testing Code with __name__</span>
+                        <button class="code-figure-run" onclick="runCode('code10')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code10"># utils.py - Utility functions with tests
+"""Utility functions module."""
+
+def add(a, b):
+    """Add two numbers."""
+    return a + b
+
+def multiply(a, b):
+    """Multiply two numbers."""
+    return a * b
+
+def factorial(n):
+    """Calculate factorial of n."""
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+# Test code that only runs when executed directly
+if __name__ == "__main__":
+    print("Running tests...")
+    
+    # Test add
+    assert add(2, 3) == 5, "add test failed"
+    print("✓ add() works correctly")
+    
+    # Test multiply
+    assert multiply(4, 5) == 20, "multiply test failed"
+    print("✓ multiply() works correctly")
+    
+    # Test factorial
+    assert factorial(5) == 120, "factorial test failed"
+    print("✓ factorial() works correctly")
+    
+    print("\nAll tests passed!")</textarea>
+                    <div class="code-output" id="outputcode10">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <div class="tip-box info-box">
+                    <p>Always use <code>if __name__ == "__main__":</code> for test code or examples. This keeps your module clean when imported.</p>
+                </div>
+            </section>
+
+            <!-- Section 5: Creating Packages -->
+            <section id="part5" class="section">
+                <div class="section-header">
+                    <div class="section-number">5</div>
+                    <h2>Creating Packages</h2>
+                </div>
+                <p>A <strong>package</strong> is a directory containing Python modules and a special <code>__init__.py</code> file. Packages allow you to organize related modules into a hierarchical structure.</p>
+                <h3>Package Structure</h3>
+                <div class="file-tree">sensors/
+├── __init__.py       # Makes it a package
+├── temperature.py    # Temperature sensor module
+├── pressure.py       # Pressure sensor module
+├── humidity.py       # Humidity sensor module
+└── utils/            # Subpackage
+    ├── __init__.py
+    ├── calibration.py
+    └── validation.py</div>
+                <h3>The __init__.py File</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.1: Package __init__.py</span>
+                        <button class="code-figure-run" onclick="runCode('code11')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code11"># sensors/__init__.py
+"""Sensors package for engineering applications."""
+
+# Package metadata
+__version__ = "1.0.0"
+__author__ = "Engineering Team"
+
+# Control what gets exported with 'from package import *'
+__all__ = ["TemperatureSensor", "PressureSensor", "utils"]
+
+# Package-level initialization
+print(f"Sensors Package v{__version__}")
+print(f"Author: {__author__}")
+print(f"Public API: {__all__}")</textarea>
+                    <div class="code-output" id="outputcode11">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Package Module Example</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.2: Temperature Sensor Module</span>
+                        <button class="code-figure-run" onclick="runCode('code12')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code12"># sensors/temperature.py
+"""Temperature sensor module."""
+
+class TemperatureSensor:
+    """Temperature sensor class."""
+    
+    MIN_TEMP = -40
+    MAX_TEMP = 125
+    
+    def __init__(self, sensor_id, unit="celsius"):
+        self.sensor_id = sensor_id
+        self.unit = unit
+        self._value = None
+        self._readings = []
+    
+    def read(self, value):
+        """Record a temperature reading."""
+        if not self.MIN_TEMP <= value <= self.MAX_TEMP:
+            raise ValueError(f"Temperature out of range: {value}")
+        self._value = value
+        self._readings.append(value)
+        return value
+    
+    def to_fahrenheit(self):
+        """Convert current reading to Fahrenheit."""
+        if self._value is None:
+            return None
+        return self._value * 9/5 + 32
+    
+    def average(self):
+        """Get average of all readings."""
+        if not self._readings:
+            return None
+        return sum(self._readings) / len(self._readings)
+    
+    def __str__(self):
+        symbol = '°C' if self.unit == 'celsius' else '°F'
+        return f"TemperatureSensor({self.sensor_id}): {self._value}{symbol}"
+
+# Test when run directly
+if __name__ == "__main__":
+    sensor = TemperatureSensor("TEMP_001")
+    sensor.read(20.0)
+    sensor.read(22.5)
+    sensor.read(25.0)
+    print(sensor)
+    print(f"In Fahrenheit: {sensor.to_fahrenheit():.1f}°F")
+    print(f"Average: {sensor.average():.1f}°C")</textarea>
+                    <div class="code-output" id="outputcode12">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 6: Standard Library -->
+            <section id="part6" class="section">
+                <div class="section-header">
+                    <div class="section-number">6</div>
+                    <h2>Standard Library Highlights</h2>
+                </div>
+                <p>Python's standard library includes many useful modules. Here are essential ones for engineering work.</p>
+                <h3>os - Operating System Interface</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.1: The os Module</span>
+                        <button class="code-figure-run" onclick="runCode('code13')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code13"># os - Operating system interface
+import os
+
+print("=== os Module ===")
+print(f"Current directory: {os.getcwd()}")
+print(f"Path separator: {os.sep}")
+
+# Path operations
+path = "/home/user/data/sensor_log.csv"
+print(f"\nPath operations on: {path}")
+print(f"  Basename: {os.path.basename(path)}")
+print(f"  Directory: {os.path.dirname(path)}")
+print(f"  Extension: {os.path.splitext(path)}")
+
+# Join paths (platform independent)
+new_path = os.path.join("data", "sensors", "temp.csv")
+print(f"\nJoined path: {new_path}")</textarea>
+                    <div class="code-output" id="outputcode13">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>datetime - Date and Time</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.2: The datetime Module</span>
+                        <button class="code-figure-run" onclick="runCode('code14')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code14"># datetime - Date and time handling
+from datetime import datetime, timedelta, date
+
+print("=== datetime Module ===")
+now = datetime.now()
+print(f"Now: {now}")
+print(f"Date only: {now.date()}")
+print(f"Time only: {now.time()}")
+
+# Formatting
+print(f"\nFormatted: {now.strftime('%Y-%m-%d %H:%M:%S')}")
+print(f"ISO format: {now.isoformat()}")
+
+# Time arithmetic
+tomorrow = now + timedelta(days=1)
+next_week = now + timedelta(weeks=1)
+print(f"\nTomorrow: {tomorrow.date()}")
+print(f"Next week: {next_week.date()}")
+
+# Parsing strings to datetime
+date_str = "2025-06-15 14:30:00"
+parsed = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+print(f"\nParsed '{date_str}': {parsed}")</textarea>
+                    <div class="code-output" id="outputcode14">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>json - JSON Encoding/Decoding</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.3: The json Module</span>
+                        <button class="code-figure-run" onclick="runCode('code15')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code15"># json - JSON encoding/decoding
+import json
+
+# Python dict to JSON string
+sensor_data = {
+    "sensor_id": "TEMP_001",
+    "readings": [22.5, 23.0, 24.5],
+    "unit": "celsius",
+    "calibrated": True,
+    "metadata": {"location": "Lab A", "floor": 2}
+}
+
+# Convert to JSON string
+json_str = json.dumps(sensor_data, indent=2)
+print("Python dict to JSON:")
+print(json_str)
+
+# Parse JSON string back to Python
+parsed = json.loads(json_str)
+print(f"\nParsed back: {type(parsed)}")
+print(f"Sensor ID: {parsed['sensor_id']}")
+print(f"Average: {sum(parsed['readings'])/len(parsed['readings']):.1f}")</textarea>
+                    <div class="code-output" id="outputcode15">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>collections - Specialized Containers</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.4: The collections Module</span>
+                        <button class="code-figure-run" onclick="runCode('code16')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code16"># collections - Specialized container datatypes
+from collections import Counter, defaultdict, namedtuple, deque
+
+print("=== Counter ===")
+status_codes = ['OK', 'OK', 'ERROR', 'OK', 'WARNING', 'OK', 'ERROR']
+counts = Counter(status_codes)
+print(f"Counts: {dict(counts)}")
+print(f"Most common: {counts.most_common(2)}")
+
+print("\n=== defaultdict ===")
+sensor_readings = defaultdict(list)
+sensor_readings['TEMP_001'].append(25.5)
+sensor_readings['TEMP_001'].append(26.0)
+sensor_readings['TEMP_002'].append(24.0)
+print(f"Readings: {dict(sensor_readings)}")
+
+print("\n=== namedtuple ===")
+Point = namedtuple('Point', ['x', 'y', 'z'])
+p = Point(1.0, 2.5, 3.0)
+print(f"Point: {p}")
+print(f"X coordinate: {p.x}")
+
+print("\n=== deque (double-ended queue) ===")
+buffer = deque(maxlen=3)  # Fixed size buffer
+for i in range(5):
+    buffer.append(i)
+    print(f"After adding {i}: {list(buffer)}")</textarea>
+                    <div class="code-output" id="outputcode16">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 7: pip and Third-Party Packages -->
+            <section id="part7" class="section">
+                <div class="section-header">
+                    <div class="section-number">7</div>
+                    <h2>pip and Third-Party Packages</h2>
+                </div>
+                <p><code>pip</code> is Python's package installer. It downloads and installs packages from PyPI (Python Package Index).</p>
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>pip install package</code></td><td>Install a package</td></tr>
+                            <tr><td><code>pip install package==1.2.3</code></td><td>Install specific version</td></tr>
+                            <tr><td><code>pip uninstall package</code></td><td>Remove a package</td></tr>
+                            <tr><td><code>pip list</code></td><td>List installed packages</td></tr>
+                            <tr><td><code>pip freeze</code></td><td>List in requirements format</td></tr>
+                            <tr><td><code>pip install -r requirements.txt</code></td><td>Install from file</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3>Requirements Files</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.1: requirements.txt Example</span>
+                        <button class="code-figure-run" onclick="runCode('code17')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code17"># Example requirements.txt content
+requirements = """
+# Core scientific packages
+numpy>=1.21.0
+pandas>=1.3.0
+scipy>=1.7.0
+
+# Visualization
+matplotlib>=3.4.0
+plotly>=5.0.0
+
+# Engineering specific
+pyserial>=3.5
+python-can>=3.3.0
+
+# Testing
+pytest>=6.2.0
+"""
+
+print("=== Sample requirements.txt ===")
+print(requirements)
+print("To install: pip install -r requirements.txt")</textarea>
+                    <div class="code-output" id="outputcode17">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Popular Engineering Packages</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.2: Popular Packages</span>
+                        <button class="code-figure-run" onclick="runCode('code18')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code18"># Popular packages for engineering
+packages = {
+    "NumPy": "Numerical computing, arrays, linear algebra",
+    "Pandas": "Data analysis, DataFrames, time series",
+    "SciPy": "Scientific computing, optimization",
+    "Matplotlib": "2D plotting and visualization",
+    "PySerial": "Serial port communication",
+    "OpenCV": "Computer vision",
+    "scikit-learn": "Machine learning",
+    "SymPy": "Symbolic mathematics",
+}
+
+print("=== Popular Engineering Packages ===")
+for name, desc in packages.items():
+    print(f"  {name:15} - {desc}")</textarea>
+                    <div class="code-output" id="outputcode18">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 8: Virtual Environments -->
+            <section id="part8" class="section">
+                <div class="section-header">
+                    <div class="section-number">8</div>
+                    <h2>Virtual Environments</h2>
+                </div>
+                <p>Virtual environments are isolated Python installations. Different projects can have different dependencies without conflicts.</p>
+                <h3>Why Use Virtual Environments?</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 8.1: Virtual Environment Benefits</span>
+                        <button class="code-figure-run" onclick="runCode('code19')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code19"># Why virtual environments matter
+print("""
+Without virtual environments:
+❌ Project A needs numpy 1.19
+❌ Project B needs numpy 1.21
+❌ Both installed globally = CONFLICT!
+
+With virtual environments:
+✓ Project A has its own numpy 1.19
+✓ Project B has its own numpy 1.21
+✓ No conflicts, both work correctly!
+
+=== Virtual Environment Commands ===
+
+# Create a new virtual environment
+python -m venv myenv
+
+# Activate (Windows)
+myenv\\Scripts\\activate
+
+# Activate (macOS/Linux)
+source myenv/bin/activate
+
+# Install packages (isolated)
+pip install numpy pandas
+
+# Deactivate when done
+deactivate
+""")</textarea>
+                    <div class="code-output" id="outputcode19">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <div class="tip-box info-box">
+                    <p>Always add <code>venv/</code> to your <code>.gitignore</code> file. Don't commit virtual environments to version control.</p>
+                </div>
+            </section>
+
+            <!-- Section 9: Project Structure -->
+            <section id="part9" class="section">
+                <div class="section-header">
+                    <div class="section-number">9</div>
+                    <h2>Project Structure</h2>
+                </div>
+                <p>A well-organized project structure makes code easier to understand, maintain, and share.</p>
+                <h3>Simple Project Layout</h3>
+                <div class="file-tree">my_project/
+├── venv/                 # Virtual environment (don't commit)
+├── main.py               # Main entry point
+├── utils.py              # Utility functions
+├── config.py             # Configuration
+├── requirements.txt      # Dependencies
+├── README.md             # Documentation
+└── .gitignore            # Git ignore file</div>
+                <h3>Package-Based Layout</h3>
+                <div class="file-tree">sensor_project/
+├── venv/
+├── sensor_project/       # Main package
+│   ├── __init__.py
+│   ├── sensors/          # Sensors subpackage
+│   │   ├── __init__.py
+│   │   ├── temperature.py
+│   │   └── pressure.py
+│   └── utils/            # Utilities subpackage
+│       ├── __init__.py
+│       └── calibration.py
+├── tests/                # Test files
+│   └── test_sensors.py
+├── main.py
+├── requirements.txt
+└── README.md</div>
+                <h3>Configuration Module</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.1: Project Configuration</span>
+                        <button class="code-figure-run" onclick="runCode('code20')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code20"># config.py - Project configuration
+"""Configuration settings for the sensor project."""
+
+# Sensor settings
+SENSOR_UPDATE_RATE = 1.0  # seconds
+MAX_READINGS_BUFFER = 1000
+DEFAULT_UNIT = "metric"
+
+# Communication settings
+SERIAL_PORT = "/dev/ttyUSB0"
+BAUD_RATE = 115200
+TIMEOUT = 1.0
+
+# Alert thresholds
+TEMP_HIGH = 50.0
+TEMP_LOW = 0.0
+PRESSURE_HIGH = 1100.0
+PRESSURE_LOW = 900.0
+
+# Print configuration
+print("=== Project Configuration ===")
+print(f"Update rate: {SENSOR_UPDATE_RATE}s")
+print(f"Buffer size: {MAX_READINGS_BUFFER}")
+print(f"Serial port: {SERIAL_PORT}")
+print(f"Baud rate: {BAUD_RATE}")
+print(f"Temp range: {TEMP_LOW}°C - {TEMP_HIGH}°C")</textarea>
+                    <div class="code-output" id="outputcode20">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 10: Module Search Path -->
+            <section id="part10" class="section">
+                <div class="section-header">
+                    <div class="section-number">10</div>
+                    <h2>Module Search Path</h2>
+                </div>
+                <p>When you import a module, Python searches for it in specific locations. Understanding this helps troubleshoot import errors.</p>
+                <h3>The sys.path</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 10.1: Module Search Path</span>
+                        <button class="code-figure-run" onclick="runCode('code21')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code21"># Python's module search path
+import sys
+
+print("=== Module Search Path (sys.path) ===")
+print("Python searches these locations in order:\n")
+
+for i, path in enumerate(sys.path[:5], 1):
+    print(f"{i}. {path if path else '(current directory)'}")
+
+print("\n=== Search Order ===")
+print("1. Current directory (script location)")
+print("2. PYTHONPATH environment variable")
+print("3. Standard library directories")
+print("4. Site-packages (installed packages)")</textarea>
+                    <div class="code-output" id="outputcode21">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Common Import Errors</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 10.2: Import Error Troubleshooting</span>
+                        <button class="code-figure-run" onclick="runCode('code22')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code22"># Common import errors and solutions
+print("""
+=== Common Import Errors ===
+
+1. ModuleNotFoundError: No module named 'mymodule'
+   → Module not installed or not in sys.path
+   → Solution: pip install module OR check path
+
+2. ImportError: cannot import name 'func' from 'module'
+   → Function doesn't exist in module
+   → Solution: Check spelling, check module version
+
+3. Circular import error
+   → Module A imports B, B imports A
+   → Solution: Restructure code, import inside function
+
+4. ImportError: attempted relative import with no known parent
+   → Using relative import outside package
+   → Solution: Use absolute imports or run as package
+""")
+
+# Show where a module is located
+import math
+print(f"math module location: {math.__file__}")</textarea>
+                    <div class="code-output" id="outputcode22">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 11: Additional Engineering Examples -->
+            <section id="part11" class="section">
+                <div class="section-header">
+                    <div class="section-number">11</div>
+                    <h2>Additional Engineering Examples</h2>
+                </div>
+                <p>More practical examples of using modules in engineering applications.</p>
+                <h3>Data Acquisition Module</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 11.1: Data Acquisition</span>
+                        <button class="code-figure-run" onclick="runCode('code23')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code23"># daq.py - Data Acquisition Module
+"""Data acquisition module for sensor systems."""
+from datetime import datetime
+from collections import deque
+import statistics
+
+class DataAcquisition:
+    """Data acquisition system for multiple sensors."""
+    
+    def __init__(self, buffer_size=100):
+        self.sensors = {}
+        self.buffer_size = buffer_size
+        self.start_time = datetime.now()
+    
+    def register_sensor(self, sensor_id, sensor_type, unit):
+        """Register a new sensor."""
+        self.sensors[sensor_id] = {
+            'type': sensor_type,
+            'unit': unit,
+            'readings': deque(maxlen=self.buffer_size),
+            'last_value': None
+        }
+    
+    def record(self, sensor_id, value):
+        """Record a sensor reading."""
+        if sensor_id not in self.sensors:
+            raise ValueError(f"Unknown sensor: {sensor_id}")
+        
+        entry = {'timestamp': datetime.now().isoformat(), 'value': value}
+        self.sensors[sensor_id]['readings'].append(entry)
+        self.sensors[sensor_id]['last_value'] = value
+    
+    def get_stats(self, sensor_id):
+        """Get statistics for a sensor."""
+        values = [r['value'] for r in self.sensors[sensor_id]['readings']]
+        if not values:
+            return None
+        return {
+            'count': len(values),
+            'min': min(values),
+            'max': max(values),
+            'mean': statistics.mean(values)
+        }
+
+# Test the DAQ system
+import random
+daq = DataAcquisition(buffer_size=10)
+daq.register_sensor("TEMP_001", "temperature", "°C")
+daq.register_sensor("PRES_001", "pressure", "hPa")
+
+for _ in range(5):
+    daq.record("TEMP_001", 25 + random.uniform(-2, 2))
+    daq.record("PRES_001", 1013 + random.uniform(-5, 5))
+
+print("=== DAQ System ===")
+print(f"TEMP_001 Stats: {daq.get_stats('TEMP_001')}")
+print(f"PRES_001 Stats: {daq.get_stats('PRES_001')}")</textarea>
+                    <div class="code-output" id="outputcode23">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Signal Processing Module</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 11.2: Signal Processing</span>
+                        <button class="code-figure-run" onclick="runCode('code24')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code24"># signal_processing.py - Basic signal processing
+"""Signal processing utilities module."""
+from collections import deque
+import math
+
+def moving_average(data, window_size):
+    """Calculate moving average of data."""
+    if window_size > len(data):
+        return data
+    result = []
+    window = deque(maxlen=window_size)
+    for value in data:
+        window.append(value)
+        if len(window) == window_size:
+            result.append(sum(window) / window_size)
+    return result
+
+def low_pass_filter(data, alpha=0.1):
+    """Simple exponential low-pass filter."""
+    if not data:
+        return []
+    result = [data[0]]
+    for i in range(1, len(data)):
+        filtered = alpha * data[i] + (1 - alpha) * result[-1]
+        result.append(filtered)
+    return result
+
+def remove_outliers(data, threshold=2.0):
+    """Remove outliers using z-score method."""
+    if len(data) < 3:
+        return data
+    mean = sum(data) / len(data)
+    variance = sum((x - mean) ** 2 for x in data) / len(data)
+    std = math.sqrt(variance) if variance > 0 else 1
+    return [x for x in data if abs((x - mean) / std) <= threshold]
+
+# Test signal processing
+import random
+random.seed(42)
+raw_data = [25 + random.gauss(0, 2) for _ in range(10)]
+raw_data[5] = 100  # Add outlier
+
+print("=== Signal Processing ===")
+print(f"Raw: {[f'{x:.1f}' for x in raw_data]}")
+print(f"Moving avg (3): {[f'{x:.1f}' for x in moving_average(raw_data, 3)]}")
+print(f"Low-pass: {[f'{x:.1f}' for x in low_pass_filter(raw_data, 0.3)]}")
+print(f"No outliers: {[f'{x:.1f}' for x in remove_outliers(raw_data)]}")</textarea>
+                    <div class="code-output" id="outputcode24">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Unit Converter Module</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 11.3: Unit Conversions</span>
+                        <button class="code-figure-run" onclick="runCode('code25')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code25"># unit_converter.py - Engineering unit conversions
+"""Unit conversion module for engineering."""
+
+# Temperature
+def celsius_to_fahrenheit(c): return c * 9/5 + 32
+def fahrenheit_to_celsius(f): return (f - 32) * 5/9
+def celsius_to_kelvin(c): return c + 273.15
+
+# Pressure
+def pascal_to_bar(pa): return pa / 100000
+def psi_to_pascal(psi): return psi * 6894.76
+
+# Length
+def meters_to_feet(m): return m * 3.28084
+def mm_to_inches(mm): return mm / 25.4
+
+# Demonstrate
+print("=== Unit Conversions ===")
+print(f"\nTemperature:")
+print(f"  100°C = {celsius_to_fahrenheit(100):.1f}°F")
+print(f"  100°C = {celsius_to_kelvin(100):.2f}K")
+
+print(f"\nPressure:")
+print(f"  101325 Pa = {pascal_to_bar(101325):.4f} bar")
+print(f"  14.7 psi = {psi_to_pascal(14.7):.0f} Pa")
+
+print(f"\nLength:")
+print(f"  1 meter = {meters_to_feet(1):.4f} feet")
+print(f"  25.4 mm = {mm_to_inches(25.4):.1f} inch")</textarea>
+                    <div class="code-output" id="outputcode25">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Calibration Module</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 11.4: Sensor Calibration</span>
+                        <button class="code-figure-run" onclick="runCode('code26')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code26"># calibration.py - Sensor calibration module
+"""Calibration utilities for sensor systems."""
+
+class LinearCalibration:
+    """Linear calibration: y = mx + b"""
+    
+    def __init__(self, slope=1.0, offset=0.0):
+        self.slope = slope
+        self.offset = offset
+    
+    def calibrate(self, raw_value):
+        return self.slope * raw_value + self.offset
+    
+    @classmethod
+    def from_points(cls, raw1, cal1, raw2, cal2):
+        """Create calibration from two known points."""
+        slope = (cal2 - cal1) / (raw2 - raw1)
+        offset = cal1 - slope * raw1
+        return cls(slope, offset)
+
+# Test calibrations
+print("=== Sensor Calibration ===")
+
+# Linear calibration from two points
+linear_cal = LinearCalibration.from_points(0, 10, 100, 110)
+print(f"\nLinear Calibration:")
+print(f"  slope={linear_cal.slope}, offset={linear_cal.offset}")
+
+for raw in [0, 25, 50, 75, 100]:
+    print(f"  Raw {raw} -> Calibrated {linear_cal.calibrate(raw):.1f}")</textarea>
+                    <div class="code-output" id="outputcode26">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 12: More Standard Library -->
+            <section id="part12" class="section">
+                <div class="section-header">
+                    <div class="section-number">12</div>
+                    <h2>More Standard Library Modules</h2>
+                </div>
+                <p>Additional useful modules from Python's standard library for engineering work.</p>
+                <h3>functools - Higher-Order Functions</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 12.1: functools Module</span>
+                        <button class="code-figure-run" onclick="runCode('code27')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code27"># functools - Higher-order functions
+from functools import reduce, partial, lru_cache
+
+print("=== functools Module ===")
+
+# reduce - Apply function cumulatively
+numbers = [1, 2, 3, 4, 5]
+product = reduce(lambda x, y: x * y, numbers)
+print(f"Product of {numbers}: {product}")
+
+# partial - Create partial functions
+def power(base, exponent):
+    return base ** exponent
+
+square = partial(power, exponent=2)
+cube = partial(power, exponent=3)
+
+print(f"square(5) = {square(5)}")
+print(f"cube(3) = {cube(3)}")
+
+# lru_cache - Memoization
+@lru_cache(maxsize=128)
+def fibonacci(n):
+    if n < 2:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+print(f"\nFibonacci(30) = {fibonacci(30)}")
+print(f"Cache info: {fibonacci.cache_info()}")</textarea>
+                    <div class="code-output" id="outputcode27">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>itertools - Iteration Tools</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 12.2: itertools Module</span>
+                        <button class="code-figure-run" onclick="runCode('code28')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code28"># itertools - Functions for efficient iteration
+from itertools import combinations, permutations, product, cycle, islice
+
+print("=== Combinations ===")
+sensors = ['A', 'B', 'C']
+for combo in combinations(sensors, 2):
+    print(f"  Pair: {combo}")
+
+print("\n=== Permutations ===")
+for perm in permutations(['X', 'Y'], 2):
+    print(f"  Order: {perm}")
+
+print("\n=== Product (Cartesian) ===")
+voltages = [5, 12]
+currents = [0.5, 1.0]
+for v, i in product(voltages, currents):
+    print(f"  V={v}V, I={i}A, P={v*i}W")
+
+print("\n=== Cycle with islice ===")
+colors = cycle(['red', 'green', 'blue'])
+print(f"First 7: {list(islice(colors, 7))}")</textarea>
+                    <div class="code-output" id="outputcode28">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>dataclasses - Data Classes</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 12.3: dataclasses Module</span>
+                        <button class="code-figure-run" onclick="runCode('code29')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code29"># dataclasses - Data classes decorator
+from dataclasses import dataclass, field
+from typing import List
+
+print("=== dataclasses Module ===")
+
+@dataclass
+class SensorReading:
+    sensor_id: str
+    value: float
+    unit: str = "°C"
+    timestamp: str = ""
+    
+    def to_dict(self):
+        return {
+            'sensor_id': self.sensor_id,
+            'value': self.value,
+            'unit': self.unit
+        }
+
+@dataclass
+class SensorStation:
+    name: str
+    location: str
+    sensors: List[str] = field(default_factory=list)
+    
+    def add_sensor(self, sensor_id):
+        self.sensors.append(sensor_id)
+
+# Create instances
+reading = SensorReading("TEMP_001", 25.5, "°C", "2025-06-15")
+print(f"Reading: {reading}")
+print(f"As dict: {reading.to_dict()}")
+
+station = SensorStation("Station A", "Lab 101")
+station.add_sensor("TEMP_001")
+station.add_sensor("PRES_001")
+print(f"\nStation: {station}")</textarea>
+                    <div class="code-output" id="outputcode29">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>typing - Type Hints</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 12.4: typing Module</span>
+                        <button class="code-figure-run" onclick="runCode('code30')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code30"># typing - Support for type hints
+from typing import List, Dict, Optional, Union
+
+print("=== typing Module ===")
+
+def process_readings(readings: List[float]) -> Dict[str, float]:
+    """Process readings and return statistics."""
+    if not readings:
+        return {}
+    return {
+        'min': min(readings),
+        'max': max(readings),
+        'avg': sum(readings) / len(readings)
+    }
+
+def get_sensor_value(sensor_id: str) -> Optional[float]:
+    """Get sensor value, returns None if not found."""
+    sensors = {'TEMP_001': 25.5, 'PRES_001': 1013.25}
+    return sensors.get(sensor_id)
+
+def format_value(value: Union[int, float, str]) -> str:
+    """Format any value type to string."""
+    return str(value)
+
+# Test
+readings = [22.5, 23.0, 24.5, 23.8]
+stats = process_readings(readings)
+print(f"Stats: {stats}")
+
+value = get_sensor_value('TEMP_001')
+print(f"TEMP_001: {value}")
+
+value = get_sensor_value('UNKNOWN')
+print(f"UNKNOWN: {value}")</textarea>
+                    <div class="code-output" id="outputcode30">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>enum - Enumerations</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 12.5: enum Module</span>
+                        <button class="code-figure-run" onclick="runCode('code31')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code31"># enum - Support for enumerations
+from enum import Enum, auto, IntEnum
+
+print("=== enum Module ===")
+
+class SensorStatus(Enum):
+    OFFLINE = auto()
+    INITIALIZING = auto()
+    ONLINE = auto()
+    ERROR = auto()
+    MAINTENANCE = auto()
+
+class Priority(IntEnum):
+    LOW = 1
+    MEDIUM = 2
+    HIGH = 3
+    CRITICAL = 4
+
+# Using enums
+status = SensorStatus.ONLINE
+print(f"Status: {status}")
+print(f"Name: {status.name}")
+print(f"Value: {status.value}")
+
+if status == SensorStatus.ONLINE:
+    print("Sensor is online!")
+
+priority = Priority.HIGH
+print(f"\nPriority: {priority}")
+print(f"Priority > 2? {priority > 2}")
+
+print("\nAll statuses:")
+for s in SensorStatus:
+    print(f"  {s.name}: {s.value}")</textarea>
+                    <div class="code-output" id="outputcode31">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>re - Regular Expressions</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 12.6: re Module</span>
+                        <button class="code-figure-run" onclick="runCode('code32')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code32"># re - Regular expressions
+import re
+
+print("=== re Module ===")
+
+text = "Sensor TEMP_001 reading: 25.5°C at 2025-06-15 14:30:00"
+
+# Find sensor ID
+sensor_pattern = r'([A-Z]+_\d+)'
+match = re.search(sensor_pattern, text)
+if match:
+    print(f"Sensor ID: {match.group(1)}")
+
+# Find temperature value
+temp_pattern = r'(\d+\.?\d*)°C'
+match = re.search(temp_pattern, text)
+if match:
+    print(f"Temperature: {match.group(1)}°C")
+
+# Find all numbers
+numbers = re.findall(r'\d+\.?\d*', text)
+print(f"All numbers: {numbers}")
+
+# Validate sensor IDs
+sensor_ids = ['TEMP_001', 'temp_001', 'INVALID', 'PRES_123']
+pattern = r'^[A-Z]+_\d{3}$'
+for sid in sensor_ids:
+    valid = bool(re.match(pattern, sid))
+    print(f"  {sid}: {'✓' if valid else '✗'}")</textarea>
+                    <div class="code-output" id="outputcode32">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>contextlib - Context Managers</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 12.7: contextlib Module</span>
+                        <button class="code-figure-run" onclick="runCode('code33')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code33"># contextlib - Context manager utilities
+from contextlib import contextmanager
+import time
+
+print("=== contextlib Module ===")
+
+@contextmanager
+def timer(name):
+    """Context manager to time code blocks."""
+    start = time.time()
+    print(f"Starting {name}...")
+    try:
+        yield
+    finally:
+        elapsed = time.time() - start
+        print(f"{name} completed in {elapsed:.4f} seconds")
+
+@contextmanager
+def sensor_session(sensor_id):
+    """Context manager for sensor sessions."""
+    print(f"Opening session for {sensor_id}")
+    session = {'id': sensor_id, 'readings': []}
+    try:
+        yield session
+    finally:
+        print(f"Closing session for {sensor_id}")
+        print(f"  Total readings: {len(session['readings'])}")
+
+# Use timer
+with timer("data processing"):
+    result = sum(range(10000))
+    print(f"  Result: {result}")
+
+print()
+
+# Use sensor session
+with sensor_session("TEMP_001") as session:
+    session['readings'].append(25.5)
+    session['readings'].append(26.0)
+    print(f"  Added 2 readings")</textarea>
+                    <div class="code-output" id="outputcode33">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 13: Best Practices -->
+            <section id="part13" class="section">
+                <div class="section-header">
+                    <div class="section-number">13</div>
+                    <h2>Module Best Practices</h2>
+                </div>
+                <p>Guidelines for creating well-organized, maintainable modules and packages.</p>
+                <h3>Module Documentation</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 13.1: Well-Documented Module</span>
+                        <button class="code-figure-run" onclick="runCode('code34')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code34">"""
+sensors.py - Sensor management module.
+
+This module provides classes and functions for managing
+sensor data in engineering applications.
+
+Author: Engineering Team
+Version: 1.0.0
+License: MIT
+
+Example usage:
+    >>> from sensors import TemperatureSensor
+    >>> sensor = TemperatureSensor("TEMP_001")
+    >>> sensor.read(25.5)
+    25.5
+"""
+
+__version__ = "1.0.0"
+__author__ = "Engineering Team"
+__all__ = ['TemperatureSensor', 'validate_reading']
+
+def validate_reading(value, min_val, max_val):
+    """
+    Validate that a reading is within acceptable range.
+    
+    Args:
+        value: The reading value to validate
+        min_val: Minimum acceptable value
+        max_val: Maximum acceptable value
+    
+    Returns:
+        bool: True if valid, False otherwise
+        
+    Raises:
+        TypeError: If value is not numeric
+    """
+    if not isinstance(value, (int, float)):
+        raise TypeError("Value must be numeric")
+    return min_val <= value <= max_val
+
+# Test
+print(f"Module: sensors")
+print(f"Version: {__version__}")
+print(f"Author: {__author__}")
+print(f"Public API: {__all__}")
+print(f"\nvalidate_reading(25, 0, 100): {validate_reading(25, 0, 100)}")</textarea>
+                    <div class="code-output" id="outputcode34">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Module Organization</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 13.2: Module Structure</span>
+                        <button class="code-figure-run" onclick="runCode('code35')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code35"># Standard module organization
+print("""
+=== Standard Module Structure ===
+
+1. Module docstring (at the top)
+2. Future imports (if needed)
+3. Standard library imports
+4. Third-party imports
+5. Local imports
+6. Module-level constants
+7. Module-level variables
+8. Class definitions
+9. Function definitions
+10. Main execution block
+
+=== Import Order (PEP 8) ===
+
+# Standard library
+import os
+import sys
+from datetime import datetime
+
+# Third-party packages
+import numpy as np
+import pandas as pd
+
+# Local modules
+from mypackage import mymodule
+from . import utils
+
+=== Naming Conventions ===
+
+module_name.py      # lowercase with underscores
+ClassName           # CamelCase
+function_name       # lowercase with underscores
+CONSTANT_NAME       # UPPERCASE with underscores
+_private_name       # leading underscore
+__very_private      # double leading underscore
+""")</textarea>
+                    <div class="code-output" id="outputcode35">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Error Handling in Modules</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 13.3: Module Error Handling</span>
+                        <button class="code-figure-run" onclick="runCode('code36')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code36"># Custom exceptions for your module
+class SensorError(Exception):
+    """Base exception for sensor module."""
+    pass
+
+class SensorNotFoundError(SensorError):
+    """Raised when sensor is not found."""
+    pass
+
+class ReadingOutOfRangeError(SensorError):
+    """Raised when reading is out of valid range."""
+    pass
+
+class SensorManager:
+    def __init__(self):
+        self.sensors = {}
+    
+    def register(self, sensor_id, sensor_type):
+        self.sensors[sensor_id] = {'type': sensor_type, 'value': None}
+        print(f"Registered: {sensor_id}")
+    
+    def read(self, sensor_id, value, min_val=-40, max_val=125):
+        if sensor_id not in self.sensors:
+            raise SensorNotFoundError(f"Sensor {sensor_id} not found")
+        if not min_val <= value <= max_val:
+            raise ReadingOutOfRangeError(f"{value} out of range [{min_val}, {max_val}]")
+        self.sensors[sensor_id]['value'] = value
+        return value
+
+# Test error handling
+manager = SensorManager()
+manager.register("TEMP_001", "temperature")
+
+try:
+    manager.read("TEMP_001", 25.5)
+    print("✓ Valid reading accepted")
+    
+    manager.read("TEMP_001", 200)  # Out of range
+except ReadingOutOfRangeError as e:
+    print(f"✓ Caught: {e}")
+
+try:
+    manager.read("UNKNOWN", 25)  # Not found
+except SensorNotFoundError as e:
+    print(f"✓ Caught: {e}")</textarea>
+                    <div class="code-output" id="outputcode36">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Summary -->
+            <div class="summary-box">
+                <h3>📋 Week 12 Summary</h3>
+                <div class="summary-grid">
+                    <div class="summary-item"><span class="icon" style="font-size:1.3rem">📦</span><span>Modules Basics</span></div>
+                    <div class="summary-item"><span class="icon" style="font-size:1.3rem">📥</span><span>Import Styles</span></div>
+                    <div class="summary-item"><span class="icon" style="font-size:1.3rem">🛠️</span><span>Creating Modules</span></div>
+                    <div class="summary-item"><span class="icon" style="font-size:1.3rem">🔍</span><span>__name__ Variable</span></div>
+                    <div class="summary-item"><span class="icon" style="font-size:1.3rem">📁</span><span>Packages</span></div>
+                    <div class="summary-item"><span class="icon" style="font-size:1.3rem">📚</span><span>Standard Library</span></div>
+                    <div class="summary-item"><span class="icon" style="font-size:1.3rem">⬇️</span><span>pip & PyPI</span></div>
+                    <div class="summary-item"><span class="icon" style="font-size:1.3rem">🌐</span><span>Virtual Environments</span></div>
+                </div>
+            </div>
+
+            <!-- Exercises Section -->
+            <section id="exercises" class="section">
+                <div class="section-header">
+                    <div class="section-number">📝</div>
+                    <h2>Practice Exercises</h2>
+                </div>
+                <p>Complete these exercises to master modules and packages in Python.</p>
+
+                <!-- Exercise 1 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">1</span>Basic Import</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Import the <code>math</code> module and calculate the area of a circle with radius 5.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Area of circle with radius 5: 78.54</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex1"># Import math and calculate circle area
+# Area = π * r²
+
+# Your code here
+radius = 5
+area = # Calculate using math.pi
+print(f"Area of circle with radius {radius}: {area:.2f}")</textarea>
+                            <div class="code-output" id="outputex1">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 2 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">2</span>Import with Alias</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Import <code>random</code> with alias <code>rnd</code> and generate 5 random integers between 1 and 100.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output (example)</div>
+                            <pre>Random numbers: [42, 17, 83, 56, 91]</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex2"># Import random with alias
+# Your code here
+
+numbers = []  # Generate 5 random numbers 1-100
+print(f"Random numbers: {numbers}")</textarea>
+                            <div class="code-output" id="outputex2">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 3 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">3</span>Import Specific Items</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Import only <code>sqrt</code> and <code>pow</code> from <code>math</code>. Calculate √144 and 2¹⁰.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Square root of 144: 12.0
+2 to the power 10: 1024.0</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex3"># Import specific functions from math
+# Your code here
+
+print(f"Square root of 144: {sqrt(144)}")
+print(f"2 to the power 10: {pow(2, 10)}")</textarea>
+                            <div class="code-output" id="outputex3">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 4 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">4</span>Using datetime</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Use <code>datetime</code> to get current date and format as "YYYY-MM-DD HH:MM".</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output (example)</div>
+                            <pre>Current: 2025-06-15 14:30</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex4"># Get current datetime and format it
+from datetime import datetime
+
+now = datetime.now()
+formatted = # Format as YYYY-MM-DD HH:MM
+print(f"Current: {formatted}")</textarea>
+                            <div class="code-output" id="outputex4">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 5 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">5</span>Using json</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Convert a dictionary to JSON string and back.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>JSON: {"name": "Sensor1", "value": 25.5}
+Back to dict: {'name': 'Sensor1', 'value': 25.5}</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex5"># Convert dict to JSON and back
+import json
+
+data = {"name": "Sensor1", "value": 25.5}
+json_str = # Convert to JSON
+back_to_dict = # Convert back
+
+print(f"JSON: {json_str}")
+print(f"Back to dict: {back_to_dict}")</textarea>
+                            <div class="code-output" id="outputex5">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 6 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">6</span>Using Counter</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Use <code>Counter</code> to count status codes.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Counts: {'OK': 4, 'ERROR': 2, 'WARNING': 1}
+Most common: OK (4 times)</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex6"># Count status codes
+from collections import Counter
+
+statuses = ['OK', 'OK', 'ERROR', 'OK', 'WARNING', 'OK', 'ERROR']
+counts = # Create Counter
+
+print(f"Counts: {dict(counts)}")
+# Print most common</textarea>
+                            <div class="code-output" id="outputex6">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 7 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">7</span>Module Functions</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create temperature and length conversion functions.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>100°C = 212.0°F
+10m = 32.81ft</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex7"># conversions.py module
+def celsius_to_fahrenheit(c):
+    # Your code
+    pass
+
+def meters_to_feet(m):
+    # 1 meter = 3.28084 feet
+    pass
+
+# Test
+print(f"100°C = {celsius_to_fahrenheit(100)}°F")
+print(f"10m = {meters_to_feet(10):.2f}ft")</textarea>
+                            <div class="code-output" id="outputex7">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 8 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">8</span>__name__ Pattern</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a module with test code using __name__.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Running tests...
+✓ factorial(5) = 120
+✓ factorial(0) = 1
+All tests passed!</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex8"># math_utils.py with __name__ pattern
+def factorial(n):
+    """Calculate factorial of n."""
+    # Your code here
+    pass
+
+# Test code using __name__
+if __name__ == "__main__":
+    print("Running tests...")
+    # Test factorial(5) = 120
+    # Test factorial(0) = 1
+    print("All tests passed!")</textarea>
+                            <div class="code-output" id="outputex8">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 9 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">9</span>namedtuple</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>SensorReading</code> namedtuple.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Reading: SensorReading(sensor_id='TEMP_001', value=25.5, unit='C')
+Value: 25.5 C</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex9"># Create and use a namedtuple
+from collections import namedtuple
+
+# Create SensorReading namedtuple
+SensorReading = # Your code
+
+reading = SensorReading('TEMP_001', 25.5, 'C')
+print(f"Reading: {reading}")
+print(f"Value: {reading.value} {reading.unit}")</textarea>
+                            <div class="code-output" id="outputex9">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 10 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">10</span>defaultdict</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Group sensor readings by ID using <code>defaultdict</code>.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>TEMP_001: [25.5, 26.0, 25.8]
+TEMP_002: [24.0, 24.5]</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex10"># Group readings using defaultdict
+from collections import defaultdict
+
+readings = [
+    ('TEMP_001', 25.5),
+    ('TEMP_002', 24.0),
+    ('TEMP_001', 26.0),
+    ('TEMP_002', 24.5),
+    ('TEMP_001', 25.8),
+]
+
+grouped = # Create defaultdict
+# Add readings to groups
+
+for sensor_id, values in grouped.items():
+    print(f"{sensor_id}: {values}")</textarea>
+                            <div class="code-output" id="outputex10">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 11 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">11</span>Time Calculations</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Calculate dates 30 days from now and 90 days ago.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex11"># Calculate dates using timedelta
+from datetime import date, timedelta
+
+today = date.today()
+days_future = # 30 days from now
+days_past = # 90 days ago
+
+print(f"Today: {today}")
+print(f"30 days from now: {days_future}")
+print(f"90 days ago: {days_past}")</textarea>
+                            <div class="code-output" id="outputex11">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 12 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">12</span>deque Buffer</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a fixed-size buffer using <code>deque</code>.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>After adding 8 readings: [4, 5, 6, 7, 8]</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex12"># Create fixed-size buffer with deque
+from collections import deque
+
+buffer = # Create deque with max 5 items
+
+for i in range(1, 9):
+    buffer.append(i)
+
+print(f"After adding 8 readings: {list(buffer)}")</textarea>
+                            <div class="code-output" id="outputex12">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 13 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">13</span>Config Module</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a configuration module with constants and validation.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints13')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints13">
+                                <ul>
+                                    <li>Define MAX_TEMP, MIN_TEMP constants</li>
+                                    <li>Create validate_temp() and get_config() functions</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex13')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex13"># config.py - Configuration module
+MAX_TEMP = 125
+MIN_TEMP = -40
+DEFAULT_UNIT = "celsius"
+
+def validate_temp(temp):
+    """Return True if temp is in valid range."""
+    pass
+
+def get_config():
+    """Return configuration as dictionary."""
+    pass
+
+# Test
+if __name__ == "__main__":
+    config = get_config()
+    print(f"Config: {config}")
+    print(f"Valid 50? {validate_temp(50)}")
+    print(f"Valid 200? {validate_temp(200)}")</textarea>
+                            <div class="code-output" id="outputex13">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 14 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">14</span>Sensor Package</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Design sensor classes with inheritance.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints14')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints14">
+                                <ul>
+                                    <li>Create base Sensor class</li>
+                                    <li>TemperatureSensor and PressureSensor inherit from Sensor</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex14')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex14"># sensors.py - Sensor module
+class Sensor:
+    def __init__(self, sensor_id):
+        self.sensor_id = sensor_id
+        self.value = None
+    
+    def read(self, value):
+        self.value = value
+
+class TemperatureSensor(Sensor):
+    pass
+
+class PressureSensor(Sensor):
+    pass
+
+# Test
+temp = TemperatureSensor("TEMP_001")
+pres = PressureSensor("PRES_001")
+temp.read(25.5)
+pres.read(1013.25)
+print(f"{temp.sensor_id}: {temp.value}°C")
+print(f"{pres.sensor_id}: {pres.value} hPa")</textarea>
+                            <div class="code-output" id="outputex14">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise 15 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">15</span>Data Logger Module</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a data logger with timestamps and JSON export.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints15')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints15">
+                                <ul>
+                                    <li>Use datetime for timestamps</li>
+                                    <li>Implement log(), get_all(), to_json()</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex15')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex15"># logger.py - Data logger module
+from datetime import datetime
+import json
+
+class DataLogger:
+    def __init__(self, name):
+        self.name = name
+        self.entries = []
+    
+    def log(self, sensor_id, value):
+        """Log a reading with timestamp."""
+        pass
+    
+    def get_all(self):
+        return self.entries
+    
+    def to_json(self):
+        pass
+
+# Test
+logger = DataLogger("SensorLog")
+logger.log("TEMP_001", 25.5)
+logger.log("TEMP_001", 26.0)
+logger.log("PRES_001", 1013.25)
+print(f"Entries: {len(logger.get_all())}")
+print("JSON:")
+print(logger.to_json())</textarea>
+                            <div class="code-output" id="outputex15">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Submit Section -->
+
+            <!-- Section 14: Advanced Module Patterns -->
+            <section id="part14" class="section">
+                <div class="section-header">
+                    <div class="section-number">14</div>
+                    <h2>Advanced Module Patterns</h2>
+                </div>
+                <p>Advanced techniques for professional Python module development.</p>
+                <h3>Lazy Loading</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 14.1: Lazy Loading Pattern</span>
+                        <button class="code-figure-run" onclick="runCode('codeA1')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="codeA1"># Lazy loading - load modules only when needed
+import importlib
+
+class LazyLoader:
+    """Lazy module loader."""
+    
+    def __init__(self, module_name):
+        self.module_name = module_name
+        self._module = None
+    
+    def __getattr__(self, name):
+        if self._module is None:
+            print(f"Loading {self.module_name}...")
+            self._module = importlib.import_module(self.module_name)
+        return getattr(self._module, name)
+
+# Example usage
+math = LazyLoader('math')
+print("Module created but not loaded yet")
+print(f"math.pi = {math.pi}")  # Triggers load
+print(f"math.sqrt(16) = {math.sqrt(16)}")</textarea>
+                    <div class="code-output" id="outputcodeA1">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Plugin System</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 14.2: Plugin Architecture</span>
+                        <button class="code-figure-run" onclick="runCode('codeA2')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="codeA2"># Simple plugin system
+class PluginManager:
+    """Manages plugins for extensibility."""
+    
+    def __init__(self):
+        self.plugins = {}
+    
+    def register(self, name, plugin_class):
+        """Register a plugin."""
+        self.plugins[name] = plugin_class
+        print(f"Registered plugin: {name}")
+    
+    def get(self, name):
+        """Get a plugin by name."""
+        return self.plugins.get(name)
+    
+    def list_plugins(self):
+        """List all registered plugins."""
+        return list(self.plugins.keys())
+
+# Define plugin interface
+class SensorPlugin:
+    def read(self):
+        raise NotImplementedError
+
+# Create plugins
+class TemperaturePlugin(SensorPlugin):
+    def read(self):
+        return {"type": "temperature", "value": 25.5, "unit": "°C"}
+
+class PressurePlugin(SensorPlugin):
+    def read(self):
+        return {"type": "pressure", "value": 1013.25, "unit": "hPa"}
+
+# Use plugin system
+manager = PluginManager()
+manager.register("temperature", TemperaturePlugin)
+manager.register("pressure", PressurePlugin)
+
+print(f"\nAvailable plugins: {manager.list_plugins()}")
+
+for name in manager.list_plugins():
+    plugin = manager.get(name)()
+    print(f"{name}: {plugin.read()}")</textarea>
+                    <div class="code-output" id="outputcodeA2">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Singleton Pattern</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 14.3: Singleton Pattern</span>
+                        <button class="code-figure-run" onclick="runCode('codeA3')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="codeA3"># Singleton pattern for shared state
+class ConfigManager:
+    """Singleton configuration manager."""
+    
+    _instance = None
+    _initialized = False
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+    
+    def __init__(self):
+        if not self._initialized:
+            self.settings = {}
+            self._initialized = True
+            print("ConfigManager initialized")
+    
+    def set(self, key, value):
+        self.settings[key] = value
+    
+    def get(self, key, default=None):
+        return self.settings.get(key, default)
+
+# Test singleton behavior
+config1 = ConfigManager()
+config1.set("sensor_rate", 1.0)
+config1.set("log_level", "INFO")
+
+config2 = ConfigManager()  # Same instance
+print(f"\nSame instance? {config1 is config2}")
+print(f"Settings from config2: {config2.settings}")</textarea>
+                    <div class="code-output" id="outputcodeA3">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Factory Pattern</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 14.4: Factory Pattern</span>
+                        <button class="code-figure-run" onclick="runCode('codeA4')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="codeA4"># Factory pattern for creating sensors
+class Sensor:
+    def __init__(self, sensor_id):
+        self.sensor_id = sensor_id
+        self.value = None
+
+class TemperatureSensor(Sensor):
+    unit = "°C"
+    def __str__(self):
+        return f"Temp({self.sensor_id}): {self.value}{self.unit}"
+
+class PressureSensor(Sensor):
+    unit = "hPa"
+    def __str__(self):
+        return f"Pres({self.sensor_id}): {self.value}{self.unit}"
+
+class HumiditySensor(Sensor):
+    unit = "%"
+    def __str__(self):
+        return f"Humid({self.sensor_id}): {self.value}{self.unit}"
+
+class SensorFactory:
+    """Factory for creating sensors."""
+    
+    _sensors = {
+        'temperature': TemperatureSensor,
+        'pressure': PressureSensor,
+        'humidity': HumiditySensor
+    }
+    
+    @classmethod
+    def create(cls, sensor_type, sensor_id):
+        """Create a sensor of the specified type."""
+        if sensor_type not in cls._sensors:
+            raise ValueError(f"Unknown sensor type: {sensor_type}")
+        return cls._sensors[sensor_type](sensor_id)
+    
+    @classmethod
+    def available_types(cls):
+        return list(cls._sensors.keys())
+
+# Use factory
+print(f"Available types: {SensorFactory.available_types()}")
+
+sensors = [
+    SensorFactory.create('temperature', 'TEMP_001'),
+    SensorFactory.create('pressure', 'PRES_001'),
+    SensorFactory.create('humidity', 'HUM_001')
+]
+
+for sensor in sensors:
+    sensor.value = 42
+    print(sensor)</textarea>
+                    <div class="code-output" id="outputcodeA4">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Registry Pattern with Decorators</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 14.5: Registry Pattern</span>
+                        <button class="code-figure-run" onclick="runCode('codeA5')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="codeA5"># Registry pattern with decorators
+class CommandRegistry:
+    """Registry for commands."""
+    
+    commands = {}
+    
+    @classmethod
+    def register(cls, name):
+        """Decorator to register a command."""
+        def decorator(func):
+            cls.commands[name] = func
+            return func
+        return decorator
+    
+    @classmethod
+    def execute(cls, name, *args, **kwargs):
+        """Execute a registered command."""
+        if name not in cls.commands:
+            raise ValueError(f"Unknown command: {name}")
+        return cls.commands[name](*args, **kwargs)
+
+# Register commands using decorator
+@CommandRegistry.register('start')
+def start_system():
+    return "System started"
+
+@CommandRegistry.register('stop')
+def stop_system():
+    return "System stopped"
+
+@CommandRegistry.register('status')
+def get_status():
+    return "System running"
+
+# Use registry
+print(f"Registered commands: {list(CommandRegistry.commands.keys())}")
+print()
+for cmd in ['start', 'status', 'stop']:
+    result = CommandRegistry.execute(cmd)
+    print(f"  {cmd}: {result}")</textarea>
+                    <div class="code-output" id="outputcodeA5">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                <h3>Observer Pattern</h3>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 14.6: Observer Pattern</span>
+                        <button class="code-figure-run" onclick="runCode('codeA6')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="codeA6"># Observer pattern for event handling
+class EventEmitter:
+    """Simple event emitter for pub/sub."""
+    
+    def __init__(self):
+        self._handlers = {}
+    
+    def on(self, event, handler):
+        """Subscribe to an event."""
+        if event not in self._handlers:
+            self._handlers[event] = []
+        self._handlers[event].append(handler)
+        return self
+    
+    def emit(self, event, *args, **kwargs):
+        """Emit an event to all subscribers."""
+        if event in self._handlers:
+            for handler in self._handlers[event]:
+                handler(*args, **kwargs)
+
+# Sensor that emits events
+class ObservableSensor:
+    def __init__(self, sensor_id):
+        self.sensor_id = sensor_id
+        self.events = EventEmitter()
+        self.value = None
+    
+    def read(self, value):
+        old_value = self.value
+        self.value = value
+        self.events.emit('reading', self.sensor_id, value)
+        if old_value and abs(value - old_value) > 5:
+            self.events.emit('alert', self.sensor_id, value, "Large change!")
+
+# Use observer pattern
+sensor = ObservableSensor("TEMP_001")
+
+# Subscribe to events
+sensor.events.on('reading', lambda sid, val: print(f"Reading: {sid} = {val}"))
+sensor.events.on('alert', lambda sid, val, msg: print(f"⚠️ Alert {sid}: {msg}"))
+
+# Generate readings
+sensor.read(25.0)
+sensor.read(26.0)
+sensor.read(35.0)  # Triggers alert</textarea>
+                    <div class="code-output" id="outputcodeA6">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bonus Exercises Section -->
+            <section id="bonus" class="section">
+                <div class="section-header">
+                    <div class="section-number">📚</div>
+                    <h2>Bonus Exercises</h2>
+                </div>
+                <p>Additional practice exercises to reinforce your understanding.</p>
+
+                <!-- Bonus Exercise 1 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B1</span>Statistics Module</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Use the <code>statistics</code> module to calculate mean, median, and standard deviation.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB1')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB1"># Use statistics module
+import statistics
+
+data = [23, 25, 24, 26, 25, 27, 24, 25, 26, 24]
+
+mean = statistics.mean(data)
+median = statistics.median(data)
+stdev = statistics.stdev(data)
+
+print(f"Data: {data}")
+print(f"Mean: {mean:.2f}")
+print(f"Median: {median}")
+print(f"Std Dev: {stdev:.2f}")</textarea>
+                            <div class="code-output" id="outputexB1">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus Exercise 2 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B2</span>pathlib Module</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Use <code>pathlib</code> for modern path operations.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB2')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB2"># Use pathlib for path operations
+from pathlib import Path
+
+file_path = Path("/home/user/data/sensor_log.csv")
+
+print(f"Name: {file_path.name}")
+print(f"Stem: {file_path.stem}")
+print(f"Suffix: {file_path.suffix}")
+print(f"Parent: {file_path.parent}")
+
+new_path = file_path.with_suffix('.json')
+print(f"With .json: {new_path}")
+
+data_dir = Path("/home/user/data")
+config_file = data_dir / "config" / "settings.json"
+print(f"Joined: {config_file}")</textarea>
+                            <div class="code-output" id="outputexB2">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus Exercise 3 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B3</span>CSV Module</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Use the <code>csv</code> module to read and write CSV data.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB3')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB3"># Working with CSV data
+import csv
+from io import StringIO
+
+csv_data = """sensor_id,value,timestamp
+TEMP_001,25.5,2025-06-15 10:00
+TEMP_001,26.0,2025-06-15 10:01
+PRES_001,1013.25,2025-06-15 10:00"""
+
+reader = csv.DictReader(StringIO(csv_data))
+readings = list(reader)
+
+print("=== CSV Data ===")
+for row in readings:
+    print(f"  {row['sensor_id']}: {row['value']}")
+
+output = StringIO()
+writer = csv.DictWriter(output, fieldnames=['id', 'avg'])
+writer.writeheader()
+writer.writerow({'id': 'TEMP_001', 'avg': 25.75})
+print(f"\n=== Generated CSV ===\n{output.getvalue()}")</textarea>
+                            <div class="code-output" id="outputexB3">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus Exercise 4 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B4</span>argparse Module</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a command-line interface using <code>argparse</code>.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB4')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB4"># Command-line interface with argparse
+import argparse
+
+parser = argparse.ArgumentParser(description='Sensor processor')
+
+parser.add_argument('--sensor', '-s', default='TEMP_001')
+parser.add_argument('--value', '-v', type=float, required=True)
+parser.add_argument('--verbose', action='store_true')
+
+# Simulate command line
+args = parser.parse_args(['--sensor', 'TEMP_001', '-v', '25.5', '--verbose'])
+
+print(f"Sensor: {args.sensor}")
+print(f"Value: {args.value}")
+print(f"Verbose: {args.verbose}")
+
+if args.verbose:
+    print(f"\nProcessing {args.sensor}...")
+    print(f"Value recorded: {args.value}")</textarea>
+                            <div class="code-output" id="outputexB4">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus Exercise 5 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B5</span>Complete Module</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a complete module with documentation, error handling, and tests.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB5')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB5">"""
+data_buffer.py - Circular buffer for sensor data.
+
+Example:
+    >>> buffer = CircularBuffer(5)
+    >>> buffer.push(1.0)
+    >>> buffer.average()
+    1.0
+"""
+
+__version__ = "1.0.0"
+__all__ = ['CircularBuffer', 'BufferFullError']
+
+class BufferFullError(Exception):
+    """Raised when buffer operation fails."""
+    pass
+
+class CircularBuffer:
+    """Fixed-size circular buffer."""
+    
+    def __init__(self, size):
+        if size < 1:
+            raise ValueError("Size must be positive")
+        self.size = size
+        self.data = []
+    
+    def push(self, value):
+        if len(self.data) >= self.size:
+            self.data.pop(0)
+        self.data.append(value)
+    
+    def average(self):
+        if not self.data:
+            return 0.0
+        return sum(self.data) / len(self.data)
+    
+    def __len__(self):
+        return len(self.data)
+
+# Tests
+if __name__ == "__main__":
+    print("Running tests...")
+    
+    buf = CircularBuffer(3)
+    for i in range(5):
+        buf.push(i)
+    
+    assert len(buf) == 3
+    assert buf.data == [2, 3, 4]
+    
+    print(f"Buffer: {buf.data}")
+    print(f"Average: {buf.average()}")
+    print("✓ All tests passed!")</textarea>
+                            <div class="code-output" id="outputexB5">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus Exercise 6 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B6</span>Logging Module</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Use Python's <code>logging</code> module for proper logging.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB6')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB6"># Using the logging module
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%H:%M:%S'
+)
+
+logger = logging.getLogger('sensor_system')
+
+# Different log levels
+logger.debug("Debug: Initializing sensor")
+logger.info("Info: Sensor connected")
+logger.warning("Warning: Temperature approaching limit")
+logger.error("Error: Sensor communication failed")
+
+# Practical example
+class SensorWithLogging:
+    def __init__(self, sensor_id):
+        self.sensor_id = sensor_id
+        self.logger = logging.getLogger(f'sensor.{sensor_id}')
+        self.logger.info(f"Sensor {sensor_id} initialized")
+    
+    def read(self, value):
+        self.logger.debug(f"Reading: {value}")
+        if value > 50:
+            self.logger.warning(f"High temperature: {value}")
+        return value
+
+sensor = SensorWithLogging("TEMP_001")
+sensor.read(25)
+sensor.read(55)</textarea>
+                            <div class="code-output" id="outputexB6">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus Exercise 7 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B7</span>hashlib Module</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Use <code>hashlib</code> to create data checksums.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB7')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB7"># Using hashlib for checksums
+import hashlib
+import json
+
+def compute_checksum(data):
+    """Compute SHA-256 checksum of data."""
+    json_str = json.dumps(data, sort_keys=True)
+    return hashlib.sha256(json_str.encode()).hexdigest()
+
+# Sensor data with checksum
+sensor_data = {
+    "sensor_id": "TEMP_001",
+    "readings": [25.5, 26.0, 24.5],
+    "timestamp": "2025-06-15"
+}
+
+checksum = compute_checksum(sensor_data)
+print(f"Data: {sensor_data}")
+print(f"Checksum: {checksum[:16]}...")
+
+# Verify data integrity
+sensor_data_copy = sensor_data.copy()
+print(f"\nSame checksum? {compute_checksum(sensor_data_copy) == checksum}")
+
+# Modified data has different checksum
+sensor_data_copy['readings'][0] = 25.6
+print(f"After modification: {compute_checksum(sensor_data_copy) == checksum}")</textarea>
+                            <div class="code-output" id="outputexB7">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus Exercise 8 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">B8</span>threading Module</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Use <code>threading</code> for concurrent sensor reading.</p>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('exB8')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exB8"># Threading for concurrent operations
+import threading
+import time
+import random
+
+class SensorReader(threading.Thread):
+    """Thread for reading sensor data."""
+    
+    def __init__(self, sensor_id, readings_count=3):
+        super().__init__()
+        self.sensor_id = sensor_id
+        self.readings_count = readings_count
+        self.readings = []
+    
+    def run(self):
+        for i in range(self.readings_count):
+            value = 25 + random.uniform(-2, 2)
+            self.readings.append(value)
+            print(f"{self.sensor_id}: {value:.1f}")
+            time.sleep(0.1)
+
+# Create multiple sensor readers
+sensors = [
+    SensorReader("TEMP_001"),
+    SensorReader("TEMP_002"),
+    SensorReader("PRES_001")
+]
+
+print("Starting concurrent sensor reading...\n")
+
+# Start all threads
+for sensor in sensors:
+    sensor.start()
+
+# Wait for all to complete
+for sensor in sensors:
+    sensor.join()
+
+print("\nResults:")
+for sensor in sensors:
+    avg = sum(sensor.readings) / len(sensor.readings)
+    print(f"  {sensor.sensor_id}: avg = {avg:.2f}")</textarea>
+                            <div class="code-output" id="outputexB8">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Submit Section -->
+            <section id="submit" class="section">
+                <div class="section-header">
+                    <div class="section-number">📤</div>
+                    <h2>Submit Your Work</h2>
+                </div>
+                <div class="submit-section">
+                    <h2>📋 Submission Form</h2>
+                    <p>Complete the exercises above, then fill out this form to record your attendance for Week 12.</p>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Student ID</label>
+                            <input type="text" id="studentId" placeholder="e.g., 2024001234" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="studentName" placeholder="e.g., Ahmet Yılmaz">
+                        </div>
+                        <div class="form-group">
+                            <label>Email (@istun.edu.tr)</label>
+                            <input type="email" id="studentEmail" placeholder="e.g., ahmet.yilmaz@istun.edu.tr">
+                        </div>
+                        <div class="form-group">
+                            <label>Class Code (from instructor)</label>
+                            <input type="text" id="classCode" placeholder="Enter code from class">
+                        </div>
+                    </div>
+                    <div class="honeypot">
+                        <input type="text" id="website" tabindex="-1" autocomplete="off">
+                    </div>
+                    <button class="submit-btn" onclick="submitWork()">Submit Week 12</button>
+                    <div class="submit-status" id="submitStatus"></div>
+                </div>
+            </section>
+
+            <!-- Navigation -->
+            <div class="page-nav">
+                <a href="Week_11.html" class="nav-btn">← Week 11: OOP Inheritance</a>
+                <a href="index.html?home=true" class="nav-btn">Course Home</a>
+                <a href="Week_13.html" class="nav-btn">Week 13: Error Handling →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Progress Bar
+        function updateProgress() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = Math.min(100, Math.max(0, (winScroll / height) * 100));
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        }
+        window.addEventListener('scroll', updateProgress);
+        window.addEventListener('load', updateProgress);
+
+        // Hints Toggle
+        function toggleHints(id) {
+            var hints = document.getElementById(id);
+            hints.classList.toggle('show');
+            var btn = hints.previousElementSibling;
+            btn.textContent = hints.classList.contains('show') ? '💡 Hide Hints' : '💡 Show Hints';
+        }
+
+        // Pyodide Python Execution
+        var pyodideReadyPromise = null;
+        var pyodideInstance = null;
+
+        async function initPyodide() {
+            if (pyodideInstance) return pyodideInstance;
+            if (pyodideReadyPromise) return pyodideReadyPromise;
+            
+            pyodideReadyPromise = loadPyodide().then(function(pyodide) {
+                pyodideInstance = pyodide;
+                console.log("Pyodide loaded successfully");
+                return pyodide;
+            });
+            return pyodideReadyPromise;
+        }
+
+        async function runCode(codeId) {
+            var codeEl = document.getElementById(codeId);
+            var outputEl = document.getElementById('output' + codeId);
+            var code = codeEl.value;
+            
+            outputEl.classList.add('show');
+            var outputContent = outputEl.querySelector('.code-output-content');
+            
+            if (!pyodideInstance) {
+                outputContent.textContent = 'Initializing Python (first run takes a few seconds)...';
+                try {
+                    await initPyodide();
+                } catch (e) {
+                    outputContent.textContent = 'Error loading Python: ' + e.message;
+                    return;
+                }
+            }
+            
+            outputContent.textContent = 'Running...';
+            
+            try {
+                pyodideInstance.runPython('import sys; from io import StringIO; sys.stdout = StringIO()');
+                await pyodideInstance.runPythonAsync(code);
+                var output = pyodideInstance.runPython('sys.stdout.getvalue()');
+                outputContent.textContent = output || '(no output)';
+            } catch (e) {
+                outputContent.textContent = 'Error: ' + e.message;
+            }
+        }
+
+        // Form Validation
+        var pageLoadTime = Date.now();
+
+        function validateStudentId(id) {
+            if (id.length < 6 || id.length > 10) return false;
+            if (!/^\d+$/.test(id)) return false;
+            if (/^(\d)\1+$/.test(id)) return false;
+            return true;
+        }
+
+        function validateName(name) {
+            if (name.length < 5) return false;
+            var words = name.trim().split(/\s+/);
+            if (words.length < 2) return false;
+            return true;
+        }
+
+        function validateEmail(email) {
+            return email.endsWith('@istun.edu.tr') && email.length > 15;
+        }
+
+        function submitWork() {
+            var status = document.getElementById('submitStatus');
+            status.style.display = 'none';
+            
+            var studentId = document.getElementById('studentId').value.trim();
+            var studentName = document.getElementById('studentName').value.trim();
+            var studentEmail = document.getElementById('studentEmail').value.trim().toLowerCase();
+            var classCode = document.getElementById('classCode').value.trim().toUpperCase();
+            var honeypot = document.getElementById('website').value;
+            
+            if (honeypot) {
+                status.textContent = '❌ Submission rejected.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
+            if (timeOnPage < 60) {
+                status.textContent = '❌ Please spend more time reviewing the material.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (!studentId || !studentName || !studentEmail || !classCode) {
+                status.textContent = '❌ All fields are required.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (!validateStudentId(studentId)) {
+                status.textContent = '❌ Invalid Student ID. Must be 6-10 digits.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (!validateName(studentName)) {
+                status.textContent = '❌ Please enter your full name.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (!validateEmail(studentEmail)) {
+                status.textContent = '❌ Please use your @istun.edu.tr email.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            if (classCode.length < 4) {
+                status.textContent = '❌ Invalid class code.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            var data = {
+                week: 'Week_12',
+                studentId: studentId,
+                studentName: studentName,
+                studentEmail: studentEmail,
+                classCode: classCode,
+                timeOnPage: timeOnPage,
+                source: 'cp2-web'
+            };
+            
+            status.textContent = '⏳ Submitting...';
+            status.style.cssText = 'display:block;background:rgba(147,51,234,0.2);color:#a78bfa';
+            
+            var scriptUrl = 'https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec';
+            
+            fetch(scriptUrl, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify(data)
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(result) {
+                if (result.success) {
+                    status.textContent = '✅ ' + result.message;
+                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                } else {
+                    status.textContent = '❌ ' + result.message;
+                    status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                }
+            })
+            .catch(function(error) {
+                fetch(scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(data)
+                })
+                .then(function() {
+                    status.textContent = '✅ Submission received! Thank you.';
+                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                })
+                .catch(function() {
+                    status.textContent = '❌ Connection error. Please try again.';
+                    status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                });
+            });
+        }
+    </script>
+</body>
+</html>

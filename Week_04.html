@@ -1,0 +1,3185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 04: Functions in Python | Computer Programming II</title>
+    
+    <!-- Pyodide for Python execution -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-cream: #faf9f7;
+            --bg-dark: #1a1a2e;
+            --bg-code: #1e1e2e;
+            --text-primary: #1a1a2e;
+            --text-secondary: #444;
+            --text-muted: #666;
+            --accent: #7c3aed;
+            --accent-light: rgba(124, 58, 237, 0.1);
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --border: #e5e5e5;
+            --card-bg: #ffffff;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: 19px;
+            line-height: 1.8;
+            background: var(--bg-cream);
+            color: var(--text-primary);
+        }
+        
+        /* Topbar */
+        .topbar {
+            background: var(--bg-dark);
+            color: white;
+            padding: 14px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .topbar a {
+            color: white;
+            text-decoration: none;
+            font-family: system-ui, sans-serif;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+        
+        .topbar a:hover { opacity: 1; }
+        
+        .topbar-title { font-family: system-ui, sans-serif; font-weight: 600; font-size: 1rem; }
+        
+        .topbar-nav { display: flex; gap: 24px; align-items: center; }
+        
+        /* Progress bar */
+        .progress-container {
+            position: fixed;
+            top: 52px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--border);
+            z-index: 99;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #a78bfa);
+            width: 0%;
+            transition: width 0.15s ease-out;
+        }
+        
+        /* Main container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 24px 80px;
+        }
+        
+        /* Chapter Header */
+        .chapter-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .chapter-label {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-family: system-ui, sans-serif;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        
+        .chapter-header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+        
+        .chapter-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            color: var(--text-muted);
+            font-size: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .chapter-meta span { display: flex; align-items: center; gap: 6px; }
+        
+        /* Learning Objectives */
+        .objectives-box {
+            background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05));
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 28px;
+            margin-bottom: 50px;
+        }
+        
+        .objectives-box h3 {
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            color: var(--accent);
+        }
+        
+        .objectives-box ul {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 10px 30px;
+            list-style: none;
+        }
+        
+        .objectives-box li {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            padding-left: 28px;
+            position: relative;
+        }
+        
+        .objectives-box li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        /* Sections */
+        .section { margin-bottom: 60px; scroll-margin-top: 70px; }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .section-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            color: white;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: system-ui, sans-serif;
+            flex-shrink: 0;
+        }
+        
+        .section-header h2 { font-size: 1.6rem; font-weight: 600; color: var(--text-primary); }
+        
+        /* Content styling */
+        .content p { color: var(--text-secondary); margin-bottom: 18px; }
+        .content h3 { font-size: 1.25rem; font-weight: 600; margin: 35px 0 16px; color: var(--text-primary); }
+        .content h4 { font-size: 1.05rem; font-weight: 600; margin: 28px 0 12px; color: var(--accent); }
+        .content ul, .content ol { color: var(--text-secondary); margin: 16px 0 20px 28px; }
+        .content li { margin-bottom: 10px; }
+        .content strong { color: var(--text-primary); }
+        
+        /* Inline code */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(124, 58, 237, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: var(--accent);
+        }
+        
+        pre {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-code);
+            color: #e4e4e7;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 16px 0;
+        }
+        
+        /* Code Figure */
+        .code-figure {
+            background: var(--bg-code);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        
+        .code-figure-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            background: rgba(255,255,255,0.05);
+            border-bottom: 1px solid #333;
+        }
+        
+        .code-figure-label {
+            font-family: system-ui, sans-serif;
+            font-size: 0.8rem;
+            color: #a78bfa;
+            font-weight: 500;
+        }
+        
+        .code-figure-run {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-family: system-ui, sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .code-figure-run:hover { background: #047857; transform: translateY(-1px); }
+        
+        .code-editor {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            background: var(--bg-code);
+            border: none;
+            color: #e4e4e7;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            resize: vertical;
+            outline: none;
+        }
+        
+        .code-output {
+            background: rgba(5, 150, 105, 0.1);
+            border-top: 1px solid #333;
+            padding: 14px 16px;
+            display: none;
+        }
+        
+        .code-output.show { display: block; }
+        
+        .code-output-label {
+            font-family: system-ui, sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--success);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .code-output-content {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #d4d4d8;
+            white-space: pre-wrap;
+        }
+        
+        /* Info boxes */
+        .info-box {
+            padding: 18px 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+            border-left: 4px solid;
+        }
+        
+        .info-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .tip-box { background: rgba(5, 150, 105, 0.08); border-color: var(--success); }
+        .tip-box::before { content: '💡 Tip'; display: block; font-weight: 600; color: var(--success); margin-bottom: 8px; font-size: 0.9rem; }
+        
+        .warning-box { background: rgba(217, 119, 6, 0.08); border-color: var(--warning); }
+        .warning-box::before { content: '⚠️ Important'; display: block; font-weight: 600; color: var(--warning); margin-bottom: 8px; font-size: 0.9rem; }
+        
+        .note-box { background: var(--accent-light); border-color: var(--accent); }
+        .note-box::before { content: '📝 Note'; display: block; font-weight: 600; color: var(--accent); margin-bottom: 8px; font-size: 0.9rem; }
+        
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 24px 0;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        
+        th {
+            background: var(--bg-dark);
+            color: white;
+            padding: 14px 18px;
+            text-align: left;
+            font-weight: 600;
+            font-family: system-ui, sans-serif;
+            font-size: 0.9rem;
+        }
+        
+        td { padding: 14px 18px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(124, 58, 237, 0.03); }
+        
+        /* Exercise Cards */
+        .exercise-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin: 28px 0;
+            overflow: hidden;
+        }
+        
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 24px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .exercise-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .exercise-number {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: system-ui, sans-serif;
+        }
+        
+        .difficulty {
+            padding: 5px 14px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: system-ui, sans-serif;
+        }
+        
+        .difficulty.easy { background: rgba(5, 150, 105, 0.12); color: var(--success); }
+        .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
+        .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
+        
+        .exercise-body { padding: 24px; }
+        
+        .exercise-description { color: var(--text-secondary); font-size: 1rem; margin-bottom: 20px; }
+        
+        .expected-output {
+            background: rgba(5, 150, 105, 0.06);
+            border: 1px solid rgba(5, 150, 105, 0.15);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+        
+        .expected-output-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--success);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            font-family: system-ui, sans-serif;
+        }
+        
+        .expected-output pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin: 0;
+            white-space: pre-wrap;
+            background: transparent;
+            padding: 0;
+        }
+        
+        .hints-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: var(--accent-light);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-radius: 8px;
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        
+        .hints-toggle:hover { background: rgba(124, 58, 237, 0.15); }
+        
+        .hints-content {
+            display: none;
+            background: rgba(124, 58, 237, 0.05);
+            border: 1px solid rgba(124, 58, 237, 0.12);
+            border-radius: 8px;
+            padding: 18px 24px;
+            margin-top: 14px;
+        }
+        
+        .hints-content.show { display: block; }
+        .hints-content ul { margin: 0; padding-left: 20px; }
+        .hints-content li { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 8px; }
+        
+        /* Submit Section */
+        .submit-section {
+            background: var(--bg-dark);
+            border-radius: 14px;
+            padding: 40px;
+            margin: 60px 0;
+            color: white;
+        }
+        
+        .submit-section h2 { font-size: 1.6rem; margin-bottom: 10px; color: white; }
+        .submit-section > p { color: rgba(255,255,255,0.7); margin-bottom: 28px; }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: rgba(255,255,255,0.8);
+            font-family: system-ui, sans-serif;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .form-group input::placeholder { color: rgba(255,255,255,0.4); }
+        
+        .honeypot { position: absolute; left: -9999px; }
+        
+        .submit-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: system-ui, sans-serif;
+        }
+        
+        .submit-btn:hover { background: #6d28d9; transform: translateY(-2px); }
+        
+        .submit-status {
+            margin-top: 20px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-family: system-ui, sans-serif;
+            display: none;
+        }
+        
+        /* Navigation */
+        .page-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 0;
+            border-top: 2px solid var(--border);
+            margin-top: 60px;
+        }
+        
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 24px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+        
+        /* Summary Box */
+        .summary-box {
+            background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05));
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 50px 0;
+        }
+        
+        .summary-box h3 { color: var(--accent); margin-bottom: 20px; font-size: 1.3rem; }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .summary-item .icon { font-size: 1.3rem; }
+        
+        /* Responsive */
+        @media (max-width: 700px) {
+            .chapter-header h1 { font-size: 2rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .chapter-meta { flex-direction: column; gap: 10px; }
+            .topbar-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+    
+    <nav class="topbar">
+        <a href="index.html?home=true" class="topbar-title">← Course Home</a>
+        <div class="topbar-nav">
+            <span style="opacity:0.7">Week 04 of 14</span>
+            <a href="Week_03.html">← Week 03</a>
+            <a href="Week_05.html">Week 05 →</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <header class="chapter-header">
+            <span class="chapter-label">Week 04</span>
+            <h1>Functions in Python</h1>
+            <div class="chapter-meta">
+                <span>📚 Computer Programming II</span>
+                <span>👨‍🏫 Dr. Arif Solmaz</span>
+            </div>
+        </header>
+        
+        <div class="objectives-box">
+            <h3>🎯 Learning Objectives</h3>
+            <ul>
+                <li>Understand what functions are and why they're essential</li>
+                <li>Define and call functions with proper syntax</li>
+                <li>Use parameters and arguments effectively</li>
+                <li>Return single and multiple values from functions</li>
+                <li>Apply default and keyword arguments</li>
+                <li>Understand variable scope (local, global, nonlocal)</li>
+                <li>Write professional docstrings for documentation</li>
+                <li>Use *args and **kwargs for flexible functions</li>
+                <li>Create and apply lambda (anonymous) functions</li>
+                <li>Understand recursion and its applications</li>
+                <li>Apply higher-order functions (map, filter, reduce)</li>
+                <li>Implement functions for engineering problems</li>
+            </ul>
+        </div>
+        
+        <div class="content">
+            <!-- Section 1: Introduction to Functions -->
+            <section id="part1" class="section">
+                <div class="section-header">
+                    <div class="section-number">1</div>
+                    <h2>Introduction to Functions</h2>
+                </div>
+                
+                <p>A <strong>function</strong> is a reusable block of code that performs a specific task. Functions are the building blocks of organized, maintainable, and efficient programs. Think of them as mini-programs within your program that you can call whenever needed.</p>
+                
+                <p>In mathematics, you've seen functions like f(x) = x². Given an input x, the function produces an output. Programming functions work similarly – they take inputs (called <strong>arguments</strong>), process them, and optionally return outputs.</p>
+                
+                <h3>Why Do We Need Functions?</h3>
+                <p>Imagine you need to calculate the area of a circle multiple times in your program. Without functions, you'd copy-paste the same formula everywhere. With functions, you write it once and reuse it unlimited times!</p>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Benefit</th>
+                                <th>Description</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Reusability</strong></td><td>Write once, use many times</td><td>Calculate area for 100 circles</td></tr>
+                            <tr><td><strong>Organization</strong></td><td>Break complex problems into smaller parts</td><td>Separate input, processing, output</td></tr>
+                            <tr><td><strong>Readability</strong></td><td>Code is easier to understand</td><td><code>calculate_velocity()</code> vs formulas</td></tr>
+                            <tr><td><strong>Maintainability</strong></td><td>Fix bugs in one place</td><td>Update formula once, affects all uses</td></tr>
+                            <tr><td><strong>Testing</strong></td><td>Test individual components</td><td>Verify each function works correctly</td></tr>
+                            <tr><td><strong>Abstraction</strong></td><td>Hide implementation details</td><td>Use <code>print()</code> without knowing how</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3>The DRY Principle</h3>
+                <p><strong>DRY</strong> stands for "Don't Repeat Yourself" – one of the most important principles in software development. Functions help you follow this principle by allowing you to write code once and reuse it many times.</p>
+                
+                <h3>Built-in Functions You Already Know</h3>
+                <p>Python provides many built-in functions that you've been using since day one:</p>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.1: Built-in Functions</span>
+                        <button class="code-figure-run" onclick="runCode('code1')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code1"># Built-in functions you already know
+print("Hello, World!")           # Output to screen
+print(len("Python"))             # Length: 6
+print(type(42))                  # Type: <class 'int'>
+print(int("123"))                # Convert to integer: 123
+print(str(456))                  # Convert to string: "456"
+print(abs(-15))                  # Absolute value: 15
+print(round(3.7))                # Round: 4
+print(max(1, 5, 3))              # Maximum: 5
+print(min(1, 5, 3))              # Minimum: 1
+print(sum([1, 2, 3, 4]))         # Sum: 10</textarea>
+                    <div class="code-output" id="outputcode1">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Function Anatomy</h4>
+                <p>Every function has these components:</p>
+                <ul>
+                    <li><strong>Name</strong> – A unique identifier to call the function</li>
+                    <li><strong>Parameters</strong> – Variables that receive input values (optional)</li>
+                    <li><strong>Body</strong> – The code that executes when the function is called</li>
+                    <li><strong>Return Value</strong> – The output sent back to the caller (optional)</li>
+                </ul>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.2: Function vs. Repeated Code</span>
+                        <button class="code-figure-run" onclick="runCode('code2')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code2">import math
+
+# WITHOUT functions - repetitive code
+radius1 = 5
+area1 = math.pi * radius1 ** 2
+print(f"Circle 1: radius={radius1}, area={area1:.2f}")
+
+radius2 = 10
+area2 = math.pi * radius2 ** 2
+print(f"Circle 2: radius={radius2}, area={area2:.2f}")
+
+radius3 = 7
+area3 = math.pi * radius3 ** 2
+print(f"Circle 3: radius={radius3}, area={area3:.2f}")
+
+print("\n--- WITH a function (much better!) ---\n")
+
+# WITH function - reusable code
+def circle_area(radius):
+    return math.pi * radius ** 2
+
+for r in [5, 10, 7]:
+    print(f"Circle: radius={r}, area={circle_area(r):.2f}")</textarea>
+                    <div class="code-output" id="outputcode2">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 2: Defining and Calling Functions -->
+            <section id="part2" class="section">
+                <div class="section-header">
+                    <div class="section-number">2</div>
+                    <h2>Defining and Calling Functions</h2>
+                </div>
+                
+                <p>In Python, we use the <code>def</code> keyword to define a function. The function body must be indented (typically 4 spaces).</p>
+                
+                <h3>Basic Syntax</h3>
+                <pre>def function_name():
+    """Docstring: describes what the function does"""
+    # Function body (indented)
+    statement1
+    statement2
+    # ...
+
+# Calling the function
+function_name()</pre>
+                
+                <h3>Function Naming Rules</h3>
+                <ul>
+                    <li>Must start with a letter or underscore (_)</li>
+                    <li>Can contain letters, numbers, and underscores</li>
+                    <li>Cannot be a Python keyword (if, for, while, etc.)</li>
+                    <li>Use lowercase with underscores (snake_case) – PEP 8 style</li>
+                    <li>Choose descriptive names that explain what the function does</li>
+                </ul>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Good Names ✓</th>
+                                <th>Bad Names ✗</th>
+                                <th>Why</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>calculate_area</code></td><td><code>ca</code></td><td>Too short, unclear</td></tr>
+                            <tr><td><code>get_user_input</code></td><td><code>getInput</code></td><td>Not snake_case</td></tr>
+                            <tr><td><code>validate_email</code></td><td><code>check</code></td><td>Too generic</td></tr>
+                            <tr><td><code>convert_celsius</code></td><td><code>1convert</code></td><td>Can't start with number</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h4>Simple Functions Without Parameters</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.1: Simple Functions</span>
+                        <button class="code-figure-run" onclick="runCode('code3')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code3"># Define a simple function
+def say_hello():
+    """Print a greeting message"""
+    print("Hello, World!")
+    print("Welcome to Python Functions!")
+
+# Call the function
+say_hello()
+
+print()  # Empty line
+
+# Another simple function
+def print_separator():
+    """Print a visual separator line"""
+    print("=" * 40)
+
+print_separator()
+print("Important Section")
+print_separator()</textarea>
+                    <div class="code-output" id="outputcode3">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Functions Can Be Called Multiple Times</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.2: Calling Multiple Times</span>
+                        <button class="code-figure-run" onclick="runCode('code4')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code4"># Define a countdown function
+def countdown():
+    """Print a countdown from 3"""
+    print("3...")
+    print("2...")
+    print("1...")
+    print("🚀 Go!")
+    print()
+
+# Call it multiple times
+print("Race 1:")
+countdown()
+
+print("Race 2:")
+countdown()
+
+print("Race 3:")
+countdown()</textarea>
+                    <div class="code-output" id="outputcode4">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Order Matters: Define Before Calling</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.3: Definition Order</span>
+                        <button class="code-figure-run" onclick="runCode('code5')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code5"># CORRECT: Define first, then call
+def greet():
+    print("Hello!")
+
+greet()  # This works!
+
+# Functions can call other functions
+def formal_greeting():
+    print("=== Welcome ===")
+    greet()  # Call another function
+    print("================")
+
+formal_greeting()</textarea>
+                    <div class="code-output" id="outputcode5">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="warning-box info-box">
+                    <p>Python reads your code from top to bottom. If you try to call a function before defining it, you'll get a <code>NameError</code>. Always define functions before calling them!</p>
+                </div>
+            </section>
+            
+            <!-- Section 3: Parameters and Arguments -->
+            <section id="part3" class="section">
+                <div class="section-header">
+                    <div class="section-number">3</div>
+                    <h2>Parameters and Arguments</h2>
+                </div>
+                
+                <p>Functions become truly powerful when they can accept input data. <strong>Parameters</strong> are variables listed in the function definition, while <strong>arguments</strong> are the actual values passed when calling the function.</p>
+                
+                <h3>Terminology</h3>
+                <ul>
+                    <li><strong>Parameter</strong>: Variable in the function definition (placeholder)</li>
+                    <li><strong>Argument</strong>: Actual value passed when calling the function</li>
+                </ul>
+                
+                <pre>def greet(name):     # 'name' is a PARAMETER
+    print(f"Hello, {name}!")
+
+greet("Alice")       # "Alice" is an ARGUMENT</pre>
+                
+                <h4>Single Parameter</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.1: Single Parameter</span>
+                        <button class="code-figure-run" onclick="runCode('code6')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code6"># Function with one parameter
+def greet_person(name):
+    """Greet a person by name"""
+    print(f"Hello, {name}! Welcome to the class!")
+
+# Call with different arguments
+greet_person("Alice")
+greet_person("Bob")
+greet_person("Charlie")
+
+# Using a variable as argument
+student_name = "Diana"
+greet_person(student_name)</textarea>
+                    <div class="code-output" id="outputcode6">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Multiple Parameters</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.2: Multiple Parameters</span>
+                        <button class="code-figure-run" onclick="runCode('code7')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code7"># Function with multiple parameters
+def introduce_student(name, age, major):
+    """Introduce a student with their details"""
+    print(f"Name: {name}")
+    print(f"Age: {age}")
+    print(f"Major: {major}")
+    print("-" * 30)
+
+# Call with multiple arguments (order matters!)
+introduce_student("Alice", 20, "Mechatronics")
+introduce_student("Bob", 22, "Computer Science")
+introduce_student("Charlie", 21, "Electrical Engineering")</textarea>
+                    <div class="code-output" id="outputcode7">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Positional vs Keyword Arguments</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.3: Positional vs Keyword</span>
+                        <button class="code-figure-run" onclick="runCode('code8')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code8">def describe_pet(animal, name):
+    """Describe a pet"""
+    print(f"I have a {animal} named {name}.")
+
+# Positional arguments (order matters)
+describe_pet("dog", "Rex")
+describe_pet("cat", "Whiskers")
+
+print()
+
+# Keyword arguments (order doesn't matter)
+describe_pet(name="Buddy", animal="hamster")
+describe_pet(animal="parrot", name="Polly")
+
+print()
+
+# Mixed: positional first, then keyword
+describe_pet("fish", name="Nemo")</textarea>
+                    <div class="code-output" id="outputcode8">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Mathematical Functions with Parameters</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.4: Math Functions</span>
+                        <button class="code-figure-run" onclick="runCode('code9')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code9">import math
+
+# Area of a circle
+def print_circle_area(radius):
+    """Calculate and print circle area"""
+    area = math.pi * radius ** 2
+    print(f"Circle (r={radius}): Area = {area:.4f}")
+
+# Area of a rectangle
+def print_rectangle_area(length, width):
+    """Calculate and print rectangle area"""
+    area = length * width
+    print(f"Rectangle ({length}×{width}): Area = {area}")
+
+# Volume of a cylinder
+def print_cylinder_volume(radius, height):
+    """Calculate and print cylinder volume"""
+    volume = math.pi * radius ** 2 * height
+    print(f"Cylinder (r={radius}, h={height}): Volume = {volume:.4f}")
+
+# Test the functions
+print_circle_area(5)
+print_circle_area(10)
+print()
+print_rectangle_area(4, 6)
+print_rectangle_area(10, 3)
+print()
+print_cylinder_volume(3, 10)
+print_cylinder_volume(5, 8)</textarea>
+                    <div class="code-output" id="outputcode9">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Return Values -->
+            <section id="part4" class="section">
+                <div class="section-header">
+                    <div class="section-number">4</div>
+                    <h2>Return Values</h2>
+                </div>
+                
+                <p>The <code>return</code> statement sends a value back from the function to the caller. This is essential for functions that perform calculations – instead of just printing results, they give back values that can be used elsewhere in your program.</p>
+                
+                <h3>Why Return Values?</h3>
+                <ul>
+                    <li><strong>Store results</strong> – Save the output in a variable</li>
+                    <li><strong>Use in expressions</strong> – Combine with other operations</li>
+                    <li><strong>Chain functions</strong> – Pass output of one function to another</li>
+                    <li><strong>Make decisions</strong> – Use in if statements</li>
+                </ul>
+                
+                <pre>def function_name(parameters):
+    # ... do something ...
+    return value  # Send this value back to the caller
+
+# Capture the returned value
+result = function_name(arguments)</pre>
+                
+                <h4>Functions with Return Values</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.1: Return Basics</span>
+                        <button class="code-figure-run" onclick="runCode('code10')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code10"># Function that RETURNS a value (better!)
+def square(x):
+    """Return the square of x"""
+    return x ** 2
+
+# Capture the result
+result = square(5)
+print(f"5 squared = {result}")
+
+# Use directly in expressions
+print(f"3 squared + 4 squared = {square(3) + square(4)}")
+
+# Use in other operations
+total = square(2) + square(3) + square(4)
+print(f"Sum of squares: {total}")
+
+# Use in comparisons
+if square(7) > 40:
+    print("7 squared is greater than 40")</textarea>
+                    <div class="code-output" id="outputcode10">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>print() vs return</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.2: print vs return</span>
+                        <button class="code-figure-run" onclick="runCode('code11')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code11"># Function that PRINTS (limited use)
+def add_and_print(a, b):
+    print(a + b)
+
+# Function that RETURNS (flexible!)
+def add_and_return(a, b):
+    return a + b
+
+# With print - cannot use the result
+print("Using print function:")
+result1 = add_and_print(3, 4)  # Prints 7
+print(f"Captured value: {result1}")  # None!
+
+print("\nUsing return function:")
+result2 = add_and_return(3, 4)  # Returns 7
+print(f"Captured value: {result2}")  # 7!
+print(f"Can use in math: {result2 * 2}")  # 14!</textarea>
+                    <div class="code-output" id="outputcode11">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Mathematical Functions with Returns</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.3: Math Returns</span>
+                        <button class="code-figure-run" onclick="runCode('code12')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code12">import math
+
+def circle_area(radius):
+    """Return the area of a circle"""
+    return math.pi * radius ** 2
+
+def circle_circumference(radius):
+    """Return the circumference of a circle"""
+    return 2 * math.pi * radius
+
+def rectangle_area(length, width):
+    """Return the area of a rectangle"""
+    return length * width
+
+def triangle_area(base, height):
+    """Return the area of a triangle"""
+    return 0.5 * base * height
+
+# Use the functions
+r = 5
+print(f"Circle (r={r}):")
+print(f"  Area: {circle_area(r):.4f}")
+print(f"  Circumference: {circle_circumference(r):.4f}")
+
+# Chain functions together
+total_area = circle_area(3) + rectangle_area(4, 5) + triangle_area(6, 8)
+print(f"\nTotal area of all shapes: {total_area:.4f}")</textarea>
+                    <div class="code-output" id="outputcode12">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Early Return</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.4: Early Return</span>
+                        <button class="code-figure-run" onclick="runCode('code13')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code13"># Return can exit the function early
+def divide(a, b):
+    """Safely divide a by b"""
+    if b == 0:
+        return "Error: Division by zero!"
+    return a / b
+
+print(divide(10, 2))
+print(divide(15, 3))
+print(divide(8, 0))  # Early return handles this
+
+def get_grade(score):
+    """Return letter grade based on score"""
+    if score >= 90:
+        return "A"
+    if score >= 80:
+        return "B"
+    if score >= 70:
+        return "C"
+    if score >= 60:
+        return "D"
+    return "F"
+
+print(f"\nScore 95: {get_grade(95)}")
+print(f"Score 82: {get_grade(82)}")
+print(f"Score 55: {get_grade(55)}")</textarea>
+                    <div class="code-output" id="outputcode13">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="note-box info-box">
+                    <p><strong>Key Difference:</strong><br>
+                    • <code>print()</code> displays output to the screen – the value is "lost"<br>
+                    • <code>return</code> sends a value back – it can be stored and reused<br>
+                    Use <code>return</code> when you need to use the result later!</p>
+                </div>
+            </section>
+            
+            <!-- Section 5: Multiple Return Values -->
+            <section id="part5" class="section">
+                <div class="section-header">
+                    <div class="section-number">5</div>
+                    <h2>Multiple Return Values</h2>
+                </div>
+                
+                <p>Python functions can return multiple values at once using tuples. This is extremely useful when a calculation produces several related results.</p>
+                
+                <h4>Returning Multiple Values</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.1: Multiple Returns</span>
+                        <button class="code-figure-run" onclick="runCode('code14')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code14"># Return multiple values (as a tuple)
+def get_min_max(numbers):
+    """Return both minimum and maximum of a list"""
+    return min(numbers), max(numbers)
+
+values = [23, 45, 12, 67, 34, 89, 8]
+
+# Method 1: Capture as tuple
+result = get_min_max(values)
+print(f"Result tuple: {result}")
+print(f"Min: {result[0]}, Max: {result[1]}")
+
+# Method 2: Tuple unpacking (preferred!)
+minimum, maximum = get_min_max(values)
+print(f"\nMin: {minimum}, Max: {maximum}")</textarea>
+                    <div class="code-output" id="outputcode14">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Statistics Calculator</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.2: Statistics Function</span>
+                        <button class="code-figure-run" onclick="runCode('code15')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code15">def calculate_statistics(numbers):
+    """Return count, sum, min, max, and average"""
+    count = len(numbers)
+    total = sum(numbers)
+    minimum = min(numbers)
+    maximum = max(numbers)
+    average = total / count
+    return count, total, minimum, maximum, average
+
+data = [15, 22, 8, 45, 33, 19, 27, 41]
+
+# Unpack all values
+count, total, min_val, max_val, avg = calculate_statistics(data)
+
+print("📊 Statistics Report")
+print("=" * 30)
+print(f"Count:   {count}")
+print(f"Sum:     {total}")
+print(f"Minimum: {min_val}")
+print(f"Maximum: {max_val}")
+print(f"Average: {avg:.2f}")</textarea>
+                    <div class="code-output" id="outputcode15">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Coordinate Calculations</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.3: Coordinate Functions</span>
+                        <button class="code-figure-run" onclick="runCode('code16')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code16">import math
+
+def polar_to_cartesian(r, theta_degrees):
+    """Convert polar coordinates to cartesian (x, y)"""
+    theta = math.radians(theta_degrees)
+    x = r * math.cos(theta)
+    y = r * math.sin(theta)
+    return x, y
+
+def cartesian_to_polar(x, y):
+    """Convert cartesian to polar (r, theta in degrees)"""
+    r = math.sqrt(x**2 + y**2)
+    theta = math.degrees(math.atan2(y, x))
+    return r, theta
+
+# Convert polar to cartesian
+r, angle = 5, 45
+x, y = polar_to_cartesian(r, angle)
+print(f"Polar ({r}, {angle}°) → Cartesian ({x:.3f}, {y:.3f})")
+
+# Convert back
+r_back, angle_back = cartesian_to_polar(x, y)
+print(f"Cartesian ({x:.3f}, {y:.3f}) → Polar ({r_back:.3f}, {angle_back:.1f}°)")</textarea>
+                    <div class="code-output" id="outputcode16">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Returning a Dictionary (Named Results)</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.4: Return Dictionary</span>
+                        <button class="code-figure-run" onclick="runCode('code17')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code17">def analyze_text(text):
+    """Analyze text and return statistics as dictionary"""
+    words = text.split()
+    return {
+        'characters': len(text),
+        'words': len(words),
+        'sentences': text.count('.') + text.count('!') + text.count('?'),
+        'avg_word_length': sum(len(w) for w in words) / len(words) if words else 0
+    }
+
+sample = "Hello world! This is Python. Programming is fun."
+stats = analyze_text(sample)
+
+print("📝 Text Analysis")
+print(f"Text: {sample}")
+print(f"Characters: {stats['characters']}")
+print(f"Words: {stats['words']}")
+print(f"Sentences: {stats['sentences']}")
+print(f"Avg word length: {stats['avg_word_length']:.2f}")</textarea>
+                    <div class="code-output" id="outputcode17">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 6: Default Arguments -->
+            <section id="part6" class="section">
+                <div class="section-header">
+                    <div class="section-number">6</div>
+                    <h2>Default Arguments</h2>
+                </div>
+                
+                <p>Default arguments provide fallback values for parameters. If the caller doesn't supply an argument, the default value is used. This makes functions more flexible and easier to use.</p>
+                
+                <h3>Syntax</h3>
+                <pre>def function_name(param1, param2=default_value):
+    # param1 is required
+    # param2 is optional (uses default if not provided)</pre>
+                
+                <h4>Basic Default Arguments</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.1: Default Arguments</span>
+                        <button class="code-figure-run" onclick="runCode('code18')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code18">def greet(name, greeting="Hello"):
+    """Greet someone with optional custom greeting"""
+    print(f"{greeting}, {name}!")
+
+# Using default greeting
+greet("Alice")
+greet("Bob")
+
+# Overriding the default
+greet("Charlie", "Hi")
+greet("Diana", "Good morning")
+
+# Using keyword argument
+greet(greeting="Howdy", name="Eve")</textarea>
+                    <div class="code-output" id="outputcode18">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Multiple Default Arguments</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.2: Multiple Defaults</span>
+                        <button class="code-figure-run" onclick="runCode('code19')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code19">def create_profile(name, age=18, city="Unknown", occupation="Student"):
+    """Create a user profile with default values"""
+    print(f"Name: {name}")
+    print(f"Age: {age}")
+    print(f"City: {city}")
+    print(f"Occupation: {occupation}")
+    print("-" * 30)
+
+# Only required argument
+create_profile("Alice")
+
+# Some optional arguments
+create_profile("Bob", 25)
+create_profile("Charlie", 30, "Istanbul")
+create_profile("Diana", 22, "Ankara", "Engineer")</textarea>
+                    <div class="code-output" id="outputcode19">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Power Function with Default</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.3: Power Function</span>
+                        <button class="code-figure-run" onclick="runCode('code20')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code20">def power(base, exponent=2):
+    """Calculate base raised to exponent (default: square)"""
+    return base ** exponent
+
+# Default exponent (squaring)
+print(f"5² = {power(5)}")
+print(f"3² = {power(3)}")
+
+# Custom exponent
+print(f"2³ = {power(2, 3)}")
+print(f"10⁴ = {power(10, 4)}")
+
+# Roots using fractional exponents
+print(f"√16 = {power(16, 0.5)}")
+print(f"∛27 = {power(27, 1/3)}")</textarea>
+                    <div class="code-output" id="outputcode20">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="warning-box info-box">
+                    <p><strong>Important Rule:</strong> Default arguments must come AFTER non-default arguments in the parameter list. This is invalid: <code>def func(a=1, b)</code></p>
+                </div>
+                
+                <h4>Practical Example: File Logger</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.4: Logger Function</span>
+                        <button class="code-figure-run" onclick="runCode('code21')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code21">from datetime import datetime
+
+def log_message(message, level="INFO", show_time=True):
+    """Log a message with optional level and timestamp"""
+    prefix = ""
+    if show_time:
+        prefix = f"[{datetime.now().strftime('%H:%M:%S')}] "
+    print(f"{prefix}{level}: {message}")
+
+# Various logging calls
+log_message("Application started")
+log_message("User logged in", "DEBUG")
+log_message("Connection failed", "ERROR")
+log_message("Quick note", show_time=False)
+log_message("Critical error!", "CRITICAL", True)</textarea>
+                    <div class="code-output" id="outputcode21">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 7: Variable Scope -->
+            <section id="part7" class="section">
+                <div class="section-header">
+                    <div class="section-number">7</div>
+                    <h2>Variable Scope</h2>
+                </div>
+                
+                <p><strong>Scope</strong> determines where a variable can be accessed in your code. Understanding scope is crucial for writing correct and maintainable functions.</p>
+                
+                <h3>Types of Scope</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Scope</th>
+                                <th>Where Defined</th>
+                                <th>Where Accessible</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Local</strong></td><td>Inside a function</td><td>Only within that function</td></tr>
+                            <tr><td><strong>Global</strong></td><td>Outside all functions</td><td>Everywhere in the module</td></tr>
+                            <tr><td><strong>Enclosing</strong></td><td>In an outer function</td><td>Inner (nested) functions</td></tr>
+                            <tr><td><strong>Built-in</strong></td><td>Python itself</td><td>Everywhere</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h4>Local Variables</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.1: Local Scope</span>
+                        <button class="code-figure-run" onclick="runCode('code22')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code22"># Local variables exist only inside the function
+def calculate():
+    x = 10  # Local variable
+    y = 20  # Local variable
+    result = x + y
+    print(f"Inside function: x={x}, y={y}, result={result}")
+    return result
+
+answer = calculate()
+print(f"Returned value: {answer}")
+
+# This would cause an error:
+# print(x)  # NameError: x is not defined outside the function</textarea>
+                    <div class="code-output" id="outputcode22">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Global Variables</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.2: Global Scope</span>
+                        <button class="code-figure-run" onclick="runCode('code23')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code23"># Global variable
+PI = 3.14159
+GRAVITY = 9.81
+
+def calculate_circle_area(radius):
+    """Uses global PI constant"""
+    return PI * radius ** 2
+
+def calculate_fall_time(height):
+    """Uses global GRAVITY constant"""
+    import math
+    return math.sqrt(2 * height / GRAVITY)
+
+print(f"Circle area (r=5): {calculate_circle_area(5):.4f}")
+print(f"Fall time from 100m: {calculate_fall_time(100):.2f} seconds")</textarea>
+                    <div class="code-output" id="outputcode23">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Local vs Global with Same Name</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.3: Name Shadowing</span>
+                        <button class="code-figure-run" onclick="runCode('code24')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code24">x = 100  # Global variable
+
+def demo_scope():
+    x = 50  # Local variable (shadows the global)
+    print(f"Inside function: x = {x}")
+
+print(f"Before function: x = {x}")
+demo_scope()
+print(f"After function: x = {x}")  # Global unchanged!</textarea>
+                    <div class="code-output" id="outputcode24">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>The global Keyword</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.4: global Keyword</span>
+                        <button class="code-figure-run" onclick="runCode('code25')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code25">counter = 0  # Global variable
+
+def increment():
+    global counter  # Declare we want to modify the global
+    counter += 1
+    print(f"Counter inside function: {counter}")
+
+print(f"Initial counter: {counter}")
+increment()
+increment()
+increment()
+print(f"Final counter: {counter}")</textarea>
+                    <div class="code-output" id="outputcode25">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="tip-box info-box">
+                    <p><strong>Best Practice:</strong> Avoid modifying global variables inside functions. Instead, pass values as arguments and return results. This makes your code more predictable and easier to test.</p>
+                </div>
+            </section>
+
+            <!-- Section 8: Docstrings -->
+            <section id="part8" class="section">
+                <div class="section-header">
+                    <div class="section-number">8</div>
+                    <h2>Docstrings and Documentation</h2>
+                </div>
+                
+                <p>A <strong>docstring</strong> (documentation string) is a string literal that appears as the first statement in a function. It describes what the function does, its parameters, and return values. Good documentation is essential for professional code.</p>
+                
+                <h3>Why Docstrings Matter</h3>
+                <ul>
+                    <li>Helps others (and future you) understand your code</li>
+                    <li>Accessible via <code>help()</code> function</li>
+                    <li>Used by IDE's for code completion hints</li>
+                    <li>Can be extracted to generate documentation</li>
+                </ul>
+                
+                <h4>Simple Docstrings</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 8.1: Simple Docstrings</span>
+                        <button class="code-figure-run" onclick="runCode('code26')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code26">def square(x):
+    """Return the square of x."""
+    return x ** 2
+
+def greet(name):
+    """Display a greeting message to the user."""
+    print(f"Hello, {name}!")
+
+# Access docstrings
+print("square docstring:", square.__doc__)
+print("greet docstring:", greet.__doc__)
+
+# Use help() to see documentation
+print("\n--- Help for square ---")
+help(square)</textarea>
+                    <div class="code-output" id="outputcode26">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Google-Style Docstrings</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 8.2: Google Style</span>
+                        <button class="code-figure-run" onclick="runCode('code27')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code27">def calculate_bmi(weight, height):
+    """
+    Calculate Body Mass Index (BMI).
+    
+    Args:
+        weight: Weight in kilograms
+        height: Height in meters
+    
+    Returns:
+        The BMI value as a float
+    
+    Example:
+        >>> calculate_bmi(70, 1.75)
+        22.86
+    """
+    return weight / (height ** 2)
+
+# Test the function
+bmi = calculate_bmi(70, 1.75)
+print(f"BMI: {bmi:.2f}")
+
+# View documentation
+help(calculate_bmi)</textarea>
+                    <div class="code-output" id="outputcode27">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>NumPy-Style Docstrings</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 8.3: NumPy Style</span>
+                        <button class="code-figure-run" onclick="runCode('code28')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code28">import math
+
+def quadratic_roots(a, b, c):
+    """
+    Calculate roots of a quadratic equation ax² + bx + c = 0.
+    
+    Parameters
+    ----------
+    a : float
+        Coefficient of x²
+    b : float
+        Coefficient of x
+    c : float
+        Constant term
+    
+    Returns
+    -------
+    tuple
+        Two roots (x1, x2) or None if no real roots
+    
+    Examples
+    --------
+    >>> quadratic_roots(1, -5, 6)
+    (3.0, 2.0)
+    """
+    discriminant = b**2 - 4*a*c
+    
+    if discriminant < 0:
+        return None
+    
+    x1 = (-b + math.sqrt(discriminant)) / (2*a)
+    x2 = (-b - math.sqrt(discriminant)) / (2*a)
+    return x1, x2
+
+# Test: x² - 5x + 6 = 0 → (x-3)(x-2) = 0
+roots = quadratic_roots(1, -5, 6)
+print(f"Roots: {roots}")
+
+# Another test: x² + 2x + 1 = 0 → (x+1)² = 0
+roots2 = quadratic_roots(1, 2, 1)
+print(f"Roots: {roots2}")</textarea>
+                    <div class="code-output" id="outputcode28">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 9: *args and **kwargs -->
+            <section id="part9" class="section">
+                <div class="section-header">
+                    <div class="section-number">9</div>
+                    <h2>*args and **kwargs</h2>
+                </div>
+                
+                <p>Sometimes you don't know in advance how many arguments a function will receive. Python provides two special syntaxes for handling this:</p>
+                
+                <ul>
+                    <li><code>*args</code> – Collect any number of positional arguments into a tuple</li>
+                    <li><code>**kwargs</code> – Collect any number of keyword arguments into a dictionary</li>
+                </ul>
+                
+                <h4>Using *args (Variable Positional Arguments)</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.1: *args Basics</span>
+                        <button class="code-figure-run" onclick="runCode('code29')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code29">def sum_all(*args):
+    """Sum any number of arguments"""
+    print(f"Received: {args}")
+    print(f"Type: {type(args)}")
+    return sum(args)
+
+# Call with different numbers of arguments
+print(sum_all(1, 2))
+print(sum_all(1, 2, 3, 4, 5))
+print(sum_all(10, 20, 30, 40, 50, 60, 70, 80, 90, 100))</textarea>
+                    <div class="code-output" id="outputcode29">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>*args with Regular Parameters</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.2: Mixed Parameters</span>
+                        <button class="code-figure-run" onclick="runCode('code30')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code30">def make_sentence(subject, verb, *objects):
+    """Create a sentence with subject, verb, and any objects"""
+    if objects:
+        objects_str = ", ".join(objects)
+        return f"{subject} {verb} {objects_str}."
+    return f"{subject} {verb}."
+
+print(make_sentence("The cat", "sleeps"))
+print(make_sentence("Alice", "eats", "pizza"))
+print(make_sentence("Bob", "bought", "apples", "oranges", "bananas"))</textarea>
+                    <div class="code-output" id="outputcode30">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Using **kwargs (Variable Keyword Arguments)</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.3: **kwargs Basics</span>
+                        <button class="code-figure-run" onclick="runCode('code31')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code31">def print_info(**kwargs):
+    """Print key-value pairs"""
+    print(f"Received: {kwargs}")
+    print(f"Type: {type(kwargs)}")
+    for key, value in kwargs.items():
+        print(f"  {key}: {value}")
+
+print_info(name="Alice", age=25, city="Istanbul")
+print()
+print_info(course="Python", week=4, topic="Functions")</textarea>
+                    <div class="code-output" id="outputcode31">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Combining *args and **kwargs</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.4: Combined</span>
+                        <button class="code-figure-run" onclick="runCode('code32')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code32">def flexible_function(required, *args, **kwargs):
+    """Demonstrate all parameter types"""
+    print(f"Required: {required}")
+    print(f"Extra positional (*args): {args}")
+    print(f"Keyword (**kwargs): {kwargs}")
+    print()
+
+flexible_function("First")
+flexible_function("First", "Second", "Third")
+flexible_function("First", x=10, y=20)
+flexible_function("First", "Second", name="Alice", score=95)</textarea>
+                    <div class="code-output" id="outputcode32">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Practical Example: Build HTML Tags</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.5: HTML Builder</span>
+                        <button class="code-figure-run" onclick="runCode('code33')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code33">def create_tag(tag_name, content="", **attributes):
+    """Create an HTML tag with optional attributes"""
+    attrs = ""
+    for key, value in attributes.items():
+        # Handle class_ since 'class' is a Python keyword
+        if key == "class_":
+            key = "class"
+        attrs += f' {key}="{value}"'
+    
+    if content:
+        return f"<{tag_name}{attrs}>{content}</{tag_name}>"
+    return f"<{tag_name}{attrs} />"
+
+# Create various HTML tags
+print(create_tag("p", "Hello World"))
+print(create_tag("a", "Click here", href="https://example.com"))
+print(create_tag("img", src="photo.jpg", alt="A photo"))
+print(create_tag("div", "Content", class_="container", id="main"))</textarea>
+                    <div class="code-output" id="outputcode33">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 10: Lambda Functions -->
+            <section id="part10" class="section">
+                <div class="section-header">
+                    <div class="section-number">10</div>
+                    <h2>Lambda Functions</h2>
+                </div>
+                
+                <p>A <strong>lambda function</strong> is a small anonymous function defined with the <code>lambda</code> keyword. They're useful for short, simple operations, especially when passing functions as arguments.</p>
+                
+                <h3>Syntax</h3>
+                <pre>lambda arguments: expression
+
+# Equivalent to:
+def function(arguments):
+    return expression</pre>
+                
+                <h4>Basic Lambda Functions</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 10.1: Lambda Basics</span>
+                        <button class="code-figure-run" onclick="runCode('code34')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code34"># Regular function
+def square_regular(x):
+    return x ** 2
+
+# Equivalent lambda
+square_lambda = lambda x: x ** 2
+
+print(f"Regular: {square_regular(5)}")
+print(f"Lambda: {square_lambda(5)}")
+
+# More lambda examples
+add = lambda a, b: a + b
+multiply = lambda a, b: a * b
+is_even = lambda n: n % 2 == 0
+
+print(f"\nadd(3, 4) = {add(3, 4)}")
+print(f"multiply(5, 6) = {multiply(5, 6)}")
+print(f"is_even(7) = {is_even(7)}")
+print(f"is_even(8) = {is_even(8)}")</textarea>
+                    <div class="code-output" id="outputcode34">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Lambda with sorted()</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 10.2: Lambda with sorted</span>
+                        <button class="code-figure-run" onclick="runCode('code35')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code35"># Sort list of tuples by second element
+students = [("Alice", 85), ("Bob", 92), ("Charlie", 78), ("Diana", 88)]
+
+# Sort by score (second element)
+by_score = sorted(students, key=lambda x: x[1])
+print("By score (ascending):")
+for s in by_score:
+    print(f"  {s[0]}: {s[1]}")
+
+# Sort by score descending
+by_score_desc = sorted(students, key=lambda x: x[1], reverse=True)
+print("\nBy score (descending):")
+for s in by_score_desc:
+    print(f"  {s[0]}: {s[1]}")</textarea>
+                    <div class="code-output" id="outputcode35">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Lambda with map()</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 10.3: Lambda with map</span>
+                        <button class="code-figure-run" onclick="runCode('code36')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code36"># map() applies a function to every item
+numbers = [1, 2, 3, 4, 5]
+
+# Square each number
+squares = list(map(lambda x: x**2, numbers))
+print(f"Squares: {squares}")
+
+# Double each number
+doubles = list(map(lambda x: x*2, numbers))
+print(f"Doubles: {doubles}")
+
+# Convert to strings
+strings = list(map(lambda x: f"num_{x}", numbers))
+print(f"Strings: {strings}")
+
+# Celsius to Fahrenheit
+celsius = [0, 10, 20, 30, 40]
+fahrenheit = list(map(lambda c: c * 9/5 + 32, celsius))
+print(f"Celsius: {celsius}")
+print(f"Fahrenheit: {fahrenheit}")</textarea>
+                    <div class="code-output" id="outputcode36">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Lambda with filter()</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 10.4: Lambda with filter</span>
+                        <button class="code-figure-run" onclick="runCode('code37')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code37"># filter() keeps items that match a condition
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+# Keep only even numbers
+evens = list(filter(lambda x: x % 2 == 0, numbers))
+print(f"Evens: {evens}")
+
+# Keep numbers > 5
+greater_than_5 = list(filter(lambda x: x > 5, numbers))
+print(f"Greater than 5: {greater_than_5}")
+
+# Filter strings by length
+words = ["apple", "cat", "elephant", "dog", "butterfly"]
+long_words = list(filter(lambda w: len(w) > 4, words))
+print(f"Long words: {long_words}")</textarea>
+                    <div class="code-output" id="outputcode37">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 11: Recursion -->
+            <section id="part11" class="section">
+                <div class="section-header">
+                    <div class="section-number">11</div>
+                    <h2>Recursion</h2>
+                </div>
+                
+                <p><strong>Recursion</strong> is when a function calls itself. It's a powerful technique for solving problems that can be broken down into smaller, similar sub-problems. Every recursive function needs:</p>
+                
+                <ul>
+                    <li><strong>Base case</strong> – The condition that stops the recursion</li>
+                    <li><strong>Recursive case</strong> – The function calling itself with a simpler input</li>
+                </ul>
+                
+                <h4>Factorial Example</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 11.1: Factorial</span>
+                        <button class="code-figure-run" onclick="runCode('code38')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code38"># n! = n × (n-1) × (n-2) × ... × 1
+# 5! = 5 × 4 × 3 × 2 × 1 = 120
+
+def factorial(n):
+    """Calculate factorial recursively"""
+    # Base case
+    if n <= 1:
+        return 1
+    # Recursive case
+    return n * factorial(n - 1)
+
+# Test
+for i in range(8):
+    print(f"{i}! = {factorial(i)}")
+
+# How it works for factorial(4):
+# factorial(4) = 4 × factorial(3)
+#              = 4 × 3 × factorial(2)
+#              = 4 × 3 × 2 × factorial(1)
+#              = 4 × 3 × 2 × 1
+#              = 24</textarea>
+                    <div class="code-output" id="outputcode38">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Fibonacci Sequence</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 11.2: Fibonacci</span>
+                        <button class="code-figure-run" onclick="runCode('code39')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code39"># Fibonacci: 0, 1, 1, 2, 3, 5, 8, 13, 21, ...
+# Each number is the sum of the two preceding ones
+
+def fibonacci(n):
+    """Return the nth Fibonacci number"""
+    # Base cases
+    if n <= 0:
+        return 0
+    if n == 1:
+        return 1
+    # Recursive case
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# Print first 12 Fibonacci numbers
+print("Fibonacci sequence:")
+for i in range(12):
+    print(f"F({i}) = {fibonacci(i)}")</textarea>
+                    <div class="code-output" id="outputcode39">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Sum of List (Recursive)</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 11.3: Recursive Sum</span>
+                        <button class="code-figure-run" onclick="runCode('code40')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code40">def recursive_sum(numbers):
+    """Sum a list recursively"""
+    # Base case: empty list
+    if len(numbers) == 0:
+        return 0
+    # Recursive case: first element + sum of rest
+    return numbers[0] + recursive_sum(numbers[1:])
+
+# Test
+data = [1, 2, 3, 4, 5]
+print(f"Sum of {data} = {recursive_sum(data)}")
+
+# How it works:
+# recursive_sum([1,2,3,4,5]) = 1 + recursive_sum([2,3,4,5])
+#                            = 1 + 2 + recursive_sum([3,4,5])
+#                            = 1 + 2 + 3 + recursive_sum([4,5])
+#                            = 1 + 2 + 3 + 4 + recursive_sum([5])
+#                            = 1 + 2 + 3 + 4 + 5 + recursive_sum([])
+#                            = 1 + 2 + 3 + 4 + 5 + 0 = 15</textarea>
+                    <div class="code-output" id="outputcode40">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="warning-box info-box">
+                    <p><strong>Recursion Limits:</strong> Python has a default recursion limit (usually 1000). Deep recursion can cause a <code>RecursionError</code>. For very large inputs, consider using iteration instead.</p>
+                </div>
+            </section>
+            
+            <!-- Section 12: Higher-Order Functions -->
+            <section id="part12" class="section">
+                <div class="section-header">
+                    <div class="section-number">12</div>
+                    <h2>Higher-Order Functions</h2>
+                </div>
+                
+                <p>A <strong>higher-order function</strong> is a function that either takes other functions as arguments or returns a function as its result. This is a powerful concept from functional programming.</p>
+                
+                <h4>Functions as Arguments</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 12.1: Function as Argument</span>
+                        <button class="code-figure-run" onclick="runCode('code41')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code41">def apply_operation(numbers, operation):
+    """Apply an operation to each number in the list"""
+    return [operation(x) for x in numbers]
+
+# Define operations
+def square(x):
+    return x ** 2
+
+def double(x):
+    return x * 2
+
+def negate(x):
+    return -x
+
+# Apply different operations
+nums = [1, 2, 3, 4, 5]
+print(f"Original: {nums}")
+print(f"Squared: {apply_operation(nums, square)}")
+print(f"Doubled: {apply_operation(nums, double)}")
+print(f"Negated: {apply_operation(nums, negate)}")</textarea>
+                    <div class="code-output" id="outputcode41">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Built-in Higher-Order Functions</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 12.2: map, filter, reduce</span>
+                        <button class="code-figure-run" onclick="runCode('code42')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code42">from functools import reduce
+
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+# map: transform each element
+squares = list(map(lambda x: x**2, numbers))
+print(f"Squares: {squares}")
+
+# filter: keep elements matching condition
+evens = list(filter(lambda x: x % 2 == 0, numbers))
+print(f"Evens: {evens}")
+
+# reduce: combine all elements into one value
+total = reduce(lambda acc, x: acc + x, numbers)
+print(f"Sum: {total}")
+
+product = reduce(lambda acc, x: acc * x, numbers)
+print(f"Product: {product}")
+
+maximum = reduce(lambda a, b: a if a > b else b, numbers)
+print(f"Maximum: {maximum}")</textarea>
+                    <div class="code-output" id="outputcode42">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Functions Returning Functions</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 12.3: Function Factory</span>
+                        <button class="code-figure-run" onclick="runCode('code43')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code43">def create_multiplier(factor):
+    """Return a function that multiplies by factor"""
+    def multiplier(x):
+        return x * factor
+    return multiplier
+
+# Create specialized multiplier functions
+double = create_multiplier(2)
+triple = create_multiplier(3)
+times_ten = create_multiplier(10)
+
+print(f"double(5) = {double(5)}")
+print(f"triple(5) = {triple(5)}")
+print(f"times_ten(5) = {times_ten(5)}")
+
+# Practical use
+numbers = [1, 2, 3, 4, 5]
+doubled = list(map(double, numbers))
+tripled = list(map(triple, numbers))
+print(f"\nOriginal: {numbers}")
+print(f"Doubled: {doubled}")
+print(f"Tripled: {tripled}")</textarea>
+                    <div class="code-output" id="outputcode43">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 13: Engineering Applications -->
+            <section id="part13" class="section">
+                <div class="section-header">
+                    <div class="section-number">13</div>
+                    <h2>Engineering Applications</h2>
+                </div>
+                
+                <p>Functions are essential in engineering for organizing calculations, simulations, and data processing. Here are practical examples from various engineering domains.</p>
+                
+                <h4>Physics: Projectile Motion</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 13.1: Projectile Motion</span>
+                        <button class="code-figure-run" onclick="runCode('code44')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code44">import math
+
+def projectile_position(v0, angle_deg, t, g=9.81):
+    """
+    Calculate projectile position at time t.
+    
+    Args:
+        v0: Initial velocity (m/s)
+        angle_deg: Launch angle (degrees)
+        t: Time (seconds)
+        g: Gravitational acceleration (m/s²)
+    
+    Returns:
+        Tuple of (x, y) position in meters
+    """
+    angle = math.radians(angle_deg)
+    x = v0 * math.cos(angle) * t
+    y = v0 * math.sin(angle) * t - 0.5 * g * t**2
+    return x, y
+
+def time_of_flight(v0, angle_deg, g=9.81):
+    """Calculate total time of flight"""
+    angle = math.radians(angle_deg)
+    return 2 * v0 * math.sin(angle) / g
+
+def max_range(v0, angle_deg, g=9.81):
+    """Calculate maximum horizontal range"""
+    t_total = time_of_flight(v0, angle_deg, g)
+    x, _ = projectile_position(v0, angle_deg, t_total, g)
+    return x
+
+# Example: Launch at 50 m/s, 45 degrees
+v0, angle = 50, 45
+t_flight = time_of_flight(v0, angle)
+range_m = max_range(v0, angle)
+
+print(f"🎯 Projectile Analysis")
+print(f"Initial velocity: {v0} m/s")
+print(f"Launch angle: {angle}°")
+print(f"Time of flight: {t_flight:.2f} s")
+print(f"Maximum range: {range_m:.2f} m")
+
+print("\nTrajectory:")
+for t in [0, 1, 2, 3, 4, 5]:
+    x, y = projectile_position(v0, angle, t)
+    if y >= 0:
+        print(f"  t={t}s: x={x:.1f}m, y={y:.1f}m")</textarea>
+                    <div class="code-output" id="outputcode44">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Electrical: Ohm's Law Calculator</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 13.2: Ohm's Law</span>
+                        <button class="code-figure-run" onclick="runCode('code45')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code45">def calculate_voltage(current, resistance):
+    """V = I × R"""
+    return current * resistance
+
+def calculate_current(voltage, resistance):
+    """I = V / R"""
+    return voltage / resistance
+
+def calculate_resistance(voltage, current):
+    """R = V / I"""
+    return voltage / current
+
+def calculate_power(voltage=None, current=None, resistance=None):
+    """
+    Calculate power using available values.
+    P = V × I = I² × R = V² / R
+    """
+    if voltage and current:
+        return voltage * current
+    elif current and resistance:
+        return current**2 * resistance
+    elif voltage and resistance:
+        return voltage**2 / resistance
+    return None
+
+# Circuit analysis
+print("⚡ Circuit Analysis")
+print("=" * 30)
+
+# Given: 12V battery, 4Ω resistor
+V = 12
+R = 4
+I = calculate_current(V, R)
+P = calculate_power(voltage=V, current=I)
+
+print(f"Voltage: {V} V")
+print(f"Resistance: {R} Ω")
+print(f"Current: {I} A")
+print(f"Power: {P} W")
+
+# Verify with different power formulas
+print(f"\nPower verification:")
+print(f"  P = V×I = {calculate_power(voltage=V, current=I)} W")
+print(f"  P = I²×R = {calculate_power(current=I, resistance=R)} W")
+print(f"  P = V²/R = {calculate_power(voltage=V, resistance=R)} W")</textarea>
+                    <div class="code-output" id="outputcode45">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Signal Processing: Moving Average</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 13.3: Moving Average</span>
+                        <button class="code-figure-run" onclick="runCode('code46')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code46">def moving_average(data, window_size):
+    """
+    Calculate moving average of data.
+    
+    Args:
+        data: List of numeric values
+        window_size: Number of values to average
+    
+    Returns:
+        List of smoothed values
+    """
+    if window_size > len(data):
+        return []
+    
+    result = []
+    for i in range(len(data) - window_size + 1):
+        window = data[i:i + window_size]
+        avg = sum(window) / window_size
+        result.append(round(avg, 2))
+    return result
+
+# Simulated noisy sensor data
+sensor_data = [23, 25, 24, 28, 26, 22, 27, 29, 25, 24, 26, 28]
+
+print("📊 Signal Smoothing")
+print(f"Raw data: {sensor_data}")
+print(f"MA(3): {moving_average(sensor_data, 3)}")
+print(f"MA(5): {moving_average(sensor_data, 5)}")</textarea>
+                    <div class="code-output" id="outputcode46">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Unit Conversions Library</h4>
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 13.4: Unit Conversions</span>
+                        <button class="code-figure-run" onclick="runCode('code47')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code47"># Temperature conversions
+def celsius_to_fahrenheit(c):
+    return c * 9/5 + 32
+
+def fahrenheit_to_celsius(f):
+    return (f - 32) * 5/9
+
+def celsius_to_kelvin(c):
+    return c + 273.15
+
+# Length conversions
+def meters_to_feet(m):
+    return m * 3.28084
+
+def feet_to_meters(ft):
+    return ft / 3.28084
+
+def km_to_miles(km):
+    return km * 0.621371
+
+# Pressure conversions
+def psi_to_pascal(psi):
+    return psi * 6894.76
+
+def bar_to_psi(bar):
+    return bar * 14.5038
+
+# Demo
+print("🔄 Unit Conversions")
+print("=" * 30)
+print(f"25°C = {celsius_to_fahrenheit(25):.1f}°F")
+print(f"100°F = {fahrenheit_to_celsius(100):.1f}°C")
+print(f"0°C = {celsius_to_kelvin(0):.2f}K")
+print(f"\n10 meters = {meters_to_feet(10):.2f} feet")
+print(f"100 km = {km_to_miles(100):.2f} miles")
+print(f"\n14.7 psi = {psi_to_pascal(14.7):.0f} Pa")
+print(f"1 bar = {bar_to_psi(1):.2f} psi")</textarea>
+                    <div class="code-output" id="outputcode47">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Summary Box -->
+            <div class="summary-box">
+                <h3>📋 Week 4 Summary</h3>
+                <div class="summary-grid">
+                    <div class="summary-item"><span class="icon">📦</span><span><code>def function_name():</code></span></div>
+                    <div class="summary-item"><span class="icon">📥</span><span>Parameters & Arguments</span></div>
+                    <div class="summary-item"><span class="icon">📤</span><span><code>return value</code></span></div>
+                    <div class="summary-item"><span class="icon">⚙️</span><span>Default Arguments</span></div>
+                    <div class="summary-item"><span class="icon">🔒</span><span>Local vs Global Scope</span></div>
+                    <div class="summary-item"><span class="icon">📝</span><span>Docstrings</span></div>
+                    <div class="summary-item"><span class="icon">📦</span><span><code>*args, **kwargs</code></span></div>
+                    <div class="summary-item"><span class="icon">λ</span><span>Lambda Functions</span></div>
+                    <div class="summary-item"><span class="icon">🔄</span><span>Recursion</span></div>
+                    <div class="summary-item"><span class="icon">⬆️</span><span>Higher-Order Functions</span></div>
+                </div>
+            </div>
+            
+            <!-- Exercises Section -->
+            <section id="exercises" class="section">
+                <div class="section-header">
+                    <div class="section-number">📝</div>
+                    <h2>Practice Exercises</h2>
+                </div>
+                
+                <p>Complete these 15 exercises to master functions in Python.</p>
+                
+                <!-- Exercise 1 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">1</span>Simple Greeting</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a function <code>greet(name)</code> that prints "Hello, {name}!"</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Hello, Alice!
+Hello, Bob!</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex1"># Define the greet function
+
+# Test it
+greet("Alice")
+greet("Bob")</textarea>
+                            <div class="code-output" id="outputex1">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 2 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">2</span>Square Function</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a function <code>square(x)</code> that returns x squared.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>25
+100</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex2"># Define the square function
+
+# Test it
+print(square(5))
+print(square(10))</textarea>
+                            <div class="code-output" id="outputex2">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 3 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">3</span>Rectangle Area</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a function <code>rectangle_area(length, width)</code> that returns the area.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Area: 24
+Area: 35</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex3"># Define the rectangle_area function
+
+# Test it
+print(f"Area: {rectangle_area(4, 6)}")
+print(f"Area: {rectangle_area(5, 7)}")</textarea>
+                            <div class="code-output" id="outputex3">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 4 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">4</span>Max of Three</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a function <code>max_of_three(a, b, c)</code> that returns the largest value (without using max()).</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Max: 15
+Max: 8</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex4"># Define the max_of_three function
+
+# Test it
+print(f"Max: {max_of_three(5, 15, 10)}")
+print(f"Max: {max_of_three(8, 3, 6)}")</textarea>
+                            <div class="code-output" id="outputex4">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 5 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">5</span>Temperature Converter</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create two functions: <code>c_to_f(celsius)</code> and <code>f_to_c(fahrenheit)</code>.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>0°C = 32.0°F
+100°C = 212.0°F
+98.6°F = 37.0°C</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex5"># Define both conversion functions
+
+# Test them
+print(f"0°C = {c_to_f(0)}°F")
+print(f"100°C = {c_to_f(100)}°F")
+print(f"98.6°F = {f_to_c(98.6)}°C")</textarea>
+                            <div class="code-output" id="outputex5">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 6 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">6</span>Is Even</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a function <code>is_even(n)</code> that returns True if n is even, False otherwise.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>is_even(4): True
+is_even(7): False</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex6"># Define the is_even function
+
+# Test it
+print(f"is_even(4): {is_even(4)}")
+print(f"is_even(7): {is_even(7)}")</textarea>
+                            <div class="code-output" id="outputex6">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 7 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">7</span>Sum of List</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a function <code>sum_list(numbers)</code> that returns the sum of all numbers (without using sum()).</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Sum: 15
+Sum: 45</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex7"># Define the sum_list function
+
+# Test it
+print(f"Sum: {sum_list([1, 2, 3, 4, 5])}")
+print(f"Sum: {sum_list([10, 10, 10, 10, 5])}")</textarea>
+                            <div class="code-output" id="outputex7">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 8 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">8</span>Default Greeting</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create <code>greet_with_default(name, greeting="Hello")</code> that uses a default greeting.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Hello, Alice!
+Hi, Bob!
+Good morning, Charlie!</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex8"># Define the function with default
+
+# Test it
+greet_with_default("Alice")
+greet_with_default("Bob", "Hi")
+greet_with_default("Charlie", "Good morning")</textarea>
+                            <div class="code-output" id="outputex8">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 9 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">9</span>Multiple Returns</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create <code>min_max(numbers)</code> that returns both the minimum and maximum values.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Min: 1, Max: 9</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex9"># Define the min_max function
+
+# Test it
+minimum, maximum = min_max([4, 2, 9, 1, 7])
+print(f"Min: {minimum}, Max: {maximum}")</textarea>
+                            <div class="code-output" id="outputex9">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 10 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">10</span>Factorial</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create <code>factorial(n)</code> that returns n! using a loop (not recursion).</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>5! = 120
+7! = 5040</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex10"># Define the factorial function
+
+# Test it
+print(f"5! = {factorial(5)}")
+print(f"7! = {factorial(7)}")</textarea>
+                            <div class="code-output" id="outputex10">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 11 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">11</span>Count Vowels</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create <code>count_vowels(text)</code> that returns the number of vowels in the text.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Vowels in "Hello World": 3
+Vowels in "Python Programming": 4</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex11"># Define the count_vowels function
+
+# Test it
+print(f'Vowels in "Hello World": {count_vowels("Hello World")}')
+print(f'Vowels in "Python Programming": {count_vowels("Python Programming")}')</textarea>
+                            <div class="code-output" id="outputex11">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 12 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">12</span>Lambda Squares</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Use a lambda with map() to square all numbers in [1, 2, 3, 4, 5].</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>[1, 4, 9, 16, 25]</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex12">numbers = [1, 2, 3, 4, 5]
+# Use map() with a lambda to square each number
+squares = 
+
+print(squares)</textarea>
+                            <div class="code-output" id="outputex12">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 13 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">13</span>Recursive Countdown</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a recursive function <code>countdown(n)</code> that prints numbers from n to 1.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>5
+4
+3
+2
+1
+Blast off!</pre>
+                        </div>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints13')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints13">
+                                <ul>
+                                    <li>Base case: when n ≤ 0, print "Blast off!"</li>
+                                    <li>Recursive case: print n, then call countdown(n-1)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex13')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex13"># Define the recursive countdown function
+
+# Test it
+countdown(5)</textarea>
+                            <div class="code-output" id="outputex13">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 14 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">14</span>Circle Functions</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create <code>circle_stats(radius)</code> that returns (area, circumference) as a tuple.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Circle (r=5): Area=78.54, Circumference=31.42</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex14')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex14">import math
+
+# Define the circle_stats function
+
+# Test it
+area, circumference = circle_stats(5)
+print(f"Circle (r=5): Area={area:.2f}, Circumference={circumference:.2f}")</textarea>
+                            <div class="code-output" id="outputex14">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 15 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">15</span>Power Function</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create <code>power(base, exp=2)</code> with default exponent of 2 (squaring).</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>5² = 25
+2³ = 8
+10⁴ = 10000</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex15')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex15"># Define the power function with default
+
+# Test it
+print(f"5² = {power(5)}")
+print(f"2³ = {power(2, 3)}")
+print(f"10⁴ = {power(10, 4)}")</textarea>
+                            <div class="code-output" id="outputex15">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Submit Section -->
+            <section id="submit" class="section">
+                <div class="section-header">
+                    <div class="section-number">📤</div>
+                    <h2>Submit Your Work</h2>
+                </div>
+                
+                <div class="submit-section">
+                    <h2>📋 Submission Form</h2>
+                    <p>Complete the exercises above, then fill out this form to record your attendance and participation.</p>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Student ID</label>
+                            <input type="text" id="studentId" placeholder="e.g., 2024001234" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="studentName" placeholder="e.g., Ahmet Yılmaz">
+                        </div>
+                        <div class="form-group">
+                            <label>Email (@istun.edu.tr)</label>
+                            <input type="email" id="studentEmail" placeholder="e.g., ahmet.yilmaz@istun.edu.tr">
+                        </div>
+                        <div class="form-group">
+                            <label>Class Code (from instructor)</label>
+                            <input type="text" id="classCode" placeholder="Enter code from class">
+                        </div>
+                    </div>
+                    
+                    <div class="honeypot">
+                        <input type="text" id="website" tabindex="-1" autocomplete="off">
+                    </div>
+                    
+                    <button class="submit-btn" onclick="submitWork()">Submit Week 04</button>
+                    
+                    <div class="submit-status" id="submitStatus"></div>
+                </div>
+            </section>
+            
+            <!-- Navigation -->
+            <div class="page-nav">
+                <a href="Week_03.html" class="nav-btn">← Week 03</a>
+                <a href="index.html?home=true" class="nav-btn">Course Home</a>
+                <a href="Week_05.html" class="nav-btn">Week 05 →</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Progress bar
+        function updateProgress() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = Math.min(100, Math.max(0, (winScroll / height) * 100));
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        }
+        window.addEventListener('scroll', updateProgress);
+        window.addEventListener('load', updateProgress);
+        
+        // Hints toggle
+        function toggleHints(id) {
+            const hints = document.getElementById(id);
+            hints.classList.toggle('show');
+            const btn = hints.previousElementSibling;
+            btn.textContent = hints.classList.contains('show') ? '💡 Hide Hints' : '💡 Show Hints';
+        }
+        
+        // Pyodide for Python execution
+        let pyodideReady = false;
+        let pyodide = null;
+        
+        async function runCode(codeId) {
+            const codeEl = document.getElementById(codeId);
+            const outputEl = document.getElementById('output' + codeId);
+            const code = codeEl.value;
+            
+            outputEl.classList.add('show');
+            const outputContent = outputEl.querySelector('.code-output-content');
+            
+            if (!pyodideReady) {
+                outputContent.textContent = 'Initializing Python (first run takes a few seconds)...';
+                try {
+                    pyodide = await loadPyodide();
+                    pyodideReady = true;
+                } catch (e) {
+                    outputContent.textContent = 'Error loading Python: ' + e.message;
+                    return;
+                }
+            }
+            
+            outputContent.textContent = 'Running...';
+            
+            try {
+                // Capture stdout
+                pyodide.runPython(`
+import sys
+from io import StringIO
+sys.stdout = StringIO()
+`);
+                
+                // Run the user code
+                await pyodide.runPythonAsync(code);
+                
+                // Get the output
+                const output = pyodide.runPython(`sys.stdout.getvalue()`);
+                outputContent.textContent = output || '(no output)';
+                
+            } catch (e) {
+                outputContent.textContent = 'Error: ' + e.message;
+            }
+        }
+        
+        // Form validation and submission
+        const pageLoadTime = Date.now();
+        
+        function validateStudentId(id) {
+            if (id.length < 6 || id.length > 10) return false;
+            if (!/^\d+$/.test(id)) return false;
+            if (/^(\d)\1+$/.test(id)) return false;
+            return true;
+        }
+        
+        function validateName(name) {
+            if (name.length < 5) return false;
+            const words = name.trim().split(/\s+/);
+            if (words.length < 2) return false;
+            if (!/^[A-Za-zğüşıöçĞÜŞİÖÇ\s]+$/.test(name)) return false;
+            return true;
+        }
+        
+        function validateEmail(email) {
+            return email.endsWith('@istun.edu.tr') && email.length > 15;
+        }
+        
+        function submitWork() {
+            const status = document.getElementById('submitStatus');
+            status.style.display = 'none';
+            
+            const studentId = document.getElementById('studentId').value.trim();
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentEmail = document.getElementById('studentEmail').value.trim().toLowerCase();
+            const classCode = document.getElementById('classCode').value.trim().toUpperCase();
+            const honeypot = document.getElementById('website').value;
+            
+            // Bot check
+            if (honeypot) {
+                status.textContent = '❌ Submission rejected.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Time check
+            const timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
+            if (timeOnPage < 60) {
+                status.textContent = '❌ Please spend more time reviewing the material.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Required fields
+            if (!studentId || !studentName || !studentEmail || !classCode) {
+                status.textContent = '❌ All fields are required.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Validate student ID
+            if (!validateStudentId(studentId)) {
+                status.textContent = '❌ Invalid Student ID (must be 6-10 digits).';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Validate name
+            if (!validateName(studentName)) {
+                status.textContent = '❌ Please enter your full name (first and last).';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Validate email
+            if (!validateEmail(studentEmail)) {
+                status.textContent = '❌ Please use your @istun.edu.tr email.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Validate class code
+            if (classCode.length < 4) {
+                status.textContent = '❌ Invalid class code.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            const data = {
+                week: 'Week_04',
+                studentId: studentId,
+                studentName: studentName,
+                studentEmail: studentEmail,
+                classCode: classCode,
+                timeOnPage: timeOnPage,
+                source: 'cp2-web'
+            };
+            
+            status.textContent = '⏳ Submitting...';
+            status.style.cssText = 'display:block;background:rgba(124,58,237,0.2);color:#a78bfa';
+            
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec';
+            
+            fetch(scriptUrl, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    status.textContent = '✅ ' + result.message;
+                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                } else {
+                    status.textContent = '❌ ' + result.message;
+                    status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                }
+            })
+            .catch(error => {
+                // Fallback to no-cors
+                fetch(scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(data)
+                })
+                .then(() => {
+                    status.textContent = '⚠️ Request sent. Check your email for confirmation.';
+                    status.style.cssText = 'display:block;background:rgba(217,119,6,0.2);color:#fcd34d';
+                })
+                .catch(() => {
+                    status.textContent = '❌ Connection error. Please try again.';
+                    status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                });
+            });
+        }
+    </script>
+</body>
+</html>

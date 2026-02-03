@@ -1,0 +1,3070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 11: OOP Inheritance | Computer Programming II</title>
+    
+    <!-- Pyodide for Python execution -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-cream: #faf9f7;
+            --bg-dark: #1a1a2e;
+            --bg-code: #1e1e2e;
+            --text-primary: #1a1a2e;
+            --text-secondary: #444;
+            --text-muted: #666;
+            --accent: #7c3aed;
+            --accent-light: rgba(124, 58, 237, 0.1);
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --border: #e5e5e5;
+            --card-bg: #ffffff;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: 19px;
+            line-height: 1.8;
+            background: var(--bg-cream);
+            color: var(--text-primary);
+        }
+        
+        .topbar {
+            background: var(--bg-dark);
+            color: white;
+            padding: 14px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .topbar a { color: white; text-decoration: none; font-family: system-ui, sans-serif; font-size: 0.9rem; opacity: 0.9; transition: opacity 0.2s; }
+        .topbar a:hover { opacity: 1; }
+        .topbar-title { font-family: system-ui, sans-serif; font-weight: 600; font-size: 1rem; }
+        .topbar-nav { display: flex; gap: 24px; align-items: center; }
+        
+        .progress-container { position: fixed; top: 52px; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 99; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa); width: 0%; transition: width 0.15s ease-out; }
+        
+        .container { max-width: 900px; margin: 0 auto; padding: 50px 24px 80px; }
+        
+        .chapter-header { text-align: center; margin-bottom: 50px; padding-bottom: 40px; border-bottom: 2px solid var(--border); }
+        .chapter-label { display: inline-block; background: var(--accent); color: white; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-family: system-ui, sans-serif; font-weight: 500; margin-bottom: 20px; }
+        .chapter-header h1 { font-size: 2.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; line-height: 1.2; }
+        .chapter-meta { display: flex; justify-content: center; gap: 30px; color: var(--text-muted); font-size: 1rem; flex-wrap: wrap; }
+        .chapter-meta span { display: flex; align-items: center; gap: 6px; }
+        
+        .objectives-box { background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(124, 58, 237, 0.2); border-left: 4px solid var(--accent); border-radius: 8px; padding: 28px; margin-bottom: 50px; }
+        .objectives-box h3 { font-size: 1.2rem; margin-bottom: 16px; color: var(--accent); }
+        .objectives-box ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px 30px; list-style: none; }
+        .objectives-box li { color: var(--text-secondary); font-size: 0.95rem; padding-left: 28px; position: relative; }
+        .objectives-box li::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: bold; }
+        
+        .section { margin-bottom: 60px; scroll-margin-top: 70px; }
+        .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+        .section-number { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: var(--accent); color: white; border-radius: 10px; font-size: 1.2rem; font-weight: 700; font-family: system-ui, sans-serif; flex-shrink: 0; }
+        .section-header h2 { font-size: 1.6rem; font-weight: 600; color: var(--text-primary); }
+        
+        .content p { color: var(--text-secondary); margin-bottom: 18px; }
+        .content h3 { font-size: 1.25rem; font-weight: 600; margin: 35px 0 16px; color: var(--text-primary); }
+        .content h4 { font-size: 1.05rem; font-weight: 600; margin: 28px 0 12px; color: var(--accent); }
+        .content ul, .content ol { color: var(--text-secondary); margin: 16px 0 20px 28px; }
+        .content li { margin-bottom: 10px; }
+        .content strong { color: var(--text-primary); }
+        
+        code { font-family: 'JetBrains Mono', monospace; background: rgba(124, 58, 237, 0.1); padding: 2px 8px; border-radius: 4px; font-size: 0.85em; color: var(--accent); }
+        pre { font-family: 'JetBrains Mono', monospace; background: var(--bg-code); color: #e4e4e7; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 0.9rem; line-height: 1.5; margin: 16px 0; }
+        
+        .code-figure { background: var(--bg-code); border-radius: 10px; margin: 20px 0; overflow: hidden; border: 1px solid #333; }
+        .code-figure-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(255,255,255,0.05); border-bottom: 1px solid #333; }
+        .code-figure-label { font-family: system-ui, sans-serif; font-size: 0.8rem; color: #a78bfa; font-weight: 500; }
+        .code-figure-run { background: var(--success); color: white; border: none; padding: 6px 14px; border-radius: 6px; font-family: system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .code-figure-run:hover { background: #047857; transform: translateY(-1px); }
+        .code-editor { width: 100%; min-height: 120px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; }
+        .code-output.show { display: block; }
+        .code-output-label { font-family: system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .code-output-content { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #d4d4d8; white-space: pre-wrap; }
+        
+        .info-box { padding: 18px 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid; }
+        .info-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .tip-box { background: rgba(5, 150, 105, 0.08); border-color: var(--success); }
+        .tip-box::before { content: '💡 Tip'; display: block; font-weight: 600; color: var(--success); margin-bottom: 8px; font-size: 0.9rem; }
+        .warning-box { background: rgba(217, 119, 6, 0.08); border-color: var(--warning); }
+        .warning-box::before { content: '⚠️ Important'; display: block; font-weight: 600; color: var(--warning); margin-bottom: 8px; font-size: 0.9rem; }
+        .note-box { background: var(--accent-light); border-color: var(--accent); }
+        .note-box::before { content: '📝 Note'; display: block; font-weight: 600; color: var(--accent); margin-bottom: 8px; font-size: 0.9rem; }
+        
+        .table-container { overflow-x: auto; margin: 24px 0; border-radius: 10px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        th { background: var(--bg-dark); color: white; padding: 14px 18px; text-align: left; font-weight: 600; font-family: system-ui, sans-serif; font-size: 0.9rem; }
+        td { padding: 14px 18px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(124, 58, 237, 0.03); }
+        
+        .exercise-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 28px 0; overflow: hidden; }
+        .exercise-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05)); border-bottom: 1px solid var(--border); }
+        .exercise-title { font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 12px; }
+        .exercise-number { background: linear-gradient(135deg, #7c3aed, #0e7490); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; font-family: system-ui, sans-serif; }
+        .difficulty { padding: 5px 14px; border-radius: 15px; font-size: 0.8rem; font-weight: 600; font-family: system-ui, sans-serif; }
+        .difficulty.easy { background: rgba(5, 150, 105, 0.12); color: var(--success); }
+        .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
+        .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
+        .exercise-body { padding: 24px; }
+        .exercise-description { color: var(--text-secondary); font-size: 1rem; margin-bottom: 20px; }
+        .expected-output { background: rgba(5, 150, 105, 0.06); border: 1px solid rgba(5, 150, 105, 0.15); border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
+        .expected-output-label { font-size: 0.8rem; font-weight: 600; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; font-family: system-ui, sans-serif; }
+        .expected-output pre { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-secondary); margin: 0; white-space: pre-wrap; background: transparent; padding: 0; }
+        .hints-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--accent-light); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 8px; color: var(--accent); font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .hints-toggle:hover { background: rgba(124, 58, 237, 0.15); }
+        .hints-content { display: none; background: rgba(124, 58, 237, 0.05); border: 1px solid rgba(124, 58, 237, 0.12); border-radius: 8px; padding: 18px 24px; margin-top: 14px; }
+        .hints-content.show { display: block; }
+        .hints-content ul { margin: 0; padding-left: 20px; }
+        .hints-content li { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 8px; }
+        
+        .submit-section { background: var(--bg-dark); border-radius: 14px; padding: 40px; margin: 60px 0; color: white; }
+        .submit-section h2 { font-size: 1.6rem; margin-bottom: 10px; color: white; }
+        .submit-section > p { color: rgba(255,255,255,0.7); margin-bottom: 28px; }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 8px; color: rgba(255,255,255,0.8); font-family: system-ui, sans-serif; }
+        .form-group input { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; font-size: 1rem; font-family: inherit; transition: all 0.2s; }
+        .form-group input:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,0.15); }
+        .form-group input::placeholder { color: rgba(255,255,255,0.4); }
+        .honeypot { position: absolute; left: -9999px; }
+        .submit-btn { background: var(--accent); color: white; border: none; padding: 16px 40px; border-radius: 8px; font-size: 1.05rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: system-ui, sans-serif; }
+        .submit-btn:hover { background: #0e7490; transform: translateY(-2px); }
+        .submit-status { margin-top: 20px; padding: 16px 20px; border-radius: 8px; font-family: system-ui, sans-serif; display: none; }
+        
+        .page-nav { display: flex; justify-content: space-between; padding: 30px 0; border-top: 2px solid var(--border); margin-top: 60px; }
+        .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: all 0.2s; }
+        .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+        
+        .summary-box { background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 12px; padding: 30px; margin: 50px 0; }
+        .summary-box h3 { color: var(--accent); margin-bottom: 20px; font-size: 1.3rem; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+        .summary-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--card-bg); border-radius: 8px; font-size: 0.95rem; }
+        .summary-item .icon { font-size: 1.3rem; }
+        
+        @media (max-width: 700px) {
+            .chapter-header h1 { font-size: 2rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .chapter-meta { flex-direction: column; gap: 10px; }
+            .topbar-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+    
+    <nav class="topbar">
+        <a href="index.html?home=true" class="topbar-title">← Course Home</a>
+        <div class="topbar-nav">
+            <span style="opacity:0.7">Week 11 of 14</span>
+            <a href="Week_10.html">← Week 10</a>
+            <a href="Week_12.html">Week 12 →</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <header class="chapter-header">
+            <span class="chapter-label">Week 11</span>
+            <h1>OOP Inheritance</h1>
+            <div class="chapter-meta">
+                <span>📚 Computer Programming II</span>
+                <span>👨‍🏫 Dr. Arif Solmaz</span>
+            </div>
+        </header>
+        
+        <div class="objectives-box">
+            <h3>🎯 Learning Objectives</h3>
+            <ul>
+                <li>Understand inheritance and its benefits</li>
+                <li>Create subclasses that extend parent classes</li>
+                <li>Override methods in child classes</li>
+                <li>Use the super() function effectively</li>
+                <li>Implement multiple inheritance</li>
+                <li>Create abstract base classes</li>
+                <li>Apply polymorphism in your code</li>
+                <li>Design class hierarchies for engineering applications</li>
+            </ul>
+        </div>
+        
+        <div class="content">
+            <!-- Section 1: Introduction to Inheritance -->
+            <section id="part1" class="section">
+                <div class="section-header">
+                    <div class="section-number">1</div>
+                    <h2>Introduction to Inheritance</h2>
+                </div>
+                
+                <p>Inheritance is one of the four pillars of Object-Oriented Programming. It allows a class (child/subclass) to inherit attributes and methods from another class (parent/superclass). This promotes code reuse and establishes "is-a" relationships between classes.</p>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Term</th><th>Also Known As</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Parent Class</strong></td><td>Base Class, Superclass</td><td>The class being inherited from</td></tr>
+                            <tr><td><strong>Child Class</strong></td><td>Derived Class, Subclass</td><td>The class that inherits</td></tr>
+                            <tr><td><strong>Inheritance</strong></td><td>Derivation</td><td>Mechanism to reuse code from parent</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3>Without Inheritance - Code Duplication</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.1: Code Duplication Problem</span>
+                        <button class="code-figure-run" onclick="runCode('code1')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code1"># Without inheritance - code duplication
+class Dog:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def eat(self):
+        return f"{self.name} is eating"
+    
+    def sleep(self):
+        return f"{self.name} is sleeping"
+    
+    def bark(self):
+        return f"{self.name} says Woof!"
+
+class Cat:
+    def __init__(self, name, age):  # Duplicated!
+        self.name = name
+        self.age = age
+    
+    def eat(self):  # Duplicated!
+        return f"{self.name} is eating"
+    
+    def sleep(self):  # Duplicated!
+        return f"{self.name} is sleeping"
+    
+    def meow(self):
+        return f"{self.name} says Meow!"
+
+print("Problem: __init__, eat(), and sleep() are duplicated!")
+print("If we need to change eat(), we must change it in BOTH classes.")</textarea>
+                    <div class="code-output" id="outputcode1">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>With Inheritance - No Duplication</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.2: Inheritance Solution</span>
+                        <button class="code-figure-run" onclick="runCode('code2')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code2"># With inheritance - no duplication
+class Animal:
+    """Base class for all animals."""
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def eat(self):
+        return f"{self.name} is eating"
+    
+    def sleep(self):
+        return f"{self.name} is sleeping"
+
+class Dog(Animal):  # Dog inherits from Animal
+    """Dog class inheriting from Animal."""
+    def bark(self):
+        return f"{self.name} says Woof!"
+
+class Cat(Animal):  # Cat inherits from Animal
+    """Cat class inheriting from Animal."""
+    def meow(self):
+        return f"{self.name} says Meow!"
+
+# Create instances
+dog = Dog("Buddy", 3)
+cat = Cat("Whiskers", 2)
+
+# Inherited methods work
+print(f"Dog: {dog.name}, {dog.age} years old")
+print(dog.eat())     # Inherited from Animal
+print(dog.sleep())   # Inherited from Animal
+print(dog.bark())    # Defined in Dog
+print()
+print(f"Cat: {cat.name}, {cat.age} years old")
+print(cat.eat())     # Inherited from Animal
+print(cat.meow())    # Defined in Cat</textarea>
+                    <div class="code-output" id="outputcode2">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Checking Inheritance Relationships</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 1.3: Inheritance Checking</span>
+                        <button class="code-figure-run" onclick="runCode('code3')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code3"># Checking inheritance relationships
+class Animal:
+    pass
+
+class Dog(Animal):
+    pass
+
+class Cat(Animal):
+    pass
+
+dog = Dog()
+cat = Cat()
+
+print("=== isinstance() checks ===")
+print(f"isinstance(dog, Dog): {isinstance(dog, Dog)}")
+print(f"isinstance(dog, Animal): {isinstance(dog, Animal)}")  # True!
+print(f"isinstance(dog, Cat): {isinstance(dog, Cat)}")
+print(f"isinstance(dog, object): {isinstance(dog, object)}")  # True!
+print()
+
+print("=== issubclass() checks ===")
+print(f"issubclass(Dog, Animal): {issubclass(Dog, Animal)}")
+print(f"issubclass(Cat, Animal): {issubclass(Cat, Animal)}")
+print(f"issubclass(Dog, Cat): {issubclass(Dog, Cat)}")
+print(f"issubclass(Animal, object): {issubclass(Animal, object)}")
+print()
+
+print("=== Class hierarchy ===")
+print(f"Dog.__bases__: {Dog.__bases__}")
+print(f"Animal.__bases__: {Animal.__bases__}")</textarea>
+                    <div class="code-output" id="outputcode3">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="tip-box info-box">
+                    <p>Remember: Inheritance represents an "is-a" relationship. A Dog "is-a" Animal. Use inheritance when this relationship makes sense conceptually.</p>
+                </div>
+            </section>
+            
+            <!-- Section 2: The super() Function -->
+            <section id="part2" class="section">
+                <div class="section-header">
+                    <div class="section-number">2</div>
+                    <h2>The super() Function</h2>
+                </div>
+                
+                <p>The <code>super()</code> function returns a proxy object that delegates method calls to the parent class. It's essential for calling parent class methods, especially <code>__init__</code>, from the child class.</p>
+                
+                <h3>Why We Need super()</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.1: The Problem Without super()</span>
+                        <button class="code-figure-run" onclick="runCode('code4')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code4"># Problem: Child class overrides __init__ completely
+class Animal:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        print(f"Animal.__init__ called for {name}")
+
+class Dog(Animal):
+    def __init__(self, name, age, breed):
+        # This REPLACES Animal.__init__, not extends it!
+        self.breed = breed
+        print(f"Dog.__init__ called for {name}")
+
+try:
+    dog = Dog("Buddy", 3, "Golden Retriever")
+    print(f"Dog's name: {dog.name}")  # This will fail!
+except AttributeError as e:
+    print(f"Error: {e}")
+    print("Animal.__init__ was never called, so name/age weren't set!")</textarea>
+                    <div class="code-output" id="outputcode4">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Using super() Correctly</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.2: Correct Use of super()</span>
+                        <button class="code-figure-run" onclick="runCode('code5')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code5"># Correct: Use super() to call parent __init__
+class Animal:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        print(f"Animal.__init__ called for {name}")
+
+class Dog(Animal):
+    def __init__(self, name, age, breed):
+        # Call parent's __init__ first
+        super().__init__(name, age)
+        # Then add Dog-specific attributes
+        self.breed = breed
+        print(f"Dog.__init__ called for {name}")
+
+dog = Dog("Buddy", 3, "Golden Retriever")
+print()
+print(f"Name: {dog.name}")      # From Animal
+print(f"Age: {dog.age}")        # From Animal
+print(f"Breed: {dog.breed}")    # From Dog</textarea>
+                    <div class="code-output" id="outputcode5">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>super() with Other Methods</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.3: super() in Methods</span>
+                        <button class="code-figure-run" onclick="runCode('code6')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code6"># Using super() to extend (not replace) methods
+class Vehicle:
+    def __init__(self, brand, model):
+        self.brand = brand
+        self.model = model
+    
+    def describe(self):
+        return f"{self.brand} {self.model}"
+    
+    def start(self):
+        return "Vehicle starting..."
+
+class Car(Vehicle):
+    def __init__(self, brand, model, num_doors):
+        super().__init__(brand, model)
+        self.num_doors = num_doors
+    
+    def describe(self):
+        # Extend parent's describe
+        base = super().describe()
+        return f"{base} ({self.num_doors} doors)"
+    
+    def start(self):
+        # Extend parent's start
+        base = super().start()
+        return f"{base} Engine ignited!"
+
+car = Car("Toyota", "Camry", 4)
+print(car.describe())
+print(car.start())</textarea>
+                    <div class="code-output" id="outputcode6">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Engineering Example: Sensor Hierarchy</h4>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 2.4: Sensor Class Hierarchy</span>
+                        <button class="code-figure-run" onclick="runCode('code7')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code7"># Engineering: Sensor class hierarchy
+class Sensor:
+    """Base sensor class."""
+    sensor_count = 0
+    
+    def __init__(self, sensor_id, unit):
+        self.sensor_id = sensor_id
+        self.unit = unit
+        self.value = None
+        Sensor.sensor_count += 1
+    
+    def read(self, value):
+        self.value = value
+        return self.value
+    
+    def display(self):
+        if self.value is None:
+            return f"{self.sensor_id}: No reading"
+        return f"{self.sensor_id}: {self.value} {self.unit}"
+
+class TemperatureSensor(Sensor):
+    """Temperature sensor with calibration."""
+    
+    def __init__(self, sensor_id, calibration_offset=0):
+        super().__init__(sensor_id, "°C")
+        self.calibration_offset = calibration_offset
+    
+    def read(self, value):
+        # Apply calibration before storing
+        calibrated = value + self.calibration_offset
+        return super().read(calibrated)
+
+class PressureSensor(Sensor):
+    """Pressure sensor with altitude compensation."""
+    
+    def __init__(self, sensor_id, altitude=0):
+        super().__init__(sensor_id, "hPa")
+        self.altitude = altitude
+    
+    def read(self, value):
+        # Apply altitude compensation
+        compensated = value + (self.altitude * 0.12)
+        return super().read(round(compensated, 2))
+
+# Create sensors
+temp = TemperatureSensor("TEMP_001", calibration_offset=0.5)
+pressure = PressureSensor("PRES_001", altitude=100)
+
+temp.read(25.0)
+pressure.read(1013.25)
+
+print(temp.display())
+print(pressure.display())
+print(f"Total sensors: {Sensor.sensor_count}")</textarea>
+                    <div class="code-output" id="outputcode7">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 3: Method Overriding -->
+            <section id="part3" class="section">
+                <div class="section-header">
+                    <div class="section-number">3</div>
+                    <h2>Method Overriding</h2>
+                </div>
+                
+                <p>Method overriding occurs when a child class provides its own implementation of a method that already exists in the parent class. The child's version replaces (or extends) the parent's version when called on child objects.</p>
+                
+                <h3>Basic Method Overriding</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.1: Overriding Methods</span>
+                        <button class="code-figure-run" onclick="runCode('code8')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code8"># Method overriding
+class Animal:
+    def __init__(self, name):
+        self.name = name
+    
+    def speak(self):
+        return "Some generic animal sound"
+    
+    def move(self):
+        return f"{self.name} is moving"
+
+class Dog(Animal):
+    def speak(self):  # Override
+        return f"{self.name} says Woof!"
+
+class Cat(Animal):
+    def speak(self):  # Override
+        return f"{self.name} says Meow!"
+
+class Fish(Animal):
+    def speak(self):  # Override
+        return f"{self.name} makes no sound (it's a fish!)"
+    
+    def move(self):  # Override
+        return f"{self.name} is swimming"
+
+# Create animals
+animals = [
+    Dog("Buddy"),
+    Cat("Whiskers"),
+    Fish("Nemo")
+]
+
+for animal in animals:
+    print(f"{animal.speak()}")
+    print(f"  {animal.move()}")
+    print()</textarea>
+                    <div class="code-output" id="outputcode8">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Overriding __str__ and __repr__</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.2: Overriding Special Methods</span>
+                        <button class="code-figure-run" onclick="runCode('code9')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code9"># Overriding special methods
+class Person:
+    def __init__(self, name):
+        self.name = name
+    
+    def __str__(self):
+        return f"Person: {self.name}"
+    
+    def __repr__(self):
+        return f"Person('{self.name}')"
+
+class Employee(Person):
+    def __init__(self, name, employee_id):
+        super().__init__(name)
+        self.employee_id = employee_id
+    
+    def __str__(self):  # Override
+        return f"Employee: {self.name} (ID: {self.employee_id})"
+    
+    def __repr__(self):  # Override
+        return f"Employee('{self.name}', '{self.employee_id}')"
+
+class Manager(Employee):
+    def __init__(self, name, employee_id, department):
+        super().__init__(name, employee_id)
+        self.department = department
+    
+    def __str__(self):  # Override
+        return f"Manager: {self.name} - {self.department} (ID: {self.employee_id})"
+
+person = Person("Ali")
+employee = Employee("Ayşe", "E001")
+manager = Manager("Mehmet", "M001", "Engineering")
+
+print(person)
+print(employee)
+print(manager)</textarea>
+                    <div class="code-output" id="outputcode9">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Engineering Example: Motor Types</h4>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 3.3: Different Motor Types</span>
+                        <button class="code-figure-run" onclick="runCode('code10')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code10"># Engineering: Different motor types with overriding
+class Motor:
+    def __init__(self, motor_id, max_rpm):
+        self.motor_id = motor_id
+        self.max_rpm = max_rpm
+        self.current_rpm = 0
+        self.is_running = False
+    
+    def start(self):
+        self.is_running = True
+        return f"{self.motor_id}: Started"
+    
+    def stop(self):
+        self.is_running = False
+        self.current_rpm = 0
+        return f"{self.motor_id}: Stopped"
+    
+    def set_speed(self, rpm):
+        if not self.is_running:
+            return f"{self.motor_id}: Must start first!"
+        self.current_rpm = min(rpm, self.max_rpm)
+        return f"{self.motor_id}: Speed set to {self.current_rpm} RPM"
+
+class StepperMotor(Motor):
+    def __init__(self, motor_id, max_rpm, steps_per_rev):
+        super().__init__(motor_id, max_rpm)
+        self.steps_per_rev = steps_per_rev
+        self.current_step = 0
+    
+    def start(self):  # Override - add homing
+        self.current_step = 0
+        result = super().start()
+        return f"{result} (Homed to step 0)"
+    
+    def move_steps(self, steps):
+        if not self.is_running:
+            return f"{self.motor_id}: Must start first!"
+        self.current_step += steps
+        return f"{self.motor_id}: Moved to step {self.current_step}"
+
+class ServoMotor(Motor):
+    def __init__(self, motor_id, min_angle=0, max_angle=180):
+        super().__init__(motor_id, 60)  # Servos have low RPM
+        self.min_angle = min_angle
+        self.max_angle = max_angle
+        self.current_angle = 0
+    
+    def set_angle(self, angle):
+        if not self.is_running:
+            return f"{self.motor_id}: Must start first!"
+        self.current_angle = max(self.min_angle, min(angle, self.max_angle))
+        return f"{self.motor_id}: Angle set to {self.current_angle}°"
+
+# Test motors
+dc = Motor("DC_001", 3000)
+stepper = StepperMotor("STEP_001", 1000, 200)
+servo = ServoMotor("SERVO_001")
+
+print(dc.start())
+print(dc.set_speed(1500))
+print()
+print(stepper.start())
+print(stepper.move_steps(100))
+print()
+print(servo.start())
+print(servo.set_angle(90))</textarea>
+                    <div class="code-output" id="outputcode10">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 4: Polymorphism -->
+            <section id="part4" class="section">
+                <div class="section-header">
+                    <div class="section-number">4</div>
+                    <h2>Polymorphism</h2>
+                </div>
+                
+                <p><strong>Polymorphism</strong> means "many forms" - the same interface can work with objects of different types. This allows writing flexible code that works with any object implementing a common interface, regardless of its specific class.</p>
+                
+                <h3>Polymorphism with Shapes</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.1: Polymorphic Shapes</span>
+                        <button class="code-figure-run" onclick="runCode('code11')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code11"># Polymorphism with shapes
+class Shape:
+    def area(self):
+        raise NotImplementedError("Subclass must implement")
+    
+    def perimeter(self):
+        raise NotImplementedError("Subclass must implement")
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    
+    def area(self):
+        return self.width * self.height
+    
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+    
+    def area(self):
+        return 3.14159 * self.radius ** 2
+    
+    def perimeter(self):
+        return 2 * 3.14159 * self.radius
+
+class Triangle(Shape):
+    def __init__(self, a, b, c):
+        self.a, self.b, self.c = a, b, c
+    
+    def area(self):
+        s = self.perimeter() / 2
+        return (s * (s-self.a) * (s-self.b) * (s-self.c)) ** 0.5
+    
+    def perimeter(self):
+        return self.a + self.b + self.c
+
+# Polymorphic function - works with ANY Shape
+def print_shape_info(shape):
+    name = shape.__class__.__name__
+    print(f"{name}: area={shape.area():.2f}, perimeter={shape.perimeter():.2f}")
+
+# Create different shapes
+shapes = [
+    Rectangle(10, 5),
+    Circle(7),
+    Triangle(3, 4, 5)
+]
+
+print("=== All shapes through same interface ===")
+for shape in shapes:
+    print_shape_info(shape)
+
+# Calculate total area
+total = sum(s.area() for s in shapes)
+print(f"\nTotal area: {total:.2f}")</textarea>
+                    <div class="code-output" id="outputcode11">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Duck Typing</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.2: Duck Typing</span>
+                        <button class="code-figure-run" onclick="runCode('code12')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code12"># Duck typing: "If it walks like a duck and quacks like a duck..."
+class Duck:
+    def quack(self):
+        return "Quack!"
+    
+    def fly(self):
+        return "Flying with wings"
+
+class RobotDuck:
+    def quack(self):
+        return "Electronic quack!"
+    
+    def fly(self):
+        return "Flying with propellers"
+
+class Person:
+    def quack(self):
+        return "I'm pretending to quack!"
+    
+    def fly(self):
+        return "I can't fly, but I can run!"
+
+# Function doesn't care about type, only interface
+def make_it_do_duck_things(duck_like_thing):
+    print(f"  Quack: {duck_like_thing.quack()}")
+    print(f"  Fly: {duck_like_thing.fly()}")
+
+print("Real Duck:")
+make_it_do_duck_things(Duck())
+
+print("\nRobot Duck:")
+make_it_do_duck_things(RobotDuck())
+
+print("\nPerson (pretending):")
+make_it_do_duck_things(Person())</textarea>
+                    <div class="code-output" id="outputcode12">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Engineering Example: Data Processors</h4>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 4.3: Polymorphic Data Processors</span>
+                        <button class="code-figure-run" onclick="runCode('code13')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code13"># Engineering: Polymorphic data processors
+class DataProcessor:
+    """Base class for data processors."""
+    def process(self, data):
+        raise NotImplementedError
+
+class AverageProcessor(DataProcessor):
+    def process(self, data):
+        return sum(data) / len(data) if data else None
+
+class MaxProcessor(DataProcessor):
+    def process(self, data):
+        return max(data) if data else None
+
+class MinMaxProcessor(DataProcessor):
+    def process(self, data):
+        if not data:
+            return None
+        return {'min': min(data), 'max': max(data)}
+
+class FilteredAverageProcessor(DataProcessor):
+    def __init__(self, min_val=None, max_val=None):
+        self.min_val = min_val
+        self.max_val = max_val
+    
+    def process(self, data):
+        filtered = data
+        if self.min_val is not None:
+            filtered = [x for x in filtered if x >= self.min_val]
+        if self.max_val is not None:
+            filtered = [x for x in filtered if x <= self.max_val]
+        return sum(filtered) / len(filtered) if filtered else None
+
+# Sensor data
+readings = [23.5, 24.1, 100.0, 24.8, 25.2, -5.0, 24.5]
+print(f"Data: {readings}")
+print()
+
+# Process with different processors (polymorphism!)
+processors = [
+    ("Average", AverageProcessor()),
+    ("Max", MaxProcessor()),
+    ("MinMax", MinMaxProcessor()),
+    ("Filtered Avg (20-30)", FilteredAverageProcessor(20, 30))
+]
+
+for name, processor in processors:
+    result = processor.process(readings)
+    print(f"{name}: {result}")</textarea>
+                    <div class="code-output" id="outputcode13">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 5: Multiple Inheritance -->
+            <section id="part5" class="section">
+                <div class="section-header">
+                    <div class="section-number">5</div>
+                    <h2>Multiple Inheritance</h2>
+                </div>
+                
+                <p>Python supports multiple inheritance, where a class can inherit from more than one parent class. This is powerful but requires understanding of the Method Resolution Order (MRO).</p>
+                
+                <h3>Basic Multiple Inheritance</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.1: Multiple Inheritance</span>
+                        <button class="code-figure-run" onclick="runCode('code14')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code14"># Multiple inheritance
+class Flyable:
+    def fly(self):
+        return f"{self.name} is flying"
+
+class Swimmable:
+    def swim(self):
+        return f"{self.name} is swimming"
+
+class Walkable:
+    def walk(self):
+        return f"{self.name} is walking"
+
+class Duck(Flyable, Swimmable, Walkable):
+    def __init__(self, name):
+        self.name = name
+
+class Penguin(Swimmable, Walkable):
+    def __init__(self, name):
+        self.name = name
+
+class Eagle(Flyable, Walkable):
+    def __init__(self, name):
+        self.name = name
+
+duck = Duck("Donald")
+penguin = Penguin("Happy Feet")
+eagle = Eagle("Eddie")
+
+print(f"Duck: {duck.fly()}, {duck.swim()}, {duck.walk()}")
+print(f"Penguin: {penguin.swim()}, {penguin.walk()}")
+print(f"Eagle: {eagle.fly()}, {eagle.walk()}")</textarea>
+                    <div class="code-output" id="outputcode14">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Method Resolution Order (MRO)</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.2: Understanding MRO</span>
+                        <button class="code-figure-run" onclick="runCode('code15')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code15"># Method Resolution Order (MRO)
+class A:
+    def greet(self):
+        return "Hello from A"
+
+class B(A):
+    def greet(self):
+        return "Hello from B"
+
+class C(A):
+    def greet(self):
+        return "Hello from C"
+
+class D(B, C):  # Diamond inheritance
+    pass
+
+class E(C, B):  # Different order
+    pass
+
+# Check MRO
+print("D's MRO (inherits B, C):")
+for cls in D.__mro__:
+    print(f"  {cls.__name__}")
+
+print()
+print("E's MRO (inherits C, B):")
+for cls in E.__mro__:
+    print(f"  {cls.__name__}")
+
+print()
+d = D()
+e = E()
+print(f"D.greet(): {d.greet()}")  # Uses B's greet (first in MRO)
+print(f"E.greet(): {e.greet()}")  # Uses C's greet (first in MRO)</textarea>
+                    <div class="code-output" id="outputcode15">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Mixins Pattern</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 5.3: Mixin Classes</span>
+                        <button class="code-figure-run" onclick="runCode('code16')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code16"># Mixins: Small classes that provide specific functionality
+class LoggableMixin:
+    """Mixin that adds logging capability."""
+    def log(self, message):
+        print(f"[{self.__class__.__name__}] {message}")
+
+class SerializableMixin:
+    """Mixin that adds serialization capability."""
+    def to_dict(self):
+        return {k: v for k, v in self.__dict__.items() if not k.startswith('_')}
+    
+    def to_string(self):
+        items = [f"{k}={v}" for k, v in self.to_dict().items()]
+        return f"{self.__class__.__name__}({', '.join(items)})"
+
+class ValidatableMixin:
+    """Mixin that adds validation capability."""
+    def validate(self):
+        for attr, value in self.__dict__.items():
+            if value is None:
+                return False, f"{attr} is None"
+        return True, "Valid"
+
+class Sensor(LoggableMixin, SerializableMixin, ValidatableMixin):
+    """Sensor class with logging, serialization, and validation."""
+    def __init__(self, sensor_id, sensor_type):
+        self.sensor_id = sensor_id
+        self.sensor_type = sensor_type
+        self.value = None
+    
+    def read(self, value):
+        self.value = value
+        self.log(f"Read value: {value}")
+
+# Test the sensor with mixins
+sensor = Sensor("TEMP_001", "temperature")
+sensor.read(25.5)
+
+print(f"As dict: {sensor.to_dict()}")
+print(f"As string: {sensor.to_string()}")
+
+valid, msg = sensor.validate()
+print(f"Valid: {valid} - {msg}")</textarea>
+                    <div class="code-output" id="outputcode16">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="warning-box info-box">
+                    <p>Use multiple inheritance carefully! Prefer composition over complex inheritance hierarchies. Mixins are a good pattern - they add specific capabilities without complex relationships.</p>
+                </div>
+            </section>
+            
+            <!-- Section 6: Abstract Base Classes -->
+            <section id="part6" class="section">
+                <div class="section-header">
+                    <div class="section-number">6</div>
+                    <h2>Abstract Base Classes</h2>
+                </div>
+                
+                <p>Abstract Base Classes (ABCs) define interfaces that child classes must implement. They cannot be instantiated directly and enforce a contract that subclasses must follow.</p>
+                
+                <h3>Creating Abstract Classes</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.1: Abstract Base Classes</span>
+                        <button class="code-figure-run" onclick="runCode('code17')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code17"># Abstract Base Classes
+from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    """Abstract base class for shapes."""
+    
+    @abstractmethod
+    def area(self):
+        """Calculate area - must be implemented by subclasses."""
+        pass
+    
+    @abstractmethod
+    def perimeter(self):
+        """Calculate perimeter - must be implemented by subclasses."""
+        pass
+    
+    def describe(self):
+        """Concrete method - inherited by subclasses."""
+        return f"{self.__class__.__name__}: area={self.area():.2f}"
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    
+    def area(self):  # Must implement
+        return self.width * self.height
+    
+    def perimeter(self):  # Must implement
+        return 2 * (self.width + self.height)
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+    
+    def area(self):  # Must implement
+        return 3.14159 * self.radius ** 2
+    
+    def perimeter(self):  # Must implement
+        return 2 * 3.14159 * self.radius
+
+# Cannot instantiate abstract class
+try:
+    shape = Shape()
+except TypeError as e:
+    print(f"Cannot create Shape: {e}")
+    print()
+
+# Can instantiate concrete classes
+rect = Rectangle(10, 5)
+circle = Circle(7)
+
+print(rect.describe())
+print(circle.describe())</textarea>
+                    <div class="code-output" id="outputcode17">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Abstract Properties</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.2: Abstract Properties</span>
+                        <button class="code-figure-run" onclick="runCode('code18')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code18"># Abstract properties
+from abc import ABC, abstractmethod
+
+class Vehicle(ABC):
+    """Abstract vehicle class."""
+    
+    @property
+    @abstractmethod
+    def max_speed(self):
+        """Maximum speed - must be implemented."""
+        pass
+    
+    @property
+    @abstractmethod
+    def fuel_type(self):
+        """Fuel type - must be implemented."""
+        pass
+    
+    @abstractmethod
+    def start(self):
+        pass
+
+class Car(Vehicle):
+    def __init__(self, brand):
+        self.brand = brand
+        self._max_speed = 200
+    
+    @property
+    def max_speed(self):
+        return self._max_speed
+    
+    @property
+    def fuel_type(self):
+        return "gasoline"
+    
+    def start(self):
+        return f"{self.brand} car starting..."
+
+class ElectricCar(Vehicle):
+    def __init__(self, brand):
+        self.brand = brand
+        self._max_speed = 250
+    
+    @property
+    def max_speed(self):
+        return self._max_speed
+    
+    @property
+    def fuel_type(self):
+        return "electric"
+    
+    def start(self):
+        return f"{self.brand} electric car starting silently..."
+
+car = Car("Toyota")
+ev = ElectricCar("Tesla")
+
+print(f"{car.brand}: {car.max_speed} km/h, {car.fuel_type}")
+print(f"  {car.start()}")
+print()
+print(f"{ev.brand}: {ev.max_speed} km/h, {ev.fuel_type}")
+print(f"  {ev.start()}")</textarea>
+                    <div class="code-output" id="outputcode18">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h4>Engineering Example: Sensor Interface</h4>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 6.3: Abstract Sensor Interface</span>
+                        <button class="code-figure-run" onclick="runCode('code19')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code19"># Engineering: Abstract sensor interface
+from abc import ABC, abstractmethod
+
+class SensorInterface(ABC):
+    """Abstract interface for all sensors."""
+    
+    @property
+    @abstractmethod
+    def sensor_id(self):
+        pass
+    
+    @property
+    @abstractmethod
+    def unit(self):
+        pass
+    
+    @abstractmethod
+    def read(self):
+        """Read current value from sensor."""
+        pass
+    
+    @abstractmethod
+    def calibrate(self, reference_value):
+        """Calibrate sensor with reference value."""
+        pass
+
+class TemperatureSensor(SensorInterface):
+    def __init__(self, sid):
+        self._sensor_id = sid
+        self._value = 0
+        self._offset = 0
+    
+    @property
+    def sensor_id(self):
+        return self._sensor_id
+    
+    @property
+    def unit(self):
+        return "°C"
+    
+    def read(self):
+        # Simulate reading
+        return self._value + self._offset
+    
+    def calibrate(self, reference_value):
+        self._offset = reference_value - self._value
+        return f"Calibrated with offset {self._offset}"
+    
+    def set_raw(self, value):
+        self._value = value
+
+class HumiditySensor(SensorInterface):
+    def __init__(self, sid):
+        self._sensor_id = sid
+        self._value = 0
+        self._scale = 1.0
+    
+    @property
+    def sensor_id(self):
+        return self._sensor_id
+    
+    @property
+    def unit(self):
+        return "%"
+    
+    def read(self):
+        return self._value * self._scale
+    
+    def calibrate(self, reference_value):
+        if self._value != 0:
+            self._scale = reference_value / self._value
+        return f"Calibrated with scale {self._scale:.2f}"
+    
+    def set_raw(self, value):
+        self._value = value
+
+# Use the sensors
+temp = TemperatureSensor("TEMP_001")
+temp.set_raw(24.5)
+print(f"{temp.sensor_id}: {temp.read()} {temp.unit}")
+print(temp.calibrate(25.0))
+print(f"After calibration: {temp.read()} {temp.unit}")
+
+print()
+
+humid = HumiditySensor("HUMID_001")
+humid.set_raw(45)
+print(f"{humid.sensor_id}: {humid.read()} {humid.unit}")
+print(humid.calibrate(50))
+print(f"After calibration: {humid.read():.1f} {humid.unit}")</textarea>
+                    <div class="code-output" id="outputcode19">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 7: Inheritance Best Practices -->
+            <section id="part7" class="section">
+                <div class="section-header">
+                    <div class="section-number">7</div>
+                    <h2>Inheritance Best Practices</h2>
+                </div>
+                
+                <p>Inheritance is powerful but can lead to complex, hard-to-maintain code if misused. Follow these best practices for cleaner, more maintainable object-oriented designs.</p>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Principle</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Liskov Substitution</strong></td><td>Subclass objects should be usable wherever parent class objects are expected</td></tr>
+                            <tr><td><strong>Favor Composition</strong></td><td>Prefer "has-a" over "is-a" relationships when possible</td></tr>
+                            <tr><td><strong>Keep It Shallow</strong></td><td>Avoid deep inheritance hierarchies (max 2-3 levels)</td></tr>
+                            <tr><td><strong>Single Responsibility</strong></td><td>Each class should have one reason to change</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3>Liskov Substitution Principle</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.1: Liskov Substitution</span>
+                        <button class="code-figure-run" onclick="runCode('code20')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code20"># Liskov Substitution Principle (LSP)
+# Bad example: Square inheriting from Rectangle breaks LSP
+class Rectangle:
+    def __init__(self, width, height):
+        self._width = width
+        self._height = height
+    
+    @property
+    def width(self):
+        return self._width
+    
+    @width.setter
+    def width(self, value):
+        self._width = value
+    
+    @property
+    def height(self):
+        return self._height
+    
+    @height.setter
+    def height(self, value):
+        self._height = value
+    
+    def area(self):
+        return self._width * self._height
+
+class Square(Rectangle):
+    def __init__(self, side):
+        super().__init__(side, side)
+    
+    @Rectangle.width.setter
+    def width(self, value):
+        self._width = value
+        self._height = value  # Force square
+    
+    @Rectangle.height.setter
+    def height(self, value):
+        self._width = value
+        self._height = value  # Force square
+
+# This function expects Rectangle behavior
+def process_rectangle(rect):
+    rect.width = 5
+    rect.height = 10
+    expected = 50  # 5 * 10
+    actual = rect.area()
+    return expected == actual
+
+rect = Rectangle(1, 1)
+square = Square(1)
+
+print(f"Rectangle passes: {process_rectangle(rect)}")
+print(f"Square passes: {process_rectangle(square)}")  # Fails LSP!
+print()
+print("Square breaks LSP because setting width/height separately")
+print("doesn't work as expected for a Rectangle interface.")</textarea>
+                    <div class="code-output" id="outputcode20">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Composition Over Inheritance</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 7.2: Composition Example</span>
+                        <button class="code-figure-run" onclick="runCode('code21')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code21"># Composition over inheritance
+# Instead of: Robot inherits from Arm, Sensor, Motor (messy!)
+# Use: Robot HAS-A Arm, HAS-A Sensor, HAS-A Motor
+
+class Arm:
+    def __init__(self, reach):
+        self.reach = reach
+    
+    def extend(self):
+        return f"Arm extended {self.reach}cm"
+    
+    def retract(self):
+        return "Arm retracted"
+
+class Sensor:
+    def __init__(self, sensor_type):
+        self.sensor_type = sensor_type
+    
+    def read(self):
+        return f"{self.sensor_type} reading: OK"
+
+class Motor:
+    def __init__(self, power):
+        self.power = power
+    
+    def move(self, direction):
+        return f"Moving {direction} at {self.power}W"
+
+class Robot:
+    """Robot composed of multiple components."""
+    
+    def __init__(self, name):
+        self.name = name
+        # Composition: Robot HAS-A these components
+        self.arm = Arm(reach=50)
+        self.sensor = Sensor("proximity")
+        self.motor = Motor(power=100)
+    
+    def pick_object(self):
+        results = []
+        results.append(self.sensor.read())
+        results.append(self.arm.extend())
+        results.append(self.arm.retract())
+        return results
+    
+    def move_to(self, location):
+        return self.motor.move(location)
+
+# Use the robot
+robot = Robot("Helper-1")
+print(f"Robot: {robot.name}")
+print(f"Moving: {robot.move_to('forward')}")
+print("Picking object:")
+for action in robot.pick_object():
+    print(f"  - {action}")</textarea>
+                    <div class="code-output" id="outputcode21">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <div class="tip-box info-box">
+                    <p><strong>When to use inheritance:</strong> Use inheritance for "is-a" relationships where the child truly IS a specialized version of the parent. Use composition for "has-a" relationships where an object contains other objects.</p>
+                </div>
+            </section>
+            
+            <!-- Section 8: Practical Applications -->
+            <section id="part8" class="section">
+                <div class="section-header">
+                    <div class="section-number">8</div>
+                    <h2>Practical Applications</h2>
+                </div>
+                
+                <p>Let's apply inheritance concepts to real engineering problems.</p>
+                
+                <h3>Control System Hierarchy</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 8.1: Control System</span>
+                        <button class="code-figure-run" onclick="runCode('code22')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code22"># Engineering: Control system hierarchy
+from abc import ABC, abstractmethod
+
+class Controller(ABC):
+    """Abstract base controller."""
+    
+    def __init__(self, name, setpoint):
+        self.name = name
+        self.setpoint = setpoint
+        self.output = 0
+    
+    @abstractmethod
+    def compute(self, current_value):
+        """Compute control output."""
+        pass
+    
+    def status(self):
+        return f"{self.name}: setpoint={self.setpoint}, output={self.output:.2f}"
+
+class OnOffController(Controller):
+    """Simple on/off controller."""
+    
+    def __init__(self, name, setpoint, hysteresis=1):
+        super().__init__(name, setpoint)
+        self.hysteresis = hysteresis
+    
+    def compute(self, current_value):
+        if current_value < self.setpoint - self.hysteresis:
+            self.output = 100  # Full on
+        elif current_value > self.setpoint + self.hysteresis:
+            self.output = 0    # Full off
+        return self.output
+
+class PController(Controller):
+    """Proportional controller."""
+    
+    def __init__(self, name, setpoint, kp=1.0):
+        super().__init__(name, setpoint)
+        self.kp = kp
+    
+    def compute(self, current_value):
+        error = self.setpoint - current_value
+        self.output = self.kp * error
+        return self.output
+
+class PIController(PController):
+    """Proportional-Integral controller."""
+    
+    def __init__(self, name, setpoint, kp=1.0, ki=0.1):
+        super().__init__(name, setpoint, kp)
+        self.ki = ki
+        self.integral = 0
+    
+    def compute(self, current_value):
+        error = self.setpoint - current_value
+        self.integral += error
+        self.output = self.kp * error + self.ki * self.integral
+        return self.output
+
+# Test controllers
+controllers = [
+    OnOffController("Heater", 25),
+    PController("Motor Speed", 1000, kp=0.5),
+    PIController("Temperature", 50, kp=2.0, ki=0.1)
+]
+
+current_values = [23, 800, 45]
+
+print("Controller Outputs:")
+print("-" * 50)
+for ctrl, value in zip(controllers, current_values):
+    output = ctrl.compute(value)
+    print(f"{ctrl.name}: input={value}, output={output:.2f}")</textarea>
+                    <div class="code-output" id="outputcode22">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Data Logger System</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 8.2: Data Logger System</span>
+                        <button class="code-figure-run" onclick="runCode('code23')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code23"># Engineering: Data logger system
+from abc import ABC, abstractmethod
+
+class DataLogger(ABC):
+    """Abstract data logger."""
+    
+    def __init__(self, name):
+        self.name = name
+        self.entries = []
+    
+    @abstractmethod
+    def format_entry(self, value):
+        """Format a log entry."""
+        pass
+    
+    def log(self, value):
+        entry = self.format_entry(value)
+        self.entries.append(entry)
+        return entry
+    
+    def get_all(self):
+        return self.entries.copy()
+
+class SimpleLogger(DataLogger):
+    """Simple text logger."""
+    
+    def format_entry(self, value):
+        return f"{len(self.entries)}: {value}"
+
+class TimestampLogger(DataLogger):
+    """Logger with timestamps."""
+    
+    def __init__(self, name):
+        super().__init__(name)
+        self.time = 0
+    
+    def format_entry(self, value):
+        entry = f"[t={self.time:04d}] {value}"
+        self.time += 1
+        return entry
+
+class CSVLogger(DataLogger):
+    """CSV format logger."""
+    
+    def __init__(self, name, columns):
+        super().__init__(name)
+        self.columns = columns
+        # Add header
+        self.entries.append(",".join(columns))
+    
+    def format_entry(self, value):
+        if isinstance(value, dict):
+            return ",".join(str(value.get(c, "")) for c in self.columns)
+        return str(value)
+
+# Test loggers
+simple = SimpleLogger("Basic")
+timed = TimestampLogger("Timed")
+csv = CSVLogger("CSV", ["temp", "pressure", "humidity"])
+
+# Log some data
+for i in range(3):
+    simple.log(f"Reading {i}")
+    timed.log(f"Sensor data {i}")
+    csv.log({"temp": 25+i, "pressure": 1013+i, "humidity": 50+i})
+
+print("Simple Logger:")
+for e in simple.get_all():
+    print(f"  {e}")
+
+print("\nTimestamp Logger:")
+for e in timed.get_all():
+    print(f"  {e}")
+
+print("\nCSV Logger:")
+for e in csv.get_all():
+    print(f"  {e}")</textarea>
+                    <div class="code-output" id="outputcode23">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 9: Additional Engineering Examples -->
+            <section id="part9" class="section">
+                <div class="section-header">
+                    <div class="section-number">9</div>
+                    <h2>Additional Engineering Examples</h2>
+                </div>
+                
+                <p>Let's explore more advanced inheritance patterns used in real-world engineering applications.</p>
+                
+                <h3>State Machine Pattern</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.1: State Machine with Inheritance</span>
+                        <button class="code-figure-run" onclick="runCode('code24')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code24"># State Machine pattern using inheritance
+from abc import ABC, abstractmethod
+
+class State(ABC):
+    """Abstract state."""
+    @abstractmethod
+    def handle(self, context):
+        pass
+
+class IdleState(State):
+    def handle(self, context):
+        print(f"{context.name}: Idle -> Ready")
+        context.state = ReadyState()
+
+class ReadyState(State):
+    def handle(self, context):
+        print(f"{context.name}: Ready -> Running")
+        context.state = RunningState()
+
+class RunningState(State):
+    def handle(self, context):
+        print(f"{context.name}: Running -> Complete")
+        context.state = CompleteState()
+
+class CompleteState(State):
+    def handle(self, context):
+        print(f"{context.name}: Complete -> Idle (reset)")
+        context.state = IdleState()
+
+class Machine:
+    def __init__(self, name):
+        self.name = name
+        self.state = IdleState()
+    
+    def step(self):
+        self.state.handle(self)
+    
+    def get_state(self):
+        return self.state.__class__.__name__
+
+# Test state machine
+machine = Machine("CNC_001")
+print(f"Initial state: {machine.get_state()}")
+
+for _ in range(5):
+    machine.step()
+    print(f"Current state: {machine.get_state()}")</textarea>
+                    <div class="code-output" id="outputcode24">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Command Pattern</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.2: Command Pattern</span>
+                        <button class="code-figure-run" onclick="runCode('code25')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code25"># Command pattern for robot control
+from abc import ABC, abstractmethod
+
+class Command(ABC):
+    """Abstract command."""
+    @abstractmethod
+    def execute(self):
+        pass
+    
+    @abstractmethod
+    def undo(self):
+        pass
+
+class MoveCommand(Command):
+    def __init__(self, robot, direction, distance):
+        self.robot = robot
+        self.direction = direction
+        self.distance = distance
+    
+    def execute(self):
+        self.robot.move(self.direction, self.distance)
+    
+    def undo(self):
+        opposite = {'N': 'S', 'S': 'N', 'E': 'W', 'W': 'E'}
+        self.robot.move(opposite[self.direction], self.distance)
+
+class RotateCommand(Command):
+    def __init__(self, robot, angle):
+        self.robot = robot
+        self.angle = angle
+    
+    def execute(self):
+        self.robot.rotate(self.angle)
+    
+    def undo(self):
+        self.robot.rotate(-self.angle)
+
+class Robot:
+    def __init__(self, name):
+        self.name = name
+        self.x = 0
+        self.y = 0
+        self.heading = 0
+    
+    def move(self, direction, distance):
+        moves = {'N': (0, 1), 'S': (0, -1), 'E': (1, 0), 'W': (-1, 0)}
+        dx, dy = moves[direction]
+        self.x += dx * distance
+        self.y += dy * distance
+        print(f"{self.name}: Moved {direction} {distance}m -> ({self.x}, {self.y})")
+    
+    def rotate(self, angle):
+        self.heading = (self.heading + angle) % 360
+        print(f"{self.name}: Rotated {angle}° -> heading {self.heading}°")
+
+# Test command pattern
+robot = Robot("R2D2")
+commands = [
+    MoveCommand(robot, 'N', 5),
+    MoveCommand(robot, 'E', 3),
+    RotateCommand(robot, 90)
+]
+
+print("=== Executing commands ===")
+for cmd in commands:
+    cmd.execute()
+
+print("\n=== Undoing commands ===")
+for cmd in reversed(commands):
+    cmd.undo()</textarea>
+                    <div class="code-output" id="outputcode25">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Observer Pattern</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.3: Observer Pattern for Sensors</span>
+                        <button class="code-figure-run" onclick="runCode('code26')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code26"># Observer pattern for sensor monitoring
+from abc import ABC, abstractmethod
+
+class Observer(ABC):
+    """Abstract observer."""
+    @abstractmethod
+    def update(self, subject):
+        pass
+
+class Subject:
+    """Observable subject."""
+    def __init__(self):
+        self._observers = []
+    
+    def attach(self, observer):
+        self._observers.append(observer)
+    
+    def detach(self, observer):
+        self._observers.remove(observer)
+    
+    def notify(self):
+        for observer in self._observers:
+            observer.update(self)
+
+class TemperatureSensor(Subject):
+    def __init__(self, sensor_id):
+        super().__init__()
+        self.sensor_id = sensor_id
+        self._temperature = 0
+    
+    @property
+    def temperature(self):
+        return self._temperature
+    
+    @temperature.setter
+    def temperature(self, value):
+        self._temperature = value
+        self.notify()
+
+class DisplayObserver(Observer):
+    def __init__(self, name):
+        self.name = name
+    
+    def update(self, subject):
+        print(f"[{self.name}] {subject.sensor_id}: {subject.temperature}°C")
+
+class AlarmObserver(Observer):
+    def __init__(self, threshold):
+        self.threshold = threshold
+    
+    def update(self, subject):
+        if subject.temperature > self.threshold:
+            print(f"⚠️ ALARM: {subject.sensor_id} exceeded {self.threshold}°C!")
+
+# Test observer pattern
+sensor = TemperatureSensor("TEMP_001")
+sensor.attach(DisplayObserver("Display1"))
+sensor.attach(DisplayObserver("Display2"))
+sensor.attach(AlarmObserver(30))
+
+print("=== Temperature readings ===")
+for temp in [22, 25, 28, 32, 35]:
+    print(f"\nSetting temperature to {temp}°C:")
+    sensor.temperature = temp</textarea>
+                    <div class="code-output" id="outputcode26">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+                
+                <h3>Factory Pattern</h3>
+                
+                <div class="code-figure">
+                    <div class="code-figure-header">
+                        <span class="code-figure-label">Figure 9.4: Factory Pattern</span>
+                        <button class="code-figure-run" onclick="runCode('code27')">▶ Run</button>
+                    </div>
+                    <textarea class="code-editor" id="code27"># Factory pattern for creating sensors
+from abc import ABC, abstractmethod
+
+class Sensor(ABC):
+    def __init__(self, sensor_id):
+        self.sensor_id = sensor_id
+        self.value = None
+    
+    @abstractmethod
+    def read(self):
+        pass
+    
+    @property
+    @abstractmethod
+    def unit(self):
+        pass
+
+class TemperatureSensor(Sensor):
+    @property
+    def unit(self):
+        return "°C"
+    
+    def read(self):
+        self.value = 25.0  # Simulated
+        return self.value
+
+class PressureSensor(Sensor):
+    @property
+    def unit(self):
+        return "hPa"
+    
+    def read(self):
+        self.value = 1013.25  # Simulated
+        return self.value
+
+class HumiditySensor(Sensor):
+    @property
+    def unit(self):
+        return "%"
+    
+    def read(self):
+        self.value = 65.0  # Simulated
+        return self.value
+
+class SensorFactory:
+    """Factory for creating sensors."""
+    _sensor_types = {
+        'temperature': TemperatureSensor,
+        'pressure': PressureSensor,
+        'humidity': HumiditySensor
+    }
+    
+    @classmethod
+    def create(cls, sensor_type, sensor_id):
+        if sensor_type not in cls._sensor_types:
+            raise ValueError(f"Unknown sensor type: {sensor_type}")
+        return cls._sensor_types[sensor_type](sensor_id)
+    
+    @classmethod
+    def register(cls, name, sensor_class):
+        cls._sensor_types[name] = sensor_class
+
+# Use the factory
+sensors = [
+    SensorFactory.create('temperature', 'TEMP_001'),
+    SensorFactory.create('pressure', 'PRES_001'),
+    SensorFactory.create('humidity', 'HUMI_001')
+]
+
+print("=== Sensor readings ===")
+for sensor in sensors:
+    value = sensor.read()
+    print(f"{sensor.sensor_id}: {value} {sensor.unit}")</textarea>
+                    <div class="code-output" id="outputcode27">
+                        <div class="code-output-label">Output</div>
+                        <div class="code-output-content"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Summary -->
+            <div class="summary-box">
+                <h3>📋 Week 11 Summary</h3>
+                <div class="summary-grid">
+                    <div class="summary-item"><span class="icon">🧬</span><span>Inheritance Basics</span></div>
+                    <div class="summary-item"><span class="icon">⬆️</span><span>super() Function</span></div>
+                    <div class="summary-item"><span class="icon">🔄</span><span>Method Overriding</span></div>
+                    <div class="summary-item"><span class="icon">🎭</span><span>Polymorphism</span></div>
+                    <div class="summary-item"><span class="icon">🔀</span><span>Multiple Inheritance</span></div>
+                    <div class="summary-item"><span class="icon">📐</span><span>Abstract Classes</span></div>
+                    <div class="summary-item"><span class="icon">✅</span><span>Best Practices</span></div>
+                    <div class="summary-item"><span class="icon">🔧</span><span>Design Patterns</span></div>
+                </div>
+            </div>
+
+            <!-- Exercises Section -->
+            <section id="exercises" class="section">
+                <div class="section-header">
+                    <div class="section-number">📝</div>
+                    <h2>Practice Exercises</h2>
+                </div>
+                
+                <p>Complete these 15 exercises to master OOP inheritance concepts in Python.</p>
+                
+                <!-- Exercise 1 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">1</span>Basic Inheritance</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>Vehicle</code> base class with <code>brand</code> and <code>model</code> attributes. Create a <code>Car</code> subclass that adds <code>num_doors</code>.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Toyota Camry
+Toyota Camry (4 doors)</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex1"># Create Vehicle and Car classes
+class Vehicle:
+    # Your code here
+    pass
+
+class Car(Vehicle):
+    # Your code here
+    pass
+
+# Test
+vehicle = Vehicle("Toyota", "Camry")
+car = Car("Toyota", "Camry", 4)
+print(vehicle.describe())
+print(car.describe())</textarea>
+                            <div class="code-output" id="outputex1">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 2 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">2</span>Using super()</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>Person</code> class and an <code>Employee</code> subclass. Use <code>super()</code> to call the parent constructor.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Person: Ali, 25 years
+Employee: Ayşe, 30 years, ID: E001</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex2"># Use super() correctly
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def __str__(self):
+        return f"Person: {self.name}, {self.age} years"
+
+class Employee(Person):
+    # Use super().__init__() here
+    pass
+
+# Test
+person = Person("Ali", 25)
+employee = Employee("Ayşe", 30, "E001")
+print(person)
+print(employee)</textarea>
+                            <div class="code-output" id="outputex2">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 3 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">3</span>Method Overriding</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Override the <code>speak()</code> method in <code>Dog</code> and <code>Cat</code> classes.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Some sound
+Buddy says Woof!
+Whiskers says Meow!</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex3">class Animal:
+    def __init__(self, name):
+        self.name = name
+    
+    def speak(self):
+        return "Some sound"
+
+class Dog(Animal):
+    # Override speak()
+    pass
+
+class Cat(Animal):
+    # Override speak()
+    pass
+
+# Test
+animal = Animal("Generic")
+dog = Dog("Buddy")
+cat = Cat("Whiskers")
+
+print(animal.speak())
+print(dog.speak())
+print(cat.speak())</textarea>
+                            <div class="code-output" id="outputex3">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 4 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">4</span>isinstance() Check</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a function that uses <code>isinstance()</code> to handle different shape types.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Rectangle: 50 sq units
+Circle: 78.54 sq units
+Unknown shape</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex4">class Shape:
+    pass
+
+class Rectangle(Shape):
+    def __init__(self, w, h):
+        self.w = w
+        self.h = h
+
+class Circle(Shape):
+    def __init__(self, r):
+        self.r = r
+
+def describe_shape(shape):
+    # Use isinstance() to check type
+    # Return appropriate description
+    pass
+
+# Test
+print(describe_shape(Rectangle(10, 5)))
+print(describe_shape(Circle(5)))
+print(describe_shape("not a shape"))</textarea>
+                            <div class="code-output" id="outputex4">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 5 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">5</span>Extending Methods</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>LoggedCalculator</code> that extends <code>Calculator</code> by logging operations.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>15
+[LOG] add(10, 5) = 15
+15</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex5">class Calculator:
+    def add(self, a, b):
+        return a + b
+
+class LoggedCalculator(Calculator):
+    # Override add() to print log and call super()
+    pass
+
+# Test
+calc = Calculator()
+logged_calc = LoggedCalculator()
+
+print(calc.add(10, 5))
+print(logged_calc.add(10, 5))</textarea>
+                            <div class="code-output" id="outputex5">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 6 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">6</span>Polymorphism</div>
+                        <span class="difficulty easy">Easy</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Write a <code>process_all()</code> function that calls <code>process()</code> on a list of objects polymorphically.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Processing text: Hello
+Processing number: 84
+Processing list: 3 items</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex6">class TextProcessor:
+    def __init__(self, text):
+        self.text = text
+    def process(self):
+        return f"Processing text: {self.text}"
+
+class NumberProcessor:
+    def __init__(self, number):
+        self.number = number
+    def process(self):
+        return f"Processing number: {self.number * 2}"
+
+class ListProcessor:
+    def __init__(self, items):
+        self.items = items
+    def process(self):
+        return f"Processing list: {len(self.items)} items"
+
+def process_all(processors):
+    # Call process() on each item
+    pass
+
+# Test
+items = [
+    TextProcessor("Hello"),
+    NumberProcessor(42),
+    ListProcessor([1, 2, 3])
+]
+process_all(items)</textarea>
+                            <div class="code-output" id="outputex6">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 7 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">7</span>Multiple Inheritance</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>FlyingFish</code> class that inherits from both <code>Flyable</code> and <code>Swimmable</code>.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Nemo is flying
+Nemo is swimming</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex7">class Flyable:
+    def fly(self):
+        return f"{self.name} is flying"
+
+class Swimmable:
+    def swim(self):
+        return f"{self.name} is swimming"
+
+class FlyingFish:  # Multiple inheritance
+    # Your code here
+    pass
+
+# Test
+fish = FlyingFish("Nemo")
+print(fish.fly())
+print(fish.swim())</textarea>
+                            <div class="code-output" id="outputex7">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 8 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">8</span>Mixin Class</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a <code>TimestampMixin</code> that adds timestamp capability to any class.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Event created at timestamp: 1
+Event created at timestamp: 2</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex8">class TimestampMixin:
+    _counter = 0
+    
+    def set_timestamp(self):
+        # Set self.timestamp to incrementing value
+        pass
+    
+    def get_timestamp(self):
+        return self.timestamp
+
+class Event(TimestampMixin):
+    def __init__(self, name):
+        self.name = name
+        self.set_timestamp()
+    
+    def __str__(self):
+        return f"{self.name} created at timestamp: {self.get_timestamp()}"
+
+# Test
+e1 = Event("Event")
+e2 = Event("Event")
+print(e1)
+print(e2)</textarea>
+                            <div class="code-output" id="outputex8">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 9 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">9</span>Abstract Base Class</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create an abstract <code>DataSource</code> class with abstract <code>read()</code> and <code>write()</code> methods.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Cannot instantiate abstract class
+FileSource read: data.txt
+MemorySource read: memory data</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex9">from abc import ABC, abstractmethod
+
+class DataSource(ABC):
+    # Define abstract read() and write() methods
+    pass
+
+class FileSource(DataSource):
+    def __init__(self, filename):
+        self.filename = filename
+    # Implement abstract methods
+
+class MemorySource(DataSource):
+    def __init__(self):
+        self.data = "memory data"
+    # Implement abstract methods
+
+# Test
+try:
+    ds = DataSource()
+except TypeError:
+    print("Cannot instantiate abstract class")
+
+file_src = FileSource("data.txt")
+mem_src = MemorySource()
+print(file_src.read())
+print(mem_src.read())</textarea>
+                            <div class="code-output" id="outputex9">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 10 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">10</span>Class Hierarchy</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a 3-level hierarchy: <code>Shape</code> → <code>Polygon</code> → <code>Rectangle</code>.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>Rectangle: 4 sides, area=50</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex10">class Shape:
+    def describe(self):
+        return "Shape"
+
+class Polygon(Shape):
+    def __init__(self, sides):
+        self.sides = sides
+    # Override describe
+
+class Rectangle(Polygon):
+    def __init__(self, width, height):
+        # Call Polygon's __init__ with 4 sides
+        self.width = width
+        self.height = height
+    
+    def area(self):
+        return self.width * self.height
+    # Override describe
+
+# Test
+rect = Rectangle(10, 5)
+print(rect.describe())</textarea>
+                            <div class="code-output" id="outputex10">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 11 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">11</span>Method Resolution Order</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Predict and verify the MRO for a diamond inheritance pattern.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>MRO: D -> B -> C -> A -> object
+D.greet(): Hello from B</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex11">class A:
+    def greet(self):
+        return "Hello from A"
+
+class B(A):
+    def greet(self):
+        return "Hello from B"
+
+class C(A):
+    def greet(self):
+        return "Hello from C"
+
+class D(B, C):
+    pass
+
+# Print MRO and test greet()
+# Your code here</textarea>
+                            <div class="code-output" id="outputex11">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 12 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">12</span>Sensor Hierarchy</div>
+                        <span class="difficulty medium">Medium</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a sensor class hierarchy with <code>Sensor</code> base class and specific sensor types.</p>
+                        <div class="expected-output">
+                            <div class="expected-output-label">✓ Expected Output</div>
+                            <pre>TEMP_001: 25.5 °C
+PRES_001: 1013.25 hPa</pre>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex12">class Sensor:
+    def __init__(self, sensor_id, unit):
+        self.sensor_id = sensor_id
+        self.unit = unit
+        self.value = None
+    
+    def read(self, value):
+        self.value = value
+    
+    def display(self):
+        return f"{self.sensor_id}: {self.value} {self.unit}"
+
+class TemperatureSensor(Sensor):
+    # Initialize with unit="°C"
+    pass
+
+class PressureSensor(Sensor):
+    # Initialize with unit="hPa"
+    pass
+
+# Test
+temp = TemperatureSensor("TEMP_001")
+pres = PressureSensor("PRES_001")
+
+temp.read(25.5)
+pres.read(1013.25)
+
+print(temp.display())
+print(pres.display())</textarea>
+                            <div class="code-output" id="outputex12">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 13 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">13</span>Plugin System</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create an abstract <code>Plugin</code> class and implement multiple concrete plugins.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints13')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints13">
+                                <ul>
+                                    <li>Use ABC and abstractmethod for the base class</li>
+                                    <li>Each plugin should have name property and execute() method</li>
+                                    <li>Create a PluginManager to run all plugins</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex13')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex13">from abc import ABC, abstractmethod
+
+class Plugin(ABC):
+    # Abstract property: name
+    # Abstract method: execute(data)
+    pass
+
+class UppercasePlugin(Plugin):
+    # Converts data to uppercase
+    pass
+
+class ReversePlugin(Plugin):
+    # Reverses the data string
+    pass
+
+class PluginManager:
+    def __init__(self):
+        self.plugins = []
+    
+    def register(self, plugin):
+        self.plugins.append(plugin)
+    
+    def run_all(self, data):
+        # Run each plugin and print results
+        pass
+
+# Test
+manager = PluginManager()
+manager.register(UppercasePlugin())
+manager.register(ReversePlugin())
+manager.run_all("hello world")</textarea>
+                            <div class="code-output" id="outputex13">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 14 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">14</span>Controller System</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a control system with OnOff, P, and PI controllers.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints14')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints14">
+                                <ul>
+                                    <li>Base Controller class with setpoint and compute() method</li>
+                                    <li>OnOffController: output 100 if below setpoint, 0 if above</li>
+                                    <li>PController: output = Kp * error</li>
+                                    <li>PIController extends PController with integral term</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex14')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex14"># Create Controller hierarchy
+class Controller:
+    def __init__(self, setpoint):
+        self.setpoint = setpoint
+    
+    def compute(self, current):
+        raise NotImplementedError
+
+class OnOffController(Controller):
+    pass
+
+class PController(Controller):
+    def __init__(self, setpoint, kp):
+        super().__init__(setpoint)
+        self.kp = kp
+
+class PIController(PController):
+    pass
+
+# Test
+onoff = OnOffController(25)
+p = PController(25, kp=2.0)
+pi = PIController(25, kp=2.0, ki=0.5)
+
+print(f"OnOff (current=20): {onoff.compute(20)}")
+print(f"P (current=20): {p.compute(20)}")
+print(f"PI (current=20): {pi.compute(20)}")</textarea>
+                            <div class="code-output" id="outputex14">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercise 15 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title"><span class="exercise-number">15</span>Game Character System</div>
+                        <span class="difficulty hard">Challenge</span>
+                    </div>
+                    <div class="exercise-body">
+                        <p class="exercise-description">Create a game character system with different character types using inheritance.</p>
+                        <div class="hints-container">
+                            <button class="hints-toggle" onclick="toggleHints('hints15')">💡 Show Hints</button>
+                            <div class="hints-content" id="hints15">
+                                <ul>
+                                    <li>Character base class with name, health, attack()</li>
+                                    <li>Warrior: high damage, low speed</li>
+                                    <li>Mage: magic attack, can heal</li>
+                                    <li>Rogue: fast, critical hits</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Your Solution</span>
+                                <button class="code-figure-run" onclick="runCode('ex15')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="ex15"># Game character system
+class Character:
+    def __init__(self, name, health):
+        self.name = name
+        self.health = health
+    
+    def attack(self):
+        return f"{self.name} attacks for 10 damage"
+    
+    def take_damage(self, amount):
+        self.health -= amount
+        return f"{self.name} takes {amount} damage (health: {self.health})"
+
+class Warrior(Character):
+    # Override attack for higher damage
+    pass
+
+class Mage(Character):
+    # Override attack and add heal()
+    pass
+
+class Rogue(Character):
+    # Override attack with critical chance
+    pass
+
+# Test
+warrior = Warrior("Conan", 100)
+mage = Mage("Gandalf", 60)
+rogue = Rogue("Shadow", 70)
+
+print(warrior.attack())
+print(mage.attack())
+print(mage.heal())
+print(rogue.attack())</textarea>
+                            <div class="code-output" id="outputex15">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Submit Section -->
+            <section id="submit" class="section">
+                <div class="section-header">
+                    <div class="section-number">📤</div>
+                    <h2>Submit Your Work</h2>
+                </div>
+                
+                <div class="submit-section">
+                    <h2>📋 Submission Form</h2>
+                    <p>Complete the exercises above, then fill out this form to record your attendance and participation for Week 11.</p>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Student ID</label>
+                            <input type="text" id="studentId" placeholder="e.g., 2024001234" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="studentName" placeholder="e.g., Ahmet Yılmaz">
+                        </div>
+                        <div class="form-group">
+                            <label>Email (@istun.edu.tr)</label>
+                            <input type="email" id="studentEmail" placeholder="e.g., ahmet.yilmaz@istun.edu.tr">
+                        </div>
+                        <div class="form-group">
+                            <label>Class Code (from instructor)</label>
+                            <input type="text" id="classCode" placeholder="Enter code from class">
+                        </div>
+                    </div>
+                    
+                    <div class="honeypot">
+                        <input type="text" id="website" tabindex="-1" autocomplete="off">
+                    </div>
+                    
+                    <button class="submit-btn" onclick="submitWork()">Submit Week 11</button>
+                    
+                    <div class="submit-status" id="submitStatus"></div>
+                </div>
+            </section>
+            
+            <!-- Navigation -->
+            <div class="page-nav">
+                <a href="Week_10.html" class="nav-btn">← Week 10: OOP Basics</a>
+                <a href="index.html?home=true" class="nav-btn">Course Home</a>
+                <a href="Week_12.html" class="nav-btn">Week 12: File I/O →</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // =========================================
+        // Progress Bar
+        // =========================================
+        function updateProgress() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = Math.min(100, Math.max(0, (winScroll / height) * 100));
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        }
+        window.addEventListener('scroll', updateProgress);
+        window.addEventListener('load', updateProgress);
+        
+        // =========================================
+        // Hints Toggle
+        // =========================================
+        function toggleHints(id) {
+            const hints = document.getElementById(id);
+            hints.classList.toggle('show');
+            const btn = hints.previousElementSibling;
+            btn.textContent = hints.classList.contains('show') ? '💡 Hide Hints' : '💡 Show Hints';
+        }
+        
+        // =========================================
+        // Pyodide Python Execution
+        // =========================================
+        let pyodideReady = false;
+        let pyodide = null;
+        
+        async function initPyodide() {
+            if (!pyodideReady) {
+                try {
+                    pyodide = await loadPyodide();
+                    pyodideReady = true;
+                    console.log("Pyodide loaded successfully");
+                } catch (e) {
+                    console.error("Failed to load Pyodide:", e);
+                    throw e;
+                }
+            }
+            return pyodide;
+        }
+        
+        async function runCode(codeId) {
+            const codeEl = document.getElementById(codeId);
+            const outputEl = document.getElementById('output' + codeId);
+            const code = codeEl.value;
+            
+            outputEl.classList.add('show');
+            const outputContent = outputEl.querySelector('.code-output-content');
+            
+            if (!pyodideReady) {
+                outputContent.textContent = 'Initializing Python (first run takes a few seconds)...';
+                try {
+                    await initPyodide();
+                } catch (e) {
+                    outputContent.textContent = 'Error loading Python: ' + e.message;
+                    return;
+                }
+            }
+            
+            outputContent.textContent = 'Running...';
+            
+            try {
+                // Reset stdout
+                pyodide.runPython(`
+import sys
+from io import StringIO
+sys.stdout = StringIO()
+`);
+                // Run the user's code
+                await pyodide.runPythonAsync(code);
+                
+                // Get the output
+                const output = pyodide.runPython(`sys.stdout.getvalue()`);
+                outputContent.textContent = output || '(no output)';
+            } catch (e) {
+                outputContent.textContent = 'Error: ' + e.message;
+            }
+        }
+        
+        // =========================================
+        // Form Validation
+        // =========================================
+        const pageLoadTime = Date.now();
+        
+        function validateStudentId(id) {
+            if (id.length < 6 || id.length > 10) return false;
+            if (!/^\d+$/.test(id)) return false;
+            if (/^(\d)\1+$/.test(id)) return false;
+            return true;
+        }
+        
+        function validateName(name) {
+            if (name.length < 5) return false;
+            const words = name.trim().split(/\s+/);
+            if (words.length < 2) return false;
+            if (!/^[A-Za-zğüşıöçĞÜŞİÖÇ\s]+$/.test(name)) return false;
+            return true;
+        }
+        
+        function validateEmail(email) {
+            return email.endsWith('@istun.edu.tr') && email.length > 15;
+        }
+        
+        // =========================================
+        // Form Submission
+        // =========================================
+        function submitWork() {
+            const status = document.getElementById('submitStatus');
+            status.style.display = 'none';
+            
+            const studentId = document.getElementById('studentId').value.trim();
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentEmail = document.getElementById('studentEmail').value.trim().toLowerCase();
+            const classCode = document.getElementById('classCode').value.trim().toUpperCase();
+            const honeypot = document.getElementById('website').value;
+            
+            // Anti-spam check
+            if (honeypot) {
+                status.textContent = '❌ Submission rejected.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Time check
+            const timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000);
+            if (timeOnPage < 60) {
+                status.textContent = '❌ Please spend more time reviewing the material before submitting.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Required fields
+            if (!studentId || !studentName || !studentEmail || !classCode) {
+                status.textContent = '❌ All fields are required.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Student ID validation
+            if (!validateStudentId(studentId)) {
+                status.textContent = '❌ Invalid Student ID. Must be 6-10 digits.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Name validation
+            if (!validateName(studentName)) {
+                status.textContent = '❌ Please enter your full name (first and last name).';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Email validation
+            if (!validateEmail(studentEmail)) {
+                status.textContent = '❌ Please use your @istun.edu.tr email address.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Class code validation
+            if (classCode.length < 4) {
+                status.textContent = '❌ Invalid class code.';
+                status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                return;
+            }
+            
+            // Prepare data
+            const data = {
+                week: 'Week_11',
+                studentId: studentId,
+                studentName: studentName,
+                studentEmail: studentEmail,
+                classCode: classCode,
+                timeOnPage: timeOnPage,
+                source: 'cp2-web'
+            };
+            
+            status.textContent = '⏳ Submitting...';
+            status.style.cssText = 'display:block;background:rgba(8,145,178,0.2);color:#a78bfa';
+            
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbyf1D3HGSAX4MoIhNlAuWlGrFyyvbM5MIv7ZsLxrVDlATUihrRGEAaibvIZYlCfd8Me/exec';
+            
+            // Try CORS first, fall back to no-cors
+            fetch(scriptUrl, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    status.textContent = '✅ ' + result.message;
+                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                } else {
+                    status.textContent = '❌ ' + result.message;
+                    status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                }
+            })
+            .catch(error => {
+                // Fallback to no-cors mode
+                fetch(scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(data)
+                })
+                .then(() => {
+                    status.textContent = '✅ Submission received! Thank you.';
+                    status.style.cssText = 'display:block;background:rgba(5,150,105,0.2);color:#6ee7b7';
+                })
+                .catch(() => {
+                    status.textContent = '❌ Connection error. Please try again later.';
+                    status.style.cssText = 'display:block;background:rgba(220,38,38,0.2);color:#fca5a5';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
