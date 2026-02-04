@@ -58,6 +58,20 @@
             opacity: 0.8;
         }
         
+        .syllabus-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: system-ui, sans-serif;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .syllabus-btn:hover { background: rgba(255,255,255,0.2); }
+        
         /* Container */
         .container {
             max-width: 1100px;
@@ -166,12 +180,20 @@
             color: var(--warning);
         }
         
-        /* Week Grid */
+        /* Week Grid - 3 columns */
         .week-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin-bottom: 50px;
+        }
+        
+        @media (max-width: 1024px) {
+            .week-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 640px) {
+            .week-grid { grid-template-columns: 1fr; }
         }
         
         .week-card {
@@ -308,7 +330,6 @@
         /* Responsive */
         @media (max-width: 600px) {
             .chapter-header h1 { font-size: 2rem; }
-            .week-grid { grid-template-columns: 1fr; }
             .info-grid { grid-template-columns: 1fr; }
             .container { padding: 40px 16px; }
         }
@@ -321,6 +342,7 @@
         <div class="topbar-title">Computer Programming II</div>
         <div class="topbar-subtitle">CP2 • Spring 2026</div>
     </div>
+    <a href="syllabus.html" class="syllabus-btn">📋 Syllabus</a>
 </div>
 
 <div class="container">
