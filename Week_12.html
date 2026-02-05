@@ -33,7 +33,7 @@
         .topbar-nav { display: flex; gap: 24px; align-items: center; }
         .progress-container { position: fixed; top: 52px; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 99; }
         .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa); width: 0%; transition: width 0.15s ease-out; }
-        .container { max-width: 900px; margin: 0 auto; padding: 50px 24px 80px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
         .chapter-header { text-align: center; margin-bottom: 50px; padding-bottom: 40px; border-bottom: 2px solid var(--border); }
         .chapter-label { display: inline-block; background: var(--accent); color: white; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-family: system-ui, sans-serif; font-weight: 500; margin-bottom: 20px; }
         .chapter-header h1 { font-size: 2.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; }
@@ -58,11 +58,39 @@
         .code-figure-label { font-family: system-ui, sans-serif; font-size: 0.8rem; color: #a78bfa; font-weight: 500; }
         .code-figure-run { background: var(--success); color: white; border: none; padding: 6px 14px; border-radius: 6px; font-family: system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
         .code-figure-run:hover { background: #047857; }
-        .code-editor { width: 100%; min-height: 120px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; }
-        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; }
+        .code-editor { width: 100%; min-height: 80px; max-height: 300px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; overflow-y: auto; }
+        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; max-height: 200px; overflow-y: auto; }
         .code-output.show { display: block; }
         .code-output-label { font-family: system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--success); text-transform: uppercase; margin-bottom: 8px; }
         .code-output-content { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #d4d4d8; white-space: pre-wrap; }
+        
+        .code-figure .code-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 200px; }
+        .code-figure .code-split .code-editor { max-height: 400px; border-right: 1px solid #333; }
+        .code-figure .code-split .code-output { border-top: none; display: flex; flex-direction: column; background: rgba(5,150,105,0.08); max-height: 400px; overflow-y: auto; }
+        .code-figure .code-split .code-output.show { display: flex; }
+        .code-figure .code-split .code-output .code-output-content { flex: 1; overflow-y: auto; }
+        .code-figure .code-split .code-output:not(.show) { display: flex; opacity: 0.4; }
+        .code-figure .code-split .code-output:not(.show) .code-output-content::after { content: 'Click ▶ Run to see output here'; color: #666; font-style: italic; font-size: 0.8rem; }
+        .code-figure .code-split .code-output.show { opacity: 1; }
+        
+        .exercise-body { padding: 0 !important; display: grid; grid-template-columns: 1fr 1fr; min-height: 280px; }
+        .exercise-info-panel { padding: 24px; border-right: 1px solid var(--border); overflow-y: auto; max-height: 450px; background: rgba(249,115,22,0.02); }
+        .exercise-info-panel .exercise-description { margin-bottom: 16px; }
+        .exercise-info-panel .expected-output { margin: 12px 0 16px; }
+        .exercise-info-panel .hints-container { margin-top: 12px; }
+        .exercise-code-panel { display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure { margin: 0; border: none; border-radius: 0; flex: 1; display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure-header { border-radius: 0; }
+        .exercise-code-panel .code-editor { flex: 1; min-height: 150px; max-height: none; resize: none; }
+        .exercise-code-panel .code-output { max-height: 180px; }
+        
+        @media (max-width: 900px) {
+            .exercise-body { grid-template-columns: 1fr; }
+            .exercise-info-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: none; }
+            .code-figure .code-split { grid-template-columns: 1fr; }
+            .code-figure .code-split .code-editor { border-right: none; border-bottom: 1px solid #333; }
+            .code-figure .code-split .code-output { border-top: none; }
+        }
         .info-box { padding: 18px 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid; }
         .info-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
         .tip-box { background: rgba(5, 150, 105, 0.08); border-color: var(--success); }
@@ -82,7 +110,7 @@
         .difficulty.easy { background: rgba(5, 150, 105, 0.12); color: var(--success); }
         .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
         .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
-        .exercise-body { padding: 24px; }
+        .exercise-body { /* handled by split layout CSS */ }
         .expected-output { background: rgba(5, 150, 105, 0.06); border: 1px solid rgba(5, 150, 105, 0.15); border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
         .expected-output-label { font-size: 0.8rem; font-weight: 600; color: var(--success); text-transform: uppercase; margin-bottom: 10px; font-family: system-ui, sans-serif; }
         .expected-output pre { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-secondary); margin: 0; background: transparent; padding: 0; }
@@ -1770,8 +1798,7 @@ except SensorNotFoundError as e:
                         <div class="exercise-title"><span class="exercise-number">1</span>Basic Import</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Import the <code>math</code> module and calculate the area of a circle with radius 5.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Import the <code>math</code> module and calculate the area of a circle with radius 5.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Area of circle with radius 5: 78.54</pre>
@@ -1785,8 +1812,7 @@ except SensorNotFoundError as e:
                                     <li>Formula: <code>math.pi * radius ** 2</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
@@ -1802,8 +1828,7 @@ print(f"Area of circle with radius {radius}: {area:.2f}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 2 -->
@@ -1812,8 +1837,7 @@ print(f"Area of circle with radius {radius}: {area:.2f}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">2</span>Import with Alias</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Import <code>random</code> with alias <code>rnd</code> and generate 5 random integers between 1 and 100.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Import <code>random</code> with alias <code>rnd</code> and generate 5 random integers between 1 and 100.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output (example)</div>
                             <pre>Random numbers: [42, 17, 83, 56, 91]</pre>
@@ -1827,8 +1851,7 @@ print(f"Area of circle with radius {radius}: {area:.2f}")</textarea>
                                     <li>Use list comprehension for 5 numbers</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
@@ -1842,8 +1865,7 @@ print(f"Random numbers: {numbers}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 3 -->
@@ -1852,8 +1874,7 @@ print(f"Random numbers: {numbers}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">3</span>Import Specific Items</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Import only <code>sqrt</code> and <code>pow</code> from <code>math</code>. Calculate √144 and 2¹⁰.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Import only <code>sqrt</code> and <code>pow</code> from <code>math</code>. Calculate √144 and 2¹⁰.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Square root of 144: 12.0
@@ -1868,8 +1889,7 @@ print(f"Random numbers: {numbers}")</textarea>
                                     <li>No need for <code>math.</code> prefix</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
@@ -1883,8 +1903,7 @@ print(f"2 to the power 10: {pow(2, 10)}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 4 -->
@@ -1893,8 +1912,7 @@ print(f"2 to the power 10: {pow(2, 10)}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">4</span>Using datetime</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Use <code>datetime</code> to get current date and format as "YYYY-MM-DD HH:MM".</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Use <code>datetime</code> to get current date and format as "YYYY-MM-DD HH:MM".</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output (example)</div>
                             <pre>Current: 2025-06-15 14:30</pre>
@@ -1908,8 +1926,7 @@ print(f"2 to the power 10: {pow(2, 10)}")</textarea>
                                     <li>%Y=year, %m=month, %d=day, %H=hour, %M=minute</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
@@ -1924,8 +1941,7 @@ print(f"Current: {formatted}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 5 -->
@@ -1934,8 +1950,7 @@ print(f"Current: {formatted}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">5</span>Using json</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Convert a dictionary to JSON string and back.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Convert a dictionary to JSON string and back.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>JSON: {"name": "Sensor1", "value": 25.5}
@@ -1950,8 +1965,7 @@ Back to dict: {'name': 'Sensor1', 'value': 25.5}</pre>
                                     <li>dumps = dump string, loads = load string</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
@@ -1969,8 +1983,7 @@ print(f"Back to dict: {back_to_dict}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 6 -->
@@ -1979,8 +1992,7 @@ print(f"Back to dict: {back_to_dict}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">6</span>Using Counter</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Use <code>Counter</code> to count status codes.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Use <code>Counter</code> to count status codes.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Counts: {'OK': 4, 'ERROR': 2, 'WARNING': 1}
@@ -1995,8 +2007,7 @@ Most common: OK (4 times)</pre>
                                     <li>Returns list of (item, count) tuples</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
@@ -2013,8 +2024,7 @@ print(f"Counts: {dict(counts)}")
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 7 -->
@@ -2023,8 +2033,7 @@ print(f"Counts: {dict(counts)}")
                         <div class="exercise-title"><span class="exercise-number">7</span>Module Functions</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create temperature and length conversion functions.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create temperature and length conversion functions.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>100°C = 212.0°F
@@ -2039,8 +2048,7 @@ print(f"Counts: {dict(counts)}")
                                     <li>Return the calculated value</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
@@ -2061,8 +2069,7 @@ print(f"10m = {meters_to_feet(10):.2f}ft")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 8 -->
@@ -2071,8 +2078,7 @@ print(f"10m = {meters_to_feet(10):.2f}ft")</textarea>
                         <div class="exercise-title"><span class="exercise-number">8</span>__name__ Pattern</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a module with test code using __name__.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a module with test code using __name__.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Running tests...
@@ -2089,8 +2095,7 @@ All tests passed!</pre>
                                     <li>Or use <code>math.factorial(n)</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
@@ -2111,8 +2116,7 @@ if __name__ == "__main__":
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 9 -->
@@ -2121,8 +2125,7 @@ if __name__ == "__main__":
                         <div class="exercise-title"><span class="exercise-number">9</span>namedtuple</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a <code>SensorReading</code> namedtuple.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a <code>SensorReading</code> namedtuple.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Reading: SensorReading(sensor_id='TEMP_001', value=25.5, unit='C')
@@ -2137,8 +2140,7 @@ Value: 25.5 C</pre>
                                     <li>Access: <code>reading.value</code>, <code>reading.unit</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
@@ -2156,8 +2158,7 @@ print(f"Value: {reading.value} {reading.unit}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 10 -->
@@ -2166,8 +2167,7 @@ print(f"Value: {reading.value} {reading.unit}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">10</span>defaultdict</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Group sensor readings by ID using <code>defaultdict</code>.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Group sensor readings by ID using <code>defaultdict</code>.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>TEMP_001: [25.5, 26.0, 25.8]
@@ -2182,8 +2182,7 @@ TEMP_002: [24.0, 24.5]</pre>
                                     <li>No need to check if key exists</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
@@ -2208,8 +2207,7 @@ for sensor_id, values in grouped.items():
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 11 -->
@@ -2218,8 +2216,7 @@ for sensor_id, values in grouped.items():
                         <div class="exercise-title"><span class="exercise-number">11</span>Time Calculations</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Calculate dates 30 days from now and 90 days ago.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Calculate dates 30 days from now and 90 days ago.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
                             <div class="hints-content" id="hints11">
@@ -2229,8 +2226,7 @@ for sensor_id, values in grouped.items():
                                     <li>Past: <code>today - timedelta(days=90)</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
@@ -2249,8 +2245,7 @@ print(f"90 days ago: {days_past}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 12 -->
@@ -2259,8 +2254,7 @@ print(f"90 days ago: {days_past}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">12</span>deque Buffer</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a fixed-size buffer using <code>deque</code>.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a fixed-size buffer using <code>deque</code>.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>After adding 8 readings: [4, 5, 6, 7, 8]</pre>
@@ -2274,8 +2268,7 @@ print(f"90 days ago: {days_past}")</textarea>
                                     <li>Old items auto-removed when full</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
@@ -2293,8 +2286,7 @@ print(f"After adding 8 readings: {list(buffer)}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 13 -->
@@ -2303,8 +2295,7 @@ print(f"After adding 8 readings: {list(buffer)}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">13</span>Config Module</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a configuration module with constants and validation.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a configuration module with constants and validation.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints13')">💡 Show Hints</button>
                             <div class="hints-content" id="hints13">
@@ -2313,8 +2304,7 @@ print(f"After adding 8 readings: {list(buffer)}")</textarea>
                                     <li>Create validate_temp() and get_config() functions</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex13')">▶ Run</button>
@@ -2342,8 +2332,7 @@ if __name__ == "__main__":
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 14 -->
@@ -2352,8 +2341,7 @@ if __name__ == "__main__":
                         <div class="exercise-title"><span class="exercise-number">14</span>Sensor Package</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Design sensor classes with inheritance.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Design sensor classes with inheritance.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints14')">💡 Show Hints</button>
                             <div class="hints-content" id="hints14">
@@ -2362,8 +2350,7 @@ if __name__ == "__main__":
                                     <li>TemperatureSensor and PressureSensor inherit from Sensor</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex14')">▶ Run</button>
@@ -2394,8 +2381,7 @@ print(f"{pres.sensor_id}: {pres.value} hPa")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 15 -->
@@ -2404,8 +2390,7 @@ print(f"{pres.sensor_id}: {pres.value} hPa")</textarea>
                         <div class="exercise-title"><span class="exercise-number">15</span>Data Logger Module</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a data logger with timestamps and JSON export.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a data logger with timestamps and JSON export.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints15')">💡 Show Hints</button>
                             <div class="hints-content" id="hints15">
@@ -2414,8 +2399,7 @@ print(f"{pres.sensor_id}: {pres.value} hPa")</textarea>
                                     <li>Implement log(), get_all(), to_json()</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex15')">▶ Run</button>
@@ -2451,8 +2435,7 @@ print(logger.to_json())</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
             </section>
 
@@ -2782,9 +2765,7 @@ sensor.read(35.0)  # Triggers alert</textarea>
                         <div class="exercise-title"><span class="exercise-number">B1</span>Statistics Module</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Use the <code>statistics</code> module to calculate mean, median, and standard deviation.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Use the <code>statistics</code> module to calculate mean, median, and standard deviation.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB1')">▶ Run</button>
@@ -2806,8 +2787,7 @@ print(f"Std Dev: {stdev:.2f}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Bonus Exercise 2 -->
@@ -2816,9 +2796,7 @@ print(f"Std Dev: {stdev:.2f}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">B2</span>pathlib Module</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Use <code>pathlib</code> for modern path operations.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Use <code>pathlib</code> for modern path operations.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB2')">▶ Run</button>
@@ -2843,8 +2821,7 @@ print(f"Joined: {config_file}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Bonus Exercise 3 -->
@@ -2853,9 +2830,7 @@ print(f"Joined: {config_file}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">B3</span>CSV Module</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Use the <code>csv</code> module to read and write CSV data.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Use the <code>csv</code> module to read and write CSV data.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB3')">▶ Run</button>
@@ -2885,8 +2860,7 @@ print(f"\n=== Generated CSV ===\n{output.getvalue()}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Bonus Exercise 4 -->
@@ -2895,9 +2869,7 @@ print(f"\n=== Generated CSV ===\n{output.getvalue()}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">B4</span>argparse Module</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a command-line interface using <code>argparse</code>.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a command-line interface using <code>argparse</code>.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB4')">▶ Run</button>
@@ -2925,8 +2897,7 @@ if args.verbose:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Bonus Exercise 5 -->
@@ -2935,9 +2906,7 @@ if args.verbose:
                         <div class="exercise-title"><span class="exercise-number">B5</span>Complete Module</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a complete module with documentation, error handling, and tests.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a complete module with documentation, error handling, and tests.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB5')">▶ Run</button>
@@ -2999,8 +2968,7 @@ if __name__ == "__main__":
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Bonus Exercise 6 -->
@@ -3009,9 +2977,7 @@ if __name__ == "__main__":
                         <div class="exercise-title"><span class="exercise-number">B6</span>Logging Module</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Use Python's <code>logging</code> module for proper logging.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Use Python's <code>logging</code> module for proper logging.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB6')">▶ Run</button>
@@ -3054,8 +3020,7 @@ sensor.read(55)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Bonus Exercise 7 -->
@@ -3064,9 +3029,7 @@ sensor.read(55)</textarea>
                         <div class="exercise-title"><span class="exercise-number">B7</span>hashlib Module</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Use <code>hashlib</code> to create data checksums.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Use <code>hashlib</code> to create data checksums.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB7')">▶ Run</button>
@@ -3102,8 +3065,7 @@ print(f"After modification: {compute_checksum(sensor_data_copy) == checksum}")</
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Bonus Exercise 8 -->
@@ -3112,9 +3074,7 @@ print(f"After modification: {compute_checksum(sensor_data_copy) == checksum}")</
                         <div class="exercise-title"><span class="exercise-number">B8</span>threading Module</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Use <code>threading</code> for concurrent sensor reading.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Use <code>threading</code> for concurrent sensor reading.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB8')">▶ Run</button>
@@ -3165,8 +3125,7 @@ for sensor in sensors:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
             </section>
 
@@ -3224,6 +3183,21 @@ for sensor in sensors:
         }
         window.addEventListener('scroll', updateProgress);
         window.addEventListener('load', updateProgress);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.code-figure').forEach(function(figure) {
+                if (figure.closest('.exercise-code-panel')) return;
+                var editor = figure.querySelector('.code-editor');
+                var output = figure.querySelector('.code-output');
+                if (editor && output) {
+                    var splitDiv = document.createElement('div');
+                    splitDiv.className = 'code-split';
+                    editor.parentNode.insertBefore(splitDiv, editor);
+                    splitDiv.appendChild(editor);
+                    splitDiv.appendChild(output);
+                }
+            });
+        });
 
         // Hints Toggle
         function toggleHints(id) {

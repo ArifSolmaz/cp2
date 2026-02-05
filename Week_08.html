@@ -86,7 +86,7 @@
         
         /* Main container */
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 50px 24px 80px;
         }
@@ -269,7 +269,8 @@
         
         .code-editor {
             width: 100%;
-            min-height: 120px;
+            min-height: 80px;
+            max-height: 300px;
             padding: 16px;
             background: var(--bg-code);
             border: none;
@@ -279,6 +280,7 @@
             line-height: 1.6;
             resize: vertical;
             outline: none;
+            overflow-y: auto;
         }
         
         .code-output {
@@ -286,6 +288,8 @@
             border-top: 1px solid #333;
             padding: 14px 16px;
             display: none;
+            max-height: 200px;
+            overflow-y: auto;
         }
         
         .code-output.show { display: block; }
@@ -305,6 +309,34 @@
             font-size: 0.85rem;
             color: #d4d4d8;
             white-space: pre-wrap;
+        }
+        
+        .code-figure .code-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 200px; }
+        .code-figure .code-split .code-editor { max-height: 400px; border-right: 1px solid #333; }
+        .code-figure .code-split .code-output { border-top: none; display: flex; flex-direction: column; background: rgba(5,150,105,0.08); max-height: 400px; overflow-y: auto; }
+        .code-figure .code-split .code-output.show { display: flex; }
+        .code-figure .code-split .code-output .code-output-content { flex: 1; overflow-y: auto; }
+        .code-figure .code-split .code-output:not(.show) { display: flex; opacity: 0.4; }
+        .code-figure .code-split .code-output:not(.show) .code-output-content::after { content: 'Click ▶ Run to see output here'; color: #666; font-style: italic; font-size: 0.8rem; }
+        .code-figure .code-split .code-output.show { opacity: 1; }
+        
+        .exercise-body { padding: 0 !important; display: grid; grid-template-columns: 1fr 1fr; min-height: 280px; }
+        .exercise-info-panel { padding: 24px; border-right: 1px solid var(--border); overflow-y: auto; max-height: 450px; background: rgba(249,115,22,0.02); }
+        .exercise-info-panel .exercise-description { margin-bottom: 16px; }
+        .exercise-info-panel .expected-output { margin: 12px 0 16px; }
+        .exercise-info-panel .hints-container { margin-top: 12px; }
+        .exercise-code-panel { display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure { margin: 0; border: none; border-radius: 0; flex: 1; display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure-header { border-radius: 0; }
+        .exercise-code-panel .code-editor { flex: 1; min-height: 150px; max-height: none; resize: none; }
+        .exercise-code-panel .code-output { max-height: 180px; }
+        
+        @media (max-width: 900px) {
+            .exercise-body { grid-template-columns: 1fr; }
+            .exercise-info-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: none; }
+            .code-figure .code-split { grid-template-columns: 1fr; }
+            .code-figure .code-split .code-editor { border-right: none; border-bottom: 1px solid #333; }
+            .code-figure .code-split .code-output { border-top: none; }
         }
         
         /* Info boxes */
@@ -402,7 +434,7 @@
         .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
         .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
         
-        .exercise-body { padding: 24px; }
+        .exercise-body { /* handled by split layout CSS */ }
         
         .exercise-description { color: var(--text-secondary); font-size: 1rem; margin-bottom: 20px; }
         
@@ -1316,8 +1348,7 @@ print(f"Missing: {config.get('missing', 'default')}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">1</span>Create and Write File</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a file named "greeting.txt" and write "Hello, Python!" to it.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a file named "greeting.txt" and write "Hello, Python!" to it.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints1')">💡 Show Hints</button>
                             <div class="hints-content" id="hints1">
@@ -1327,8 +1358,7 @@ print(f"Missing: {config.get('missing', 'default')}")</textarea>
                                     <li>Mode 'w' creates new file or overwrites</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
@@ -1342,8 +1372,7 @@ with open('greeting.txt', 'r') as f:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 2 -->
@@ -1352,8 +1381,7 @@ with open('greeting.txt', 'r') as f:
                         <div class="exercise-title"><span class="exercise-number">2</span>Read File Lines</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a file with 3 lines and read them into a list.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a file with 3 lines and read them into a list.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>['Line 1', 'Line 2', 'Line 3']</pre>
@@ -1367,8 +1395,7 @@ with open('greeting.txt', 'r') as f:
                                     <li>Or use list comprehension with <code>.strip()</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
@@ -1386,8 +1413,7 @@ print(lines)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 3 -->
@@ -1396,8 +1422,7 @@ print(lines)</textarea>
                         <div class="exercise-title"><span class="exercise-number">3</span>Append to File</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Append "New entry" to an existing file.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Append "New entry" to an existing file.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
                             <div class="hints-content" id="hints3">
@@ -1407,8 +1432,7 @@ print(lines)</textarea>
                                     <li>Append doesn't overwrite existing content</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
@@ -1426,8 +1450,7 @@ with open('log.txt', 'r') as f:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 4 -->
@@ -1436,8 +1459,7 @@ with open('log.txt', 'r') as f:
                         <div class="exercise-title"><span class="exercise-number">4</span>Count Lines</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Count the number of lines in a file.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Count the number of lines in a file.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Line count: 5</pre>
@@ -1451,8 +1473,7 @@ with open('log.txt', 'r') as f:
                                     <li>Example: <code>len(f.readlines())</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
@@ -1471,8 +1492,7 @@ print(f"Line count: {count}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 5 -->
@@ -1481,8 +1501,7 @@ print(f"Line count: {count}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">5</span>Check File Exists</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Check if a file exists before reading it.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Check if a file exists before reading it.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints5')">💡 Show Hints</button>
                             <div class="hints-content" id="hints5">
@@ -1492,8 +1511,7 @@ print(f"Line count: {count}")</textarea>
                                     <li>Import: <code>import os</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
@@ -1512,8 +1530,7 @@ else:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 6 -->
@@ -1522,8 +1539,7 @@ else:
                         <div class="exercise-title"><span class="exercise-number">6</span>Write CSV</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Write a list of students to a CSV file.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Write a list of students to a CSV file.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
                             <div class="hints-content" id="hints6">
@@ -1533,8 +1549,7 @@ else:
                                     <li>Open with <code>newline=''</code> for CSV</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
@@ -1557,8 +1572,7 @@ with open('students.csv', 'r') as f:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 7 -->
@@ -1567,8 +1581,7 @@ with open('students.csv', 'r') as f:
                         <div class="exercise-title"><span class="exercise-number">7</span>Read CSV to Dict</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Read CSV file using DictReader and print each row.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Read CSV file using DictReader and print each row.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints7')">💡 Show Hints</button>
                             <div class="hints-content" id="hints7">
@@ -1578,8 +1591,7 @@ with open('students.csv', 'r') as f:
                                     <li>Access values: <code>row['column_name']</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
@@ -1595,8 +1607,7 @@ with open('students.csv', 'r') as f:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 8 -->
@@ -1605,8 +1616,7 @@ with open('students.csv', 'r') as f:
                         <div class="exercise-title"><span class="exercise-number">8</span>JSON Write and Read</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Write a dictionary to JSON file and read it back.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Write a dictionary to JSON file and read it back.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints8')">💡 Show Hints</button>
                             <div class="hints-content" id="hints8">
@@ -1616,8 +1626,7 @@ with open('students.csv', 'r') as f:
                                     <li>Import: <code>import json</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
@@ -1641,8 +1650,7 @@ print(f"Theme: {loaded['theme']}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 9 -->
@@ -1651,8 +1659,7 @@ print(f"Theme: {loaded['theme']}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">9</span>File Path Operations</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Extract filename and extension from a path.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Extract filename and extension from a path.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Filename: data.csv
@@ -1667,8 +1674,7 @@ Extension: .csv</pre>
                                     <li>splitext returns (name, extension) tuple</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
@@ -1687,8 +1693,7 @@ print(f"Extension: {extension}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 10 -->
@@ -1697,8 +1702,7 @@ print(f"Extension: {extension}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">10</span>Exception Handling</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Handle FileNotFoundError when reading a missing file.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Handle FileNotFoundError when reading a missing file.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints10')">💡 Show Hints</button>
                             <div class="hints-content" id="hints10">
@@ -1708,8 +1712,7 @@ print(f"Extension: {extension}")</textarea>
                                     <li>Put risky code in try block</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
@@ -1724,8 +1727,7 @@ print(f"Extension: {extension}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 11 -->
@@ -1734,8 +1736,7 @@ print(f"Extension: {extension}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">11</span>Copy File Contents</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Copy contents from one file to another.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Copy contents from one file to another.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
                             <div class="hints-content" id="hints11">
@@ -1745,8 +1746,7 @@ print(f"Extension: {extension}")</textarea>
                                     <li>Use two separate with blocks or nested</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
@@ -1764,8 +1764,7 @@ with open('destination.txt', 'r') as f:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 12 -->
@@ -1774,8 +1773,7 @@ with open('destination.txt', 'r') as f:
                         <div class="exercise-title"><span class="exercise-number">12</span>Write Multiple Files</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create multiple numbered files in a loop.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create multiple numbered files in a loop.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
                             <div class="hints-content" id="hints12">
@@ -1785,8 +1783,7 @@ with open('destination.txt', 'r') as f:
                                     <li>Write content: <code>f.write(f"File {i}")</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
@@ -1807,8 +1804,7 @@ for i in range(1, 4):
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 13 -->
@@ -1817,8 +1813,7 @@ for i in range(1, 4):
                         <div class="exercise-title"><span class="exercise-number">13</span>CSV Data Analysis</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Calculate average grade from CSV file.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Calculate average grade from CSV file.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints13')">💡 Show Hints</button>
                             <div class="hints-content" id="hints13">
@@ -1827,8 +1822,7 @@ for i in range(1, 4):
                                     <li>Convert grade to int/float before summing</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex13')">▶ Run</button>
@@ -1851,8 +1845,7 @@ print(f"Average grade: {avg:.1f}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 14 -->
@@ -1861,8 +1854,7 @@ print(f"Average grade: {avg:.1f}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">14</span>Log Analyzer</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Count ERROR and WARNING entries in a log file.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Count ERROR and WARNING entries in a log file.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints14')">💡 Show Hints</button>
                             <div class="hints-content" id="hints14">
@@ -1871,8 +1863,7 @@ print(f"Average grade: {avg:.1f}")</textarea>
                                     <li>Iterate through file line by line</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex14')">▶ Run</button>
@@ -1900,8 +1891,7 @@ print(f"Warnings: {warnings}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 15 -->
@@ -1910,8 +1900,7 @@ print(f"Warnings: {warnings}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">15</span>Config File Manager</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a function to load config with defaults if file missing.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a function to load config with defaults if file missing.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints15')">💡 Show Hints</button>
                             <div class="hints-content" id="hints15">
@@ -1920,8 +1909,7 @@ print(f"Warnings: {warnings}")</textarea>
                                     <li>Return default config if file doesn't exist</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex15')">▶ Run</button>
@@ -1944,8 +1932,7 @@ print(f"Config: {config}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
             </section>
             
@@ -2008,6 +1995,21 @@ print(f"Config: {config}")</textarea>
         }
         window.addEventListener('scroll', updateProgress);
         window.addEventListener('load', updateProgress);
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.code-figure').forEach(figure => {
+                if (figure.closest('.exercise-code-panel')) return;
+                const editor = figure.querySelector('.code-editor');
+                const output = figure.querySelector('.code-output');
+                if (editor && output) {
+                    const splitDiv = document.createElement('div');
+                    splitDiv.className = 'code-split';
+                    editor.parentNode.insertBefore(splitDiv, editor);
+                    splitDiv.appendChild(editor);
+                    splitDiv.appendChild(output);
+                }
+            });
+        });
         
         // Hints toggle
         function toggleHints(id) {

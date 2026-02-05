@@ -60,7 +60,7 @@
         .progress-container { position: fixed; top: 52px; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 99; }
         .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa); width: 0%; transition: width 0.15s ease-out; }
         
-        .container { max-width: 900px; margin: 0 auto; padding: 50px 24px 80px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
         
         .chapter-header { text-align: center; margin-bottom: 50px; padding-bottom: 40px; border-bottom: 2px solid var(--border); }
         .chapter-label { display: inline-block; background: var(--accent); color: white; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-family: system-ui, sans-serif; font-weight: 500; margin-bottom: 20px; }
@@ -94,11 +94,39 @@
         .code-figure-label { font-family: system-ui, sans-serif; font-size: 0.8rem; color: #a78bfa; font-weight: 500; }
         .code-figure-run { background: var(--success); color: white; border: none; padding: 6px 14px; border-radius: 6px; font-family: system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .code-figure-run:hover { background: #047857; transform: translateY(-1px); }
-        .code-editor { width: 100%; min-height: 120px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; }
-        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; }
+        .code-editor { width: 100%; min-height: 80px; max-height: 300px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; overflow-y: auto; }
+        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; max-height: 200px; overflow-y: auto; }
         .code-output.show { display: block; }
         .code-output-label { font-family: system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
         .code-output-content { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #d4d4d8; white-space: pre-wrap; }
+        
+        .code-figure .code-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 200px; }
+        .code-figure .code-split .code-editor { max-height: 400px; border-right: 1px solid #333; }
+        .code-figure .code-split .code-output { border-top: none; display: flex; flex-direction: column; background: rgba(5,150,105,0.08); max-height: 400px; overflow-y: auto; }
+        .code-figure .code-split .code-output.show { display: flex; }
+        .code-figure .code-split .code-output .code-output-content { flex: 1; overflow-y: auto; }
+        .code-figure .code-split .code-output:not(.show) { display: flex; opacity: 0.4; }
+        .code-figure .code-split .code-output:not(.show) .code-output-content::after { content: 'Click ▶ Run to see output here'; color: #666; font-style: italic; font-size: 0.8rem; }
+        .code-figure .code-split .code-output.show { opacity: 1; }
+        
+        .exercise-body { padding: 0 !important; display: grid; grid-template-columns: 1fr 1fr; min-height: 280px; }
+        .exercise-info-panel { padding: 24px; border-right: 1px solid var(--border); overflow-y: auto; max-height: 450px; background: rgba(249,115,22,0.02); }
+        .exercise-info-panel .exercise-description { margin-bottom: 16px; }
+        .exercise-info-panel .expected-output { margin: 12px 0 16px; }
+        .exercise-info-panel .hints-container { margin-top: 12px; }
+        .exercise-code-panel { display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure { margin: 0; border: none; border-radius: 0; flex: 1; display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure-header { border-radius: 0; }
+        .exercise-code-panel .code-editor { flex: 1; min-height: 150px; max-height: none; resize: none; }
+        .exercise-code-panel .code-output { max-height: 180px; }
+        
+        @media (max-width: 900px) {
+            .exercise-body { grid-template-columns: 1fr; }
+            .exercise-info-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: none; }
+            .code-figure .code-split { grid-template-columns: 1fr; }
+            .code-figure .code-split .code-editor { border-right: none; border-bottom: 1px solid #333; }
+            .code-figure .code-split .code-output { border-top: none; }
+        }
         
         .info-box { padding: 18px 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid; }
         .info-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
@@ -124,7 +152,7 @@
         .difficulty.easy { background: rgba(5, 150, 105, 0.12); color: var(--success); }
         .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
         .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
-        .exercise-body { padding: 24px; }
+        .exercise-body { /* handled by split layout CSS */ }
         .exercise-description { color: var(--text-secondary); font-size: 1rem; margin-bottom: 20px; }
         .expected-output { background: rgba(5, 150, 105, 0.06); border: 1px solid rgba(5, 150, 105, 0.15); border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
         .expected-output-label { font-size: 0.8rem; font-weight: 600; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; font-family: system-ui, sans-serif; }
@@ -2148,8 +2176,7 @@ robot.status()</textarea>
                         <div class="exercise-title"><span class="exercise-number">1</span>Basic Class Definition</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a simple <code>Book</code> class with <code>title</code> and <code>author</code> attributes. Include a method <code>display()</code> that prints the book information.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a simple <code>Book</code> class with <code>title</code> and <code>author</code> attributes. Include a method <code>display()</code> that prints the book information.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>"Python Basics" by John Smith</pre>
@@ -2163,8 +2190,7 @@ robot.status()</textarea>
                                     <li>display() prints formatted string</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
@@ -2181,8 +2207,7 @@ book.display()</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 2 -->
@@ -2191,8 +2216,7 @@ book.display()</textarea>
                         <div class="exercise-title"><span class="exercise-number">2</span>Constructor with Defaults</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a <code>Counter</code> class with an optional starting value (default 0). Include <code>increment()</code>, <code>decrement()</code>, and <code>get_value()</code> methods.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a <code>Counter</code> class with an optional starting value (default 0). Include <code>increment()</code>, <code>decrement()</code>, and <code>get_value()</code> methods.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Initial: 0
@@ -2209,8 +2233,7 @@ After decrement: 1</pre>
                                     <li>get_value returns <code>self.value</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
@@ -2233,8 +2256,7 @@ print(f"After decrement: {counter.get_value()}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 3 -->
@@ -2243,8 +2265,7 @@ print(f"After decrement: {counter.get_value()}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">3</span>__str__ Method</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a <code>Person</code> class with <code>name</code> and <code>age</code> attributes. Implement the <code>__str__</code> method to return a formatted string.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a <code>Person</code> class with <code>name</code> and <code>age</code> attributes. Implement the <code>__str__</code> method to return a formatted string.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Ali (25 years old)</pre>
@@ -2258,8 +2279,7 @@ print(f"After decrement: {counter.get_value()}")</textarea>
                                     <li>Use f-string: <code>f"{self.name} ({self.age} years old)"</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
@@ -2276,8 +2296,7 @@ print(person)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 4 -->
@@ -2286,8 +2305,7 @@ print(person)</textarea>
                         <div class="exercise-title"><span class="exercise-number">4</span>Class Attributes</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a <code>Student</code> class with a class attribute <code>school</code> and instance attributes <code>name</code> and <code>grade</code>. Track the total number of students created.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a <code>Student</code> class with a class attribute <code>school</code> and instance attributes <code>name</code> and <code>grade</code>. Track the total number of students created.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Ali from ISTUN, Grade: 85
@@ -2303,8 +2321,7 @@ Total students: 2</pre>
                                     <li>Access via <code>Student.count</code> or <code>self.count</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
@@ -2325,8 +2342,7 @@ print(f"Total students: {Student.count}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 5 -->
@@ -2335,8 +2351,7 @@ print(f"Total students: {Student.count}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">5</span>Rectangle Class</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a <code>Rectangle</code> class with <code>width</code> and <code>height</code> attributes. Include methods <code>area()</code> and <code>perimeter()</code>.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a <code>Rectangle</code> class with <code>width</code> and <code>height</code> attributes. Include methods <code>area()</code> and <code>perimeter()</code>.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Rectangle 5x3
@@ -2352,8 +2367,7 @@ Perimeter: 16</pre>
                                     <li>Methods return values, don't print</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
@@ -2372,8 +2386,7 @@ print(f"Perimeter: {rect.perimeter()}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 6 -->
@@ -2382,8 +2395,7 @@ print(f"Perimeter: {rect.perimeter()}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">6</span>Static Method</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a <code>Temperature</code> class with a static method <code>celsius_to_fahrenheit(celsius)</code>.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a <code>Temperature</code> class with a static method <code>celsius_to_fahrenheit(celsius)</code>.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>0°C = 32.0°F
@@ -2399,8 +2411,7 @@ print(f"Perimeter: {rect.perimeter()}")</textarea>
                                     <li>Formula: <code>celsius * 9/5 + 32</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
@@ -2418,8 +2429,7 @@ for c in [0, 25, 100]:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 7 -->
@@ -2428,8 +2438,7 @@ for c in [0, 25, 100]:
                         <div class="exercise-title"><span class="exercise-number">7</span>Class Method Constructor</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a <code>Point</code> class with <code>x</code> and <code>y</code> coordinates. Add a class method <code>from_tuple()</code> that creates a Point from a tuple.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a <code>Point</code> class with <code>x</code> and <code>y</code> coordinates. Add a class method <code>from_tuple()</code> that creates a Point from a tuple.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Point(3, 4)
@@ -2444,8 +2453,7 @@ Point(5, 10)</pre>
                                     <li>Return <code>cls(tuple[0], tuple[1])</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
@@ -2464,8 +2472,7 @@ print(p2)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 8 -->
@@ -2474,8 +2481,7 @@ print(p2)</textarea>
                         <div class="exercise-title"><span class="exercise-number">8</span>Comparison Methods</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a <code>Product</code> class with <code>name</code> and <code>price</code>. Implement <code>__eq__</code>, <code>__lt__</code>, and <code>__gt__</code> to compare products by price.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a <code>Product</code> class with <code>name</code> and <code>price</code>. Implement <code>__eq__</code>, <code>__lt__</code>, and <code>__gt__</code> to compare products by price.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Laptop == Phone: False
@@ -2491,8 +2497,7 @@ Mouse < Phone: True</pre>
                                     <li>Compare <code>self.price</code> with <code>other.price</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
@@ -2514,8 +2519,7 @@ print(f"Mouse < Phone: {mouse < phone}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 9 -->
@@ -2524,8 +2528,7 @@ print(f"Mouse < Phone: {mouse < phone}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">9</span>Property with Validation</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a <code>Circle</code> class with a <code>radius</code> property that validates the value is positive.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a <code>Circle</code> class with a <code>radius</code> property that validates the value is positive.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints9')">💡 Show Hints</button>
                             <div class="hints-content" id="hints9">
@@ -2541,8 +2544,7 @@ print(f"Mouse < Phone: {mouse < phone}")</textarea>
                             <pre>Radius: 5
 Area: 78.54
 Error: Radius must be positive</pre>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
@@ -2567,8 +2569,7 @@ except ValueError as e:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 10 -->
@@ -2577,8 +2578,7 @@ except ValueError as e:
                         <div class="exercise-title"><span class="exercise-number">10</span>Container Methods</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a <code>Stack</code> class with <code>push()</code>, <code>pop()</code>, <code>__len__</code>, and <code>__str__</code> methods.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a <code>Stack</code> class with <code>push()</code>, <code>pop()</code>, <code>__len__</code>, and <code>__str__</code> methods.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Stack: [1, 2, 3]
@@ -2596,8 +2596,7 @@ Stack: [1, 2]</pre>
                                     <li><code>__len__</code> returns <code>len(self.items)</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
@@ -2620,8 +2619,7 @@ print(stack)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 11 -->
@@ -2630,8 +2628,7 @@ print(stack)</textarea>
                         <div class="exercise-title"><span class="exercise-number">11</span>Arithmetic Methods</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a <code>Money</code> class with <code>amount</code> and <code>currency</code>. Implement <code>__add__</code> and <code>__sub__</code> (same currency only).</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a <code>Money</code> class with <code>amount</code> and <code>currency</code>. Implement <code>__add__</code> and <code>__sub__</code> (same currency only).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>100 USD + 50 USD = 150 USD
@@ -2646,8 +2643,7 @@ print(stack)</textarea>
                                     <li>Implement <code>__str__</code> to format output</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
@@ -2668,8 +2664,7 @@ print(f"{m1} - {m3} = {m1 - m3}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 12 -->
@@ -2678,8 +2673,7 @@ print(f"{m1} - {m3} = {m1 - m3}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">12</span>Composition: Engine and Car</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create an <code>Engine</code> class with <code>horsepower</code> and a <code>Car</code> class that contains an Engine. The car should have a <code>specs()</code> method.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create an <code>Engine</code> class with <code>horsepower</code> and a <code>Car</code> class that contains an Engine. The car should have a <code>specs()</code> method.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
                             <div class="hints-content" id="hints12">
@@ -2693,8 +2687,7 @@ print(f"{m1} - {m3} = {m1 - m3}")</textarea>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Toyota Camry with 200HP engine</pre>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
@@ -2716,8 +2709,7 @@ print(car.specs())</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 13 -->
@@ -2726,8 +2718,7 @@ print(car.specs())</textarea>
                         <div class="exercise-title"><span class="exercise-number">13</span>Complete BankAccount</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a complete <code>BankAccount</code> class with deposit, withdraw (with validation), transfer, and transaction history.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a complete <code>BankAccount</code> class with deposit, withdraw (with validation), transfer, and transaction history.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints13')">💡 Show Hints</button>
                             <div class="hints-content" id="hints13">
@@ -2737,8 +2728,7 @@ print(car.specs())</textarea>
                                     <li>Transfer should withdraw from source and deposit to target</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex13')">▶ Run</button>
@@ -2763,8 +2753,7 @@ print(f"\nAli's transactions: {acc1.get_history()}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 14 -->
@@ -2773,8 +2762,7 @@ print(f"\nAli's transactions: {acc1.get_history()}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">14</span>Sensor with Full Features</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a <code>Sensor</code> class with class-level registry, properties with validation, and methods for reading and averaging values.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a <code>Sensor</code> class with class-level registry, properties with validation, and methods for reading and averaging values.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints14')">💡 Show Hints</button>
                             <div class="hints-content" id="hints14">
@@ -2785,8 +2773,7 @@ print(f"\nAli's transactions: {acc1.get_history()}")</textarea>
                                     <li>Use @classmethod for get_sensor()</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex14')">▶ Run</button>
@@ -2813,8 +2800,7 @@ print(f"Retrieved: {retrieved.sensor_id}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 15 -->
@@ -2823,8 +2809,7 @@ print(f"Retrieved: {retrieved.sensor_id}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">15</span>Complete Vector Class</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a complete <code>Vector</code> class with arithmetic operations, magnitude, dot product, and normalization.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a complete <code>Vector</code> class with arithmetic operations, magnitude, dot product, and normalization.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints15')">💡 Show Hints</button>
                             <div class="hints-content" id="hints15">
@@ -2835,8 +2820,7 @@ print(f"Retrieved: {retrieved.sensor_id}")</textarea>
                                     <li>Normalize: divide by magnitude</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex15')">▶ Run</button>
@@ -2864,8 +2848,7 @@ print(f"v1 normalized = {v1.normalize()}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
             </section>
 
@@ -2930,6 +2913,21 @@ print(f"v1 normalized = {v1.normalize()}")</textarea>
         }
         window.addEventListener('scroll', updateProgress);
         window.addEventListener('load', updateProgress);
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.code-figure').forEach(figure => {
+                if (figure.closest('.exercise-code-panel')) return;
+                const editor = figure.querySelector('.code-editor');
+                const output = figure.querySelector('.code-output');
+                if (editor && output) {
+                    const splitDiv = document.createElement('div');
+                    splitDiv.className = 'code-split';
+                    editor.parentNode.insertBefore(splitDiv, editor);
+                    splitDiv.appendChild(editor);
+                    splitDiv.appendChild(output);
+                }
+            });
+        });
         
         // =========================================
         // Hints Toggle

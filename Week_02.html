@@ -88,7 +88,7 @@
         
         /* Main container */
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 50px 24px 80px;
         }
@@ -271,7 +271,8 @@
         
         .code-editor {
             width: 100%;
-            min-height: 120px;
+            min-height: 80px;
+            max-height: 300px;
             padding: 16px;
             background: var(--bg-code);
             border: none;
@@ -281,6 +282,7 @@
             line-height: 1.6;
             resize: vertical;
             outline: none;
+            overflow-y: auto;
         }
         
         .code-output {
@@ -288,6 +290,8 @@
             border-top: 1px solid #333;
             padding: 14px 16px;
             display: none;
+            max-height: 200px;
+            overflow-y: auto;
         }
         
         .code-output.show { display: block; }
@@ -307,6 +311,128 @@
             font-size: 0.85rem;
             color: #d4d4d8;
             white-space: pre-wrap;
+        }
+        
+        /* ===== SPLIT LAYOUT FOR CODE FIGURES ===== */
+        .code-figure .code-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 200px;
+        }
+        
+        .code-figure .code-split .code-editor {
+            max-height: 400px;
+            border-right: 1px solid #333;
+        }
+        
+        .code-figure .code-split .code-output {
+            border-top: none;
+            display: flex;
+            flex-direction: column;
+            background: rgba(5, 150, 105, 0.08);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .code-figure .code-split .code-output.show { display: flex; }
+        
+        .code-figure .code-split .code-output .code-output-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        /* When output not yet shown in split, show a placeholder */
+        .code-figure .code-split .code-output:not(.show) {
+            display: flex;
+            opacity: 0.4;
+        }
+        .code-figure .code-split .code-output:not(.show) .code-output-content::after {
+            content: 'Click ▶ Run to see output here';
+            color: #666;
+            font-style: italic;
+            font-size: 0.8rem;
+        }
+        .code-figure .code-split .code-output.show {
+            opacity: 1;
+        }
+        
+        /* ===== EXERCISE CARD SPLIT LAYOUT ===== */
+        .exercise-body {
+            padding: 0 !important;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 280px;
+        }
+        
+        .exercise-info-panel {
+            padding: 24px;
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            max-height: 450px;
+            background: rgba(249, 115, 22, 0.02);
+        }
+        
+        .exercise-info-panel .exercise-description {
+            margin-bottom: 16px;
+        }
+        
+        .exercise-info-panel .expected-output {
+            margin: 12px 0 16px;
+        }
+        
+        .exercise-info-panel .hints-container {
+            margin-top: 12px;
+        }
+        
+        .exercise-code-panel {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .exercise-code-panel .code-figure {
+            margin: 0;
+            border: none;
+            border-radius: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .exercise-code-panel .code-figure-header {
+            border-radius: 0;
+        }
+        
+        .exercise-code-panel .code-editor {
+            flex: 1;
+            min-height: 150px;
+            max-height: none;
+            resize: none;
+        }
+        
+        .exercise-code-panel .code-output {
+            max-height: 180px;
+        }
+        
+        /* Responsive: stack on mobile */
+        @media (max-width: 900px) {
+            .exercise-body {
+                grid-template-columns: 1fr;
+            }
+            .exercise-info-panel {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                max-height: none;
+            }
+            .code-figure .code-split {
+                grid-template-columns: 1fr;
+            }
+            .code-figure .code-split .code-editor {
+                border-right: none;
+                border-bottom: 1px solid #333;
+            }
+            .code-figure .code-split .code-output {
+                border-top: none;
+            }
         }
         
         /* Info boxes */
@@ -404,7 +530,7 @@
         .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
         .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
         
-        .exercise-body { padding: 24px; }
+        .exercise-body { /* now handled by split layout CSS */ }
         
         .exercise-description { color: var(--text-secondary); font-size: 1rem; margin-bottom: 20px; }
         
@@ -1813,6 +1939,7 @@ print(f"Config: {actual_value}")</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Given age = 15, print whether the person is a "Child" (0-12), "Teenager" (13-19), or "Adult" (20+).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -1827,6 +1954,8 @@ print(f"Config: {actual_value}")</textarea>
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1841,6 +1970,7 @@ print(f"Config: {actual_value}")</textarea>
                                 <div class="code-output-content"></div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -1851,6 +1981,7 @@ print(f"Config: {actual_value}")</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Given number = 42, print whether it is "Even" or "Odd".</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -1866,6 +1997,8 @@ print(f"Config: {actual_value}")</textarea>
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1880,6 +2013,7 @@ print(f"Config: {actual_value}")</textarea>
                                 <div class="code-output-content"></div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -1890,6 +2024,7 @@ print(f"Config: {actual_value}")</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Given score = 78, calculate the letter grade: A (90+), B (80-89), C (70-79), D (60-69), F (below 60).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -1906,6 +2041,8 @@ print(f"Config: {actual_value}")</textarea>
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1920,6 +2057,7 @@ print(f"Config: {actual_value}")</textarea>
                                 <div class="code-output-content"></div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -1930,6 +2068,7 @@ print(f"Config: {actual_value}")</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Given num = -5, print whether it's "Positive", "Negative", or "Zero".</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -1945,6 +2084,8 @@ print(f"Config: {actual_value}")</textarea>
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1959,6 +2100,7 @@ print(f"Config: {actual_value}")</textarea>
                                 <div class="code-output-content"></div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -1969,6 +2111,7 @@ print(f"Config: {actual_value}")</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Check if year = 2024 is a leap year. A year is a leap year if divisible by 4, except century years must be divisible by 400.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -1984,6 +2127,8 @@ print(f"Config: {actual_value}")</textarea>
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -1998,6 +2143,7 @@ print(f"Config: {actual_value}")</textarea>
                                 <div class="code-output-content"></div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -2008,6 +2154,7 @@ print(f"Config: {actual_value}")</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Find the largest of three numbers: a=15, b=22, c=18.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -2023,6 +2170,8 @@ print(f"Config: {actual_value}")</textarea>
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2037,6 +2186,7 @@ print(f"Config: {actual_value}")</textarea>
                                 <div class="code-output-content"></div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -2047,6 +2197,7 @@ print(f"Config: {actual_value}")</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Calculate ticket price: Children (0-12): 10 TL, Teens (13-17): 15 TL, Adults (18-64): 25 TL, Seniors (65+): 12 TL. Use age = 35.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -2062,6 +2213,8 @@ print(f"Config: {actual_value}")</textarea>
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2076,6 +2229,7 @@ print(f"Config: {actual_value}")</textarea>
                                 <div class="code-output-content"></div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -2086,6 +2240,7 @@ print(f"Config: {actual_value}")</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Given coordinates x=5, y=-3, determine which quadrant the point is in (or if it's on an axis).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -2101,6 +2256,8 @@ print(f"Config: {actual_value}")</textarea>
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2115,6 +2272,7 @@ print(f"Config: {actual_value}")</textarea>
                                 <div class="code-output-content"></div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -2125,6 +2283,7 @@ print(f"Config: {actual_value}")</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Check if sides a=3, b=4, c=5 can form a valid triangle (sum of any two sides > third side).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -2140,6 +2299,8 @@ print(f"Config: {actual_value}")</textarea>
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2154,6 +2315,7 @@ print(f"Config: {actual_value}")</textarea>
                                 <div class="code-output-content"></div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -2164,6 +2326,7 @@ print(f"Config: {actual_value}")</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Calculate BMI (weight/height²) for weight=75 kg, height=1.80 m. Classify: Underweight (<18.5), Normal (18.5-24.9), Overweight (25-29.9), Obese (30+).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -2179,6 +2342,8 @@ print(f"Config: {actual_value}")</textarea>
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2194,6 +2359,7 @@ height = 1.80  # meters
                                 <div class="code-output-content"></div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -2204,6 +2370,7 @@ height = 1.80  # meters
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Calculate shipping for weight=3.5 kg: 0-1kg: 10 TL, 1-3kg: 20 TL, 3-5kg: 30 TL, 5+kg: 50 TL.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -2219,6 +2386,8 @@ height = 1.80  # meters
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2233,6 +2402,7 @@ height = 1.80  # meters
                                 <div class="code-output-content"></div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -2243,6 +2413,7 @@ height = 1.80  # meters
                         <span class="difficulty hard">Challenge</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Check password strength: Weak (length<6), Medium (6-9), Strong (10+). Test with "MyP@ss123".</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -2258,6 +2429,8 @@ height = 1.80  # meters
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2272,6 +2445,7 @@ height = 1.80  # meters
                                 <div class="code-output-content"></div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -2282,6 +2456,7 @@ height = 1.80  # meters
                         <span class="difficulty hard">Challenge</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Given temp=85°C and max_temp=80°C: Show "CRITICAL" if >100%, "WARNING" if >90%, "CAUTION" if >80%, else "NORMAL".</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -2298,6 +2473,8 @@ Status: CRITICAL</pre>
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2313,6 +2490,7 @@ max_temp = 80  # Maximum safe temperature
                                 <div class="code-output-content"></div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -2323,6 +2501,7 @@ max_temp = 80  # Maximum safe temperature
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Use a ternary expression to set discount to 20 if is_member is True, otherwise 0. Then print the discount.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -2338,6 +2517,8 @@ max_temp = 80  # Maximum safe temperature
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2352,6 +2533,7 @@ max_temp = 80  # Maximum safe temperature
                                 <div class="code-output-content"></div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -2362,6 +2544,7 @@ max_temp = 80  # Maximum safe temperature
                         <span class="difficulty hard">Challenge</span>
                     </div>
                     <div class="exercise-body">
+                        <div class="exercise-info-panel">
                         <p class="exercise-description">Check voltage (220V) against range 210-230V. Also check if current (15A) exceeds max (20A). Report overall system status.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
@@ -2381,6 +2564,8 @@ Overall: SYSTEM NORMAL</pre>
                                 </ul>
                             </div>
                         </div>
+                        </div>
+                        <div class="exercise-code-panel">
                         <div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
@@ -2397,6 +2582,7 @@ max_current = 20
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -2461,6 +2647,24 @@ max_current = 20
         }
         window.addEventListener('scroll', updateProgress);
         window.addEventListener('load', updateProgress);
+        
+        // Convert inline code figures (not exercises) to split layout
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.code-figure').forEach(figure => {
+                // Skip exercise code figures (inside exercise-code-panel)
+                if (figure.closest('.exercise-code-panel')) return;
+                
+                const editor = figure.querySelector('.code-editor');
+                const output = figure.querySelector('.code-output');
+                if (editor && output) {
+                    const splitDiv = document.createElement('div');
+                    splitDiv.className = 'code-split';
+                    editor.parentNode.insertBefore(splitDiv, editor);
+                    splitDiv.appendChild(editor);
+                    splitDiv.appendChild(output);
+                }
+            });
+        });
         
         // Hints toggle
         function toggleHints(id) {

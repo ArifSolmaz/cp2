@@ -86,7 +86,7 @@
         
         /* Main container */
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 50px 24px 80px;
         }
@@ -269,7 +269,8 @@
         
         .code-editor {
             width: 100%;
-            min-height: 120px;
+            min-height: 80px;
+            max-height: 300px;
             padding: 16px;
             background: var(--bg-code);
             border: none;
@@ -279,6 +280,7 @@
             line-height: 1.6;
             resize: vertical;
             outline: none;
+            overflow-y: auto;
         }
         
         .code-output {
@@ -286,6 +288,8 @@
             border-top: 1px solid #333;
             padding: 14px 16px;
             display: none;
+            max-height: 200px;
+            overflow-y: auto;
         }
         
         .code-output.show { display: block; }
@@ -305,6 +309,34 @@
             font-size: 0.85rem;
             color: #d4d4d8;
             white-space: pre-wrap;
+        }
+        
+        .code-figure .code-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 200px; }
+        .code-figure .code-split .code-editor { max-height: 400px; border-right: 1px solid #333; }
+        .code-figure .code-split .code-output { border-top: none; display: flex; flex-direction: column; background: rgba(5,150,105,0.08); max-height: 400px; overflow-y: auto; }
+        .code-figure .code-split .code-output.show { display: flex; }
+        .code-figure .code-split .code-output .code-output-content { flex: 1; overflow-y: auto; }
+        .code-figure .code-split .code-output:not(.show) { display: flex; opacity: 0.4; }
+        .code-figure .code-split .code-output:not(.show) .code-output-content::after { content: 'Click ▶ Run to see output here'; color: #666; font-style: italic; font-size: 0.8rem; }
+        .code-figure .code-split .code-output.show { opacity: 1; }
+        
+        .exercise-body { padding: 0 !important; display: grid; grid-template-columns: 1fr 1fr; min-height: 280px; }
+        .exercise-info-panel { padding: 24px; border-right: 1px solid var(--border); overflow-y: auto; max-height: 450px; background: rgba(249,115,22,0.02); }
+        .exercise-info-panel .exercise-description { margin-bottom: 16px; }
+        .exercise-info-panel .expected-output { margin: 12px 0 16px; }
+        .exercise-info-panel .hints-container { margin-top: 12px; }
+        .exercise-code-panel { display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure { margin: 0; border: none; border-radius: 0; flex: 1; display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure-header { border-radius: 0; }
+        .exercise-code-panel .code-editor { flex: 1; min-height: 150px; max-height: none; resize: none; }
+        .exercise-code-panel .code-output { max-height: 180px; }
+        
+        @media (max-width: 900px) {
+            .exercise-body { grid-template-columns: 1fr; }
+            .exercise-info-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: none; }
+            .code-figure .code-split { grid-template-columns: 1fr; }
+            .code-figure .code-split .code-editor { border-right: none; border-bottom: 1px solid #333; }
+            .code-figure .code-split .code-output { border-top: none; }
         }
         
         /* Info boxes */
@@ -402,7 +434,7 @@
         .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
         .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
         
-        .exercise-body { padding: 24px; }
+        .exercise-body { /* handled by split layout CSS */ }
         
         .exercise-description { color: var(--text-secondary); font-size: 1rem; margin-bottom: 20px; }
         
@@ -1895,7 +1927,7 @@ for sensor_type, value in test_data:
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Create a dictionary called <code>person</code> with keys "name", "age", and "city".</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Create a dictionary called <code>person</code> with keys "name", "age", and "city".</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{'name': 'Ali', 'age': 25, 'city': 'Istanbul'}</pre>
@@ -1909,8 +1941,8 @@ for sensor_type, value in test_data:
                                     <li>Example: <code>{"name": "Ali", "age": 25, ...}</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
@@ -1922,7 +1954,7 @@ print(person)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -1933,7 +1965,7 @@ print(person)</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Use <code>get()</code> to access the "country" key with default "Unknown".</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Use <code>get()</code> to access the "country" key with default "Unknown".</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Country: Unknown</pre>
@@ -1947,8 +1979,8 @@ print(person)</textarea>
                                     <li>Example: <code>person.get("country", "Unknown")</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
@@ -1961,7 +1993,7 @@ print(f"Country: {country}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -1972,7 +2004,7 @@ print(f"Country: {country}")</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Add key "email" and update "age" to 26.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Add key "email" and update "age" to 26.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{'name': 'Ali', 'age': 26, 'email': '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c1a0ada881a4aca0a8adefa2aeac">[email&#160;protected]</a>'}</pre>
@@ -1986,8 +2018,8 @@ print(f"Country: {country}")</textarea>
                                     <li>Update age: <code>person["age"] = 26</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
@@ -2001,7 +2033,7 @@ print(person)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2012,7 +2044,7 @@ print(person)</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Print each key-value pair on a separate line using items().</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Print each key-value pair on a separate line using items().</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>name: Ali
@@ -2028,8 +2060,8 @@ city: Istanbul</pre>
                                     <li>items() returns key-value tuples</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
@@ -2041,7 +2073,7 @@ city: Istanbul</pre>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2052,7 +2084,7 @@ city: Istanbul</pre>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Create a dict of squares for numbers 1-5 using comprehension.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Create a dict of squares for numbers 1-5 using comprehension.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{1: 1, 2: 4, 3: 9, 4: 16, 5: 25}</pre>
@@ -2066,8 +2098,8 @@ city: Istanbul</pre>
                                     <li>Creates key-value pairs in one line</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
@@ -2079,7 +2111,7 @@ print(squares)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2090,7 +2122,7 @@ print(squares)</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Count the frequency of each word in the string.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Count the frequency of each word in the string.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{'hello': 2, 'world': 1}</pre>
@@ -2104,8 +2136,8 @@ print(squares)</textarea>
                                     <li>Or: <code>word_count[word] = word_count.get(word, 0) + 1</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
@@ -2119,7 +2151,7 @@ print(word_count)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2130,7 +2162,7 @@ print(word_count)</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Access the math grade from the nested dictionary.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Access the math grade from the nested dictionary.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Math grade: 85</pre>
@@ -2144,8 +2176,8 @@ print(word_count)</textarea>
                                     <li>First get inner dict, then the value</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
@@ -2161,7 +2193,7 @@ print(f"Math grade: {math_grade}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2172,7 +2204,7 @@ print(f"Math grade: {math_grade}")</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Create a set from a list that has duplicates.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Create a set from a list that has duplicates.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{1, 2, 3, 4, 5}</pre>
@@ -2186,8 +2218,8 @@ print(f"Math grade: {math_grade}")</textarea>
                                     <li>Example: <code>set(numbers)</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
@@ -2200,7 +2232,7 @@ print(unique)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2211,7 +2243,7 @@ print(unique)</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Find the union of sets A and B.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Find the union of sets A and B.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{1, 2, 3, 4, 5, 6}</pre>
@@ -2225,8 +2257,8 @@ print(unique)</textarea>
                                     <li>Returns all unique elements from both sets</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
@@ -2240,7 +2272,7 @@ print(result)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2251,7 +2283,7 @@ print(result)</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Find elements common to both sets.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Find elements common to both sets.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{3, 4}</pre>
@@ -2265,8 +2297,8 @@ print(result)</textarea>
                                     <li>Returns elements in both sets</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
@@ -2280,7 +2312,7 @@ print(common)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2291,7 +2323,7 @@ print(common)</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Find elements in A but not in B.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Find elements in A but not in B.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{1, 2}</pre>
@@ -2305,8 +2337,8 @@ print(common)</textarea>
                                     <li>Returns elements only in A</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
@@ -2320,7 +2352,7 @@ print(only_in_A)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2331,7 +2363,7 @@ print(only_in_A)</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Filter grades to only include scores >= 80.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Filter grades to only include scores >= 80.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{'Alice': 85, 'Charlie': 92}</pre>
@@ -2345,8 +2377,8 @@ print(only_in_A)</textarea>
                                     <li>Example: <code>{k: v for k, v in grades.items() if v >= 80}</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
@@ -2359,7 +2391,7 @@ print(passing)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2370,7 +2402,7 @@ print(passing)</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Check if required_skills is a subset of candidate_skills.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Check if required_skills is a subset of candidate_skills.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Has all required skills: True</pre>
@@ -2384,8 +2416,8 @@ print(passing)</textarea>
                                     <li>Example: <code>required_skills.issubset(candidate_skills)</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex13')">▶ Run</button>
@@ -2399,7 +2431,7 @@ print(f"Has all required skills: {has_all}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2410,7 +2442,7 @@ print(f"Has all required skills: {has_all}")</textarea>
                         <span class="difficulty hard">Challenge</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Merge two dictionaries into one.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Merge two dictionaries into one.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{'a': 1, 'b': 2, 'c': 3, 'd': 4}</pre>
@@ -2422,8 +2454,8 @@ print(f"Has all required skills: {has_all}")</textarea>
                                     <li>Use <code>dict1 | dict2</code> (Python 3.9+) or <code>{**dict1, **dict2}</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex14')">▶ Run</button>
@@ -2437,7 +2469,7 @@ print(merged)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2448,7 +2480,7 @@ print(merged)</textarea>
                         <span class="difficulty hard">Challenge</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Swap keys and values in the dictionary.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Swap keys and values in the dictionary.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>{1: 'a', 2: 'b', 3: 'c'}</pre>
@@ -2460,8 +2492,8 @@ print(merged)</textarea>
                                     <li>Use dict comprehension: <code>{v: k for k, v in original.items()}</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex15')">▶ Run</button>
@@ -2474,7 +2506,7 @@ print(inverted)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
             </section>
@@ -2538,6 +2570,21 @@ print(inverted)</textarea>
         }
         window.addEventListener('scroll', updateProgress);
         window.addEventListener('load', updateProgress);
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.code-figure').forEach(figure => {
+                if (figure.closest('.exercise-code-panel')) return;
+                const editor = figure.querySelector('.code-editor');
+                const output = figure.querySelector('.code-output');
+                if (editor && output) {
+                    const splitDiv = document.createElement('div');
+                    splitDiv.className = 'code-split';
+                    editor.parentNode.insertBefore(splitDiv, editor);
+                    splitDiv.appendChild(editor);
+                    splitDiv.appendChild(output);
+                }
+            });
+        });
         
         // Hints toggle
         function toggleHints(id) {

@@ -60,7 +60,7 @@
         .progress-container { position: fixed; top: 52px; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 99; }
         .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa); width: 0%; transition: width 0.15s ease-out; }
         
-        .container { max-width: 900px; margin: 0 auto; padding: 50px 24px 80px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
         
         .chapter-header { text-align: center; margin-bottom: 50px; padding-bottom: 40px; border-bottom: 2px solid var(--border); }
         .chapter-label { display: inline-block; background: var(--accent); color: white; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-family: system-ui, sans-serif; font-weight: 500; margin-bottom: 20px; }
@@ -94,11 +94,39 @@
         .code-figure-label { font-family: system-ui, sans-serif; font-size: 0.8rem; color: #a78bfa; font-weight: 500; }
         .code-figure-run { background: var(--success); color: white; border: none; padding: 6px 14px; border-radius: 6px; font-family: system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .code-figure-run:hover { background: #047857; transform: translateY(-1px); }
-        .code-editor { width: 100%; min-height: 120px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; }
-        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; }
+        .code-editor { width: 100%; min-height: 80px; max-height: 300px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; overflow-y: auto; }
+        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; max-height: 200px; overflow-y: auto; }
         .code-output.show { display: block; }
         .code-output-label { font-family: system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
         .code-output-content { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #d4d4d8; white-space: pre-wrap; }
+        
+        .code-figure .code-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 200px; }
+        .code-figure .code-split .code-editor { max-height: 400px; border-right: 1px solid #333; }
+        .code-figure .code-split .code-output { border-top: none; display: flex; flex-direction: column; background: rgba(5,150,105,0.08); max-height: 400px; overflow-y: auto; }
+        .code-figure .code-split .code-output.show { display: flex; }
+        .code-figure .code-split .code-output .code-output-content { flex: 1; overflow-y: auto; }
+        .code-figure .code-split .code-output:not(.show) { display: flex; opacity: 0.4; }
+        .code-figure .code-split .code-output:not(.show) .code-output-content::after { content: 'Click ▶ Run to see output here'; color: #666; font-style: italic; font-size: 0.8rem; }
+        .code-figure .code-split .code-output.show { opacity: 1; }
+        
+        .exercise-body { padding: 0 !important; display: grid; grid-template-columns: 1fr 1fr; min-height: 280px; }
+        .exercise-info-panel { padding: 24px; border-right: 1px solid var(--border); overflow-y: auto; max-height: 450px; background: rgba(249,115,22,0.02); }
+        .exercise-info-panel .exercise-description { margin-bottom: 16px; }
+        .exercise-info-panel .expected-output { margin: 12px 0 16px; }
+        .exercise-info-panel .hints-container { margin-top: 12px; }
+        .exercise-code-panel { display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure { margin: 0; border: none; border-radius: 0; flex: 1; display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure-header { border-radius: 0; }
+        .exercise-code-panel .code-editor { flex: 1; min-height: 150px; max-height: none; resize: none; }
+        .exercise-code-panel .code-output { max-height: 180px; }
+        
+        @media (max-width: 900px) {
+            .exercise-body { grid-template-columns: 1fr; }
+            .exercise-info-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: none; }
+            .code-figure .code-split { grid-template-columns: 1fr; }
+            .code-figure .code-split .code-editor { border-right: none; border-bottom: 1px solid #333; }
+            .code-figure .code-split .code-output { border-top: none; }
+        }
         
         .info-box { padding: 18px 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid; }
         .info-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
@@ -124,7 +152,7 @@
         .difficulty.easy { background: rgba(5, 150, 105, 0.12); color: var(--success); }
         .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
         .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
-        .exercise-body { padding: 24px; }
+        .exercise-body { /* handled by split layout CSS */ }
         .exercise-description { color: var(--text-secondary); font-size: 1rem; margin-bottom: 20px; }
         .expected-output { background: rgba(5, 150, 105, 0.06); border: 1px solid rgba(5, 150, 105, 0.15); border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
         .expected-output-label { font-size: 0.8rem; font-weight: 600; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; font-family: system-ui, sans-serif; }
@@ -1691,8 +1719,7 @@ for i, config in enumerate(test_configs, 1):
                         <div class="exercise-title"><span class="exercise-number">1</span>Basic ZeroDivisionError</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Wrap the division operation in a try/except block to handle ZeroDivisionError. Print a friendly message when division by zero occurs.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Wrap the division operation in a try/except block to handle ZeroDivisionError. Print a friendly message when division by zero occurs.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Cannot divide by zero!
@@ -1707,8 +1734,7 @@ Program continues normally.</pre>
                                     <li>Print error message in except block</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
@@ -1726,8 +1752,7 @@ print("Program continues normally.")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 2 -->
@@ -1736,8 +1761,7 @@ print("Program continues normally.")</textarea>
                         <div class="exercise-title"><span class="exercise-number">2</span>ValueError Handling</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Handle ValueError when converting invalid strings to integers. Test with multiple inputs.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Handle ValueError when converting invalid strings to integers. Test with multiple inputs.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>'42' -> 42
@@ -1754,8 +1778,7 @@ print("Program continues normally.")</textarea>
                                     <li>Print "Invalid number!" in except</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
@@ -1771,8 +1794,7 @@ for value in inputs:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 3 -->
@@ -1781,8 +1803,7 @@ for value in inputs:
                         <div class="exercise-title"><span class="exercise-number">3</span>IndexError Handling</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Safely access list elements and handle IndexError when the index is out of range.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Safely access list elements and handle IndexError when the index is out of range.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Index 0: apple
@@ -1799,8 +1820,7 @@ Index -1: cherry</pre>
                                     <li>Print "Index out of range!" in except</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
@@ -1816,8 +1836,7 @@ for idx in indices:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 4 -->
@@ -1826,8 +1845,7 @@ for idx in indices:
                         <div class="exercise-title"><span class="exercise-number">4</span>KeyError Handling</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Access dictionary keys safely and handle KeyError when the key doesn't exist.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Access dictionary keys safely and handle KeyError when the key doesn't exist.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>name: Ali
@@ -1844,8 +1862,7 @@ city: Key 'city' not found!</pre>
                                     <li>Print key name in error message</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
@@ -1861,8 +1878,7 @@ for key in keys_to_access:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 5 -->
@@ -1871,8 +1887,7 @@ for key in keys_to_access:
                         <div class="exercise-title"><span class="exercise-number">5</span>Exception Message Access</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Capture and print the exception message and type using the <code>as</code> keyword.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Capture and print the exception message and type using the <code>as</code> keyword.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Exception type: ValueError
@@ -1887,8 +1902,7 @@ Exception message: invalid literal for int() with base 10: 'hello'</pre>
                                     <li>Message: <code>str(e)</code> or just <code>e</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
@@ -1903,8 +1917,7 @@ except ValueError:  # Add 'as e' to capture the exception
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 6 -->
@@ -1913,8 +1926,7 @@ except ValueError:  # Add 'as e' to capture the exception
                         <div class="exercise-title"><span class="exercise-number">6</span>Safe Division Function</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a <code>safe_divide</code> function that returns None on division by zero instead of crashing.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a <code>safe_divide</code> function that returns None on division by zero instead of crashing.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>10 / 2 = 5.0
@@ -1930,8 +1942,7 @@ except ValueError:  # Add 'as e' to capture the exception
                                     <li>Function handles error internally</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
@@ -1949,8 +1960,7 @@ print(f"15 / 3 = {safe_divide(15, 3)}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 7 -->
@@ -1959,8 +1969,7 @@ print(f"15 / 3 = {safe_divide(15, 3)}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">7</span>Multiple Exception Types</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Handle both ValueError and ZeroDivisionError in a calculation function with appropriate messages.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Handle both ValueError and ZeroDivisionError in a calculation function with appropriate messages.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>'10': 10.0
@@ -1977,8 +1986,7 @@ print(f"15 / 3 = {safe_divide(15, 3)}")</textarea>
                                     <li>Return message string instead of None</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
@@ -2002,8 +2010,7 @@ for val in test_values:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 8 -->
@@ -2012,8 +2019,7 @@ for val in test_values:
                         <div class="exercise-title"><span class="exercise-number">8</span>Using else Clause</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Use the else clause to print "Conversion successful!" only when no exception occurs.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Use the else clause to print "Conversion successful!" only when no exception occurs.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Converting '42':
@@ -2033,8 +2039,7 @@ Converting 'hello':
                                     <li>Print success message in else block</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
@@ -2060,8 +2065,7 @@ for val in ['42', 'hello']:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 9 -->
@@ -2070,8 +2074,7 @@ for val in ['42', 'hello']:
                         <div class="exercise-title"><span class="exercise-number">9</span>Using finally Clause</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Use finally to print "Operation complete" regardless of whether an exception occurs.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Use finally to print "Operation complete" regardless of whether an exception occurs.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Processing 5:
@@ -2091,8 +2094,7 @@ Processing 0:
                                     <li>Used for cleanup operations</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
@@ -2115,8 +2117,7 @@ for val in [5, 0]:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 10 -->
@@ -2125,8 +2126,7 @@ for val in [5, 0]:
                         <div class="exercise-title"><span class="exercise-number">10</span>Raising Exceptions</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a function that raises ValueError if age is negative or greater than 150.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a function that raises ValueError if age is negative or greater than 150.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>25: Valid age
@@ -2143,8 +2143,7 @@ for val in [5, 0]:
                                     <li>Include descriptive error message</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
@@ -2167,8 +2166,7 @@ for age in test_ages:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 11 -->
@@ -2177,8 +2175,7 @@ for age in test_ages:
                         <div class="exercise-title"><span class="exercise-number">11</span>Input Type Validation</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a function that validates input is a positive number, raising appropriate exceptions.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a function that validates input is a positive number, raising appropriate exceptions.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>10: ✓ Valid
@@ -2195,8 +2192,7 @@ for age in test_ages:
                                     <li>Raise ValueError for non-positive values</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
@@ -2226,8 +2222,7 @@ for val in test_values:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 12 -->
@@ -2236,8 +2231,7 @@ for val in test_values:
                         <div class="exercise-title"><span class="exercise-number">12</span>Custom Exception Class</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a custom InsufficientFundsError exception for a banking function.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a custom InsufficientFundsError exception for a banking function.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Withdraw $50 from $100: New balance: $50
@@ -2252,8 +2246,7 @@ Withdraw $150 from $100: Error - Cannot withdraw $150, only $100 available</pre>
                                     <li>Catch with: <code>except InsufficientFundsError as e:</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
@@ -2281,8 +2274,7 @@ for balance, amount in test_cases:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 13 -->
@@ -2291,8 +2283,7 @@ for balance, amount in test_cases:
                         <div class="exercise-title"><span class="exercise-number">13</span>Assertions for Validation</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Use assertions to validate function preconditions for an average calculator.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Use assertions to validate function preconditions for an average calculator.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints13')">💡 Show Hints</button>
                             <div class="hints-content" id="hints13">
@@ -2309,8 +2300,7 @@ for balance, amount in test_cases:
                             <pre>[1, 2, 3, 4, 5]: Average = 3.0
 []: AssertionError - List cannot be empty
 [1, 'two', 3]: AssertionError - All elements must be numbers</pre>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex13')">▶ Run</button>
@@ -2339,8 +2329,7 @@ for data in test_cases:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 14 -->
@@ -2349,8 +2338,7 @@ for data in test_cases:
                         <div class="exercise-title"><span class="exercise-number">14</span>Complete Exception Handling</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a function with complete exception handling including try, except, else, and finally.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a function with complete exception handling including try, except, else, and finally.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints14')">💡 Show Hints</button>
                             <div class="hints-content" id="hints14">
@@ -2361,8 +2349,7 @@ for data in test_cases:
                                     <li>Use finally for cleanup message</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex14')">▶ Run</button>
@@ -2399,8 +2386,7 @@ print(f"Result: {result}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
                 
                 <!-- Exercise 15 -->
@@ -2409,8 +2395,7 @@ print(f"Result: {result}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">15</span>Sensor System with Custom Exceptions</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a complete sensor validation system with custom exception hierarchy.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a complete sensor validation system with custom exception hierarchy.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints15')">💡 Show Hints</button>
                             <div class="hints-content" id="hints15">
@@ -2429,8 +2414,7 @@ print(f"Result: {result}")</textarea>
                             <pre>TEMP_001 (25): ✓ Valid
 TEMP_002 (150): ✗ SensorRangeError - Value 150 out of range [0, 100]
 TEMP_003 ('hot'): ✗ SensorTypeError - Expected number, got str</pre>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex15')">▶ Run</button>
@@ -2472,8 +2456,7 @@ for sensor_id, value in sensors:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
             </section>
 
@@ -2538,6 +2521,21 @@ for sensor_id, value in sensors:
         }
         window.addEventListener('scroll', updateProgress);
         window.addEventListener('load', updateProgress);
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.code-figure').forEach(figure => {
+                if (figure.closest('.exercise-code-panel')) return;
+                const editor = figure.querySelector('.code-editor');
+                const output = figure.querySelector('.code-output');
+                if (editor && output) {
+                    const splitDiv = document.createElement('div');
+                    splitDiv.className = 'code-split';
+                    editor.parentNode.insertBefore(splitDiv, editor);
+                    splitDiv.appendChild(editor);
+                    splitDiv.appendChild(output);
+                }
+            });
+        });
         
         // =========================================
         // Hints Toggle

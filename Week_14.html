@@ -34,7 +34,7 @@
         .topbar-nav { display: flex; gap: 24px; align-items: center; }
         .progress-container { position: fixed; top: 52px; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 99; }
         .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa, var(--gold)); width: 0%; transition: width 0.15s ease-out; }
-        .container { max-width: 900px; margin: 0 auto; padding: 50px 24px 80px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
         .chapter-header { text-align: center; margin-bottom: 50px; padding-bottom: 40px; border-bottom: 2px solid var(--border); }
         .chapter-label { display: inline-block; background: linear-gradient(135deg, var(--accent), var(--gold)); color: white; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-family: system-ui, sans-serif; font-weight: 500; margin-bottom: 20px; }
         .chapter-header h1 { font-size: 2.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; }
@@ -59,11 +59,39 @@
         .code-figure-label { font-family: system-ui, sans-serif; font-size: 0.8rem; color: #a78bfa; font-weight: 500; }
         .code-figure-run { background: var(--success); color: white; border: none; padding: 6px 14px; border-radius: 6px; font-family: system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
         .code-figure-run:hover { background: #047857; }
-        .code-editor { width: 100%; min-height: 120px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; }
-        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; }
+        .code-editor { width: 100%; min-height: 80px; max-height: 300px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; overflow-y: auto; }
+        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; max-height: 200px; overflow-y: auto; }
         .code-output.show { display: block; }
         .code-output-label { font-family: system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--success); text-transform: uppercase; margin-bottom: 8px; }
         .code-output-content { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #d4d4d8; white-space: pre-wrap; }
+        
+        .code-figure .code-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 200px; }
+        .code-figure .code-split .code-editor { max-height: 400px; border-right: 1px solid #333; }
+        .code-figure .code-split .code-output { border-top: none; display: flex; flex-direction: column; background: rgba(5,150,105,0.08); max-height: 400px; overflow-y: auto; }
+        .code-figure .code-split .code-output.show { display: flex; }
+        .code-figure .code-split .code-output .code-output-content { flex: 1; overflow-y: auto; }
+        .code-figure .code-split .code-output:not(.show) { display: flex; opacity: 0.4; }
+        .code-figure .code-split .code-output:not(.show) .code-output-content::after { content: 'Click ▶ Run to see output here'; color: #666; font-style: italic; font-size: 0.8rem; }
+        .code-figure .code-split .code-output.show { opacity: 1; }
+        
+        .exercise-body { padding: 0 !important; display: grid; grid-template-columns: 1fr 1fr; min-height: 280px; }
+        .exercise-info-panel { padding: 24px; border-right: 1px solid var(--border); overflow-y: auto; max-height: 450px; background: rgba(249,115,22,0.02); }
+        .exercise-info-panel .exercise-description { margin-bottom: 16px; }
+        .exercise-info-panel .expected-output { margin: 12px 0 16px; }
+        .exercise-info-panel .hints-container { margin-top: 12px; }
+        .exercise-code-panel { display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure { margin: 0; border: none; border-radius: 0; flex: 1; display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure-header { border-radius: 0; }
+        .exercise-code-panel .code-editor { flex: 1; min-height: 150px; max-height: none; resize: none; }
+        .exercise-code-panel .code-output { max-height: 180px; }
+        
+        @media (max-width: 900px) {
+            .exercise-body { grid-template-columns: 1fr; }
+            .exercise-info-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: none; }
+            .code-figure .code-split { grid-template-columns: 1fr; }
+            .code-figure .code-split .code-editor { border-right: none; border-bottom: 1px solid #333; }
+            .code-figure .code-split .code-output { border-top: none; }
+        }
         .info-box { padding: 18px 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid; }
         .info-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
         .tip-box { background: rgba(5, 150, 105, 0.08); border-color: var(--success); }
@@ -89,7 +117,7 @@
         .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
         .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
         .difficulty.challenge { background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(217, 119, 6, 0.15)); color: var(--accent); }
-        .exercise-body { padding: 24px; }
+        .exercise-body { /* handled by split layout CSS */ }
         .expected-output { background: rgba(5, 150, 105, 0.06); border: 1px solid rgba(5, 150, 105, 0.15); border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
         .expected-output-label { font-size: 0.8rem; font-weight: 600; color: var(--success); text-transform: uppercase; margin-bottom: 10px; font-family: system-ui, sans-serif; }
         .expected-output pre { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-secondary); margin: 0; background: transparent; padding: 0; white-space: pre-wrap; }
@@ -2094,8 +2122,7 @@ print("=" * 60)</textarea>
                         <div class="exercise-title"><span class="exercise-number">1</span>Add Light Sensor</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p>Extend the sensor system by creating a <code>LightSensor</code> class that measures light intensity in lux.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p>Extend the sensor system by creating a <code>LightSensor</code> class that measures light intensity in lux.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">Expected Output</div>
                             <pre>Light LIGHT_001: 523.4 lux [Active]
@@ -2111,8 +2138,7 @@ Stats: {'count': 5, 'min': 234.5, 'max': 876.2, 'avg': 523.4}</pre>
                                     <li>Use thresholds: dim &lt;300, normal 300-700, bright &gt;700</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
@@ -2156,8 +2182,7 @@ print(f"Stats: {light.get_statistics()}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 2 -->
@@ -2166,8 +2191,7 @@ print(f"Stats: {light.get_statistics()}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">2</span>Export to CSV</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p>Create a function that exports all sensor readings to CSV format.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p>Create a function that exports all sensor readings to CSV format.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints2')">💡 Show Hints</button>
                             <div class="hints-content" id="hints2">
@@ -2177,8 +2201,7 @@ print(f"Stats: {light.get_statistics()}")</textarea>
                                     <li>Join lines with <code>'\n'.join(lines)</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
@@ -2210,8 +2233,7 @@ print(csv_output)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 3 -->
@@ -2220,8 +2242,7 @@ print(csv_output)</textarea>
                         <div class="exercise-title"><span class="exercise-number">3</span>Data Validator</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p>Create a <code>DataValidator</code> class that validates sensor readings against valid ranges.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p>Create a <code>DataValidator</code> class that validates sensor readings against valid ranges.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints3')">💡 Show Hints</button>
                             <div class="hints-content" id="hints3">
@@ -2231,8 +2252,7 @@ print(csv_output)</textarea>
                                     <li>Return a list of validation issues</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
@@ -2290,8 +2310,7 @@ for sensor_id, sensor_type, value in test_readings:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 4 -->
@@ -2300,8 +2319,7 @@ for sensor_id, sensor_type, value in test_readings:
                         <div class="exercise-title"><span class="exercise-number">4</span>Sensor Registry</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p>Create a <code>SensorRegistry</code> class that manages sensor registration, lookup, and filtering.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p>Create a <code>SensorRegistry</code> class that manages sensor registration, lookup, and filtering.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints4')">💡 Show Hints</button>
                             <div class="hints-content" id="hints4">
@@ -2311,8 +2329,7 @@ for sensor_id, sensor_type, value in test_readings:
                                     <li>Filter by type: <code>[s for s in sensors if s.sensor_type == type]</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
@@ -2372,8 +2389,7 @@ print(f"Get T1: {registry.get('T1')}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 5 -->
@@ -2382,8 +2398,7 @@ print(f"Get T1: {registry.get('T1')}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">5</span>Report Generator</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p>Create a <code>ReportGenerator</code> class that generates comprehensive summary reports.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p>Create a <code>ReportGenerator</code> class that generates comprehensive summary reports.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints5')">💡 Show Hints</button>
                             <div class="hints-content" id="hints5">
@@ -2394,8 +2409,7 @@ print(f"Get T1: {registry.get('T1')}")</textarea>
                                     <li>Calculate overall system health</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
@@ -2456,8 +2470,7 @@ print(report.generate_summary())</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 6 -->
@@ -2466,8 +2479,7 @@ print(report.generate_summary())</textarea>
                         <div class="exercise-title"><span class="exercise-number">6</span>Notification System</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p>Create a notification system using the Observer pattern to notify subscribers when alerts occur.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p>Create a notification system using the Observer pattern to notify subscribers when alerts occur.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
                             <div class="hints-content" id="hints6">
@@ -2477,8 +2489,7 @@ print(report.generate_summary())</textarea>
                                     <li>notify: loop and call each <code>callback(alert)</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
@@ -2538,8 +2549,7 @@ notifier.notify(test_alert)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
             </section>
 
@@ -2592,6 +2602,21 @@ notifier.notify(test_alert)</textarea>
         }
         window.addEventListener('scroll', updateProgress);
         window.addEventListener('load', updateProgress);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.code-figure').forEach(function(figure) {
+                if (figure.closest('.exercise-code-panel')) return;
+                var editor = figure.querySelector('.code-editor');
+                var output = figure.querySelector('.code-output');
+                if (editor && output) {
+                    var splitDiv = document.createElement('div');
+                    splitDiv.className = 'code-split';
+                    editor.parentNode.insertBefore(splitDiv, editor);
+                    splitDiv.appendChild(editor);
+                    splitDiv.appendChild(output);
+                }
+            });
+        });
 
         // Hints Toggle
         function toggleHints(id) {

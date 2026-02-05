@@ -86,7 +86,7 @@
         
         /* Main container */
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 50px 24px 80px;
         }
@@ -269,7 +269,8 @@
         
         .code-editor {
             width: 100%;
-            min-height: 120px;
+            min-height: 80px;
+            max-height: 300px;
             padding: 16px;
             background: var(--bg-code);
             border: none;
@@ -279,6 +280,7 @@
             line-height: 1.6;
             resize: vertical;
             outline: none;
+            overflow-y: auto;
         }
         
         .code-output {
@@ -286,6 +288,8 @@
             border-top: 1px solid #333;
             padding: 14px 16px;
             display: none;
+            max-height: 200px;
+            overflow-y: auto;
         }
         
         .code-output.show { display: block; }
@@ -305,6 +309,34 @@
             font-size: 0.85rem;
             color: #d4d4d8;
             white-space: pre-wrap;
+        }
+        
+        .code-figure .code-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 200px; }
+        .code-figure .code-split .code-editor { max-height: 400px; border-right: 1px solid #333; }
+        .code-figure .code-split .code-output { border-top: none; display: flex; flex-direction: column; background: rgba(5,150,105,0.08); max-height: 400px; overflow-y: auto; }
+        .code-figure .code-split .code-output.show { display: flex; }
+        .code-figure .code-split .code-output .code-output-content { flex: 1; overflow-y: auto; }
+        .code-figure .code-split .code-output:not(.show) { display: flex; opacity: 0.4; }
+        .code-figure .code-split .code-output:not(.show) .code-output-content::after { content: 'Click ▶ Run to see output here'; color: #666; font-style: italic; font-size: 0.8rem; }
+        .code-figure .code-split .code-output.show { opacity: 1; }
+        
+        .exercise-body { padding: 0 !important; display: grid; grid-template-columns: 1fr 1fr; min-height: 280px; }
+        .exercise-info-panel { padding: 24px; border-right: 1px solid var(--border); overflow-y: auto; max-height: 450px; background: rgba(249,115,22,0.02); }
+        .exercise-info-panel .exercise-description { margin-bottom: 16px; }
+        .exercise-info-panel .expected-output { margin: 12px 0 16px; }
+        .exercise-info-panel .hints-container { margin-top: 12px; }
+        .exercise-code-panel { display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure { margin: 0; border: none; border-radius: 0; flex: 1; display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure-header { border-radius: 0; }
+        .exercise-code-panel .code-editor { flex: 1; min-height: 150px; max-height: none; resize: none; }
+        .exercise-code-panel .code-output { max-height: 180px; }
+        
+        @media (max-width: 900px) {
+            .exercise-body { grid-template-columns: 1fr; }
+            .exercise-info-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: none; }
+            .code-figure .code-split { grid-template-columns: 1fr; }
+            .code-figure .code-split .code-editor { border-right: none; border-bottom: 1px solid #333; }
+            .code-figure .code-split .code-output { border-top: none; }
         }
         
         /* Info boxes */
@@ -402,7 +434,7 @@
         .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
         .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
         
-        .exercise-body { padding: 24px; }
+        .exercise-body { /* handled by split layout CSS */ }
         
         .exercise-description { color: var(--text-secondary); font-size: 1rem; margin-bottom: 20px; }
         
@@ -2037,7 +2069,7 @@ for row in C: print(row)</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Create a list called <code>numbers</code> containing 1 through 5, then print it.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Create a list called <code>numbers</code> containing 1 through 5, then print it.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>[1, 2, 3, 4, 5]</pre>
@@ -2051,8 +2083,8 @@ for row in C: print(row)</textarea>
                                     <li>Assign to variable: <code>numbers = [...]</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
@@ -2064,7 +2096,7 @@ print(numbers)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2075,7 +2107,7 @@ print(numbers)</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Print the last element of the list using negative indexing.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Print the last element of the list using negative indexing.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>elderberry</pre>
@@ -2089,8 +2121,8 @@ print(numbers)</textarea>
                                     <li>-2 would get second-to-last, etc.</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
@@ -2102,7 +2134,7 @@ print(numbers)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2113,7 +2145,7 @@ print(numbers)</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Extract elements at indices 2, 3, 4 (the middle three numbers).</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Extract elements at indices 2, 3, 4 (the middle three numbers).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>[30, 40, 50]</pre>
@@ -2127,8 +2159,8 @@ print(numbers)</textarea>
                                     <li>Gets indices 2, 3, 4 (values 30, 40, 50)</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
@@ -2141,7 +2173,7 @@ print(middle)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2152,7 +2184,7 @@ print(middle)</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Add "date" using append, then add ["elderberry", "fig"] using extend.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Add "date" using append, then add ["elderberry", "fig"] using extend.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>['apple', 'banana', 'cherry', 'date', 'elderberry', 'fig']</pre>
@@ -2166,8 +2198,8 @@ print(middle)</textarea>
                                     <li>append() adds one, extend() adds multiple</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
@@ -2182,7 +2214,7 @@ print(fruits)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2193,7 +2225,7 @@ print(fruits)</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Calculate and print the sum and average of the list.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Calculate and print the sum and average of the list.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Sum: 45
@@ -2208,8 +2240,8 @@ Average: 9.0</pre>
                                     <li>Assign to variables: total and avg</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
@@ -2223,7 +2255,7 @@ print(f"Average: {avg}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2234,7 +2266,7 @@ print(f"Average: {avg}")</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Reverse the list using slicing (not the reverse() method).</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Reverse the list using slicing (not the reverse() method).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>[5, 4, 3, 2, 1]</pre>
@@ -2248,8 +2280,8 @@ print(f"Average: {avg}")</textarea>
                                     <li>Creates a reversed copy of the list</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
@@ -2262,7 +2294,7 @@ print(reversed_list)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2273,7 +2305,7 @@ print(reversed_list)</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Use a list comprehension to create squares of 1-5.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Use a list comprehension to create squares of 1-5.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>[1, 4, 9, 16, 25]</pre>
@@ -2287,8 +2319,8 @@ print(reversed_list)</textarea>
                                     <li>Example: <code>[x**2 for x in range(1, 6)]</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
@@ -2300,7 +2332,7 @@ print(squares)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2311,7 +2343,7 @@ print(squares)</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Use a list comprehension to filter only even numbers.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Use a list comprehension to filter only even numbers.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>[2, 4, 6, 8, 10]</pre>
@@ -2325,8 +2357,8 @@ print(squares)</textarea>
                                     <li>Example: <code>[x for x in numbers if x % 2 == 0]</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
@@ -2339,7 +2371,7 @@ print(evens)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2350,7 +2382,7 @@ print(evens)</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Calculate and print the sum of each row in the matrix.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Calculate and print the sum of each row in the matrix.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Row 0 sum: 6
@@ -2366,8 +2398,8 @@ Row 2 sum: 24</pre>
                                     <li>Print: <code>f"Row {i} sum: {sum(row)}"</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
@@ -2383,7 +2415,7 @@ Row 2 sum: 24</pre>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2394,7 +2426,7 @@ Row 2 sum: 24</pre>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Unpack the coordinates tuple into x, y, z variables.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Unpack the coordinates tuple into x, y, z variables.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>x=10, y=20, z=30</pre>
@@ -2408,8 +2440,8 @@ Row 2 sum: 24</pre>
                                     <li>Number of variables must match tuple length</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
@@ -2422,7 +2454,7 @@ print(f"x={x}, y={y}, z={z}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2433,7 +2465,7 @@ print(f"x={x}, y={y}, z={z}")</textarea>
                         <span class="difficulty easy">Easy</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Swap the values of a and b using tuple unpacking.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Swap the values of a and b using tuple unpacking.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Before: a=5, b=10
@@ -2448,8 +2480,8 @@ After: a=10, b=5</pre>
                                     <li>Works with tuples on both sides</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
@@ -2465,7 +2497,7 @@ print(f"After: a={a}, b={b}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2476,7 +2508,7 @@ print(f"After: a={a}, b={b}")</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Sort the list and print the top 3 scores.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Sort the list and print the top 3 scores.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>Top 3 scores: [95, 92, 88]</pre>
@@ -2490,8 +2522,8 @@ print(f"After: a={a}, b={b}")</textarea>
                                     <li>Combine: <code>sorted(scores, reverse=True)[:3]</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
@@ -2504,7 +2536,7 @@ print(f"Top 3 scores: {top3}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2515,7 +2547,7 @@ print(f"Top 3 scores: {top3}")</textarea>
                         <span class="difficulty medium">Medium</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Use enumerate to print each fruit with its position (starting from 1).</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Use enumerate to print each fruit with its position (starting from 1).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>1. apple
@@ -2531,8 +2563,8 @@ print(f"Top 3 scores: {top3}")</textarea>
                                     <li>Print: <code>f"{i}. {fruit}"</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex13')">▶ Run</button>
@@ -2544,7 +2576,7 @@ print(f"Top 3 scores: {top3}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2555,7 +2587,7 @@ print(f"Top 3 scores: {top3}")</textarea>
                         <span class="difficulty hard">Challenge</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Flatten a 2D list into a 1D list using list comprehension.</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Flatten a 2D list into a 1D list using list comprehension.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>[1, 2, 3, 4, 5, 6, 7, 8, 9]</pre>
@@ -2567,8 +2599,8 @@ print(f"Top 3 scores: {top3}")</textarea>
                                     <li>Use nested comprehension: <code>[item for sublist in matrix for item in sublist]</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex14')">▶ Run</button>
@@ -2581,7 +2613,7 @@ print(flat)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
                 
@@ -2592,7 +2624,7 @@ print(flat)</textarea>
                         <span class="difficulty hard">Challenge</span>
                     </div>
                     <div class="exercise-body">
-                        <p class="exercise-description">Transpose the matrix (swap rows and columns).</p>
+                        <div class="exercise-info-panel"><p class="exercise-description">Transpose the matrix (swap rows and columns).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">✓ Expected Output</div>
                             <pre>[[1, 4], [2, 5], [3, 6]]</pre>
@@ -2605,8 +2637,8 @@ print(flat)</textarea>
                                     <li>Or nested comprehension</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div>
+                        <div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex15')">▶ Run</button>
@@ -2619,7 +2651,7 @@ print(transposed)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
             </section>
@@ -2683,6 +2715,22 @@ print(transposed)</textarea>
         }
         window.addEventListener('scroll', updateProgress);
         window.addEventListener('load', updateProgress);
+        
+        // Convert inline code figures (not exercises) to split layout
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.code-figure').forEach(figure => {
+                if (figure.closest('.exercise-code-panel')) return;
+                const editor = figure.querySelector('.code-editor');
+                const output = figure.querySelector('.code-output');
+                if (editor && output) {
+                    const splitDiv = document.createElement('div');
+                    splitDiv.className = 'code-split';
+                    editor.parentNode.insertBefore(splitDiv, editor);
+                    splitDiv.appendChild(editor);
+                    splitDiv.appendChild(output);
+                }
+            });
+        });
         
         // Hints toggle
         function toggleHints(id) {

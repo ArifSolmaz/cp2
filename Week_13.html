@@ -33,7 +33,7 @@
         .topbar-nav { display: flex; gap: 24px; align-items: center; }
         .progress-container { position: fixed; top: 52px; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 99; }
         .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa); width: 0%; transition: width 0.15s ease-out; }
-        .container { max-width: 900px; margin: 0 auto; padding: 50px 24px 80px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
         .chapter-header { text-align: center; margin-bottom: 50px; padding-bottom: 40px; border-bottom: 2px solid var(--border); }
         .chapter-label { display: inline-block; background: var(--accent); color: white; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-family: system-ui, sans-serif; font-weight: 500; margin-bottom: 20px; }
         .chapter-header h1 { font-size: 2.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; }
@@ -58,11 +58,39 @@
         .code-figure-label { font-family: system-ui, sans-serif; font-size: 0.8rem; color: #a78bfa; font-weight: 500; }
         .code-figure-run { background: var(--success); color: white; border: none; padding: 6px 14px; border-radius: 6px; font-family: system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
         .code-figure-run:hover { background: #047857; }
-        .code-editor { width: 100%; min-height: 120px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; }
-        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; }
+        .code-editor { width: 100%; min-height: 80px; max-height: 300px; padding: 16px; background: var(--bg-code); border: none; color: #e4e4e7; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; overflow-y: auto; }
+        .code-output { background: rgba(5, 150, 105, 0.1); border-top: 1px solid #333; padding: 14px 16px; display: none; max-height: 200px; overflow-y: auto; }
         .code-output.show { display: block; }
         .code-output-label { font-family: system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--success); text-transform: uppercase; margin-bottom: 8px; }
         .code-output-content { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #d4d4d8; white-space: pre-wrap; }
+        
+        .code-figure .code-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 200px; }
+        .code-figure .code-split .code-editor { max-height: 400px; border-right: 1px solid #333; }
+        .code-figure .code-split .code-output { border-top: none; display: flex; flex-direction: column; background: rgba(5,150,105,0.08); max-height: 400px; overflow-y: auto; }
+        .code-figure .code-split .code-output.show { display: flex; }
+        .code-figure .code-split .code-output .code-output-content { flex: 1; overflow-y: auto; }
+        .code-figure .code-split .code-output:not(.show) { display: flex; opacity: 0.4; }
+        .code-figure .code-split .code-output:not(.show) .code-output-content::after { content: 'Click ▶ Run to see output here'; color: #666; font-style: italic; font-size: 0.8rem; }
+        .code-figure .code-split .code-output.show { opacity: 1; }
+        
+        .exercise-body { padding: 0 !important; display: grid; grid-template-columns: 1fr 1fr; min-height: 280px; }
+        .exercise-info-panel { padding: 24px; border-right: 1px solid var(--border); overflow-y: auto; max-height: 450px; background: rgba(249,115,22,0.02); }
+        .exercise-info-panel .exercise-description { margin-bottom: 16px; }
+        .exercise-info-panel .expected-output { margin: 12px 0 16px; }
+        .exercise-info-panel .hints-container { margin-top: 12px; }
+        .exercise-code-panel { display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure { margin: 0; border: none; border-radius: 0; flex: 1; display: flex; flex-direction: column; }
+        .exercise-code-panel .code-figure-header { border-radius: 0; }
+        .exercise-code-panel .code-editor { flex: 1; min-height: 150px; max-height: none; resize: none; }
+        .exercise-code-panel .code-output { max-height: 180px; }
+        
+        @media (max-width: 900px) {
+            .exercise-body { grid-template-columns: 1fr; }
+            .exercise-info-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: none; }
+            .code-figure .code-split { grid-template-columns: 1fr; }
+            .code-figure .code-split .code-editor { border-right: none; border-bottom: 1px solid #333; }
+            .code-figure .code-split .code-output { border-top: none; }
+        }
         .info-box { padding: 18px 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid; }
         .info-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
         .tip-box { background: rgba(5, 150, 105, 0.08); border-color: var(--success); }
@@ -84,7 +112,7 @@
         .difficulty.easy { background: rgba(5, 150, 105, 0.12); color: var(--success); }
         .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
         .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
-        .exercise-body { padding: 24px; }
+        .exercise-body { /* handled by split layout CSS */ }
         .expected-output { background: rgba(5, 150, 105, 0.06); border: 1px solid rgba(5, 150, 105, 0.15); border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
         .expected-output-label { font-size: 0.8rem; font-weight: 600; color: var(--success); text-transform: uppercase; margin-bottom: 10px; font-family: system-ui, sans-serif; }
         .expected-output pre { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-secondary); margin: 0; background: transparent; padding: 0; }
@@ -1782,8 +1810,7 @@ print(f"  Savings: {(1 - stats['buffer_size']/json_size)*100:.1f}%")</textarea>
                         <div class="exercise-title"><span class="exercise-number">1</span>CSV Reader</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a function that reads CSV data and returns a list of dictionaries.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a function that reads CSV data and returns a list of dictionaries.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">Expected Output</div>
                             <pre>Record 1: {'name': 'Alice', 'score': '95'}
@@ -1797,8 +1824,7 @@ Record 2: {'name': 'Bob', 'score': '87'}</pre>
                                     <li>Use StringIO to create a file-like object from string</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex1')">▶ Run</button>
@@ -1821,8 +1847,7 @@ for i, record in enumerate(records, 1):
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 2 -->
@@ -1831,8 +1856,7 @@ for i, record in enumerate(records, 1):
                         <div class="exercise-title"><span class="exercise-number">2</span>JSON Parser</div>
                         <span class="difficulty easy">Easy</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Parse JSON data and extract sensor values.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Parse JSON data and extract sensor values.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">Expected Output</div>
                             <pre>TEMP_001: 25.5 celsius
@@ -1847,8 +1871,7 @@ PRES_001: 1013.25 hPa</pre>
                                     <li>Loop through list and access dict keys</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex2')">▶ Run</button>
@@ -1873,8 +1896,7 @@ for sensor in data['sensors']:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 3 -->
@@ -1883,8 +1905,7 @@ for sensor in data['sensors']:
                         <div class="exercise-title"><span class="exercise-number">3</span>Data Validator</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a validate_reading function that checks sensor_id (non-empty string) and value (number in range -50 to 150).</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a validate_reading function that checks sensor_id (non-empty string) and value (number in range -50 to 150).</p>
                         <div class="expected-output">
                             <div class="expected-output-label">Expected Output</div>
                             <pre>TEMP_001, 25.5: Valid
@@ -1900,8 +1921,7 @@ TEMP_002, 200: Invalid - value out of range
                                     <li>Return tuple of (is_valid, message)</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex3')">▶ Run</button>
@@ -1931,8 +1951,7 @@ for sensor_id, value in test_cases:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 4 -->
@@ -1941,8 +1960,7 @@ for sensor_id, value in test_cases:
                         <div class="exercise-title"><span class="exercise-number">4</span>Simple Database</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a SimpleDB class with insert, select_all, and select_by_sensor methods.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a SimpleDB class with insert, select_all, and select_by_sensor methods.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">Expected Output</div>
                             <pre>Inserted 3 records
@@ -1958,8 +1976,7 @@ TEMP_001: 2 records</pre>
                                     <li>select_by_sensor: filter with list comprehension</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex4')">▶ Run</button>
@@ -1998,8 +2015,7 @@ print(f"TEMP_001: {len(db.select_by_sensor('TEMP_001'))} records")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 5 -->
@@ -2008,8 +2024,7 @@ print(f"TEMP_001: {len(db.select_by_sensor('TEMP_001'))} records")</textarea>
                         <div class="exercise-title"><span class="exercise-number">5</span>CSV Statistics</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Calculate min, max, and average from CSV temperature data.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Calculate min, max, and average from CSV temperature data.</p>
                         <div class="expected-output">
                             <div class="expected-output-label">Expected Output</div>
                             <pre>Statistics: min=22.1, max=26.0, avg=24.50</pre>
@@ -2023,8 +2038,7 @@ print(f"TEMP_001: {len(db.select_by_sensor('TEMP_001'))} records")</textarea>
                                     <li>Return dict with min, max, avg keys</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex5')">▶ Run</button>
@@ -2053,8 +2067,7 @@ print(f"Statistics: min={stats['min']}, max={stats['max']}, avg={stats['avg']:.2
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 6 -->
@@ -2063,8 +2076,7 @@ print(f"Statistics: min={stats['min']}, max={stats['max']}, avg={stats['avg']:.2
                         <div class="exercise-title"><span class="exercise-number">6</span>JSON Configuration</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a Config class that loads settings from JSON and provides get/set methods.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a Config class that loads settings from JSON and provides get/set methods.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints6')">💡 Show Hints</button>
                             <div class="hints-content" id="hints6">
@@ -2074,8 +2086,7 @@ print(f"Statistics: min={stats['min']}, max={stats['max']}, avg={stats['avg']:.2
                                     <li>to_json: <code>json.dumps(self.data, indent=2)</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex6')">▶ Run</button>
@@ -2105,8 +2116,7 @@ print(f"Config:\n{config.to_json()}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 7 -->
@@ -2115,8 +2125,7 @@ print(f"Config:\n{config.to_json()}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">7</span>XML Parser</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Parse XML and extract sensor readings into a list of dictionaries.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Parse XML and extract sensor readings into a list of dictionaries.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints7')">💡 Show Hints</button>
                             <div class="hints-content" id="hints7">
@@ -2126,8 +2135,7 @@ print(f"Config:\n{config.to_json()}")</textarea>
                                     <li>Get attribute: <code>sensor.get('id')</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex7')">▶ Run</button>
@@ -2158,8 +2166,7 @@ for s in sensors:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 8 -->
@@ -2168,8 +2175,7 @@ for s in sensors:
                         <div class="exercise-title"><span class="exercise-number">8</span>Binary Packer</div>
                         <span class="difficulty medium">Medium</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Use struct to pack and unpack sensor data (id: int, value: float, status: byte).</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Use struct to pack and unpack sensor data (id: int, value: float, status: byte).</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints8')">💡 Show Hints</button>
                             <div class="hints-content" id="hints8">
@@ -2179,8 +2185,7 @@ for s in sensors:
                                     <li>Unpack: <code>struct.unpack(FORMAT, data)</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex8')">▶ Run</button>
@@ -2208,8 +2213,7 @@ print(f"Unpacked: id={sid}, value={val}, status={stat}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 9 -->
@@ -2218,8 +2222,7 @@ print(f"Unpacked: id={sid}, value={val}, status={stat}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">9</span>Data Pipeline</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a data pipeline that validates, cleans, and transforms sensor readings.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a data pipeline that validates, cleans, and transforms sensor readings.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints9')">💡 Show Hints</button>
                             <div class="hints-content" id="hints9">
@@ -2229,8 +2232,7 @@ print(f"Unpacked: id={sid}, value={val}, status={stat}")</textarea>
                                     <li>Transform: add processed flag and timestamp</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex9')">▶ Run</button>
@@ -2288,8 +2290,7 @@ for r in results:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 10 -->
@@ -2298,8 +2299,7 @@ for r in results:
                         <div class="exercise-title"><span class="exercise-number">10</span>API Client</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a mock API client with GET and POST methods and error handling.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a mock API client with GET and POST methods and error handling.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints10')">💡 Show Hints</button>
                             <div class="hints-content" id="hints10">
@@ -2309,8 +2309,7 @@ for r in results:
                                     <li>Return dict with 'status' and 'data' or 'error'</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex10')">▶ Run</button>
@@ -2357,8 +2356,7 @@ print(f"POST: {resp['status']}, added {resp['data']}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 11 -->
@@ -2367,8 +2365,7 @@ print(f"POST: {resp['status']}, added {resp['data']}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">11</span>Schema Validator</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Implement a schema validator that checks required fields, types, and value ranges.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Implement a schema validator that checks required fields, types, and value ranges.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints11')">💡 Show Hints</button>
                             <div class="hints-content" id="hints11">
@@ -2378,8 +2375,7 @@ print(f"POST: {resp['status']}, added {resp['data']}")</textarea>
                                     <li>Return tuple: <code>(is_valid, error_list)</code></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex11')">▶ Run</button>
@@ -2433,8 +2429,7 @@ for data in test_data:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Exercise 12 -->
@@ -2443,8 +2438,7 @@ for data in test_data:
                         <div class="exercise-title"><span class="exercise-number">12</span>Data Converter</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create functions to convert between CSV, JSON, and XML formats.</p>
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create functions to convert between CSV, JSON, and XML formats.</p>
                         <div class="hints-container">
                             <button class="hints-toggle" onclick="toggleHints('hints12')">💡 Show Hints</button>
                             <div class="hints-content" id="hints12">
@@ -2454,8 +2448,7 @@ for data in test_data:
                                     <li>Use StringIO for string ↔ file conversion</li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="code-figure">
+                        </div></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('ex12')">▶ Run</button>
@@ -2495,8 +2488,7 @@ print(csv_output)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
             </section>
 
@@ -3141,9 +3133,7 @@ print(exporter.to_xml('sensors', 'sensor'))</textarea>
                         <div class="exercise-title"><span class="exercise-number">B1</span>Retry Decorator</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a decorator that retries a function up to N times on failure.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a decorator that retries a function up to N times on failure.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB1')">▶ Run</button>
@@ -3185,8 +3175,7 @@ except Exception as e:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Bonus 2 -->
@@ -3195,9 +3184,7 @@ except Exception as e:
                         <div class="exercise-title"><span class="exercise-number">B2</span>Data Cache</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Implement a cache that stores data with TTL (time-to-live).</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Implement a cache that stores data with TTL (time-to-live).</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB2')">▶ Run</button>
@@ -3243,8 +3230,7 @@ print(f"sensor_3: {cache.get('sensor_3', 'not found')}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Bonus 3 -->
@@ -3253,9 +3239,7 @@ print(f"sensor_3: {cache.get('sensor_3', 'not found')}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">B3</span>Data Stream</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a DataStream class that simulates real-time sensor data with callbacks.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a DataStream class that simulates real-time sensor data with callbacks.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB3')">▶ Run</button>
@@ -3301,8 +3285,7 @@ stream.generate(5)</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
             </section>
 
@@ -3313,9 +3296,7 @@ stream.generate(5)</textarea>
                         <div class="exercise-title"><span class="exercise-number">B4</span>Event Logger</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create an EventLogger that records events with timestamps and supports filtering.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create an EventLogger that records events with timestamps and supports filtering.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB4')">▶ Run</button>
@@ -3363,8 +3344,7 @@ print(f"DATA events: {len(logger.get_by_type('DATA'))}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Bonus 5 -->
@@ -3373,9 +3353,7 @@ print(f"DATA events: {len(logger.get_by_type('DATA'))}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">B5</span>Config Validator</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a configuration validator that checks JSON configs against a schema.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a configuration validator that checks JSON configs against a schema.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB5')">▶ Run</button>
@@ -3437,8 +3415,7 @@ for config in configs:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Bonus 6 -->
@@ -3447,9 +3424,7 @@ for config in configs:
                         <div class="exercise-title"><span class="exercise-number">B6</span>Data Buffer</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Implement a circular buffer for sensor data with overflow handling.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Implement a circular buffer for sensor data with overflow handling.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB6')">▶ Run</button>
@@ -3491,8 +3466,7 @@ print(f"\nBuffer full: {buffer.is_full()}")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Bonus 7 -->
@@ -3501,9 +3475,7 @@ print(f"\nBuffer full: {buffer.is_full()}")</textarea>
                         <div class="exercise-title"><span class="exercise-number">B7</span>Data Compressor</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a simple run-length encoding compressor for repeated sensor values.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a simple run-length encoding compressor for repeated sensor values.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB7')">▶ Run</button>
@@ -3553,8 +3525,7 @@ print(f"Size reduction: {len(data)} -> {len(compressed)} tuples")</textarea>
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
 
                 <!-- Bonus 8 -->
@@ -3563,9 +3534,7 @@ print(f"Size reduction: {len(data)} -> {len(compressed)} tuples")</textarea>
                         <div class="exercise-title"><span class="exercise-number">B8</span>Query Builder</div>
                         <span class="difficulty hard">Challenge</span>
                     </div>
-                    <div class="exercise-body">
-                        <p class="exercise-description">Create a fluent query builder for filtering sensor data.</p>
-                        <div class="code-figure">
+                    <div class="exercise-body"><div class="exercise-info-panel"><p class="exercise-description">Create a fluent query builder for filtering sensor data.</p></div><div class="exercise-code-panel"><div class="code-figure">
                             <div class="code-figure-header">
                                 <span class="code-figure-label">Your Solution</span>
                                 <button class="code-figure-run" onclick="runCode('exB8')">▶ Run</button>
@@ -3625,8 +3594,7 @@ for r in results:
                                 <div class="code-output-label">Output</div>
                                 <div class="code-output-content"></div>
                             </div>
-                        </div>
-                    </div>
+                        </div></div></div>
                 </div>
             </section>
             <!-- Submit Section -->
@@ -3679,6 +3647,21 @@ for r in results:
         }
         window.addEventListener('scroll', updateProgress);
         window.addEventListener('load', updateProgress);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.code-figure').forEach(function(figure) {
+                if (figure.closest('.exercise-code-panel')) return;
+                var editor = figure.querySelector('.code-editor');
+                var output = figure.querySelector('.code-output');
+                if (editor && output) {
+                    var splitDiv = document.createElement('div');
+                    splitDiv.className = 'code-split';
+                    editor.parentNode.insertBefore(splitDiv, editor);
+                    splitDiv.appendChild(editor);
+                    splitDiv.appendChild(output);
+                }
+            });
+        });
 
         // Hints Toggle
         function toggleHints(id) {
