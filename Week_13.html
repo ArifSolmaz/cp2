@@ -26,13 +26,43 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Crimson Pro', Georgia, serif; font-size: 19px; line-height: 1.8; background: var(--bg-cream); color: var(--text-primary); }
-        .topbar { background: var(--bg-dark); color: white; padding: 14px 24px; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
-        .topbar a { color: white; text-decoration: none; font-family: system-ui, sans-serif; font-size: 0.9rem; opacity: 0.9; }
+        /* Topbar */
+        .topbar { background: var(--bg-dark); color: white; padding: 0 20px; height: 48px; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; }
+        .topbar a { color: white; text-decoration: none; font-family: system-ui, sans-serif; font-size: 0.85rem; opacity: 0.85; transition: opacity 0.2s; }
         .topbar a:hover { opacity: 1; }
-        .topbar-title { font-family: system-ui, sans-serif; font-weight: 600; font-size: 1rem; }
-        .topbar-nav { display: flex; gap: 24px; align-items: center; }
-        .progress-container { position: fixed; top: 52px; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 99; }
-        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa); width: 0%; transition: width 0.15s ease-out; }
+        .home-link { white-space: nowrap; }
+        .topbar-right { display: flex; align-items: center; gap: 16px; font-family: system-ui, sans-serif; font-size: 0.82rem; }
+        .topbar-progress { position: absolute; bottom: 0; left: 0; height: 2px; background: linear-gradient(90deg, var(--accent), #a78bfa); transition: width 0.15s ease-out; border-radius: 0 1px 1px 0; }
+        .topbar-toc-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+        .topbar-toc-current { display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 4px 14px; border-radius: 6px; transition: background 0.2s; font-family: system-ui, sans-serif; font-size: 0.82rem; color: rgba(255,255,255,0.9); user-select: none; }
+        .topbar-toc-current:hover { background: rgba(255,255,255,0.08); }
+        .topbar-toc-current .cur-num { opacity: 0.5; margin-right: 2px; }
+        .topbar-toc-current .cur-label { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .topbar-toc-current .cur-arrow { font-size: 0.6rem; opacity: 0.5; transition: transform 0.2s; }
+        .topbar-toc-center.open .cur-arrow { transform: rotate(180deg); }
+        .topbar-toc-dropdown { display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; min-width: 300px; max-height: 70vh; overflow-y: auto; padding: 8px 0; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+        .topbar-toc-center.open .topbar-toc-dropdown { display: block; }
+        .toc-item { display: flex; align-items: center; gap: 10px; padding: 8px 18px; font-family: system-ui, sans-serif; font-size: 0.82rem; color: rgba(255,255,255,0.6); cursor: pointer; transition: all 0.15s; text-decoration: none; }
+        .toc-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .toc-item.active { color: #a78bfa; font-weight: 600; }
+        .toc-item.visited .toc-check { opacity: 1; color: #4ade80; }
+        .toc-num { opacity: 0.4; min-width: 22px; }
+        .toc-check { opacity: 0; font-size: 0.7rem; margin-left: auto; transition: opacity 0.3s; }
+        .scroll-progress { position: fixed; bottom: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; font-family: system-ui, sans-serif; font-size: 0.7rem; font-weight: 600; color: rgba(255,255,255,0.9); box-shadow: 0 4px 16px rgba(0,0,0,0.2); z-index: 90; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .scroll-progress.visible { opacity: 1; }
+        .scroll-progress svg { position: absolute; top: 0; left: 0; width: 44px; height: 44px; transform: rotate(-90deg); }
+        .scroll-progress circle { fill: none; stroke-width: 3; }
+        .scroll-progress .bg { stroke: rgba(255,255,255,0.1); }
+        .scroll-progress .fg { stroke: var(--accent); stroke-linecap: round; transition: stroke-dashoffset 0.15s ease-out; }
+        .run-all-btn { background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 4px; font-family: system-ui, sans-serif; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; margin-left: 10px; }
+        .run-all-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .run-all-btn.running { color: #a78bfa; border-color: rgba(124,58,237,0.4); pointer-events: none; }
+        .run-all-btn.success { color: #4ade80; border-color: rgba(74,222,128,0.4); background: rgba(74,222,128,0.1); }
+        .run-all-btn.failure { color: #f87171; border-color: rgba(248,113,113,0.4); background: rgba(248,113,113,0.1); }
+        .code-run-status { display: inline-flex; align-items: center; gap: 5px; font-family: system-ui, sans-serif; font-size: 0.7rem; margin-left: 10px; opacity: 0; transition: opacity 0.3s; }
+        .code-run-status.visible { opacity: 1; }
+        .code-run-status.pass { color: #4ade80; }
+        .code-run-status.fail { color: #f87171; }
         .container { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
         .chapter-header { text-align: center; margin-bottom: 50px; padding-bottom: 40px; border-bottom: 2px solid var(--border); }
         .chapter-label { display: inline-block; background: var(--accent); color: white; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-family: system-ui, sans-serif; font-weight: 500; margin-bottom: 20px; }
@@ -64,14 +94,18 @@
         .code-output-label { font-family: system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--success); text-transform: uppercase; margin-bottom: 8px; }
         .code-output-content { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #d4d4d8; white-space: pre-wrap; }
         
-        .code-figure .code-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 200px; }
-        .code-figure .code-split .code-editor { max-height: 400px; border-right: 1px solid #333; }
-        .code-figure .code-split .code-output { border-top: none; display: flex; flex-direction: column; background: rgba(5,150,105,0.08); max-height: 400px; overflow-y: auto; }
-        .code-figure .code-split .code-output.show { display: flex; }
-        .code-figure .code-split .code-output .code-output-content { flex: 1; overflow-y: auto; }
-        .code-figure .code-split .code-output:not(.show) { display: flex; opacity: 0.4; }
-        .code-figure .code-split .code-output:not(.show) .code-output-content::after { content: 'Click ▶ Run to see output here'; color: #666; font-style: italic; font-size: 0.8rem; }
-        .code-figure .code-split .code-output.show { opacity: 1; }
+        .code-figure .code-split { display: flex; flex-direction: row; align-items: stretch; border-radius: 0 0 4px 4px; }
+        .code-figure .code-split .code-input-sizer { flex: 1 1 50%; min-width: 0; display: grid; border-right: 1px solid #28283c; background: #1e1e2e; }
+        .code-figure .code-split .code-input-sizer > textarea,
+        .code-figure .code-split .code-input-sizer > .code-input-mirror { grid-area: 1 / 1; font-size: 0.82rem; line-height: 1.7; padding: 14px 16px; white-space: pre-wrap; word-wrap: break-word; box-sizing: border-box; font-family: 'JetBrains Mono', monospace; min-height: 60px; }
+        .code-figure .code-split .code-input-sizer > textarea { resize: none; overflow: hidden; color: #e0e0e0; background: transparent; border: none; outline: none; z-index: 1; max-height: none; }
+        .code-figure .code-split .code-input-sizer > .code-input-mirror { visibility: hidden; pointer-events: none; }
+        .code-figure .code-split .code-output { flex: 1 1 50%; min-width: 0; border-top: none; display: block; overflow-y: auto; padding: 0; box-sizing: border-box; max-height: none; }
+        .code-figure .code-split .code-output .code-output-label { display: none; }
+        .code-figure .code-split .code-output .code-output-content { font-size: 0.82rem; line-height: 1.7; padding: 14px 16px; white-space: pre-wrap; word-wrap: break-word; box-sizing: border-box; font-family: 'JetBrains Mono', monospace; min-height: 60px; }
+        .code-figure .code-split .code-output.show { display: block; opacity: 1; }
+        .code-figure .code-split .code-output:not(.show) { display: block; opacity: 0.4; }
+        .code-figure .code-split .code-output:not(.show) .code-output-content::before { content: '\2190 Click \25b6 Run to see aligned output'; color: #555; font-style: italic; }
         
         .exercise-body { padding: 0 !important; display: grid; grid-template-columns: 1fr 1fr; min-height: 280px; }
         .exercise-info-panel { padding: 24px; border-right: 1px solid var(--border); overflow-y: auto; max-height: 450px; background: rgba(249,115,22,0.02); }
@@ -83,13 +117,14 @@
         .exercise-code-panel .code-figure-header { border-radius: 0; }
         .exercise-code-panel .code-editor { flex: 1; min-height: 150px; max-height: none; resize: none; }
         .exercise-code-panel .code-output { max-height: 180px; }
-        
+        .exercise-code-panel .code-figure-caption { border-top: 1px solid #28283c; }
+
         @media (max-width: 900px) {
             .exercise-body { grid-template-columns: 1fr; }
             .exercise-info-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: none; }
-            .code-figure .code-split { grid-template-columns: 1fr; }
-            .code-figure .code-split .code-editor { border-right: none; border-bottom: 1px solid #333; }
-            .code-figure .code-split .code-output { border-top: none; }
+            .code-figure .code-split { flex-direction: column; }
+            .code-figure .code-split .code-input-sizer { flex: none; width: 100%; border-right: none; border-bottom: 1px solid #28283c; }
+            .code-figure .code-split .code-output { flex: none; width: 100%; }
         }
         .info-box { padding: 18px 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid; }
         .info-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
@@ -112,7 +147,6 @@
         .difficulty.easy { background: rgba(5, 150, 105, 0.12); color: var(--success); }
         .difficulty.medium { background: rgba(217, 119, 6, 0.12); color: var(--warning); }
         .difficulty.hard { background: rgba(220, 38, 38, 0.12); color: var(--danger); }
-        .exercise-body { /* handled by split layout CSS */ }
         .expected-output { background: rgba(5, 150, 105, 0.06); border: 1px solid rgba(5, 150, 105, 0.15); border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
         .expected-output-label { font-size: 0.8rem; font-weight: 600; color: var(--success); text-transform: uppercase; margin-bottom: 10px; font-family: system-ui, sans-serif; }
         .expected-output pre { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-secondary); margin: 0; background: transparent; padding: 0; }
@@ -130,26 +164,53 @@
         .honeypot { position: absolute; left: -9999px; }
         .submit-btn { background: var(--accent); color: white; border: none; padding: 16px 40px; border-radius: 8px; font-size: 1.05rem; font-weight: 600; cursor: pointer; font-family: system-ui, sans-serif; }
         .submit-status { margin-top: 20px; padding: 16px 20px; border-radius: 8px; font-family: system-ui, sans-serif; display: none; }
-        .page-nav { display: flex; justify-content: space-between; padding: 30px 0; border-top: 2px solid var(--border); margin-top: 60px; }
-        .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); text-decoration: none; font-size: 0.95rem; }
+        .week-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 60px; padding: 30px 0; border-top: 1px solid #ddd; }
+        .week-nav a { display: flex; flex-direction: column; text-decoration: none; color: #7c3aed; font-family: system-ui, sans-serif; font-size: 0.9rem; padding: 12px 20px; border-radius: 8px; transition: background 0.2s; max-width: 45%; }
+        .week-nav a:hover { background: #f3f0ff; }
+        .week-nav a .nav-direction { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 4px; }
+        .week-nav a .nav-title { font-weight: 600; }
+        .week-nav a.nav-next { text-align: right; margin-left: auto; }
+        .week-nav a.nav-prev { text-align: left; margin-right: auto; }
         .summary-box { background: linear-gradient(135deg, var(--accent-light), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 12px; padding: 30px; margin: 50px 0; }
         .summary-box h3 { color: var(--accent); margin-bottom: 20px; font-size: 1.3rem; }
         .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
         .summary-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--card-bg); border-radius: 8px; font-size: 0.95rem; }
         .file-tree { background: var(--bg-code); border-radius: 10px; padding: 20px; margin: 20px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: #e4e4e7; white-space: pre; }
-        @media (max-width: 700px) { .chapter-header h1 { font-size: 2rem; } .form-grid { grid-template-columns: 1fr; } .topbar-nav { display: none; } }
+        @media (max-width: 700px) {
+            .chapter-header h1 { font-size: 2rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .topbar { padding: 0 15px; }
+            .topbar-toc-current .cur-label { max-width: 140px; }
+            .topbar-toc-dropdown { min-width: 260px; }
+            .scroll-progress { bottom: 12px; right: 14px; }
+            .run-all-btn { font-size: 0.7rem; padding: 3px 10px; }
+            .topbar-right span { display: none; }
+        }
     </style>
 </head>
 <body>
-    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
     <nav class="topbar">
-        <a href="index.html?home=true" class="topbar-title">← Course Home</a>
-        <div class="topbar-nav">
-            <span style="opacity:0.7">Week 13 of 14</span>
+        <a class="home-link" href="index.html?home=true">← Course Home</a>
+        <div class="topbar-toc-center" id="tocCenter">
+            <div class="topbar-toc-current" onclick="document.getElementById('tocCenter').classList.toggle('open')">
+                <span class="cur-num" id="tocCurNum">1.</span>
+                <span class="cur-label" id="tocCurLabel">Working with CSV Files</span>
+                <span class="cur-arrow">▼</span>
+            </div>
+            <div class="topbar-toc-dropdown" id="tocDropdown"></div>
+        </div>
+        <div class="topbar-right">
+            <button class="run-all-btn" id="runAllBtn" onclick="runAllCode()">▶ Run All</button>
             <a href="Week_12.html">← Week 12</a>
             <a href="Week_14.html">Week 14 →</a>
         </div>
+        <div class="topbar-progress" id="topbarProgress"></div>
     </nav>
+
+    <div class="scroll-progress" id="scrollProgress">
+        <svg viewBox="0 0 44 44"><circle class="bg" cx="22" cy="22" r="19"/><circle class="fg" id="scrollCircle" cx="22" cy="22" r="19" stroke-dasharray="119.38" stroke-dashoffset="119.38"/></svg>
+        <span id="scrollPct">0%</span>
+    </div>
     <div class="container">
         <header class="chapter-header">
             <span class="chapter-label">Week 13</span>
@@ -3287,8 +3348,6 @@ stream.generate(5)</textarea>
                             </div>
                         </div></div></div>
                 </div>
-            </section>
-
 
                 <!-- Bonus 4 -->
                 <div class="exercise-card">
@@ -3629,32 +3688,27 @@ for r in results:
             </section>
 
             <!-- Navigation -->
-            <div class="page-nav">
-                <a href="Week_12.html" class="nav-btn">← Week 12: Modules and Packages</a>
-                <a href="index.html?home=true" class="nav-btn">Course Home</a>
-                <a href="Week_14.html" class="nav-btn">Week 14: Advanced Topics →</a>
-            </div>
+            <nav class="week-nav">
+                <a class="nav-prev" href="Week_12.html">
+                    <span class="nav-direction">← Previous</span>
+                    <span class="nav-title">Week 12: Modules and Packages</span>
+                </a>
+                <a class="nav-next" href="Week_14.html">
+                    <span class="nav-direction">Next →</span>
+                    <span class="nav-title">Week 14: Advanced Topics</span>
+                </a>
+            </nav>
         </div>
     </div>
 
     <script>
-        // Progress Bar
-        function updateProgress() {
-            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            var scrolled = Math.min(100, Math.max(0, (winScroll / height) * 100));
-            document.getElementById('progressBar').style.width = scrolled + '%';
-        }
-        window.addEventListener('scroll', updateProgress);
-        window.addEventListener('load', updateProgress);
-
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.code-figure').forEach(function(figure) {
+            document.querySelectorAll('.code-figure').forEach(figure => {
                 if (figure.closest('.exercise-code-panel')) return;
-                var editor = figure.querySelector('.code-editor');
-                var output = figure.querySelector('.code-output');
+                const editor = figure.querySelector('.code-editor');
+                const output = figure.querySelector('.code-output');
                 if (editor && output) {
-                    var splitDiv = document.createElement('div');
+                    const splitDiv = document.createElement('div');
                     splitDiv.className = 'code-split';
                     editor.parentNode.insertBefore(splitDiv, editor);
                     splitDiv.appendChild(editor);
@@ -3663,61 +3717,127 @@ for r in results:
             });
         });
 
-        // Hints Toggle
         function toggleHints(id) {
-            var hints = document.getElementById(id);
+            const hints = document.getElementById(id);
             hints.classList.toggle('show');
-            var btn = hints.previousElementSibling;
+            const btn = hints.previousElementSibling;
             btn.textContent = hints.classList.contains('show') ? '💡 Hide Hints' : '💡 Show Hints';
         }
 
-        // Pyodide Python Execution
-        var pyodideReadyPromise = null;
-        var pyodideInstance = null;
-
-        async function initPyodide() {
-            if (pyodideInstance) return pyodideInstance;
-            if (pyodideReadyPromise) return pyodideReadyPromise;
-            
-            pyodideReadyPromise = loadPyodide().then(function(pyodide) {
-                pyodideInstance = pyodide;
-                console.log("Pyodide loaded successfully");
-                return pyodide;
-            });
-            return pyodideReadyPromise;
-        }
+        let pyodideReady = false;
+        let pyodide = null;
 
         async function runCode(codeId) {
-            var codeEl = document.getElementById(codeId);
-            var outputEl = document.getElementById('output' + codeId);
-            var code = codeEl.value;
-            
+            const codeEl = document.getElementById(codeId);
+            const outputEl = document.getElementById('output' + codeId);
+            const code = codeEl.value;
             outputEl.classList.add('show');
-            var outputContent = outputEl.querySelector('.code-output-content');
-            
-            if (!pyodideInstance) {
-                outputContent.textContent = 'Initializing Python (first run takes a few seconds)...';
-                try {
-                    await initPyodide();
-                } catch (e) {
-                    outputContent.textContent = 'Error loading Python: ' + e.message;
-                    return;
-                }
-            }
-            
-            outputContent.textContent = 'Running...';
-            
+            let success = true;
+            const outputContent = outputEl.querySelector('.code-output-content') || outputEl;
             try {
-                pyodideInstance.runPython('import sys; from io import StringIO; sys.stdout = StringIO()');
-                await pyodideInstance.runPythonAsync(code);
-                var output = pyodideInstance.runPython('sys.stdout.getvalue()');
+                if (!pyodideReady) {
+                    outputContent.textContent = 'Initializing Python (first run may take a moment)...';
+                    pyodide = await loadPyodide();
+                    pyodideReady = true;
+                }
+                outputContent.textContent = 'Running...';
+                pyodide.runPython('import sys\nfrom io import StringIO\nsys.stdout = StringIO()');
+                try { pyodide.runPython(code); }
+                catch (pyErr) { outputContent.textContent = 'Error: ' + pyErr.message; if (typeof autoSizeCodeBlock === 'function') autoSizeCodeBlock(codeEl); return false; }
+                const output = pyodide.runPython('sys.stdout.getvalue()');
                 outputContent.textContent = output || '(no output)';
-            } catch (e) {
-                outputContent.textContent = 'Error: ' + e.message;
-            }
+            } catch(e) { outputContent.textContent = 'Error: ' + e.message; success = false; }
+            if (typeof autoSizeCodeBlock === 'function') autoSizeCodeBlock(codeEl);
+            return success;
         }
 
-        // Form Validation
+        async function runAllCode() {
+            const btn = document.getElementById('runAllBtn');
+            btn.className = 'run-all-btn running'; btn.textContent = '⏳ Running...';
+            const allTextareas = document.querySelectorAll('.code-split textarea[id^="code"]');
+            let passed = 0, failed = 0, total = allTextareas.length;
+            const failedListings = []; let firstFailedFigure = null;
+            document.querySelectorAll('.code-run-status').forEach(el => el.remove());
+            for (const ta of allTextareas) {
+                const codeId = ta.id, figure = ta.closest('.code-figure');
+                const header = figure.querySelector('.code-figure-header'), label = header.querySelector('.code-figure-label');
+                const status = document.createElement('span'); status.className = 'code-run-status'; header.appendChild(status);
+                try {
+                    const ok = await runCode(codeId);
+                    if (ok) { status.textContent = '✓'; status.classList.add('pass', 'visible'); passed++; }
+                    else { const n = label ? label.textContent.trim() : codeId; status.textContent = '✗ error'; status.classList.add('fail', 'visible'); failedListings.push(n); if (!firstFailedFigure) firstFailedFigure = figure; failed++; }
+                } catch (e) { const n = label ? label.textContent.trim() : codeId; status.textContent = '✗ error'; status.classList.add('fail', 'visible'); failedListings.push(n); if (!firstFailedFigure) firstFailedFigure = figure; failed++; }
+            }
+            if (failed === 0) { btn.className = 'run-all-btn success'; btn.textContent = `✓ All ${passed} passed`; }
+            else {
+                btn.className = 'run-all-btn failure'; btn.textContent = `✗ ${failed}/${total} failed`;
+                if (firstFailedFigure) { firstFailedFigure.scrollIntoView({ behavior: 'smooth', block: 'center' }); firstFailedFigure.style.outline = '2px solid #f87171'; firstFailedFigure.style.outlineOffset = '4px'; firstFailedFigure.style.borderRadius = '8px'; setTimeout(() => { firstFailedFigure.style.outline = 'none'; }, 5000); }
+                console.log('Failed listings:', failedListings);
+            }
+            setTimeout(() => { btn.className = 'run-all-btn'; btn.textContent = '▶ Run All'; }, 10000);
+        }
+
+        const sections = [
+            { id: 'part1',     label: 'Working with CSV Files' },
+            { id: 'part2',     label: 'Working with JSON' },
+            { id: 'part3',     label: 'Working with XML' },
+            { id: 'part4',     label: 'Making HTTP Requests' },
+            { id: 'part5',     label: 'Working with SQLite' },
+            { id: 'part6',     label: 'Data Validation' },
+            { id: 'part7',     label: 'Building Data Pipelines' },
+            { id: 'part8',     label: 'Binary Data & Serialization' },
+            { id: 'exercises', label: 'Practice Exercises' },
+            { id: 'part9',     label: 'Advanced Data Patterns' },
+            { id: 'part10',    label: 'Data Integration Patterns' },
+            { id: 'bonus',     label: 'Bonus Exercises' },
+            { id: 'submit',    label: 'Submit Your Work' }
+        ];
+
+        const visited = new Set(); let currentIdx = 0;
+        const dropdown = document.getElementById('tocDropdown');
+        sections.forEach((s, i) => {
+            const a = document.createElement('a'); a.className = 'toc-item'; a.href = '#' + s.id;
+            a.innerHTML = `<span class="toc-num">${i + 1}.</span> ${s.label} <span class="toc-check">✓</span>`;
+            a.addEventListener('click', (e) => { e.preventDefault(); document.getElementById(s.id).scrollIntoView({ behavior: 'smooth' }); document.getElementById('tocCenter').classList.remove('open'); });
+            dropdown.appendChild(a);
+        });
+        document.addEventListener('click', (e) => { const toc = document.getElementById('tocCenter'); if (!toc.contains(e.target)) toc.classList.remove('open'); });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) { const idx = sections.findIndex(s => s.id === entry.target.id); if (idx !== -1) { currentIdx = idx; visited.add(idx); updateTOC(); } } });
+        }, { rootMargin: '-20% 0px -60% 0px' });
+        sections.forEach(s => { const el = document.getElementById(s.id); if (el) observer.observe(el); });
+
+        function updateTOC() {
+            document.getElementById('tocCurNum').textContent = (currentIdx + 1) + '.';
+            document.getElementById('tocCurLabel').textContent = sections[currentIdx].label;
+            dropdown.querySelectorAll('.toc-item').forEach((item, i) => { item.classList.toggle('active', i === currentIdx); if (visited.has(i)) item.classList.add('visited'); });
+        }
+
+        const C = 2 * Math.PI * 19;
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = h > 0 ? Math.min(window.scrollY / h, 1) : 0;
+            document.getElementById('topbarProgress').style.width = (pct * 100) + '%';
+            const badge = document.getElementById('scrollProgress');
+            badge.classList.toggle('visible', window.scrollY > 200);
+            document.getElementById('scrollPct').textContent = Math.round(pct * 100) + '%';
+            document.getElementById('scrollCircle').style.strokeDashoffset = C * (1 - pct);
+        });
+
+        function initAutoSize() {
+            document.querySelectorAll('.code-split textarea').forEach(ta => {
+                const sizer = document.createElement('div'); sizer.className = 'code-input-sizer';
+                ta.parentNode.insertBefore(sizer, ta); sizer.appendChild(ta);
+                const mirror = document.createElement('div'); mirror.className = 'code-input-mirror'; mirror.setAttribute('aria-hidden', 'true'); sizer.appendChild(mirror);
+                function sync() { mirror.textContent = ta.value + '\n'; }
+                ta.addEventListener('input', sync); sync();
+            });
+        }
+        function autoSizeCodeBlock() {}
+        if (document.fonts) { document.fonts.ready.then(initAutoSize); }
+        else { window.addEventListener('load', initAutoSize); }
+
         var pageLoadTime = Date.now();
 
         // ============ ANTI-CHEAT SYSTEM ============
