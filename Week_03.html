@@ -193,6 +193,17 @@
         .note-box { padding: 18px 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid var(--accent); background: var(--accent-light); }
         .note-box::before { content: '📝 Note'; display: block; font-weight: 600; color: var(--accent); margin-bottom: 8px; font-size: 0.9rem; }
         .note-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .danger-box { padding: 18px 24px; border-radius: 8px; margin: 16px 0; border-left: 4px solid var(--danger); background: rgba(220, 38, 38, 0.05); }
+        .danger-box::before { content: '❌ Common Mistake'; display: block; font-weight: 600; color: var(--danger); margin-bottom: 8px; font-size: 0.9rem; }
+        .danger-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .quiz-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .quiz-header { padding: 14px 20px; background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.03)); border-bottom: 1px solid var(--border); font-family: system-ui, sans-serif; font-weight: 600; color: var(--success); font-size: 0.95rem; }
+        .quiz-body { padding: 20px; }
+        .quiz-q { margin: 12px 0; padding: 14px 18px; background: rgba(124, 58, 237, 0.03); border-radius: 8px; border: 1px solid var(--border); }
+        .quiz-q strong { color: var(--accent); font-family: system-ui, sans-serif; }
+        .quiz-q .answer { color: var(--accent); font-size: 0.9rem; margin-top: 8px; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 6px; background: var(--accent-light); border: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; }
+        .quiz-q .answer:hover { background: rgba(124, 58, 237, 0.15); }
+        .quiz-q .answer-text { display: none; color: var(--success); margin-top: 8px; font-size: 0.93rem; padding: 10px 14px; background: rgba(5,150,105,0.06); border-radius: 6px; border-left: 3px solid var(--success); }
         .content strong { color: var(--text-primary); }
     </style>
 </head>
@@ -246,6 +257,45 @@
                 <li>Apply common loop patterns in engineering problems</li>
             </ul>
         </div>
+
+        <!-- Recap Quiz: Week 2 Review -->
+        <section id="recap" class="section" style="scroll-margin-top: 70px;">
+            <div class="section-header">
+                <div class="section-number" style="background: var(--success);">🧠</div>
+                <h2>Recap Quiz: Week 2 Review</h2>
+            </div>
+            <p>Before diving into loops, let's make sure last week's control flow concepts are solid.</p>
+            <div class="quiz-box">
+                <div class="quiz-header">🧠 Quick Review — Test Your Week 2 Knowledge</div>
+                <div class="quiz-body">
+                    <div class="quiz-q">
+                        <strong>Q1:</strong> What does this print? <code>x = 15; print("A" if x > 10 else "B")</code><br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>A</code> — This is a ternary expression. Since 15 > 10 is True, it evaluates to "A".</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q2:</strong> Is this valid? <code>if x > 5 and < 10:</code><br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ ❌ Invalid! Must be <code>if x > 5 and x < 10:</code> (or the Pythonic <code>if 5 < x < 10:</code>). Each comparison needs the variable name.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q3:</strong> What's the difference between <code>and</code> and <code>or</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>and</code> requires BOTH conditions to be True. <code>or</code> requires at least ONE condition to be True.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q4:</strong> Which executes its block: <code>if 0:</code> or <code>if 1:</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>if 1:</code> — In Python, 0 is falsy (treated as False), any non-zero number is truthy (treated as True).</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q5:</strong> How many possible paths does an <code>if / elif / elif / else</code> block have?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ 4 paths — one for the <code>if</code>, one for each <code>elif</code>, and one for the <code>else</code>. Only ONE path ever executes.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <div class="content">
             <!-- Section 1: Introduction to Loops -->
@@ -1218,6 +1268,36 @@ print()</textarea>
                 </div>
             </div>
 
+            <!-- Common Mistakes: Loops -->
+            <section id="mistakes" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: var(--danger);">❌</div>
+                    <h2>Common Mistakes to Avoid</h2>
+                </div>
+                <p>These are the most frequent errors students make with loops. Recognizing these patterns will save you hours of debugging!</p>
+                
+                <div class="danger-box">
+                    <p><strong>Infinite <code>while</code> loops</strong><br>
+                    Forgetting to update the loop variable: <code>while x < 10:</code> without <code>x += 1</code> inside runs forever! Always ensure the condition will eventually become <code>False</code>.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Off-by-one with <code>range()</code></strong><br>
+                    <code>range(1, 10)</code> gives 1–9, NOT 1–10. The end value is <em>exclusive</em>. For 1 through 10, use <code>range(1, 11)</code>.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Modifying a list while iterating over it</strong><br>
+                    <code>for item in my_list: my_list.remove(item)</code> → Skips elements! Iterate over a copy instead: <code>for item in my_list[:]:</code></p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Wrong placement of accumulator initialization</strong><br>
+                    Placing <code>total = 0</code> INSIDE the loop resets it every iteration. Always initialize accumulators BEFORE the loop starts.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Confusing <code>break</code> and <code>continue</code></strong><br>
+                    <code>break</code> exits the loop entirely. <code>continue</code> skips to the next iteration. Mixing them up changes program behavior dramatically.</p>
+                </div>
+            </section>
+
             <!-- Exercises Section -->
             <section id="exercises" class="section">
                 <div class="section-header">
@@ -1883,6 +1963,77 @@ Blast off!</pre>
                         </div>
                     </div>
                 </div>
+
+                <!-- Bridge Exercise → Week 4 -->
+                <div class="exercise-card" style="border: 2px solid rgba(217, 119, 6, 0.35); background: linear-gradient(135deg, rgba(217,119,6,0.04), transparent);">
+                    <div class="exercise-header" style="background: linear-gradient(135deg, rgba(217,119,6,0.12), rgba(217,119,6,0.04));">
+                        <div class="exercise-title"><span class="exercise-number" style="background: linear-gradient(135deg, #d97706, #f59e0b);">🌉</span>Bridge Exercise: Sneak Peek at Week 4</div>
+                        <span class="difficulty medium">Preview</span>
+                    </div>
+                    <div class="exercise-body">
+                        <div class="exercise-info-panel">
+                            <p class="exercise-description"><strong>Next week: Functions!</strong> Notice how this program repeats the same Celsius-to-Fahrenheit conversion logic 3 times. What if we could name a block of code and call it whenever needed?</p>
+                            <div class="expected-output">
+                                <div class="expected-output-label">✓ Expected Output</div>
+                                <pre>Sensor 1: 25.5°C = 77.9°F
+Sensor 2: 30.2°C = 86.4°F
+Sensor 3: -5.0°C = 23.0°F
+
+Same formula written 3 times!
+Next week: def celsius_to_fahrenheit(temp) — write once, use anywhere!</pre>
+                            </div>
+                            <div class="hints-container">
+                                <button class="hints-toggle" onclick="toggleHints('hintsBridge')">💡 Show Hints</button>
+                                <div class="hints-content" id="hintsBridge">
+                                    <ul>
+                                        <li>The formula is <code>(celsius * 9/5) + 32</code></li>
+                                        <li>Notice we wrote the same formula 3 times — if it were wrong, we'd fix it in 3 places!</li>
+                                        <li>Next week: <code>def convert(temp):</code> — write once, call as many times as you want</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-code-panel">
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Bridge Exercise — Preview of Week 4: Functions</span>
+                                <button class="code-figure-run" onclick="runCode('exBridge')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exBridge"># Bridge Exercise: Repetitive Calculations
+# Converting Celsius to Fahrenheit — repeated 3 times!
+
+# Sensor 1
+temp_c1 = 25.5
+temp_f1 = (temp_c1 * 9/5) + 32
+print(f"Sensor 1: {temp_c1}°C = {temp_f1}°F")
+
+# Sensor 2 — same formula again!
+temp_c2 = 30.2
+temp_f2 = (temp_c2 * 9/5) + 32
+print(f"Sensor 2: {temp_c2}°C = {temp_f2}°F")
+
+# Sensor 3 — and again!
+temp_c3 = -5.0
+temp_f3 = (temp_c3 * 9/5) + 32
+print(f"Sensor 3: {temp_c3}°C = {temp_f3}°F")
+
+# THINK: We wrote the same formula 3 times.
+# What if the formula was wrong? Fix in 3 places!
+print("\nSame formula written 3 times!")
+print("Next week: def celsius_to_fahrenheit(temp) — write once, use anywhere!")
+</textarea>
+                            <div class="code-output" id="outputexBridge">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box info-box">
+                    <p>When you see the same code repeated, that's a signal you need a <strong>function</strong>. Next week you'll learn to write <code>def convert(temp):</code> and call it as many times as you want — no more copy-paste!</p>
+                </div>
             </section>
 
             <!-- Submit Section -->
@@ -2076,6 +2227,7 @@ sys.stdout = StringIO()
 
         // ============ SMART TOC ============
         const sections = [
+            { id: 'recap',     label: '🧠 Recap Quiz: Week 2' },
             { id: 'part1',     label: 'Introduction to Loops' },
             { id: 'part2',     label: 'The for Loop' },
             { id: 'part3',     label: 'The range() Function' },
@@ -2087,6 +2239,7 @@ sys.stdout = StringIO()
             { id: 'part9',     label: 'Nested Loops' },
             { id: 'part10',    label: 'Common Loop Patterns' },
             { id: 'part11',    label: 'Engineering Applications' },
+            { id: 'mistakes',  label: '❌ Common Mistakes' },
             { id: 'exercises', label: 'Practice Exercises' },
             { id: 'submit',    label: 'Submit Your Work' }
         ];

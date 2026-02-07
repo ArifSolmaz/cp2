@@ -190,6 +190,17 @@
             .topbar-right span { display: none; }
         }
 
+        .danger-box { padding: 18px 24px; border-radius: 8px; margin: 16px 0; border-left: 4px solid var(--danger); background: rgba(220, 38, 38, 0.05); }
+        .danger-box::before { content: '❌ Common Mistake'; display: block; font-weight: 600; color: var(--danger); margin-bottom: 8px; font-size: 0.9rem; }
+        .danger-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .quiz-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .quiz-header { padding: 14px 20px; background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.03)); border-bottom: 1px solid var(--border); font-family: system-ui, sans-serif; font-weight: 600; color: var(--success); font-size: 0.95rem; }
+        .quiz-body { padding: 20px; }
+        .quiz-q { margin: 12px 0; padding: 14px 18px; background: rgba(124, 58, 237, 0.03); border-radius: 8px; border: 1px solid var(--border); }
+        .quiz-q strong { color: var(--accent); font-family: system-ui, sans-serif; }
+        .quiz-q .answer { color: var(--accent); font-size: 0.9rem; margin-top: 8px; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 6px; background: var(--accent-light); border: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; }
+        .quiz-q .answer:hover { background: rgba(124, 58, 237, 0.15); }
+        .quiz-q .answer-text { display: none; color: var(--success); margin-top: 8px; font-size: 0.93rem; padding: 10px 14px; background: rgba(5,150,105,0.06); border-radius: 6px; border-left: 3px solid var(--success); }
         .content strong { color: var(--text-primary); }
         .summary-item .icon { font-size: 1.3rem; }
     </style>
@@ -247,6 +258,45 @@
                 <li>Apply dictionaries and sets in engineering contexts</li>
             </ul>
         </div>
+
+        <!-- Recap Quiz: Week 5 Review -->
+        <section id="recap" class="section" style="scroll-margin-top: 70px;">
+            <div class="section-header">
+                <div class="section-number" style="background: var(--success);">🧠</div>
+                <h2>Recap Quiz: Week 5 Review</h2>
+            </div>
+            <p>Before learning dictionaries and sets, let's check your lists and tuples knowledge.</p>
+            <div class="quiz-box">
+                <div class="quiz-header">🧠 Quick Review — Test Your Week 5 Knowledge</div>
+                <div class="quiz-body">
+                    <div class="quiz-q">
+                        <strong>Q1:</strong> What does <code>my_list[-2]</code> access in <code>[10, 20, 30, 40, 50]</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>40</code> — Negative indexing counts from the end: -1 is last (50), -2 is second-to-last (40).</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q2:</strong> What's the output of <code>[1,2,3][1:1]</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>[]</code> — An empty list. When start and stop are the same, the slice is empty.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q3:</strong> What's the difference between <code>append()</code> and <code>extend()</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>append()</code> adds a single element (even if it's a list). <code>extend()</code> iterates and adds each element individually.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q4:</strong> What does <code>[x**2 for x in range(4)]</code> produce?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>[0, 1, 4, 9]</code> — A list comprehension that squares each number in range(4): 0², 1², 2², 3².</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q5:</strong> Why use a tuple instead of a list?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ Tuples are immutable (can't be changed), which makes them safer for fixed data, usable as dictionary keys, and slightly more memory-efficient.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <div class="content">
             <!-- Section 1: Introduction to Dictionaries -->
@@ -1485,6 +1535,36 @@ for sensor_type, value in test_data:
                 </div>
             </div>
 
+            <!-- Common Mistakes: Dictionaries & Sets -->
+            <section id="mistakes" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: var(--danger);">❌</div>
+                    <h2>Common Mistakes to Avoid</h2>
+                </div>
+                <p>These are the most frequent errors students make with dictionaries and sets. Study them before the exercises!</p>
+                
+                <div class="danger-box">
+                    <p><strong>Accessing a key that doesn't exist</strong><br>
+                    <code>my_dict["missing_key"]</code> → <code>KeyError</code>! Use <code>my_dict.get("key", default)</code> to safely access keys, or check with <code>"key" in my_dict</code> first.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Using mutable types as dictionary keys</strong><br>
+                    <code>{[1,2]: "value"}</code> → <code>TypeError</code>! Lists can't be keys because they're mutable. Use tuples instead: <code>{(1,2): "value"}</code>.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Modifying a dictionary while iterating</strong><br>
+                    <code>for k in d: del d[k]</code> → <code>RuntimeError</code>! Iterate over a copy of the keys instead: <code>for k in list(d.keys()):</code></p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Expecting order in sets</strong><br>
+                    Sets are unordered — <code>{3, 1, 2}</code> may print as <code>{1, 2, 3}</code>. Don't rely on element order. If order matters, use a list or <code>sorted()</code>.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Creating an empty set with <code>{}</code></strong><br>
+                    <code>x = {}</code> creates an empty <em>dictionary</em>, not a set! Use <code>x = set()</code> for an empty set.</p>
+                </div>
+            </section>
+
             <!-- Exercises Section -->
             <section id="exercises" class="section">
                 <div class="section-header">
@@ -2083,6 +2163,76 @@ print(inverted)</textarea>
                         </div></div>
                     </div>
                 </div>
+
+                <!-- Bridge Exercise → Week 7 -->
+                <div class="exercise-card" style="border: 2px solid rgba(217, 119, 6, 0.35); background: linear-gradient(135deg, rgba(217,119,6,0.04), transparent);">
+                    <div class="exercise-header" style="background: linear-gradient(135deg, rgba(217,119,6,0.12), rgba(217,119,6,0.04));">
+                        <div class="exercise-title"><span class="exercise-number" style="background: linear-gradient(135deg, #d97706, #f59e0b);">🌉</span>Bridge Exercise: Sneak Peek at Week 7</div>
+                        <span class="difficulty medium">Preview</span>
+                    </div>
+                    <div class="exercise-body">
+                        <div class="exercise-info-panel">
+                            <p class="exercise-description"><strong>Next week: String Methods!</strong> You have a dictionary of raw sensor log entries as strings. Extracting meaningful data from them is awkward with indexing. What if strings had built-in tools for splitting, stripping, and searching?</p>
+                            <div class="expected-output">
+                                <div class="expected-output-label">✓ Expected Output</div>
+                                <pre>Raw log: '  TEMP: 24.5C | STATUS: OK  '
+Manual extraction is fragile and error-prone!
+
+Character-by-character parsing? 😫
+sensor_type = TEMP: 24 (wrong — includes extra chars)
+
+Next week: .split(), .strip(), .replace() make this easy!</pre>
+                            </div>
+                            <div class="hints-container">
+                                <button class="hints-toggle" onclick="toggleHints('hintsBridge')">💡 Show Hints</button>
+                                <div class="hints-content" id="hintsBridge">
+                                    <ul>
+                                        <li>String indexing with <code>[2:6]</code> breaks if the format changes</li>
+                                        <li>What if "TEMP" was "TEMPERATURE"? All your index positions break</li>
+                                        <li>Next week: <code>log.strip().split("|")</code> handles any length cleanly</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-code-panel">
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Bridge Exercise — Preview of Week 7: String Methods</span>
+                                <button class="code-figure-run" onclick="runCode('exBridge')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exBridge"># Bridge Exercise: Raw Text Parsing Problem
+# Sensor log data stored as raw strings in a dictionary
+
+logs = {
+    "sensor_01": "  TEMP: 24.5C | STATUS: OK  ",
+    "sensor_02": "  HUMIDITY: 65% | STATUS: WARNING  ",
+}
+
+raw = logs["sensor_01"]
+print(f"Raw log: '{raw}'")
+print("Manual extraction is fragile and error-prone!\n")
+
+# Try to extract sensor type using indexing...
+sensor_type = raw[2:10]  # Hardcoded positions!
+print("Character-by-character parsing? 😫")
+print(f"sensor_type = {sensor_type} (wrong — includes extra chars)")
+
+# THINK: What if the label was "TEMPERATURE" instead of "TEMP"?
+# All our hardcoded index positions would break!
+print("\nNext week: .split(), .strip(), .replace() make this easy!")
+</textarea>
+                            <div class="code-output" id="outputexBridge">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box info-box">
+                    <p>Hardcoded string indices are fragile — any format change breaks everything. Next week you'll learn <strong>string methods</strong> like <code>.split()</code>, <code>.strip()</code>, and <code>.find()</code> that parse text intelligently regardless of position!</p>
+                </div>
             </section>
             
             <!-- Submit Section -->
@@ -2278,6 +2428,7 @@ sys.stdout = StringIO()
 
         // ============ SMART TOC ============
         const sections = [
+            { id: 'recap',     label: '🧠 Recap Quiz: Week 5' },
             { id: 'part1',     label: 'Introduction to Dictionaries' },
             { id: 'part2',     label: 'Accessing Dictionary Elements' },
             { id: 'part3',     label: 'Modifying Dictionaries' },
@@ -2290,6 +2441,7 @@ sys.stdout = StringIO()
             { id: 'part10',    label: 'Set Methods' },
             { id: 'part11',    label: 'Frozen Sets' },
             { id: 'part12',    label: 'Engineering Applications' },
+            { id: 'mistakes',  label: '❌ Common Mistakes' },
             { id: 'exercises', label: 'Practice Exercises' },
             { id: 'submit',    label: 'Submit Your Work' }
         ];

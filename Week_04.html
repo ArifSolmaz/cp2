@@ -190,6 +190,17 @@
             .topbar-right span { display: none; }
         }
 
+        .danger-box { padding: 18px 24px; border-radius: 8px; margin: 16px 0; border-left: 4px solid var(--danger); background: rgba(220, 38, 38, 0.05); }
+        .danger-box::before { content: '❌ Common Mistake'; display: block; font-weight: 600; color: var(--danger); margin-bottom: 8px; font-size: 0.9rem; }
+        .danger-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .quiz-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .quiz-header { padding: 14px 20px; background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.03)); border-bottom: 1px solid var(--border); font-family: system-ui, sans-serif; font-weight: 600; color: var(--success); font-size: 0.95rem; }
+        .quiz-body { padding: 20px; }
+        .quiz-q { margin: 12px 0; padding: 14px 18px; background: rgba(124, 58, 237, 0.03); border-radius: 8px; border: 1px solid var(--border); }
+        .quiz-q strong { color: var(--accent); font-family: system-ui, sans-serif; }
+        .quiz-q .answer { color: var(--accent); font-size: 0.9rem; margin-top: 8px; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 6px; background: var(--accent-light); border: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; }
+        .quiz-q .answer:hover { background: rgba(124, 58, 237, 0.15); }
+        .quiz-q .answer-text { display: none; color: var(--success); margin-top: 8px; font-size: 0.93rem; padding: 10px 14px; background: rgba(5,150,105,0.06); border-radius: 6px; border-left: 3px solid var(--success); }
         .content strong { color: var(--text-primary); }
         .summary-item .icon { font-size: 1.3rem; }
     </style>
@@ -247,6 +258,45 @@
                 <li>Implement functions for engineering problems</li>
             </ul>
         </div>
+
+        <!-- Recap Quiz: Week 3 Review -->
+        <section id="recap" class="section" style="scroll-margin-top: 70px;">
+            <div class="section-header">
+                <div class="section-number" style="background: var(--success);">🧠</div>
+                <h2>Recap Quiz: Week 3 Review</h2>
+            </div>
+            <p>Before we learn functions, let's make sure last week's loop concepts are solid.</p>
+            <div class="quiz-box">
+                <div class="quiz-header">🧠 Quick Review — Test Your Week 3 Knowledge</div>
+                <div class="quiz-body">
+                    <div class="quiz-q">
+                        <strong>Q1:</strong> What does <code>range(2, 10, 3)</code> produce?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>2, 5, 8</code> — Starts at 2, steps by 3, stops before 10.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q2:</strong> What is the difference between <code>break</code> and <code>continue</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>break</code> exits the entire loop immediately. <code>continue</code> skips the rest of the current iteration and jumps to the next one.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q3:</strong> How many times does this loop execute? <code>for i in range(5):</code><br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ 5 times — <code>range(5)</code> produces 0, 1, 2, 3, 4 (five values).</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q4:</strong> What does <code>enumerate(["a", "b", "c"])</code> give you?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>(0, 'a'), (1, 'b'), (2, 'c')</code> — It pairs each element with its index.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q5:</strong> When does a <code>while</code> loop become infinite?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ When the loop condition never becomes <code>False</code> — usually because the loop variable isn't updated inside the loop body.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <div class="content">
             <!-- Section 1: Introduction to Functions -->
@@ -2048,6 +2098,36 @@ print(f"1 bar = {bar_to_psi(1):.2f} psi")</textarea>
                 </div>
             </div>
             
+            <!-- Common Mistakes: Functions -->
+            <section id="mistakes" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: var(--danger);">❌</div>
+                    <h2>Common Mistakes to Avoid</h2>
+                </div>
+                <p>These are the most frequent errors students make with functions. Master these pitfalls before tackling the exercises!</p>
+                
+                <div class="danger-box">
+                    <p><strong>Forgetting <code>return</code> — the silent <code>None</code></strong><br>
+                    If your function uses <code>print()</code> instead of <code>return</code>, it returns <code>None</code>. <code>result = my_func()</code> will be <code>None</code> unless the function has an explicit <code>return</code> statement.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Calling with wrong number of arguments</strong><br>
+                    <code>def greet(name, age):</code> then calling <code>greet("Ali")</code> → TypeError! Make sure the number of arguments matches the parameters (unless defaults are set).</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Mutable default arguments</strong><br>
+                    <code>def add_item(item, lst=[]):</code> → The list is shared across ALL calls! Use <code>lst=None</code> and create a new list inside the function instead.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Confusing <code>print()</code> and <code>return</code></strong><br>
+                    <code>print()</code> displays to the screen but doesn't send data back. <code>return</code> sends data back to the caller. You can't use a <code>print()</code> result in a calculation!</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Modifying global variables without <code>global</code></strong><br>
+                    Assigning to a variable inside a function creates a LOCAL variable. To modify a global variable, you must declare <code>global counter</code> first — but it's better practice to use return values instead.</p>
+                </div>
+            </section>
+
             <!-- Exercises Section -->
             <section id="exercises" class="section">
                 <div class="section-header">
@@ -2738,6 +2818,75 @@ print(f"10⁴ = {power(10, 4)}")</textarea>
                         </div>
                     </div>
                 </div>
+
+                <!-- Bridge Exercise → Week 5 -->
+                <div class="exercise-card" style="border: 2px solid rgba(217, 119, 6, 0.35); background: linear-gradient(135deg, rgba(217,119,6,0.04), transparent);">
+                    <div class="exercise-header" style="background: linear-gradient(135deg, rgba(217,119,6,0.12), rgba(217,119,6,0.04));">
+                        <div class="exercise-title"><span class="exercise-number" style="background: linear-gradient(135deg, #d97706, #f59e0b);">🌉</span>Bridge Exercise: Sneak Peek at Week 5</div>
+                        <span class="difficulty medium">Preview</span>
+                    </div>
+                    <div class="exercise-body">
+                        <div class="exercise-info-panel">
+                            <p class="exercise-description"><strong>Next week: Lists and Tuples!</strong> This function takes too many separate parameters for sensor readings. What if we could pass all readings as a single collection?</p>
+                            <div class="expected-output">
+                                <div class="expected-output-label">✓ Expected Output</div>
+                                <pre>Average of 3 readings: 25.33
+Average of 5 readings: 23.70
+
+Problem: What if we have 100 readings?
+We'd need 100 parameters! 😫
+Next week: Lists solve this — pass ANY number of values as one argument!</pre>
+                            </div>
+                            <div class="hints-container">
+                                <button class="hints-toggle" onclick="toggleHints('hintsBridge')">💡 Show Hints</button>
+                                <div class="hints-content" id="hintsBridge">
+                                    <ul>
+                                        <li>Notice how <code>avg_3</code> only works with exactly 3 values</li>
+                                        <li>We had to write a separate function for 5 values — that doesn't scale!</li>
+                                        <li>Next week: <code>def average(readings):</code> where <code>readings</code> is a list of ANY length</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-code-panel">
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Bridge Exercise — Preview of Week 5: Lists</span>
+                                <button class="code-figure-run" onclick="runCode('exBridge')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exBridge"># Bridge Exercise: Too Many Parameters!
+
+# Function for 3 sensor readings
+def average_3(r1, r2, r3):
+    return (r1 + r2 + r3) / 3
+
+# Function for 5 sensor readings — different function!
+def average_5(r1, r2, r3, r4, r5):
+    return (r1 + r2 + r3 + r4 + r5) / 5
+
+result3 = average_3(24.5, 26.1, 25.4)
+print(f"Average of 3 readings: {result3:.2f}")
+
+result5 = average_5(22.1, 24.5, 26.1, 25.4, 20.4)
+print(f"Average of 5 readings: {result5:.2f}")
+
+# THINK: What if we have 100 readings?
+print("\nProblem: What if we have 100 readings?")
+print("We'd need 100 parameters! 😫")
+print("Next week: Lists solve this — pass ANY number of values as one argument!")
+</textarea>
+                            <div class="code-output" id="outputexBridge">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box info-box">
+                    <p>Having a separate function for each number of parameters is impractical. Next week you'll learn about <strong>lists</strong> — a single variable that holds multiple values. Then <code>def average(readings):</code> can handle 3, 5, or 1000 readings with one function!</p>
+                </div>
             </section>
 
             <!-- Submit Section -->
@@ -2939,6 +3088,7 @@ sys.stdout = StringIO()
 
         // ============ SMART TOC ============
         const sections = [
+            { id: 'recap',     label: '🧠 Recap Quiz: Week 3' },
             { id: 'part1',     label: 'Introduction to Functions' },
             { id: 'part2',     label: 'Defining and Calling Functions' },
             { id: 'part3',     label: 'Parameters and Arguments' },
@@ -2952,6 +3102,7 @@ sys.stdout = StringIO()
             { id: 'part11',    label: 'Recursion' },
             { id: 'part12',    label: 'Higher-Order Functions' },
             { id: 'part13',    label: 'Engineering Applications' },
+            { id: 'mistakes',  label: '❌ Common Mistakes' },
             { id: 'exercises', label: 'Practice Exercises' },
             { id: 'submit',    label: 'Submit Your Work' }
         ];

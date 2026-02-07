@@ -2504,6 +2504,67 @@ Resistance:  44.00 Ω
                         </div>
                     </div>
                 </div>
+
+                <!-- Bridge Exercise → Week 2 -->
+                <div class="exercise-card" style="border: 2px solid rgba(217, 119, 6, 0.35); background: linear-gradient(135deg, rgba(217,119,6,0.04), transparent);">
+                    <div class="exercise-header" style="background: linear-gradient(135deg, rgba(217,119,6,0.12), rgba(217,119,6,0.04));">
+                        <div class="exercise-title"><span class="exercise-number" style="background: linear-gradient(135deg, #d97706, #f59e0b);">🌉</span>Bridge Exercise: Sneak Peek at Week 2</div>
+                        <span class="difficulty medium">Preview</span>
+                    </div>
+                    <div class="exercise-body">
+                        <div class="exercise-info-panel">
+                            <p class="exercise-description"><strong>Next week you'll learn about conditionals (if/else).</strong> For now, write a program that asks the user for a temperature in Celsius, stores it in a variable, and prints a message. Don't worry about making decisions yet — just think about what messages you'd <em>want</em> to show for different temperatures.</p>
+                            <div class="expected-output">
+                                <div class="expected-output-label">✓ Example Output</div>
+                                <pre>Enter temperature in Celsius: 35
+The temperature is 35.0°C
+Is 35.0°C hot or cold? Next week Python will decide for you!</pre>
+                            </div>
+                            <div class="hints-container">
+                                <button class="hints-toggle" onclick="toggleHints('hintsBridge')">💡 Show Hints</button>
+                                <div class="hints-content" id="hintsBridge">
+                                    <ul>
+                                        <li>Use <code>float(input(...))</code> to get a decimal number from the user</li>
+                                        <li>Use an f-string to display the temperature: <code>f"The temperature is {temp}°C"</code></li>
+                                        <li><strong>Think ahead:</strong> What message would you show if temp &gt; 30? What about temp &lt; 0?</li>
+                                        <li>Next week, you'll learn <code>if/elif/else</code> to make Python choose messages automatically!</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-code-panel">
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Bridge Exercise — Preview of Week 2: Control Flow</span>
+                                <button class="code-figure-run" onclick="runCode('exBridge')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exBridge"># Bridge Exercise: Temperature Input
+# Next week you'll add if/else to make decisions!
+
+# Step 1: Get temperature from user
+temp = float(input("Enter temperature in Celsius: "))
+
+# Step 2: Print the temperature with a formatted message
+print(f"The temperature is {temp}°C")
+
+# Step 3: Think about decisions...
+# THINK: What message would you show if temp > 30?
+# What about if temp < 0? Or between 15 and 25?
+# Next week, you'll learn how to make Python choose!
+print(f"Is {temp}°C hot or cold? Next week Python will decide for you!")
+</textarea>
+                            <div class="code-output" id="outputexBridge">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box info-box">
+                    <p>This bridge exercise previews <strong>Week 2: Control Flow &amp; Conditionals</strong>. You now know how to get input, store it, and display it. But what if you want Python to respond <em>differently</em> to 35°C vs -5°C vs 22°C? That's exactly what <code>if/elif/else</code> statements do — and that's next week!</p>
+                </div>
             </section>
 
             <!-- Submit Section -->

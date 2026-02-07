@@ -137,6 +137,21 @@
         th { background: var(--bg-dark); color: white; padding: 14px 18px; text-align: left; font-weight: 600; font-family: system-ui, sans-serif; }
         td { padding: 14px 18px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
         tr:last-child td { border-bottom: none; }
+        .danger-box { padding: 18px 24px; border-radius: 8px; margin: 16px 0; border-left: 4px solid var(--danger); background: rgba(220, 38, 38, 0.05); }
+        .danger-box::before { content: '❌ Common Mistake'; display: block; font-weight: 600; color: var(--danger); margin-bottom: 8px; font-size: 0.9rem; }
+        .danger-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .quiz-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .quiz-header { padding: 14px 20px; background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.03)); border-bottom: 1px solid var(--border); font-family: system-ui, sans-serif; font-weight: 600; color: var(--success); font-size: 0.95rem; }
+        .quiz-body { padding: 20px; }
+        .quiz-q { margin: 12px 0; padding: 14px 18px; background: rgba(124, 58, 237, 0.03); border-radius: 8px; border: 1px solid var(--border); }
+        .quiz-q strong { color: var(--accent); font-family: system-ui, sans-serif; }
+        .quiz-q .answer { color: var(--accent); font-size: 0.9rem; margin-top: 8px; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 6px; background: var(--accent-light); border: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; }
+        .quiz-q .answer:hover { background: rgba(124, 58, 237, 0.15); }
+        .quiz-q .answer-text { display: none; color: var(--success); margin-top: 8px; font-size: 0.93rem; padding: 10px 14px; background: rgba(5,150,105,0.06); border-radius: 6px; border-left: 3px solid var(--success); }
+        .case-study-box { background: var(--card-bg); border: 2px solid rgba(124, 58, 237, 0.3); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .case-study-header { padding: 16px 20px; background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(124,58,237,0.04)); border-bottom: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; font-weight: 600; color: var(--accent); font-size: 1rem; display: flex; align-items: center; gap: 10px; }
+        .case-study-body { padding: 24px; }
+        .case-study-body p { color: var(--text-secondary); margin-bottom: 14px; }
         .exercise-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 28px 0; overflow: hidden; }
         .exercise-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05)); border-bottom: 1px solid var(--border); }
         .exercise-title { font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 12px; }
@@ -231,6 +246,46 @@
                 <li>Structure engineering projects properly</li>
             </ul>
         </div>
+
+        <!-- Recap Quiz: Week 11 Review -->
+        <section id="recap" class="section" style="scroll-margin-top: 70px;">
+            <div class="section-header">
+                <div class="section-number" style="background: var(--success);">🧠</div>
+                <h2>Recap Quiz: Week 11 Review</h2>
+            </div>
+            <p>Before learning modules and packages, let's check your inheritance knowledge from last week.</p>
+            <div class="quiz-box">
+                <div class="quiz-header">🧠 Quick Review — Test Your Week 11 Knowledge</div>
+                <div class="quiz-body">
+                    <div class="quiz-q">
+                        <strong>Q1:</strong> What does <code>super().__init__()</code> do in a child class?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ It calls the parent class's <code>__init__</code> method, ensuring all parent attributes are properly initialized before the child adds its own.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q2:</strong> What is method overriding?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ When a child class defines a method with the same name as the parent. The child's version replaces the parent's for that class. You can still call the parent's version with <code>super().method_name()</code>.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q3:</strong> What is polymorphism?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ The ability to use objects of different types through the same interface. Example: calling <code>sensor.validate()</code> works on any sensor subclass, each running its own version.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q4:</strong> Why use <code>isinstance(obj, Parent)</code> instead of <code>type(obj) == Parent</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>isinstance()</code> returns <code>True</code> for child classes too, respecting the inheritance hierarchy. <code>type()</code> only matches the exact class.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q5:</strong> What is an abstract base class (ABC)?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ A class that can't be instantiated directly — it defines a template. Subclasses MUST implement all <code>@abstractmethod</code> methods or they'll also be abstract.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <div class="content">
             <!-- Section 1: Introduction to Modules -->
             <section id="part1" class="section">
@@ -1846,6 +1901,36 @@ except SensorNotFoundError as e:
                 </div>
             </div>
 
+            <!-- Common Mistakes: Modules & Packages -->
+            <section id="mistakes" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: var(--danger);">❌</div>
+                    <h2>Common Mistakes to Avoid</h2>
+                </div>
+                <p>These are the most frequent errors students make with modules and packages. Study them before the exercises!</p>
+                
+                <div class="danger-box">
+                    <p><strong>Circular imports</strong><br>
+                    Module A imports Module B, and Module B imports Module A → <code>ImportError</code>! Restructure so dependencies flow one direction, or move imports inside functions.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Naming your file the same as a standard library module</strong><br>
+                    Creating <code>random.py</code> or <code>math.py</code> in your project shadows the built-in module. <code>import random</code> imports YOUR file instead of Python's!</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Using <code>from module import *</code></strong><br>
+                    Wildcard imports dump everything into your namespace, causing name collisions and making it impossible to tell where functions came from. Use explicit imports instead.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Forgetting <code>__init__.py</code> in packages</strong><br>
+                    A directory needs <code>__init__.py</code> (even empty) to be recognized as a package in Python 3 with regular packages. Without it, certain import styles may fail.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Installing packages globally instead of in a virtual environment</strong><br>
+                    <code>pip install pandas</code> without a venv installs system-wide, causing version conflicts between projects. Always create a venv first: <code>python -m venv .venv</code></p>
+                </div>
+            </section>
+
             <!-- Exercises Section -->
             <section id="exercises" class="section">
                 <div class="section-header">
@@ -3189,6 +3274,298 @@ for sensor in sensors:
                             </div>
                         </div></div></div>
                 </div>
+
+                <!-- Bridge Exercise → Week 13 -->
+                <div class="exercise-card" style="border: 2px solid rgba(217, 119, 6, 0.35); background: linear-gradient(135deg, rgba(217,119,6,0.04), transparent);">
+                    <div class="exercise-header" style="background: linear-gradient(135deg, rgba(217,119,6,0.12), rgba(217,119,6,0.04));">
+                        <div class="exercise-title"><span class="exercise-number" style="background: linear-gradient(135deg, #d97706, #f59e0b);">🌉</span>Bridge Exercise: Sneak Peek at Week 13</div>
+                        <span class="difficulty medium">Preview</span>
+                    </div>
+                    <div class="exercise-body">
+                        <div class="exercise-info-panel">
+                            <p class="exercise-description"><strong>Next week: External Data (JSON, CSV, APIs)!</strong> Your sensor logger is beautifully organized into modules, but it only works with hardcoded data. What if you could load sensor configs from JSON and export reports to CSV?</p>
+                            <div class="expected-output">
+                                <div class="expected-output-label">✓ Expected Output</div>
+                                <pre>Current: sensor data hardcoded in Python dicts
+  t_sensor = Sensor("T01", "temperature", "°C")
+  h_sensor = Sensor("H01", "humidity", "%")
+
+What if we have 50 sensors? Hardcode them all? 😫
+What if a non-programmer needs to configure sensors?
+
+Next week: load config from JSON, export to CSV!
+  sensors.json → automatic sensor creation
+  report.csv   → open in Excel!</pre>
+                            </div>
+                            <div class="hints-container">
+                                <button class="hints-toggle" onclick="toggleHints('hintsBridge')">💡 Show Hints</button>
+                                <div class="hints-content" id="hintsBridge">
+                                    <ul>
+                                        <li>JSON is perfect for configuration — human-readable and parseable by any language</li>
+                                        <li>CSV is the universal data exchange format — Excel, databases, and other tools all support it</li>
+                                        <li>Next week: <code>json.load()</code> for configs, <code>csv.writer()</code> for reports</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-code-panel">
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Bridge Exercise — Preview of Week 13: External Data</span>
+                                <button class="code-figure-run" onclick="runCode('exBridge')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exBridge"># Bridge Exercise: Hardcoded Data Problem
+# Everything is stuck inside Python code!
+
+print("Current: sensor data hardcoded in Python dicts")
+print('  t_sensor = Sensor("T01", "temperature", "°C")')
+print('  h_sensor = Sensor("H01", "humidity", "%")')
+
+# What if we have 50 sensors?
+print("\nWhat if we have 50 sensors? Hardcode them all? 😫")
+print("What if a non-programmer needs to configure sensors?")
+
+# What it COULD look like with JSON config:
+import json
+
+config_example = {
+    "project_name": "Lab Station Alpha",
+    "sensors": [
+        {"id": "T01", "type": "temperature", "unit": "°C",
+         "range": [-40, 80]},
+        {"id": "H01", "type": "humidity", "unit": "%",
+         "range": [0, 100]},
+        {"id": "P01", "type": "pressure", "unit": "hPa",
+         "range": [300, 1100]},
+    ]
+}
+
+print("\nNext week: load config from JSON, export to CSV!")
+print("  sensors.json → automatic sensor creation")
+print("  report.csv   → open in Excel!")
+print(f"\nJSON config preview:")
+print(json.dumps(config_example, indent=2))
+</textarea>
+                            <div class="code-output" id="outputexBridge">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box info-box">
+                    <p>Hardcoded configs don't scale and can't be edited by non-programmers. Next week you'll learn to use <strong>JSON for configuration</strong> and <strong>CSV for data exchange</strong> — making your sensor logger production-ready!</p>
+                </div>
+            </section>
+
+            <!-- Case Study Part 5: Sensor Data Logger — Modules -->
+            <section id="casestudy" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: linear-gradient(135deg, #7c3aed, #a78bfa);">🔬</div>
+                    <h2>Case Study: Sensor Data Logger (Part 5 of 6)</h2>
+                </div>
+                <p>Continuing from Week 11's inheritance hierarchy, we now organize our growing codebase into a proper <strong>Python package</strong> with clean module structure.</p>
+
+                <div class="case-study-box">
+                    <div class="case-study-header">🔬 Part 5 — Modules: Package Structure &amp; Clean Imports</div>
+                    <div class="case-study-body">
+                        <p><strong>Goal:</strong> Reorganize the sensor data logger into a package with separate modules for exceptions, base sensor, specialized sensors, the logger, and utilities — demonstrating <code>__init__.py</code>, relative imports, and public API design.</p>
+                        <p><strong>What's new:</strong> Package structure, <code>__init__.py</code> with <code>__all__</code>, module-level organization, and clean import patterns.</p>
+                        
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Case Study 5 — Sensor Data Logger: Module Organization</span>
+                                <button class="code-figure-run" onclick="runCode('cs5')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="cs5"># === CASE STUDY Part 5: Sensor Data Logger — Modules ===
+# Organizing our project into a proper package
+
+# In a real project, these would be separate files:
+# sensor_logger/
+#   __init__.py
+#   exceptions.py
+#   base.py
+#   sensors.py
+#   logger.py
+#   utils.py
+
+# --- exceptions.py ---
+class SensorError(Exception):
+    """Base sensor exception."""
+    pass
+
+class InvalidReadingError(SensorError):
+    def __init__(self, sensor_id, value, valid_range):
+        super().__init__(f"{sensor_id}: {value} outside {valid_range}")
+
+class ConfigError(SensorError):
+    def __init__(self, msg):
+        super().__init__(f"Config error: {msg}")
+
+# --- base.py ---
+from abc import ABC, abstractmethod
+
+class Sensor(ABC):
+    """Abstract base sensor — from base.py"""
+    
+    def __init__(self, sensor_id, unit, valid_range):
+        self.sensor_id = sensor_id
+        self.unit = unit
+        self.valid_range = valid_range
+        self._readings = []
+    
+    @property
+    @abstractmethod
+    def sensor_type(self):
+        pass
+    
+    def validate(self, value):
+        low, high = self.valid_range
+        if not (low <= value <= high):
+            raise InvalidReadingError(self.sensor_id, value, self.valid_range)
+    
+    def add_reading(self, timestamp, value):
+        self.validate(value)
+        self._readings.append((timestamp, value))
+    
+    def get_stats(self):
+        if not self._readings:
+            return {"count": 0}
+        vals = [v for _, v in self._readings]
+        return {"min": min(vals), "max": max(vals),
+                "avg": sum(vals)/len(vals), "count": len(vals)}
+    
+    def __str__(self):
+        return f"{self.sensor_type}({self.sensor_id})"
+
+# --- sensors.py ---
+class TemperatureSensor(Sensor):
+    def __init__(self, sid):
+        super().__init__(sid, "°C", (-40, 80))
+    
+    @property
+    def sensor_type(self):
+        return "Temperature"
+
+class HumiditySensor(Sensor):
+    def __init__(self, sid):
+        super().__init__(sid, "%", (0, 100))
+    
+    @property
+    def sensor_type(self):
+        return "Humidity"
+
+class PressureSensor(Sensor):
+    def __init__(self, sid):
+        super().__init__(sid, "hPa", (300, 1100))
+    
+    @property
+    def sensor_type(self):
+        return "Pressure"
+
+# --- utils.py ---
+SENSOR_CLASSES = {
+    "temperature": TemperatureSensor,
+    "humidity": HumiditySensor,
+    "pressure": PressureSensor,
+}
+
+def create_sensor_from_config(config):
+    """Factory function — creates sensor from dict config."""
+    sensor_type = config.get("type", "").lower()
+    cls = SENSOR_CLASSES.get(sensor_type)
+    if cls is None:
+        raise ConfigError(f"Unknown sensor type: {sensor_type}")
+    return cls(config["id"])
+
+# --- logger.py ---
+class SensorLogger:
+    """Manages multiple sensors — from logger.py"""
+    
+    def __init__(self, name):
+        self.name = name
+        self._sensors = {}
+        self._errors = []
+    
+    def register(self, sensor):
+        self._sensors[sensor.sensor_id] = sensor
+    
+    def log(self, sensor_id, timestamp, value_str):
+        try:
+            sensor = self._sensors[sensor_id]
+            sensor.add_reading(timestamp, float(value_str))
+            return True
+        except (KeyError, ValueError, SensorError) as e:
+            self._errors.append(str(e))
+            return False
+    
+    def summary(self):
+        lines = [f"=== {self.name} ==="]
+        for sid, s in self._sensors.items():
+            st = s.get_stats()
+            if st["count"] > 0:
+                lines.append(f"  {s}: avg={st['avg']:.1f} {s.unit} "
+                             f"({st['count']} readings)")
+            else:
+                lines.append(f"  {s}: no data")
+        if self._errors:
+            lines.append(f"  Errors: {len(self._errors)}")
+        return "\n".join(lines)
+
+# --- __init__.py would export: ---
+# __all__ = ['Sensor', 'TemperatureSensor', 'HumiditySensor',
+#            'PressureSensor', 'SensorLogger', 'SensorError',
+#            'create_sensor_from_config']
+
+# === main.py — Using the package ===
+print("📦 Package Structure:")
+print("  sensor_logger/")
+print("    __init__.py    → Public API exports")
+print("    exceptions.py  → SensorError, InvalidReadingError")
+print("    base.py        → Abstract Sensor class")
+print("    sensors.py     → Temperature, Humidity, Pressure")
+print("    logger.py      → SensorLogger")
+print("    utils.py       → Factory functions")
+print()
+
+# Using the factory function (like importing from config)
+configs = [
+    {"id": "T01", "type": "temperature"},
+    {"id": "H01", "type": "humidity"},
+    {"id": "P01", "type": "pressure"},
+]
+
+logger = SensorLogger("Lab Alpha")
+print("🏗️ Creating sensors from config...")
+for cfg in configs:
+    sensor = create_sensor_from_config(cfg)
+    logger.register(sensor)
+    print(f"  ✅ Created {sensor} ({sensor.unit})")
+
+# Log some data
+data = [("T01","08:00","22.5"), ("T01","08:05","23.1"),
+        ("H01","08:00","45.2"), ("P01","08:00","1013.2")]
+print(f"\n📝 Logging {len(data)} readings...")
+for sid, ts, val in data:
+    logger.log(sid, ts, val)
+
+print(f"\n{logger.summary()}")
+print("\n✅ Clean package structure — each module has one job!")
+print("🔜 Next week: Load configs from JSON, export data to CSV!")
+</textarea>
+                            <div class="code-output" id="outputcs5">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="warning-box info-box" style="margin-top: 20px;">
+                            <p><strong>What's next?</strong> Our code is beautifully organized, but sensor configs are still hardcoded in Python. In <strong>Week 13</strong>, we'll load configurations from JSON files and export reports to CSV — making the system truly production-ready.</p>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- Submit Section -->
@@ -3317,23 +3694,26 @@ for sensor in sensors:
         }
 
         const sections = [
-            { id: 'part1',     label: 'Introduction to Modules' },
-            { id: 'part2',     label: 'Import Styles' },
-            { id: 'part3',     label: 'Creating Your Own Modules' },
-            { id: 'part4',     label: 'The __name__ Variable' },
-            { id: 'part5',     label: 'Creating Packages' },
-            { id: 'part6',     label: 'Standard Library Highlights' },
-            { id: 'part7',     label: 'pip and Third-Party Packages' },
-            { id: 'part8',     label: 'Virtual Environments' },
-            { id: 'part9',     label: 'Project Structure' },
-            { id: 'part10',    label: 'Module Search Path' },
-            { id: 'part11',    label: 'Engineering Examples' },
-            { id: 'part12',    label: 'More Standard Library' },
-            { id: 'part13',    label: 'Module Best Practices' },
-            { id: 'exercises', label: 'Practice Exercises' },
-            { id: 'part14',    label: 'Advanced Patterns' },
-            { id: 'bonus',     label: 'Bonus Exercises' },
-            { id: 'submit',    label: 'Submit Your Work' }
+            { id: 'recap',      label: '🧠 Recap Quiz: Week 11' },
+            { id: 'part1',      label: 'Introduction to Modules' },
+            { id: 'part2',      label: 'Import Styles' },
+            { id: 'part3',      label: 'Creating Your Own Modules' },
+            { id: 'part4',      label: 'The __name__ Variable' },
+            { id: 'part5',      label: 'Creating Packages' },
+            { id: 'part6',      label: 'Standard Library Highlights' },
+            { id: 'part7',      label: 'pip and Third-Party Packages' },
+            { id: 'part8',      label: 'Virtual Environments' },
+            { id: 'part9',      label: 'Project Structure' },
+            { id: 'part10',     label: 'Module Search Path' },
+            { id: 'part11',     label: 'Engineering Examples' },
+            { id: 'part12',     label: 'More Standard Library' },
+            { id: 'part13',     label: 'Module Best Practices' },
+            { id: 'mistakes',   label: '❌ Common Mistakes' },
+            { id: 'exercises',  label: 'Practice Exercises' },
+            { id: 'part14',     label: 'Advanced Patterns' },
+            { id: 'bonus',      label: 'Bonus Exercises' },
+            { id: 'casestudy',  label: '🔬 Case Study: Part 5' },
+            { id: 'submit',     label: 'Submit Your Work' }
         ];
 
         const visited = new Set(); let currentIdx = 0;

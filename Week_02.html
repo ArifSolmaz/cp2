@@ -193,6 +193,17 @@
         .note-box { padding: 18px 24px; border-radius: 8px; margin: 24px 0; border-left: 4px solid var(--accent); background: var(--accent-light); }
         .note-box::before { content: '📝 Note'; display: block; font-weight: 600; color: var(--accent); margin-bottom: 8px; font-size: 0.9rem; }
         .note-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .danger-box { padding: 18px 24px; border-radius: 8px; margin: 16px 0; border-left: 4px solid var(--danger); background: rgba(220, 38, 38, 0.05); }
+        .danger-box::before { content: '❌ Common Mistake'; display: block; font-weight: 600; color: var(--danger); margin-bottom: 8px; font-size: 0.9rem; }
+        .danger-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .quiz-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .quiz-header { padding: 14px 20px; background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.03)); border-bottom: 1px solid var(--border); font-family: system-ui, sans-serif; font-weight: 600; color: var(--success); font-size: 0.95rem; }
+        .quiz-body { padding: 20px; }
+        .quiz-q { margin: 12px 0; padding: 14px 18px; background: rgba(124, 58, 237, 0.03); border-radius: 8px; border: 1px solid var(--border); }
+        .quiz-q strong { color: var(--accent); font-family: system-ui, sans-serif; }
+        .quiz-q .answer { color: var(--accent); font-size: 0.9rem; margin-top: 8px; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 6px; background: var(--accent-light); border: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; }
+        .quiz-q .answer:hover { background: rgba(124, 58, 237, 0.15); }
+        .quiz-q .answer-text { display: none; color: var(--success); margin-top: 8px; font-size: 0.93rem; padding: 10px 14px; background: rgba(5,150,105,0.06); border-radius: 6px; border-left: 3px solid var(--success); }
         .content strong { color: var(--text-primary); }
     </style>
 </head>
@@ -246,6 +257,45 @@
                 <li>Solve engineering problems using conditionals</li>
             </ul>
         </div>
+
+        <!-- Recap Quiz: Week 1 Review -->
+        <section id="recap" class="section" style="scroll-margin-top: 70px;">
+            <div class="section-header">
+                <div class="section-number" style="background: var(--success);">🧠</div>
+                <h2>Recap Quiz: Week 1 Review</h2>
+            </div>
+            <p>Before diving into conditionals, let's make sure Week 1 concepts are solid. Click each answer to reveal it.</p>
+            <div class="quiz-box">
+                <div class="quiz-header">🧠 Quick Review — Test Your Week 1 Knowledge (No coding needed!)</div>
+                <div class="quiz-body">
+                    <div class="quiz-q">
+                        <strong>Q1:</strong> What is the output of <code>print(type(3.14))</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>&lt;class 'float'&gt;</code> — 3.14 is a decimal number, so Python stores it as a float.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q2:</strong> Which variable name is INVALID? <code>my_var</code>, <code>2nd_place</code>, <code>_temp</code>, <code>dataX</code><br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>2nd_place</code> — Variable names cannot start with a digit.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q3:</strong> What does <code>print("Hello", "World", sep="-")</code> output?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>Hello-World</code> — The <code>sep</code> parameter replaces the default space between items.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q4:</strong> What is the result of <code>int("25.7")</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <strong>ValueError!</strong> You cannot convert a string with a decimal point directly to int. Use <code>int(float("25.7"))</code> instead.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q5:</strong> What is the difference between <code>=</code> and <code>==</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>=</code> is assignment (stores a value), <code>==</code> is comparison (checks equality). You'll use <code>==</code> extensively this week!</div>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <div class="content">
             <!-- Section 1: Comparison Operators -->
@@ -1404,6 +1454,38 @@ print(f"Config: {actual_value}")</textarea>
                 </div>
             </div>
             
+            <!-- Common Mistakes: Control Flow -->
+            <section id="mistakes" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: var(--danger);">❌</div>
+                    <h2>Common Mistakes to Avoid</h2>
+                </div>
+                <p>These are the most frequent errors students make with control flow. Study them carefully — recognizing these patterns will save you hours of debugging!</p>
+                
+                <div class="danger-box">
+                    <p><strong>Using <code>=</code> instead of <code>==</code></strong><br>
+                    <code>if x = 5:</code> → SyntaxError! Use <code>if x == 5:</code><br>
+                    Remember: <code>=</code> assigns a value, <code>==</code> compares two values.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Forgetting the colon <code>:</code></strong><br>
+                    <code>if x > 10</code> → SyntaxError! Every <code>if</code>, <code>elif</code>, and <code>else</code> line must end with a colon <code>:</code></p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Incorrect indentation</strong><br>
+                    All code inside an if-block must be indented by the same amount (4 spaces). Mixing tabs and spaces causes <code>IndentationError</code>. Configure your editor to use spaces.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Using <code>elif</code> after <code>else</code></strong><br>
+                    <code>else</code> must always be LAST in the chain. You cannot write <code>elif</code> after <code>else</code> — Python will raise a SyntaxError.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Comparing different types without conversion</strong><br>
+                    <code>if input("Age: ") > 18:</code> → This compares a string to an int, which always gives unexpected results!<br>
+                    Fix: <code>if int(input("Age: ")) > 18:</code></p>
+                </div>
+            </section>
+
             <!-- Exercises Section -->
             <section id="exercises" class="section">
                 <div class="section-header">
@@ -2067,6 +2149,82 @@ max_current = 20
                         </div>
                     </div>
                 </div>
+
+                <!-- Bridge Exercise → Week 3 -->
+                <div class="exercise-card" style="border: 2px solid rgba(217, 119, 6, 0.35); background: linear-gradient(135deg, rgba(217,119,6,0.04), transparent);">
+                    <div class="exercise-header" style="background: linear-gradient(135deg, rgba(217,119,6,0.12), rgba(217,119,6,0.04));">
+                        <div class="exercise-title"><span class="exercise-number" style="background: linear-gradient(135deg, #d97706, #f59e0b);">🌉</span>Bridge Exercise: Sneak Peek at Week 3</div>
+                        <span class="difficulty medium">Preview</span>
+                    </div>
+                    <div class="exercise-body">
+                        <div class="exercise-info-panel">
+                            <p class="exercise-description"><strong>Next week you'll learn loops.</strong> For now, write a program that checks if a password is correct. If incorrect, print "Try again!" — but you'd have to copy the code 3 times to allow 3 attempts. Imagine how tedious this would be for 100 attempts!</p>
+                            <div class="expected-output">
+                                <div class="expected-output-label">✓ Example Output</div>
+                                <pre>Attempt 1: Wrong password! Try again...
+Attempt 2: Wrong password! Try again...
+Attempt 3: Access granted!
+
+Imagine doing this 100 times without loops! 😫
+Next week: while loops will solve this elegantly!</pre>
+                            </div>
+                            <div class="hints-container">
+                                <button class="hints-toggle" onclick="toggleHints('hintsBridge')">💡 Show Hints</button>
+                                <div class="hints-content" id="hintsBridge">
+                                    <ul>
+                                        <li>Use <code>if password == correct_password:</code> for each attempt</li>
+                                        <li>Notice how the same logic is repeated 3 times — that's a signal you need a loop!</li>
+                                        <li>Next week's <code>while</code> loop will let you repeat until the password is correct</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-code-panel">
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Bridge Exercise — Preview of Week 3: Loops</span>
+                                <button class="code-figure-run" onclick="runCode('exBridge')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exBridge"># Bridge Exercise: Password Checker WITHOUT Loops
+correct_password = "python123"
+
+# Attempt 1
+password = "wrong"  # Simulating user input
+if password == correct_password:
+    print("Attempt 1: Access granted!")
+else:
+    print("Attempt 1: Wrong password! Try again...")
+
+# Attempt 2 - same code again!
+password = "also_wrong"
+if password == correct_password:
+    print("Attempt 2: Access granted!")
+else:
+    print("Attempt 2: Wrong password! Try again...")
+
+# Attempt 3 - AGAIN the same code!
+password = "python123"
+if password == correct_password:
+    print("Attempt 3: Access granted!")
+else:
+    print("Attempt 3: Wrong password! Last chance used.")
+
+# THINK: What if we needed 100 attempts?
+print("\nImagine doing this 100 times without loops! 😫")
+print("Next week: while loops will solve this elegantly!")
+</textarea>
+                            <div class="code-output" id="outputexBridge">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box info-box">
+                    <p>Notice how we wrote the same logic 3 times? That's a clear sign we need a <strong>loop</strong>. Next week you'll learn <code>while</code> and <code>for</code> loops to repeat code automatically — no more copy-paste!</p>
+                </div>
             </section>
 
             <!-- Submit Section -->
@@ -2518,6 +2676,7 @@ sys.stdout = StringIO()
 
         // ============ SMART TOC ============
         const sections = [
+            { id: 'recap',     label: '🧠 Recap Quiz: Week 1' },
             { id: 'part1',     label: 'Comparison Operators' },
             { id: 'part2',     label: 'Boolean Values and Expressions' },
             { id: 'part3',     label: 'The if Statement' },
@@ -2528,6 +2687,7 @@ sys.stdout = StringIO()
             { id: 'part8',     label: 'Ternary Conditional Expression' },
             { id: 'part9',     label: 'Match Statement' },
             { id: 'part10',    label: 'Common Conditional Patterns' },
+            { id: 'mistakes',  label: '❌ Common Mistakes' },
             { id: 'exercises', label: 'Practice Exercises' },
             { id: 'submit',    label: 'Submit Your Work' }
         ];

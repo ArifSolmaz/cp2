@@ -190,6 +190,21 @@
             .topbar-right span { display: none; }
         }
 
+        .danger-box { padding: 18px 24px; border-radius: 8px; margin: 16px 0; border-left: 4px solid var(--danger); background: rgba(220, 38, 38, 0.05); }
+        .danger-box::before { content: '❌ Common Mistake'; display: block; font-weight: 600; color: var(--danger); margin-bottom: 8px; font-size: 0.9rem; }
+        .danger-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .quiz-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .quiz-header { padding: 14px 20px; background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.03)); border-bottom: 1px solid var(--border); font-family: system-ui, sans-serif; font-weight: 600; color: var(--success); font-size: 0.95rem; }
+        .quiz-body { padding: 20px; }
+        .quiz-q { margin: 12px 0; padding: 14px 18px; background: rgba(124, 58, 237, 0.03); border-radius: 8px; border: 1px solid var(--border); }
+        .quiz-q strong { color: var(--accent); font-family: system-ui, sans-serif; }
+        .quiz-q .answer { color: var(--accent); font-size: 0.9rem; margin-top: 8px; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 6px; background: var(--accent-light); border: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; }
+        .quiz-q .answer:hover { background: rgba(124, 58, 237, 0.15); }
+        .quiz-q .answer-text { display: none; color: var(--success); margin-top: 8px; font-size: 0.93rem; padding: 10px 14px; background: rgba(5,150,105,0.06); border-radius: 6px; border-left: 3px solid var(--success); }
+        .case-study-box { background: var(--card-bg); border: 2px solid rgba(124, 58, 237, 0.3); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .case-study-header { padding: 16px 20px; background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(124,58,237,0.04)); border-bottom: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; font-weight: 600; color: var(--accent); font-size: 1rem; display: flex; align-items: center; gap: 10px; }
+        .case-study-body { padding: 24px; }
+        .case-study-body p { color: var(--text-secondary); margin-bottom: 14px; }
         .content strong { color: var(--text-primary); }
         .summary-item .icon { font-size: 1.3rem; }
     </style>
@@ -241,6 +256,45 @@
                 <li>Write robust, error-resistant code</li>
             </ul>
         </div>
+
+        <!-- Recap Quiz: Week 8 Review -->
+        <section id="recap" class="section" style="scroll-margin-top: 70px;">
+            <div class="section-header">
+                <div class="section-number" style="background: var(--success);">🧠</div>
+                <h2>Recap Quiz: Week 8 Review</h2>
+            </div>
+            <p>Before learning error handling, let's check your file I/O knowledge from last week.</p>
+            <div class="quiz-box">
+                <div class="quiz-header">🧠 Quick Review — Test Your Week 8 Knowledge</div>
+                <div class="quiz-body">
+                    <div class="quiz-q">
+                        <strong>Q1:</strong> Why use <code>with open("file.txt") as f:</code> instead of <code>f = open("file.txt")</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ The <code>with</code> statement automatically closes the file when the block ends, even if an error occurs. Without it, you must manually call <code>f.close()</code>.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q2:</strong> What's the difference between <code>"w"</code> and <code>"a"</code> file modes?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>"w"</code> (write) erases the file first, then writes. <code>"a"</code> (append) adds to the end of existing content without erasing.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q3:</strong> What does <code>f.readlines()</code> return?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ A list of strings, one per line, including the <code>\n</code> at the end of each line. Use <code>.strip()</code> to remove the newlines.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q4:</strong> How do you read a CSV file properly in Python?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ Use <code>import csv</code> and <code>csv.reader(f)</code> or <code>csv.DictReader(f)</code>. Don't manually split by commas — that breaks on quoted fields containing commas.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q5:</strong> What happens if you call <code>f.read()</code> twice on the same file object?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ The second call returns <code>""</code> (empty string) because the file pointer is at the end. Use <code>f.seek(0)</code> to reset to the beginning.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <div class="content">
             <!-- Section 1: Types of Errors -->
@@ -1715,6 +1769,36 @@ for i, config in enumerate(test_configs, 1):
                 </div>
             </div>
 
+            <!-- Common Mistakes: Error Handling -->
+            <section id="mistakes" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: var(--danger);">❌</div>
+                    <h2>Common Mistakes to Avoid</h2>
+                </div>
+                <p>These are the most frequent errors students make with exception handling. Study them before the exercises!</p>
+                
+                <div class="danger-box">
+                    <p><strong>Catching too broadly with bare <code>except:</code></strong><br>
+                    <code>except:</code> or <code>except Exception:</code> catches EVERYTHING, hiding real bugs. Always catch specific exceptions: <code>except ValueError:</code>, <code>except FileNotFoundError:</code></p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Silently swallowing errors</strong><br>
+                    <code>except: pass</code> hides all errors — your program appears to work but produces wrong results. At minimum, log the error: <code>except ValueError as e: print(f"Warning: {e}")</code></p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Using exceptions for normal flow control</strong><br>
+                    Don't use <code>try/except</code> to check if a list is empty. Use <code>if len(lst) > 0:</code> instead. Exceptions should handle <em>exceptional</em> situations, not routine logic.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Wrong order in <code>except</code> blocks</strong><br>
+                    <code>except Exception:</code> before <code>except ValueError:</code> → the <code>ValueError</code> block never runs! Put specific exceptions first, general ones last.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Forgetting that <code>finally</code> ALWAYS runs</strong><br>
+                    Code in <code>finally:</code> executes even after <code>return</code> or <code>break</code>. Don't put return statements in <code>finally</code> — they override the try/except return value.</p>
+                </div>
+            </section>
+
             <!-- Exercises Section -->
             <section id="exercises" class="section">
                 <div class="section-header">
@@ -2469,6 +2553,238 @@ for sensor_id, value in sensors:
                             </div>
                         </div></div></div>
                 </div>
+
+                <!-- Bridge Exercise → Week 10 -->
+                <div class="exercise-card" style="border: 2px solid rgba(217, 119, 6, 0.35); background: linear-gradient(135deg, rgba(217,119,6,0.04), transparent);">
+                    <div class="exercise-header" style="background: linear-gradient(135deg, rgba(217,119,6,0.12), rgba(217,119,6,0.04));">
+                        <div class="exercise-title"><span class="exercise-number" style="background: linear-gradient(135deg, #d97706, #f59e0b);">🌉</span>Bridge Exercise: Sneak Peek at Week 10</div>
+                        <span class="difficulty medium">Preview</span>
+                    </div>
+                    <div class="exercise-body">
+                        <div class="exercise-info-panel">
+                            <p class="exercise-description"><strong>Next week: Object-Oriented Programming!</strong> You have multiple functions that all operate on the same sensor data — they're scattered and have no clear connection. What if data and its related functions could live together?</p>
+                            <div class="expected-output">
+                                <div class="expected-output-label">✓ Expected Output</div>
+                                <pre>--- Scattered functions for sensor T01 ---
+Is active: True
+Reading: 24.5
+Stats: min=22.5, max=24.5, avg=23.5
+
+Problem: 6 separate functions all need the same data!
+What connects them? Nothing — just convention.
+Next week: class Sensor bundles data + behavior together!</pre>
+                            </div>
+                            <div class="hints-container">
+                                <button class="hints-toggle" onclick="toggleHints('hintsBridge')">💡 Show Hints</button>
+                                <div class="hints-content" id="hintsBridge">
+                                    <ul>
+                                        <li>All 6 functions take <code>sensor_data</code> as the first parameter — repetitive!</li>
+                                        <li>Nothing prevents passing the wrong dictionary to the wrong function</li>
+                                        <li>Next week: <code>class Sensor:</code> bundles data (attributes) and functions (methods) into one object</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-code-panel">
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Bridge Exercise — Preview of Week 10: OOP</span>
+                                <button class="code-figure-run" onclick="runCode('exBridge')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exBridge"># Bridge Exercise: Scattered Functions Problem
+# All these functions operate on the same sensor data dict
+
+def create_sensor(sensor_id, sensor_type):
+    return {"id": sensor_id, "type": sensor_type,
+            "readings": [], "active": True}
+
+def add_reading(sensor_data, value):
+    sensor_data["readings"].append(value)
+
+def is_active(sensor_data):
+    return sensor_data["active"]
+
+def get_latest(sensor_data):
+    return sensor_data["readings"][-1] if sensor_data["readings"] else None
+
+def get_stats(sensor_data):
+    r = sensor_data["readings"]
+    return {"min": min(r), "max": max(r), "avg": sum(r)/len(r)}
+
+def deactivate(sensor_data):
+    sensor_data["active"] = False
+
+# Using these scattered functions...
+s = create_sensor("T01", "temperature")
+add_reading(s, 22.5)
+add_reading(s, 24.5)
+
+print("--- Scattered functions for sensor T01 ---")
+print(f"Is active: {is_active(s)}")
+print(f"Reading: {get_latest(s)}")
+stats = get_stats(s)
+print(f"Stats: min={stats['min']}, max={stats['max']}, avg={stats['avg']}")
+
+print("\nProblem: 6 separate functions all need the same data!")
+print("What connects them? Nothing — just convention.")
+print("Next week: class Sensor bundles data + behavior together!")
+</textarea>
+                            <div class="code-output" id="outputexBridge">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box info-box">
+                    <p>Six functions all operating on the same dictionary — with no guarantee they'll be used correctly. Next week you'll learn <strong>classes</strong> that bundle data and behavior together: <code>sensor.add_reading(24.5)</code> instead of <code>add_reading(sensor_data, 24.5)</code>!</p>
+                </div>
+            </section>
+
+            <!-- Case Study Part 2: Sensor Data Logger — Error Handling -->
+            <section id="casestudy" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: linear-gradient(135deg, #7c3aed, #a78bfa);">🔬</div>
+                    <h2>Case Study: Sensor Data Logger (Part 2 of 6)</h2>
+                </div>
+                <p>Continuing from Week 8's file I/O pipeline, we now add <strong>error handling</strong> to make our sensor data logger resilient to corrupt, missing, and invalid data.</p>
+
+                <div class="case-study-box">
+                    <div class="case-study-header">🔬 Part 2 — Error Handling: Custom Exceptions &amp; Resilient Parsing</div>
+                    <div class="case-study-body">
+                        <p><strong>Goal:</strong> Define custom exception classes, validate sensor readings against acceptable ranges, and parse messy data while logging errors — never crashing.</p>
+                        <p><strong>What's new:</strong> Custom exceptions (<code>SensorDataError</code>, <code>InvalidReadingError</code>, <code>MissingFieldError</code>), range validation, and graceful error recovery.</p>
+                        
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Case Study 2 — Sensor Data Logger: Error Handling</span>
+                                <button class="code-figure-run" onclick="runCode('cs2')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="cs2"># === CASE STUDY Part 2: Sensor Data Logger — Error Handling ===
+# Make the Week 8 pipeline resilient to bad data
+
+# --- Custom Exception Classes ---
+class SensorDataError(Exception):
+    """Base exception for sensor data issues."""
+    pass
+
+class InvalidReadingError(SensorDataError):
+    """Raised when a reading is out of valid range."""
+    def __init__(self, sensor_id, value, valid_range):
+        self.sensor_id = sensor_id
+        self.value = value
+        self.valid_range = valid_range
+        super().__init__(
+            f"Sensor {sensor_id}: value {value} outside "
+            f"range {valid_range[0]}–{valid_range[1]}"
+        )
+
+class MissingFieldError(SensorDataError):
+    """Raised when a required CSV field is missing."""
+    def __init__(self, row_num, field_name):
+        self.row_num = row_num
+        self.field_name = field_name
+        super().__init__(f"Row {row_num}: missing field '{field_name}'")
+
+# --- Validation Ranges ---
+VALID_RANGES = {
+    "temperature": (-40, 80),   # °C
+    "humidity": (0, 100),        # %
+}
+
+def validate_reading(sensor_id, sensor_type, value):
+    """Validate a sensor reading against acceptable range."""
+    if sensor_type in VALID_RANGES:
+        low, high = VALID_RANGES[sensor_type]
+        if not (low <= value <= high):
+            raise InvalidReadingError(sensor_id, value, (low, high))
+
+def parse_row(row_num, line, header):
+    """Parse a single CSV row with full error handling."""
+    values = line.split(",")
+    
+    # Check field count
+    if len(values) != len(header):
+        raise MissingFieldError(row_num, f"expected {len(header)} fields, got {len(values)}")
+    
+    record = {}
+    for i, col in enumerate(header):
+        val = values[i].strip()
+        if not val or val == "N/A":
+            raise MissingFieldError(row_num, col)
+        record[col] = val
+    
+    # Convert and validate the value
+    try:
+        record["value"] = float(record["value"])
+    except ValueError:
+        raise InvalidReadingError(record.get("sensor_id", "?"), 
+                                   record["value"], "numeric")
+    
+    validate_reading(record["sensor_id"], record["type"], record["value"])
+    return record
+
+# --- Messy CSV Data (simulating real-world problems) ---
+csv_data = """timestamp,sensor_id,type,value,unit
+2024-01-15 08:00,T01,temperature,22.5,C
+2024-01-15 08:05,T01,temperature,N/A,C
+2024-01-15 08:10,T01,temperature,23.1,C
+2024-01-15 08:15,H01,humidity,145.0,%
+2024-01-15 08:20,T01,temperature,22.9,C
+2024-01-15 08:25,T01,temperature
+2024-01-15 08:30,H01,humidity,46.5,%
+2024-01-15 08:35,T01,temperature,-55.0,C"""
+
+# --- Resilient Parsing ---
+lines = csv_data.strip().split("\n")
+header = lines[0].split(",")
+readings = []
+errors = []
+
+print("📊 Parsing sensor data with error handling...\n")
+for i, line in enumerate(lines[1:], start=2):
+    try:
+        record = parse_row(i, line, header)
+        readings.append(record)
+        print(f"  ✅ Row {i}: {record['sensor_id']} = {record['value']} {record['unit']}")
+    except MissingFieldError as e:
+        errors.append({"row": i, "type": "missing", "msg": str(e)})
+        print(f"  ⚠️ Row {i}: SKIPPED — {e}")
+    except InvalidReadingError as e:
+        errors.append({"row": i, "type": "invalid", "msg": str(e)})
+        print(f"  ⚠️ Row {i}: SKIPPED — {e}")
+    except SensorDataError as e:
+        errors.append({"row": i, "type": "other", "msg": str(e)})
+        print(f"  ❌ Row {i}: SKIPPED — {e}")
+
+# --- Results Summary ---
+print(f"\n{'='*50}")
+print(f"  ✅ Valid readings: {len(readings)}")
+print(f"  ⚠️ Errors caught:  {len(errors)}")
+print(f"  📊 Success rate:   {len(readings)/(len(readings)+len(errors))*100:.0f}%")
+print(f"{'='*50}")
+
+if errors:
+    print(f"\n📋 Error Log:")
+    for e in errors:
+        print(f"  [{e['type'].upper()}] {e['msg']}")
+
+print("\n✅ Pipeline survived all bad data — zero crashes!")
+print("🔜 Next week: Wrap this in a Sensor class with OOP!")
+</textarea>
+                            <div class="code-output" id="outputcs2">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="warning-box info-box" style="margin-top: 20px;">
+                            <p><strong>What's next?</strong> Our pipeline now handles bad data gracefully. But the code is all functions operating on dictionaries — there's no structure connecting sensor data to sensor behavior. In <strong>Week 10</strong>, we'll wrap everything in a <code>Sensor</code> class using OOP.</p>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- Submit Section -->
@@ -2602,17 +2918,20 @@ for sensor_id, value in sensors:
         }
 
         const sections = [
-            { id: 'part1',     label: 'Types of Errors in Python' },
-            { id: 'part2',     label: 'Basic Exception Handling' },
-            { id: 'part3',     label: 'Multiple Exception Types' },
-            { id: 'part4',     label: 'else and finally Clauses' },
-            { id: 'part5',     label: 'Raising Exceptions' },
-            { id: 'part6',     label: 'Custom Exception Classes' },
-            { id: 'part7',     label: 'Assertions for Debugging' },
-            { id: 'part8',     label: 'Debugging Techniques' },
-            { id: 'part9',     label: 'Error Handling Best Practices' },
-            { id: 'exercises', label: 'Practice Exercises' },
-            { id: 'submit',    label: 'Submit Your Work' }
+            { id: 'recap',      label: '🧠 Recap Quiz: Week 8' },
+            { id: 'part1',      label: 'Types of Errors in Python' },
+            { id: 'part2',      label: 'Basic Exception Handling' },
+            { id: 'part3',      label: 'Multiple Exception Types' },
+            { id: 'part4',      label: 'else and finally Clauses' },
+            { id: 'part5',      label: 'Raising Exceptions' },
+            { id: 'part6',      label: 'Custom Exception Classes' },
+            { id: 'part7',      label: 'Assertions for Debugging' },
+            { id: 'part8',      label: 'Debugging Techniques' },
+            { id: 'part9',      label: 'Error Handling Best Practices' },
+            { id: 'mistakes',   label: '❌ Common Mistakes' },
+            { id: 'exercises',  label: 'Practice Exercises' },
+            { id: 'casestudy',  label: '🔬 Case Study: Part 2' },
+            { id: 'submit',     label: 'Submit Your Work' }
         ];
 
         const visited = new Set(); let currentIdx = 0;

@@ -190,6 +190,21 @@
             .topbar-right span { display: none; }
         }
 
+        .danger-box { padding: 18px 24px; border-radius: 8px; margin: 16px 0; border-left: 4px solid var(--danger); background: rgba(220, 38, 38, 0.05); }
+        .danger-box::before { content: '❌ Common Mistake'; display: block; font-weight: 600; color: var(--danger); margin-bottom: 8px; font-size: 0.9rem; }
+        .danger-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .quiz-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .quiz-header { padding: 14px 20px; background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.03)); border-bottom: 1px solid var(--border); font-family: system-ui, sans-serif; font-weight: 600; color: var(--success); font-size: 0.95rem; }
+        .quiz-body { padding: 20px; }
+        .quiz-q { margin: 12px 0; padding: 14px 18px; background: rgba(124, 58, 237, 0.03); border-radius: 8px; border: 1px solid var(--border); }
+        .quiz-q strong { color: var(--accent); font-family: system-ui, sans-serif; }
+        .quiz-q .answer { color: var(--accent); font-size: 0.9rem; margin-top: 8px; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 6px; background: var(--accent-light); border: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; }
+        .quiz-q .answer:hover { background: rgba(124, 58, 237, 0.15); }
+        .quiz-q .answer-text { display: none; color: var(--success); margin-top: 8px; font-size: 0.93rem; padding: 10px 14px; background: rgba(5,150,105,0.06); border-radius: 6px; border-left: 3px solid var(--success); }
+        .case-study-box { background: var(--card-bg); border: 2px solid rgba(124, 58, 237, 0.3); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .case-study-header { padding: 16px 20px; background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(124,58,237,0.04)); border-bottom: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; font-weight: 600; color: var(--accent); font-size: 1rem; display: flex; align-items: center; gap: 10px; }
+        .case-study-body { padding: 24px; }
+        .case-study-body p { color: var(--text-secondary); margin-bottom: 14px; }
         .content strong { color: var(--text-primary); }
         .summary-item .icon { font-size: 1.3rem; }
     </style>
@@ -241,6 +256,45 @@
                 <li>Apply composition for complex objects</li>
             </ul>
         </div>
+
+        <!-- Recap Quiz: Week 9 Review -->
+        <section id="recap" class="section" style="scroll-margin-top: 70px;">
+            <div class="section-header">
+                <div class="section-number" style="background: var(--success);">🧠</div>
+                <h2>Recap Quiz: Week 9 Review</h2>
+            </div>
+            <p>Before learning OOP, let's check your error handling knowledge from last week.</p>
+            <div class="quiz-box">
+                <div class="quiz-header">🧠 Quick Review — Test Your Week 9 Knowledge</div>
+                <div class="quiz-body">
+                    <div class="quiz-q">
+                        <strong>Q1:</strong> What's wrong with <code>except: pass</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ It silently swallows ALL errors, including real bugs. Always catch specific exceptions and at minimum log the error message.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q2:</strong> What runs in the <code>else</code> block of a try/except?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ The <code>else</code> block runs only if the <code>try</code> block completed with NO exceptions. It's the "success" path.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q3:</strong> Does <code>finally</code> run even if there's a <code>return</code> in the try block?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ Yes! <code>finally</code> ALWAYS runs — after return, break, or even unhandled exceptions. It's guaranteed cleanup.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q4:</strong> How do you create a custom exception class?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ Inherit from <code>Exception</code>: <code>class MyError(Exception): pass</code>. You can add custom attributes in <code>__init__</code>.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q5:</strong> Why put <code>except ValueError:</code> before <code>except Exception:</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ Python checks except blocks top-to-bottom. <code>Exception</code> catches everything, so specific exceptions must come first or they'll never be reached.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <div class="content">
             <!-- Section 1: Introduction to OOP -->
@@ -2172,6 +2226,36 @@ robot.status()</textarea>
                 </div>
             </div>
 
+            <!-- Common Mistakes: OOP -->
+            <section id="mistakes" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: var(--danger);">❌</div>
+                    <h2>Common Mistakes to Avoid</h2>
+                </div>
+                <p>These are the most frequent errors students make with OOP. Study them before the exercises!</p>
+                
+                <div class="danger-box">
+                    <p><strong>Forgetting <code>self</code> in method definitions</strong><br>
+                    <code>def get_name():</code> → <code>TypeError: takes 0 positional arguments but 1 was given</code>. Instance methods always need <code>self</code> as the first parameter: <code>def get_name(self):</code></p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Forgetting <code>self.</code> when accessing attributes</strong><br>
+                    <code>return name</code> inside a method looks for a local variable, not the attribute. Always use <code>return self.name</code> to access instance data.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Mutable class attributes shared between instances</strong><br>
+                    <code>class Dog: tricks = []</code> — ALL Dog instances share the same list! Define mutable attributes in <code>__init__</code>: <code>self.tricks = []</code></p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Confusing <code>__str__</code> and <code>__repr__</code></strong><br>
+                    <code>__str__</code> is for human-readable display (<code>print()</code>). <code>__repr__</code> is for developers/debugging and should ideally be a valid Python expression. If only one is defined, implement <code>__repr__</code> — it's used as fallback.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Not calling <code>__init__</code> properly</strong><br>
+                    <code>s = Sensor</code> assigns the class itself, not an instance! You need parentheses: <code>s = Sensor("T01", "temperature")</code> to call the constructor.</p>
+                </div>
+            </section>
+
             <!-- Exercises Section -->
             <section id="exercises" class="section">
                 <div class="section-header">
@@ -2861,6 +2945,255 @@ print(f"v1 normalized = {v1.normalize()}")</textarea>
                             </div>
                         </div></div></div>
                 </div>
+
+                <!-- Bridge Exercise → Week 11 -->
+                <div class="exercise-card" style="border: 2px solid rgba(217, 119, 6, 0.35); background: linear-gradient(135deg, rgba(217,119,6,0.04), transparent);">
+                    <div class="exercise-header" style="background: linear-gradient(135deg, rgba(217,119,6,0.12), rgba(217,119,6,0.04));">
+                        <div class="exercise-title"><span class="exercise-number" style="background: linear-gradient(135deg, #d97706, #f59e0b);">🌉</span>Bridge Exercise: Sneak Peek at Week 11</div>
+                        <span class="difficulty medium">Preview</span>
+                    </div>
+                    <div class="exercise-body">
+                        <div class="exercise-info-panel">
+                            <p class="exercise-description"><strong>Next week: Inheritance!</strong> You've built a great <code>Sensor</code> class. But now you need TemperatureSensor, HumiditySensor, and PressureSensor — each with different validation rules. Do you copy-paste the entire class three times?</p>
+                            <div class="expected-output">
+                                <div class="expected-output-label">✓ Expected Output</div>
+                                <pre>TemperatureSensor has 90% identical code to Sensor
+HumiditySensor has 90% identical code to Sensor
+PressureSensor has 90% identical code to Sensor
+
+Total duplicated lines: ~150 lines! 😫
+Change the base logic? Update 3 files!
+Next week: inheritance lets child classes reuse parent code!</pre>
+                            </div>
+                            <div class="hints-container">
+                                <button class="hints-toggle" onclick="toggleHints('hintsBridge')">💡 Show Hints</button>
+                                <div class="hints-content" id="hintsBridge">
+                                    <ul>
+                                        <li>All three sensor types share: id, readings list, add_reading(), get_stats(), __str__()</li>
+                                        <li>Only validation ranges and units differ between types</li>
+                                        <li>Next week: <code>class TemperatureSensor(Sensor):</code> inherits everything and overrides only what's different</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-code-panel">
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Bridge Exercise — Preview of Week 11: Inheritance</span>
+                                <button class="code-figure-run" onclick="runCode('exBridge')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exBridge"># Bridge Exercise: Code Duplication Problem
+# Three sensor classes with 90% identical code!
+
+class TemperatureSensor:
+    def __init__(self, sensor_id):
+        self.sensor_id = sensor_id
+        self.readings = []
+        self.unit = "°C"
+        self.valid_range = (-40, 80)  # Only this differs!
+    
+    def add_reading(self, value):  # Same in all 3!
+        self.readings.append(value)
+    
+    def get_stats(self):  # Same in all 3!
+        if not self.readings:
+            return None
+        return {"min": min(self.readings), "max": max(self.readings),
+                "avg": sum(self.readings)/len(self.readings)}
+
+class HumiditySensor:
+    def __init__(self, sensor_id):
+        self.sensor_id = sensor_id
+        self.readings = []
+        self.unit = "%"
+        self.valid_range = (0, 100)  # Only this differs!
+    
+    def add_reading(self, value):  # COPY-PASTED!
+        self.readings.append(value)
+    
+    def get_stats(self):  # COPY-PASTED!
+        if not self.readings:
+            return None
+        return {"min": min(self.readings), "max": max(self.readings),
+                "avg": sum(self.readings)/len(self.readings)}
+
+# Count the duplication...
+print("TemperatureSensor has 90% identical code to Sensor")
+print("HumiditySensor has 90% identical code to Sensor")
+print("PressureSensor has 90% identical code to Sensor")
+print(f"\nTotal duplicated lines: ~150 lines! 😫")
+print("Change the base logic? Update 3 files!")
+print("Next week: inheritance lets child classes reuse parent code!")
+</textarea>
+                            <div class="code-output" id="outputexBridge">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box info-box">
+                    <p>Copy-pasting classes is a maintenance nightmare. Next week you'll learn <strong>inheritance</strong>: define shared behavior once in a parent <code>Sensor</code> class, then create child classes like <code>TemperatureSensor(Sensor)</code> that only override what's different!</p>
+                </div>
+            </section>
+
+            <!-- Case Study Part 3: Sensor Data Logger — OOP -->
+            <section id="casestudy" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: linear-gradient(135deg, #7c3aed, #a78bfa);">🔬</div>
+                    <h2>Case Study: Sensor Data Logger (Part 3 of 6)</h2>
+                </div>
+                <p>Continuing from Week 9's error-handling pipeline, we now wrap everything in a proper <strong>OOP design</strong> with <code>Sensor</code> and <code>SensorLogger</code> classes.</p>
+
+                <div class="case-study-box">
+                    <div class="case-study-header">🔬 Part 3 — OOP: Sensor &amp; SensorLogger Classes</div>
+                    <div class="case-study-body">
+                        <p><strong>Goal:</strong> Refactor the procedural pipeline into classes — a <code>Sensor</code> that holds readings and computes stats, and a <code>SensorLogger</code> that manages multiple sensors and generates reports.</p>
+                        <p><strong>What's new:</strong> <code>__init__</code>, instance methods, <code>__str__</code>/<code>__repr__</code>, properties, composition (Logger contains Sensors).</p>
+                        
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Case Study 3 — Sensor Data Logger: OOP Design</span>
+                                <button class="code-figure-run" onclick="runCode('cs3')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="cs3"># === CASE STUDY Part 3: Sensor Data Logger — OOP ===
+# Refactor from functions + dicts → classes
+
+class Sensor:
+    """Represents a single sensor with readings."""
+    
+    def __init__(self, sensor_id, sensor_type, unit):
+        self.sensor_id = sensor_id
+        self.sensor_type = sensor_type
+        self.unit = unit
+        self._readings = []     # Private: list of (timestamp, value)
+        self._active = True
+    
+    @property
+    def reading_count(self):
+        return len(self._readings)
+    
+    @property
+    def is_active(self):
+        return self._active
+    
+    def add_reading(self, timestamp, value):
+        """Add a validated reading."""
+        if not self._active:
+            raise RuntimeError(f"Sensor {self.sensor_id} is deactivated")
+        self._readings.append((timestamp, value))
+    
+    def get_stats(self):
+        """Calculate min, max, average statistics."""
+        if not self._readings:
+            return {"min": None, "max": None, "avg": None, "count": 0}
+        values = [v for _, v in self._readings]
+        return {
+            "min": min(values), "max": max(values),
+            "avg": sum(values) / len(values),
+            "count": len(values)
+        }
+    
+    def deactivate(self):
+        self._active = False
+    
+    def __str__(self):
+        stats = self.get_stats()
+        status = "ACTIVE" if self._active else "INACTIVE"
+        return (f"Sensor({self.sensor_id}, {self.sensor_type}, "
+                f"{stats['count']} readings, {status})")
+    
+    def __repr__(self):
+        return f"Sensor('{self.sensor_id}', '{self.sensor_type}', '{self.unit}')"
+
+
+class SensorLogger:
+    """Manages multiple sensors — composition pattern."""
+    
+    def __init__(self, name):
+        self.name = name
+        self._sensors = {}   # id → Sensor
+        self._error_log = []
+    
+    def register_sensor(self, sensor):
+        """Add a sensor to the logger."""
+        self._sensors[sensor.sensor_id] = sensor
+        print(f"  📡 Registered: {sensor}")
+    
+    def log_reading(self, sensor_id, timestamp, value):
+        """Log a reading with error handling."""
+        try:
+            sensor = self._sensors[sensor_id]
+            sensor.add_reading(timestamp, float(value))
+        except KeyError:
+            self._error_log.append(f"Unknown sensor: {sensor_id}")
+        except (ValueError, RuntimeError) as e:
+            self._error_log.append(f"{sensor_id}: {e}")
+    
+    def generate_report(self):
+        """Generate a summary report."""
+        lines = [f"{'='*50}",
+                 f"  📊 {self.name} — Status Report",
+                 f"{'='*50}"]
+        for sid, sensor in self._sensors.items():
+            stats = sensor.get_stats()
+            lines.append(f"\n  [{sid}] {sensor.sensor_type.upper()}")
+            if stats["count"] > 0:
+                lines.append(f"    Range: {stats['min']:.1f} – {stats['max']:.1f} {sensor.unit}")
+                lines.append(f"    Average: {stats['avg']:.2f} {sensor.unit}")
+                lines.append(f"    Readings: {stats['count']}")
+            else:
+                lines.append(f"    No readings yet")
+        if self._error_log:
+            lines.append(f"\n  ⚠️ Errors: {len(self._error_log)}")
+            for err in self._error_log:
+                lines.append(f"    • {err}")
+        lines.append(f"\n{'='*50}")
+        return "\n".join(lines)
+
+
+# --- Using our OOP Design ---
+print("🏗️ Setting up Sensor Logger...\n")
+logger = SensorLogger("Lab Station Alpha")
+
+# Register sensors
+t_sensor = Sensor("T01", "temperature", "°C")
+h_sensor = Sensor("H01", "humidity", "%")
+logger.register_sensor(t_sensor)
+logger.register_sensor(h_sensor)
+
+# Log readings (including some bad data)
+print("\n📝 Logging readings...")
+test_data = [
+    ("T01", "2024-01-15 08:00", "22.5"),
+    ("T01", "2024-01-15 08:05", "23.1"),
+    ("H01", "2024-01-15 08:00", "45.2"),
+    ("H01", "2024-01-15 08:05", "N/A"),    # Bad data!
+    ("X99", "2024-01-15 08:10", "10.0"),    # Unknown sensor!
+    ("T01", "2024-01-15 08:10", "22.9"),
+]
+
+for sid, ts, val in test_data:
+    logger.log_reading(sid, ts, val)
+
+# Generate report
+print(f"\n{logger.generate_report()}")
+print("\n✅ Clean OOP design: Sensor holds data, Logger orchestrates!")
+print("🔜 Next week: Inheritance for specialized sensor types!")
+</textarea>
+                            <div class="code-output" id="outputcs3">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="warning-box info-box" style="margin-top: 20px;">
+                            <p><strong>What's next?</strong> Our OOP design is clean, but every sensor uses the same class. What about sensors with different validation rules (temperature: -40 to 80°C, humidity: 0 to 100%)? In <strong>Week 11</strong>, we'll use inheritance to create specialized sensor subclasses.</p>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- Submit Section -->
@@ -2994,18 +3327,21 @@ print(f"v1 normalized = {v1.normalize()}")</textarea>
         }
 
         const sections = [
-            { id: 'part1',     label: 'Introduction to OOP' },
-            { id: 'part2',     label: 'Creating Classes and Objects' },
-            { id: 'part3',     label: 'The __init__ Constructor' },
-            { id: 'part4',     label: 'Instance Methods' },
-            { id: 'part5',     label: 'Instance vs Class Attributes' },
-            { id: 'part6',     label: 'Class and Static Methods' },
-            { id: 'part7',     label: 'Special Methods (Dunder)' },
-            { id: 'part8',     label: 'Properties and Encapsulation' },
-            { id: 'part9',     label: 'Composition' },
-            { id: 'part10',    label: 'Practical Applications' },
-            { id: 'exercises', label: 'Practice Exercises' },
-            { id: 'submit',    label: 'Submit Your Work' }
+            { id: 'recap',      label: '🧠 Recap Quiz: Week 9' },
+            { id: 'part1',      label: 'Introduction to OOP' },
+            { id: 'part2',      label: 'Creating Classes and Objects' },
+            { id: 'part3',      label: 'The __init__ Constructor' },
+            { id: 'part4',      label: 'Instance Methods' },
+            { id: 'part5',      label: 'Instance vs Class Attributes' },
+            { id: 'part6',      label: 'Class and Static Methods' },
+            { id: 'part7',      label: 'Special Methods (Dunder)' },
+            { id: 'part8',      label: 'Properties and Encapsulation' },
+            { id: 'part9',      label: 'Composition' },
+            { id: 'part10',     label: 'Practical Applications' },
+            { id: 'mistakes',   label: '❌ Common Mistakes' },
+            { id: 'exercises',  label: 'Practice Exercises' },
+            { id: 'casestudy',  label: '🔬 Case Study: Part 3' },
+            { id: 'submit',     label: 'Submit Your Work' }
         ];
 
         const visited = new Set(); let currentIdx = 0;

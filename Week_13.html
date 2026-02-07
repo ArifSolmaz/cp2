@@ -139,6 +139,21 @@
         th { background: var(--bg-dark); color: white; padding: 14px 18px; text-align: left; font-weight: 600; font-family: system-ui, sans-serif; }
         td { padding: 14px 18px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
         tr:last-child td { border-bottom: none; }
+        .danger-box { padding: 18px 24px; border-radius: 8px; margin: 16px 0; border-left: 4px solid var(--danger); background: rgba(220, 38, 38, 0.05); }
+        .danger-box::before { content: '❌ Common Mistake'; display: block; font-weight: 600; color: var(--danger); margin-bottom: 8px; font-size: 0.9rem; }
+        .danger-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .quiz-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .quiz-header { padding: 14px 20px; background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.03)); border-bottom: 1px solid var(--border); font-family: system-ui, sans-serif; font-weight: 600; color: var(--success); font-size: 0.95rem; }
+        .quiz-body { padding: 20px; }
+        .quiz-q { margin: 12px 0; padding: 14px 18px; background: rgba(124, 58, 237, 0.03); border-radius: 8px; border: 1px solid var(--border); }
+        .quiz-q strong { color: var(--accent); font-family: system-ui, sans-serif; }
+        .quiz-q .answer { color: var(--accent); font-size: 0.9rem; margin-top: 8px; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 6px; background: var(--accent-light); border: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; }
+        .quiz-q .answer:hover { background: rgba(124, 58, 237, 0.15); }
+        .quiz-q .answer-text { display: none; color: var(--success); margin-top: 8px; font-size: 0.93rem; padding: 10px 14px; background: rgba(5,150,105,0.06); border-radius: 6px; border-left: 3px solid var(--success); }
+        .case-study-box { background: var(--card-bg); border: 2px solid rgba(124, 58, 237, 0.3); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .case-study-header { padding: 16px 20px; background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(124,58,237,0.04)); border-bottom: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; font-weight: 600; color: var(--accent); font-size: 1rem; display: flex; align-items: center; gap: 10px; }
+        .case-study-body { padding: 24px; }
+        .case-study-body p { color: var(--text-secondary); margin-bottom: 14px; }
         .exercise-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 28px 0; overflow: hidden; }
         .exercise-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05)); border-bottom: 1px solid var(--border); }
         .exercise-title { font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 12px; }
@@ -233,6 +248,46 @@
                 <li>Build data pipelines for engineering applications</li>
             </ul>
         </div>
+
+        <!-- Recap Quiz: Week 12 Review -->
+        <section id="recap" class="section" style="scroll-margin-top: 70px;">
+            <div class="section-header">
+                <div class="section-number" style="background: var(--success);">🧠</div>
+                <h2>Recap Quiz: Week 12 Review</h2>
+            </div>
+            <p>Before learning external data formats, let's check your modules and packages knowledge.</p>
+            <div class="quiz-box">
+                <div class="quiz-header">🧠 Quick Review — Test Your Week 12 Knowledge</div>
+                <div class="quiz-body">
+                    <div class="quiz-q">
+                        <strong>Q1:</strong> What's the difference between a module and a package?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ A <strong>module</strong> is a single <code>.py</code> file. A <strong>package</strong> is a directory containing modules and an <code>__init__.py</code> file.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q2:</strong> What does <code>if __name__ == "__main__":</code> do?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ Code inside this block only runs when the file is executed directly, NOT when imported as a module. It prevents test/demo code from running on import.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q3:</strong> Why is <code>from module import *</code> discouraged?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ It imports everything into your namespace, causing name collisions and making it impossible to trace where a function came from. Use explicit imports instead.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q4:</strong> What is a virtual environment and why use one?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ An isolated Python environment with its own packages. It prevents version conflicts between projects. Create with <code>python -m venv .venv</code>.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q5:</strong> What happens if you name your file <code>random.py</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ It shadows Python's built-in <code>random</code> module! <code>import random</code> will load YOUR file instead of the standard library, causing confusing errors.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <div class="content">
             <!-- Section 1: Working with CSV Files -->
             <section id="part1" class="section">
@@ -1857,6 +1912,36 @@ print(f"  Savings: {(1 - stats['buffer_size']/json_size)*100:.1f}%")</textarea>
                     <div class="summary-item">📦 Binary for performance</div>
                 </div>
             </div>
+
+            <!-- Common Mistakes: External Data -->
+            <section id="mistakes" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: var(--danger);">❌</div>
+                    <h2>Common Mistakes to Avoid</h2>
+                </div>
+                <p>These are the most frequent errors students make with external data formats. Study them before the exercises!</p>
+                
+                <div class="danger-box">
+                    <p><strong>Using <code>json.load()</code> vs <code>json.loads()</code></strong><br>
+                    <code>json.load(file_object)</code> reads from a file. <code>json.loads(string)</code> parses a string. Mixing them up gives <code>TypeError</code> or <code>AttributeError</code>. Same for <code>json.dump()</code> vs <code>json.dumps()</code>.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Not handling encoding when reading CSV/JSON</strong><br>
+                    <code>open("data.csv")</code> uses system default encoding. Files from other systems may use UTF-8 with BOM, Latin-1, etc. Always specify: <code>open("data.csv", encoding="utf-8-sig")</code>.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Assuming JSON preserves Python types</strong><br>
+                    JSON has no <code>tuple</code>, <code>set</code>, or <code>datetime</code>. Tuples become lists, sets can't be serialized at all, and dates need manual conversion. Always validate after loading.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Not validating external data</strong><br>
+                    Data from files or APIs can be missing fields, have wrong types, or contain unexpected values. Never trust external data — always validate before processing.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Hardcoding file paths</strong><br>
+                    <code>open("C:\\Users\\student\\data.csv")</code> breaks on any other machine. Use <code>os.path.join()</code> or <code>pathlib.Path()</code> for portable paths, and relative paths where possible.</p>
+                </div>
+            </section>
 
             <!-- Exercises Section -->
             <section id="exercises" class="section">
@@ -3655,7 +3740,329 @@ for r in results:
                             </div>
                         </div></div></div>
                 </div>
+
+                <!-- Bridge Exercise → Week 14 -->
+                <div class="exercise-card" style="border: 2px solid rgba(217, 119, 6, 0.35); background: linear-gradient(135deg, rgba(217,119,6,0.04), transparent);">
+                    <div class="exercise-header" style="background: linear-gradient(135deg, rgba(217,119,6,0.12), rgba(217,119,6,0.04));">
+                        <div class="exercise-title"><span class="exercise-number" style="background: linear-gradient(135deg, #d97706, #f59e0b);">🌉</span>Bridge Exercise: Sneak Peek at Week 14</div>
+                        <span class="difficulty medium">Preview</span>
+                    </div>
+                    <div class="exercise-body">
+                        <div class="exercise-info-panel">
+                            <p class="exercise-description"><strong>Next week: Final Project!</strong> You've learned every piece of the puzzle — variables, loops, functions, files, error handling, OOP, inheritance, modules, and data formats. Now it's time to combine them ALL into one cohesive engineering project.</p>
+                            <div class="expected-output">
+                                <div class="expected-output-label">✓ What You've Built</div>
+                                <pre>Week  1-4:  Python fundamentals (variables, control flow, functions)
+Week  5-7:  Data structures (lists, dicts, strings)
+Week  8:    File I/O — read/write data
+Week  9:    Error handling — survive bad data
+Week 10:    OOP — organize with classes
+Week 11:    Inheritance — specialize with subclasses
+Week 12:    Modules — structure into packages
+Week 13:    External data — JSON configs, CSV reports
+
+Week 14:    🎯 FINAL PROJECT — combine everything!</pre>
+                            </div>
+                            <div class="hints-container">
+                                <button class="hints-toggle" onclick="toggleHints('hintsBridge')">💡 Show Hints</button>
+                                <div class="hints-content" id="hintsBridge">
+                                    <ul>
+                                        <li>Your final project should demonstrate skills from at least 5 different weeks</li>
+                                        <li>Think about a real-world engineering problem you'd like to solve</li>
+                                        <li>The Sensor Data Logger case study is a great template for structuring your project</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-code-panel">
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Bridge Exercise — Preview of Week 14: Final Project Planning</span>
+                                <button class="code-figure-run" onclick="runCode('exBridge')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exBridge"># Bridge Exercise: Final Project Planning
+# Review everything you've learned!
+
+skills = {
+    "Weeks 1-4": ["Variables", "Conditionals", "Loops", "Functions"],
+    "Weeks 5-7": ["Lists/Tuples", "Dictionaries/Sets", "String Methods"],
+    "Week 8":    ["File I/O", "CSV/JSON reading", "Report generation"],
+    "Week 9":    ["try/except", "Custom exceptions", "Validation"],
+    "Week 10":   ["Classes", "Properties", "Composition"],
+    "Week 11":   ["Inheritance", "Polymorphism", "ABC"],
+    "Week 12":   ["Modules", "Packages", "Virtual environments"],
+    "Week 13":   ["JSON configs", "CSV export", "Data pipelines"],
+}
+
+print("🎓 YOUR PYTHON SKILL TREE\n")
+total = 0
+for week, topics in skills.items():
+    total += len(topics)
+    print(f"  {week}: {', '.join(topics)}")
+
+print(f"\n  Total skills mastered: {total} 🏆")
+print(f"\n{'='*50}")
+print("  🎯 FINAL PROJECT IDEAS:")
+print("="*50)
+
+ideas = [
+    "🌡️ Weather Station Monitor — read sensors, log data, generate alerts",
+    "🏭 Factory Production Tracker — CSV input, OOP models, PDF reports",
+    "📊 Student Grade Manager — JSON config, data validation, statistics",
+    "🤖 Robot Arm Controller — command parsing, state machine, error handling",
+    "⚡ Energy Usage Analyzer — CSV data, time analysis, trend detection",
+]
+
+for i, idea in enumerate(ideas, 1):
+    print(f"  {i}. {idea}")
+
+print(f"\n💡 Pick a project that excites you!")
+print("   Next week: build it from scratch!")
+</textarea>
+                            <div class="code-output" id="outputexBridge">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box info-box">
+                    <p>You've mastered every building block of Python programming! Next week's <strong>final project</strong> is your chance to combine everything into one impressive engineering application. Start thinking about what you'd like to build!</p>
+                </div>
             </section>
+
+            <!-- Case Study Part 6: Sensor Data Logger — Complete System -->
+            <section id="casestudy" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: linear-gradient(135deg, #7c3aed, #a78bfa);">🔬</div>
+                    <h2>Case Study: Sensor Data Logger (Part 6 of 6 — Final!)</h2>
+                </div>
+                <p>The grand finale! We combine <strong>all previous parts</strong> into a production-ready system: JSON configuration, CSV data ingestion, validated processing through our OOP hierarchy, and formatted report output.</p>
+
+                <div class="case-study-box">
+                    <div class="case-study-header">🔬 Part 6 — Complete System: JSON Config → CSV Data → Report</div>
+                    <div class="case-study-body">
+                        <p><strong>Goal:</strong> Build the complete end-to-end pipeline: load sensor configuration from JSON, read measurement data from CSV, process through validated sensor classes, and generate a comprehensive report.</p>
+                        <p><strong>What's new:</strong> JSON config loading, CSV data parsing with <code>csv.DictReader</code>, complete integration of all 13 weeks of concepts.</p>
+                        
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Case Study 6 — Sensor Data Logger: Complete System</span>
+                                <button class="code-figure-run" onclick="runCode('cs6')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="cs6"># === CASE STUDY Part 6: Complete Sensor Data Logger ===
+# Integrating ALL concepts from Weeks 8-13!
+import json
+import csv
+from io import StringIO
+from abc import ABC, abstractmethod
+
+# --- exceptions.py (Week 9) ---
+class SensorError(Exception):
+    pass
+class InvalidReadingError(SensorError):
+    def __init__(self, sid, val, rng):
+        super().__init__(f"{sid}: {val} outside {rng}")
+
+# --- base.py (Week 10) ---
+class Sensor(ABC):
+    def __init__(self, sensor_id, unit, valid_range):
+        self.sensor_id = sensor_id
+        self.unit = unit
+        self.valid_range = valid_range
+        self._readings = []
+    
+    @property
+    @abstractmethod
+    def sensor_type(self): pass
+    
+    def validate(self, value):
+        lo, hi = self.valid_range
+        if not (lo <= value <= hi):
+            raise InvalidReadingError(self.sensor_id, value, self.valid_range)
+    
+    def add_reading(self, ts, value):
+        self.validate(value)
+        self._readings.append((ts, value))
+    
+    def get_stats(self):
+        if not self._readings:
+            return {"count": 0}
+        vals = [v for _, v in self._readings]
+        return {"min": min(vals), "max": max(vals),
+                "avg": sum(vals)/len(vals), "count": len(vals)}
+    
+    def __str__(self):
+        return f"{self.sensor_type}({self.sensor_id})"
+
+# --- sensors.py (Week 11) ---
+class TemperatureSensor(Sensor):
+    def __init__(self, sid):
+        super().__init__(sid, "°C", (-40, 80))
+    @property
+    def sensor_type(self): return "Temperature"
+
+class HumiditySensor(Sensor):
+    def __init__(self, sid):
+        super().__init__(sid, "%", (0, 100))
+    @property
+    def sensor_type(self): return "Humidity"
+
+class PressureSensor(Sensor):
+    def __init__(self, sid):
+        super().__init__(sid, "hPa", (300, 1100))
+    @property
+    def sensor_type(self): return "Pressure"
+
+# --- utils.py (Week 12) ---
+SENSOR_MAP = {"temperature": TemperatureSensor,
+              "humidity": HumiditySensor,
+              "pressure": PressureSensor}
+
+def create_sensor(cfg):
+    cls = SENSOR_MAP.get(cfg["type"].lower())
+    if not cls:
+        raise SensorError(f"Unknown type: {cfg['type']}")
+    return cls(cfg["id"])
+
+# === STEP 1: Load JSON Config (Week 13 NEW!) ===
+config_json = '''{
+    "project": "Lab Station Alpha",
+    "version": "2.0",
+    "sensors": [
+        {"id": "T01", "type": "temperature", "location": "Room A"},
+        {"id": "T02", "type": "temperature", "location": "Room B"},
+        {"id": "H01", "type": "humidity", "location": "Room A"},
+        {"id": "P01", "type": "pressure", "location": "Roof"}
+    ],
+    "alert_thresholds": {
+        "temperature": {"warn": 30, "critical": 40},
+        "humidity": {"warn": 70, "critical": 90}
+    }
+}'''
+
+config = json.loads(config_json)
+print(f"📋 Loaded config: {config['project']} v{config['version']}")
+
+# Create sensors from config
+sensors = {}
+for cfg in config["sensors"]:
+    s = create_sensor(cfg)
+    sensors[s.sensor_id] = s
+    print(f"  📡 {s} @ {cfg['location']}")
+
+# === STEP 2: Read CSV Data (Week 13 NEW!) ===
+csv_data = """timestamp,sensor_id,value
+2024-03-15 08:00,T01,22.5
+2024-03-15 08:00,T02,24.1
+2024-03-15 08:00,H01,45.2
+2024-03-15 08:00,P01,1013.2
+2024-03-15 08:05,T01,23.1
+2024-03-15 08:05,T02,N/A
+2024-03-15 08:05,H01,46.8
+2024-03-15 08:05,P01,1013.0
+2024-03-15 08:10,T01,22.8
+2024-03-15 08:10,T02,35.2
+2024-03-15 08:10,H01,110.5
+2024-03-15 08:10,P01,1012.8"""
+
+# === STEP 3: Process with Error Handling (Week 9) ===
+print(f"\n📝 Processing CSV data...\n")
+errors = []
+reader = csv.DictReader(StringIO(csv_data))
+for row in reader:
+    sid = row["sensor_id"]
+    ts = row["timestamp"]
+    val_str = row["value"]
+    try:
+        sensor = sensors[sid]
+        sensor.add_reading(ts, float(val_str))
+        print(f"  ✅ {sid} @ {ts}: {val_str}")
+    except KeyError:
+        errors.append(f"Unknown sensor: {sid}")
+    except ValueError:
+        errors.append(f"{sid} @ {ts}: invalid value '{val_str}'")
+        print(f"  ⚠️ {sid} @ {ts}: SKIP — invalid '{val_str}'")
+    except InvalidReadingError as e:
+        errors.append(str(e))
+        print(f"  ⚠️ {sid} @ {ts}: SKIP — {e}")
+
+# === STEP 4: Generate Report ===
+thresholds = config.get("alert_thresholds", {})
+print(f"\n{'='*55}")
+print(f"  📊 {config['project']} — SENSOR REPORT")
+print(f"{'='*55}")
+
+for sid, sensor in sensors.items():
+    stats = sensor.get_stats()
+    loc = next((c["location"] for c in config["sensors"]
+                if c["id"] == sid), "?")
+    print(f"\n  [{sid}] {sensor.sensor_type} @ {loc}")
+    if stats["count"] > 0:
+        print(f"    Range: {stats['min']:.1f} – {stats['max']:.1f} {sensor.unit}")
+        print(f"    Average: {stats['avg']:.2f} {sensor.unit}")
+        print(f"    Readings: {stats['count']}")
+        # Check alerts
+        t_cfg = thresholds.get(sensor.sensor_type.lower(), {})
+        if t_cfg and stats["max"] >= t_cfg.get("critical", float("inf")):
+            print(f"    🚨 CRITICAL: max exceeds {t_cfg['critical']}")
+        elif t_cfg and stats["max"] >= t_cfg.get("warn", float("inf")):
+            print(f"    ⚠️ WARNING: max exceeds {t_cfg['warn']}")
+    else:
+        print(f"    No valid readings")
+
+# === STEP 5: CSV Export ===
+print(f"\n{'='*55}")
+csv_output = StringIO()
+writer = csv.writer(csv_output)
+writer.writerow(["sensor_id", "type", "location", "min", "max",
+                 "avg", "count", "unit", "status"])
+for sid, sensor in sensors.items():
+    stats = sensor.get_stats()
+    loc = next((c["location"] for c in config["sensors"]
+                if c["id"] == sid), "?")
+    status = "OK"
+    t_cfg = thresholds.get(sensor.sensor_type.lower(), {})
+    if stats["count"] > 0:
+        if t_cfg and stats["max"] >= t_cfg.get("critical", float("inf")):
+            status = "CRITICAL"
+        elif t_cfg and stats["max"] >= t_cfg.get("warn", float("inf")):
+            status = "WARNING"
+        writer.writerow([sid, sensor.sensor_type, loc,
+                         f"{stats['min']:.1f}", f"{stats['max']:.1f}",
+                         f"{stats['avg']:.2f}", stats["count"],
+                         sensor.unit, status])
+
+print("  📤 CSV Export Preview:")
+for line in csv_output.getvalue().strip().split("\n"):
+    print(f"    {line}")
+
+# Final summary
+total = sum(s.get_stats()["count"] for s in sensors.values())
+print(f"\n{'='*55}")
+print(f"  ✅ Processed: {total} valid readings")
+print(f"  ⚠️ Errors: {len(errors)}")
+print(f"  📊 Success rate: {total/(total+len(errors))*100:.0f}%")
+print(f"{'='*55}")
+print("\n🎉 CASE STUDY COMPLETE!")
+print("   Weeks 8→13: File I/O → Errors → OOP → Inheritance → Modules → Data")
+print("   You've built a production-ready sensor monitoring system!")
+</textarea>
+                            <div class="code-output" id="outputcs6">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="warning-box info-box" style="margin-top: 20px;">
+                            <p><strong>🎉 Case Study Complete!</strong> Over 6 weeks, you've built a full sensor monitoring system using every concept from CP2. Your <strong>final project</strong> next week should demonstrate this same level of integration — combining multiple concepts into one cohesive application.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Submit Section -->
             <section id="submit" class="section">
                 <div class="submit-section">
@@ -3778,19 +4185,22 @@ for r in results:
         }
 
         const sections = [
-            { id: 'part1',     label: 'Working with CSV Files' },
-            { id: 'part2',     label: 'Working with JSON' },
-            { id: 'part3',     label: 'Working with XML' },
-            { id: 'part4',     label: 'Making HTTP Requests' },
-            { id: 'part5',     label: 'Working with SQLite' },
-            { id: 'part6',     label: 'Data Validation' },
-            { id: 'part7',     label: 'Building Data Pipelines' },
-            { id: 'part8',     label: 'Binary Data & Serialization' },
-            { id: 'exercises', label: 'Practice Exercises' },
-            { id: 'part9',     label: 'Advanced Data Patterns' },
-            { id: 'part10',    label: 'Data Integration Patterns' },
-            { id: 'bonus',     label: 'Bonus Exercises' },
-            { id: 'submit',    label: 'Submit Your Work' }
+            { id: 'recap',      label: '🧠 Recap Quiz: Week 12' },
+            { id: 'part1',      label: 'Working with CSV Files' },
+            { id: 'part2',      label: 'Working with JSON' },
+            { id: 'part3',      label: 'Working with XML' },
+            { id: 'part4',      label: 'Making HTTP Requests' },
+            { id: 'part5',      label: 'Working with SQLite' },
+            { id: 'part6',      label: 'Data Validation' },
+            { id: 'part7',      label: 'Building Data Pipelines' },
+            { id: 'part8',      label: 'Binary Data & Serialization' },
+            { id: 'mistakes',   label: '❌ Common Mistakes' },
+            { id: 'exercises',  label: 'Practice Exercises' },
+            { id: 'part9',      label: 'Advanced Data Patterns' },
+            { id: 'part10',     label: 'Data Integration Patterns' },
+            { id: 'bonus',      label: 'Bonus Exercises' },
+            { id: 'casestudy',  label: '🔬 Case Study: Part 6 (Final!)' },
+            { id: 'submit',     label: 'Submit Your Work' }
         ];
 
         const visited = new Set(); let currentIdx = 0;

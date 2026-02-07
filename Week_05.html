@@ -190,6 +190,17 @@
             .topbar-right span { display: none; }
         }
 
+        .danger-box { padding: 18px 24px; border-radius: 8px; margin: 16px 0; border-left: 4px solid var(--danger); background: rgba(220, 38, 38, 0.05); }
+        .danger-box::before { content: '❌ Common Mistake'; display: block; font-weight: 600; color: var(--danger); margin-bottom: 8px; font-size: 0.9rem; }
+        .danger-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .quiz-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .quiz-header { padding: 14px 20px; background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.03)); border-bottom: 1px solid var(--border); font-family: system-ui, sans-serif; font-weight: 600; color: var(--success); font-size: 0.95rem; }
+        .quiz-body { padding: 20px; }
+        .quiz-q { margin: 12px 0; padding: 14px 18px; background: rgba(124, 58, 237, 0.03); border-radius: 8px; border: 1px solid var(--border); }
+        .quiz-q strong { color: var(--accent); font-family: system-ui, sans-serif; }
+        .quiz-q .answer { color: var(--accent); font-size: 0.9rem; margin-top: 8px; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 6px; background: var(--accent-light); border: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; }
+        .quiz-q .answer:hover { background: rgba(124, 58, 237, 0.15); }
+        .quiz-q .answer-text { display: none; color: var(--success); margin-top: 8px; font-size: 0.93rem; padding: 10px 14px; background: rgba(5,150,105,0.06); border-radius: 6px; border-left: 3px solid var(--success); }
         .content strong { color: var(--text-primary); }
         .summary-item .icon { font-size: 1.3rem; }
     </style>
@@ -247,6 +258,45 @@
                 <li>Apply data structures to engineering problems</li>
             </ul>
         </div>
+
+        <!-- Recap Quiz: Week 4 Review -->
+        <section id="recap" class="section" style="scroll-margin-top: 70px;">
+            <div class="section-header">
+                <div class="section-number" style="background: var(--success);">🧠</div>
+                <h2>Recap Quiz: Week 4 Review</h2>
+            </div>
+            <p>Before diving into lists and tuples, let's check your function knowledge from last week.</p>
+            <div class="quiz-box">
+                <div class="quiz-header">🧠 Quick Review — Test Your Week 4 Knowledge</div>
+                <div class="quiz-body">
+                    <div class="quiz-q">
+                        <strong>Q1:</strong> What does a function return if it has no <code>return</code> statement?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>None</code> — Every Python function returns <code>None</code> by default if no explicit <code>return</code> is present.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q2:</strong> What's the output? <code>def f(x, y=10): return x + y</code> then <code>print(f(5))</code><br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>15</code> — The default value <code>y=10</code> is used when no second argument is provided.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q3:</strong> Can a function return multiple values? If so, how?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ Yes! <code>return a, b, c</code> returns them as a tuple. You can unpack: <code>x, y, z = my_func()</code></div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q4:</strong> What's the difference between a parameter and an argument?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ A <strong>parameter</strong> is the variable name in the function definition (<code>def greet(name)</code>). An <strong>argument</strong> is the actual value passed in the call (<code>greet("Ali")</code>).</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q5:</strong> What does <code>lambda x: x ** 2</code> do?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ Creates an anonymous (unnamed) function that takes <code>x</code> and returns <code>x²</code>. It's a shorthand for <code>def square(x): return x ** 2</code></div>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <div class="content">
             <!-- Section 1: Introduction to Lists -->
@@ -1627,6 +1677,37 @@ for row in C: print(row)</textarea>
                 </div>
             </div>
 
+            <!-- Common Mistakes: Lists & Tuples -->
+            <section id="mistakes" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: var(--danger);">❌</div>
+                    <h2>Common Mistakes to Avoid</h2>
+                </div>
+                <p>These are the most frequent errors students make with lists and tuples. Study them before the exercises!</p>
+                
+                <div class="danger-box">
+                    <p><strong>Index out of range</strong><br>
+                    A list with 5 elements has indices 0–4. Accessing <code>my_list[5]</code> raises <code>IndexError</code>. Remember: the last valid index is <code>len(my_list) - 1</code>, or use <code>my_list[-1]</code>.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong><code>append()</code> vs <code>extend()</code></strong><br>
+                    <code>lst.append([4,5])</code> adds the list as a single element: <code>[1, 2, 3, [4, 5]]</code>.<br>
+                    <code>lst.extend([4,5])</code> adds each element individually: <code>[1, 2, 3, 4, 5]</code>.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Shallow copy trap</strong><br>
+                    <code>new_list = old_list</code> does NOT create a copy — both names point to the same list! Use <code>new_list = old_list[:]</code> or <code>new_list = old_list.copy()</code> for a true copy.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong><code>sort()</code> returns <code>None</code></strong><br>
+                    <code>result = my_list.sort()</code> → <code>result</code> is <code>None</code>! <code>.sort()</code> modifies the list in-place. If you need a sorted copy, use <code>result = sorted(my_list)</code>.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Trying to modify a tuple</strong><br>
+                    <code>my_tuple[0] = 99</code> → <code>TypeError</code>! Tuples are immutable. If you need to change values, convert to a list first or create a new tuple.</p>
+                </div>
+            </section>
+
             <!-- Exercises Section -->
             <section id="exercises" class="section">
                 <div class="section-header">
@@ -2228,6 +2309,77 @@ print(transposed)</textarea>
                         </div></div>
                     </div>
                 </div>
+
+                <!-- Bridge Exercise → Week 6 -->
+                <div class="exercise-card" style="border: 2px solid rgba(217, 119, 6, 0.35); background: linear-gradient(135deg, rgba(217,119,6,0.04), transparent);">
+                    <div class="exercise-header" style="background: linear-gradient(135deg, rgba(217,119,6,0.12), rgba(217,119,6,0.04));">
+                        <div class="exercise-title"><span class="exercise-number" style="background: linear-gradient(135deg, #d97706, #f59e0b);">🌉</span>Bridge Exercise: Sneak Peek at Week 6</div>
+                        <span class="difficulty medium">Preview</span>
+                    </div>
+                    <div class="exercise-body">
+                        <div class="exercise-info-panel">
+                            <p class="exercise-description"><strong>Next week: Dictionaries!</strong> You have two parallel lists — sensor names and their readings. Keeping them in sync is fragile and error-prone. What if each name could be directly linked to its reading?</p>
+                            <div class="expected-output">
+                                <div class="expected-output-label">✓ Expected Output</div>
+                                <pre>Sensor: temp_01 → Reading: 24.5
+Sensor: humidity_01 → Reading: 65.2
+Sensor: pressure_01 → Reading: 1013.25
+
+Problem: What if we delete from one list but not the other?
+Names: ['temp_01', 'humidity_01']
+Readings: [24.5, 65.2, 1013.25]
+Data is now mismatched! 😫
+Next week: dictionaries link keys to values — no sync issues!</pre>
+                            </div>
+                            <div class="hints-container">
+                                <button class="hints-toggle" onclick="toggleHints('hintsBridge')">💡 Show Hints</button>
+                                <div class="hints-content" id="hintsBridge">
+                                    <ul>
+                                        <li>Parallel lists require you to use the same index for both — easy to break</li>
+                                        <li>Deleting from one list without the other causes data mismatch</li>
+                                        <li>Next week: <code>{"temp_01": 24.5, "humidity_01": 65.2}</code> — each key directly maps to its value!</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-code-panel">
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Bridge Exercise — Preview of Week 6: Dictionaries</span>
+                                <button class="code-figure-run" onclick="runCode('exBridge')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exBridge"># Bridge Exercise: Parallel Lists Problem
+# Keeping two related lists in sync is fragile!
+
+sensor_names = ["temp_01", "humidity_01", "pressure_01"]
+sensor_readings = [24.5, 65.2, 1013.25]
+
+# Display paired data using index
+for i in range(len(sensor_names)):
+    print(f"Sensor: {sensor_names[i]} → Reading: {sensor_readings[i]}")
+
+# Now delete from ONE list...
+sensor_names.remove("pressure_01")
+# Oops! We forgot to remove from the other list!
+
+print("\nProblem: What if we delete from one list but not the other?")
+print(f"Names: {sensor_names}")
+print(f"Readings: {sensor_readings}")
+print("Data is now mismatched! 😫")
+print("Next week: dictionaries link keys to values — no sync issues!")
+</textarea>
+                            <div class="code-output" id="outputexBridge">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box info-box">
+                    <p>Parallel lists are fragile — delete from one and the other becomes misaligned. Next week you'll learn <strong>dictionaries</strong>, where each key is directly bound to its value: <code>{"temp_01": 24.5}</code>. No index juggling, no sync bugs!</p>
+                </div>
             </section>
             
             <!-- Submit Section -->
@@ -2424,6 +2576,7 @@ sys.stdout = StringIO()
 
         // ============ SMART TOC ============
         const sections = [
+            { id: 'recap',     label: '🧠 Recap Quiz: Week 4' },
             { id: 'part1',     label: 'Introduction to Lists' },
             { id: 'part2',     label: 'Indexing and Access' },
             { id: 'part3',     label: 'Slicing Techniques' },
@@ -2435,6 +2588,7 @@ sys.stdout = StringIO()
             { id: 'part9',     label: 'Tuple Operations and Unpacking' },
             { id: 'part10',    label: 'Lists vs Tuples' },
             { id: 'part11',    label: 'Engineering Applications' },
+            { id: 'mistakes',  label: '❌ Common Mistakes' },
             { id: 'exercises', label: 'Practice Exercises' },
             { id: 'submit',    label: 'Submit Your Work' }
         ];

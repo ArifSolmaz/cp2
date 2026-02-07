@@ -143,6 +143,17 @@
         td { padding: 14px 18px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
         tr:last-child td { border-bottom: none; }
         tr:nth-child(even) { background: rgba(124, 58, 237, 0.03); }
+        .danger-box { padding: 18px 24px; border-radius: 8px; margin: 16px 0; border-left: 4px solid var(--danger); background: rgba(220, 38, 38, 0.05); }
+        .danger-box::before { content: '❌ Common Mistake'; display: block; font-weight: 600; color: var(--danger); margin-bottom: 8px; font-size: 0.9rem; }
+        .danger-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .quiz-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .quiz-header { padding: 14px 20px; background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.03)); border-bottom: 1px solid var(--border); font-family: system-ui, sans-serif; font-weight: 600; color: var(--success); font-size: 0.95rem; }
+        .quiz-body { padding: 20px; }
+        .quiz-q { margin: 12px 0; padding: 14px 18px; background: rgba(124, 58, 237, 0.03); border-radius: 8px; border: 1px solid var(--border); }
+        .quiz-q strong { color: var(--accent); font-family: system-ui, sans-serif; }
+        .quiz-q .answer { color: var(--accent); font-size: 0.9rem; margin-top: 8px; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 6px; background: var(--accent-light); border: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; }
+        .quiz-q .answer:hover { background: rgba(124, 58, 237, 0.15); }
+        .quiz-q .answer-text { display: none; color: var(--success); margin-top: 8px; font-size: 0.93rem; padding: 10px 14px; background: rgba(5,150,105,0.06); border-radius: 6px; border-left: 3px solid var(--success); }
         .exercise-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 28px 0; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         .exercise-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05)); border-bottom: 1px solid var(--border); }
         .exercise-title { font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 12px; }
@@ -248,6 +259,46 @@
                 <li>Prepare for continued Python learning</li>
             </ul>
         </div>
+
+        <!-- Recap Quiz: Week 13 Review -->
+        <section id="recap" class="section" style="scroll-margin-top: 70px;">
+            <div class="section-header">
+                <div class="section-number" style="background: var(--success);">🧠</div>
+                <h2>Recap Quiz: Week 13 Review</h2>
+            </div>
+            <p>One last review before your final project! Let's make sure your external data skills are solid.</p>
+            <div class="quiz-box">
+                <div class="quiz-header">🧠 Quick Review — Test Your Week 13 Knowledge</div>
+                <div class="quiz-body">
+                    <div class="quiz-q">
+                        <strong>Q1:</strong> What's the difference between <code>json.load()</code> and <code>json.loads()</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>json.load(file_obj)</code> reads from a file object. <code>json.loads(string)</code> parses a JSON string. The "s" stands for "string". Same pattern for <code>dump()</code> vs <code>dumps()</code>.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q2:</strong> How do you read a CSV file into a list of dictionaries?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ Use <code>csv.DictReader(file)</code> — it automatically uses the first row as keys. Each row becomes a dictionary like <code>{"name": "T01", "value": "22.5"}</code>.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q3:</strong> Which Python types does JSON NOT support natively?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ JSON has no <code>tuple</code> (becomes list), no <code>set</code> (can't serialize), no <code>datetime</code> (needs manual conversion), and no <code>None</code> key support. Always validate after loading.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q4:</strong> Why should you always validate external data before processing?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ External data may have missing fields, wrong types, out-of-range values, or unexpected formats. Processing invalid data without checks causes crashes, wrong results, or security issues.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q5:</strong> What is a data pipeline?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ A sequence of processing steps: <strong>Extract</strong> (read data from source) → <strong>Transform</strong> (clean, validate, convert) → <strong>Load</strong> (store or output results). Also called ETL.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <div class="content">
             <!-- Section 1: Course Review -->
             <section id="part1" class="section">
@@ -2160,6 +2211,36 @@ print("=" * 60)</textarea>
                 </div>
             </div>
 
+            <!-- Common Mistakes: Final Project -->
+            <section id="mistakes" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: var(--danger);">❌</div>
+                    <h2>Common Final Project Mistakes</h2>
+                </div>
+                <p>Avoid these pitfalls that students commonly encounter when building their final projects!</p>
+                
+                <div class="danger-box">
+                    <p><strong>Writing everything in one giant file</strong><br>
+                    A 500-line <code>main.py</code> is hard to debug, test, and grade. Split into modules: <code>models.py</code> for classes, <code>utils.py</code> for helpers, <code>main.py</code> as entry point. You learned this in Week 12!</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>No error handling for user input or file operations</strong><br>
+                    Your project will crash on bad input or missing files without <code>try/except</code>. Wrap all file I/O and user input in error handling. Provide meaningful error messages, not stack traces.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Not using classes when the project calls for them</strong><br>
+                    If you have data + behavior that belongs together (e.g., a sensor with readings and statistics), use a class. Passing 10 variables between functions is a sign you need OOP.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Hardcoding test data instead of reading from files</strong><br>
+                    Your project should demonstrate file I/O. Load configuration from JSON, read data from CSV, and write results to files. Hardcoded data shows you haven't applied Weeks 8 and 13.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Skipping documentation and comments</strong><br>
+                    Every class needs a docstring. Every function needs a brief description. Complex logic needs inline comments. Your grader (and future self) will thank you. Use <code>"""Triple quotes for docstrings."""</code></p>
+                </div>
+            </section>
+
             <!-- Exercises Section -->
             <section id="exercises" class="section">
                 <div class="section-header">
@@ -2730,16 +2811,18 @@ notifier.notify(test_alert)</textarea>
         }
 
         const sections = [
-            { id: 'part1',     label: 'Course Review' },
-            { id: 'part2',     label: 'Final Project Overview' },
-            { id: 'part3',     label: 'Step 1: Sensor Classes' },
-            { id: 'part4',     label: 'Step 2: Data Storage' },
-            { id: 'part5',     label: 'Step 3: Data Processing' },
-            { id: 'part6',     label: 'Step 4: Main Application' },
-            { id: 'part7',     label: 'Submission Guidelines' },
-            { id: 'part8',     label: 'Course Completion' },
-            { id: 'exercises', label: 'Final Project Exercises' },
-            { id: 'submit',    label: 'Submit Final Project' }
+            { id: 'recap',      label: '🧠 Recap Quiz: Week 13' },
+            { id: 'part1',      label: 'Course Review' },
+            { id: 'part2',      label: 'Final Project Overview' },
+            { id: 'part3',      label: 'Step 1: Sensor Classes' },
+            { id: 'part4',      label: 'Step 2: Data Storage' },
+            { id: 'part5',      label: 'Step 3: Data Processing' },
+            { id: 'part6',      label: 'Step 4: Main Application' },
+            { id: 'part7',      label: 'Submission Guidelines' },
+            { id: 'part8',      label: 'Course Completion' },
+            { id: 'mistakes',   label: '❌ Common Project Mistakes' },
+            { id: 'exercises',  label: 'Final Project Exercises' },
+            { id: 'submit',     label: 'Submit Final Project' }
         ];
 
         const visited = new Set(); let currentIdx = 0;

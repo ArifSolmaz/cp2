@@ -190,6 +190,21 @@
             .topbar-right span { display: none; }
         }
 
+        .danger-box { padding: 18px 24px; border-radius: 8px; margin: 16px 0; border-left: 4px solid var(--danger); background: rgba(220, 38, 38, 0.05); }
+        .danger-box::before { content: '❌ Common Mistake'; display: block; font-weight: 600; color: var(--danger); margin-bottom: 8px; font-size: 0.9rem; }
+        .danger-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .quiz-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .quiz-header { padding: 14px 20px; background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.03)); border-bottom: 1px solid var(--border); font-family: system-ui, sans-serif; font-weight: 600; color: var(--success); font-size: 0.95rem; }
+        .quiz-body { padding: 20px; }
+        .quiz-q { margin: 12px 0; padding: 14px 18px; background: rgba(124, 58, 237, 0.03); border-radius: 8px; border: 1px solid var(--border); }
+        .quiz-q strong { color: var(--accent); font-family: system-ui, sans-serif; }
+        .quiz-q .answer { color: var(--accent); font-size: 0.9rem; margin-top: 8px; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 6px; background: var(--accent-light); border: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; }
+        .quiz-q .answer:hover { background: rgba(124, 58, 237, 0.15); }
+        .quiz-q .answer-text { display: none; color: var(--success); margin-top: 8px; font-size: 0.93rem; padding: 10px 14px; background: rgba(5,150,105,0.06); border-radius: 6px; border-left: 3px solid var(--success); }
+        .case-study-box { background: var(--card-bg); border: 2px solid rgba(124, 58, 237, 0.3); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .case-study-header { padding: 16px 20px; background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(124,58,237,0.04)); border-bottom: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; font-weight: 600; color: var(--accent); font-size: 1rem; display: flex; align-items: center; gap: 10px; }
+        .case-study-body { padding: 24px; }
+        .case-study-body p { color: var(--text-secondary); margin-bottom: 14px; }
         .content strong { color: var(--text-primary); }
         .summary-item .icon { font-size: 1.3rem; }
     </style>
@@ -241,6 +256,45 @@
                 <li>Design class hierarchies for engineering applications</li>
             </ul>
         </div>
+
+        <!-- Recap Quiz: Week 10 Review -->
+        <section id="recap" class="section" style="scroll-margin-top: 70px;">
+            <div class="section-header">
+                <div class="section-number" style="background: var(--success);">🧠</div>
+                <h2>Recap Quiz: Week 10 Review</h2>
+            </div>
+            <p>Before learning inheritance, let's check your OOP fundamentals from last week.</p>
+            <div class="quiz-box">
+                <div class="quiz-header">🧠 Quick Review — Test Your Week 10 Knowledge</div>
+                <div class="quiz-body">
+                    <div class="quiz-q">
+                        <strong>Q1:</strong> What is <code>self</code> in a Python class method?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>self</code> refers to the specific instance calling the method. It lets each object access its own attributes and methods.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q2:</strong> What's the difference between a class attribute and an instance attribute?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ A class attribute is shared by ALL instances (defined in the class body). An instance attribute is unique to each object (defined in <code>__init__</code> with <code>self.x = ...</code>).</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q3:</strong> When does <code>__init__</code> run?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ Automatically when you create a new instance: <code>s = Sensor("T01")</code>. It's the constructor that initializes the object's attributes.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q4:</strong> What does the <code>@property</code> decorator do?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ It lets you access a method like an attribute: <code>sensor.reading_count</code> instead of <code>sensor.reading_count()</code>. Great for computed values with controlled access.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q5:</strong> What is composition in OOP?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ When a class contains instances of other classes as attributes. Example: a <code>SensorLogger</code> containing a dictionary of <code>Sensor</code> objects — "has-a" relationship.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <div class="content">
             <!-- Section 1: Introduction to Inheritance -->
@@ -2071,6 +2125,36 @@ for sensor in sensors:
                 </div>
             </div>
 
+            <!-- Common Mistakes: Inheritance -->
+            <section id="mistakes" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: var(--danger);">❌</div>
+                    <h2>Common Mistakes to Avoid</h2>
+                </div>
+                <p>These are the most frequent errors students make with inheritance. Study them before the exercises!</p>
+                
+                <div class="danger-box">
+                    <p><strong>Forgetting to call <code>super().__init__()</code></strong><br>
+                    If a child class defines <code>__init__</code> without calling <code>super().__init__(...)</code>, the parent's initialization is skipped. Parent attributes won't exist, causing <code>AttributeError</code> later.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Overriding a method but losing parent behavior</strong><br>
+                    Completely replacing a parent method instead of extending it. If you want the parent's logic PLUS extra steps, call <code>super().method_name()</code> inside your override.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Deep inheritance hierarchies</strong><br>
+                    <code>A → B → C → D → E</code> — 5 levels deep makes code hard to follow and debug. Prefer shallow hierarchies (2–3 levels max) and use composition for additional behavior.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Confusing <code>isinstance()</code> and <code>type()</code></strong><br>
+                    <code>type(obj) == Parent</code> fails for child instances! Use <code>isinstance(obj, Parent)</code> which returns <code>True</code> for both parent and child types — respects polymorphism.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Diamond problem with multiple inheritance</strong><br>
+                    If class D inherits from B and C, which both inherit from A, the MRO (Method Resolution Order) determines which method runs. Use <code>ClassName.mro()</code> to inspect the order and avoid surprises.</p>
+                </div>
+            </section>
+
             <!-- Exercises Section -->
             <section id="exercises" class="section">
                 <div class="section-header">
@@ -2909,6 +2993,287 @@ print(rogue.attack())</textarea>
                             </div>
                         </div></div></div>
                 </div>
+
+                <!-- Bridge Exercise → Week 12 -->
+                <div class="exercise-card" style="border: 2px solid rgba(217, 119, 6, 0.35); background: linear-gradient(135deg, rgba(217,119,6,0.04), transparent);">
+                    <div class="exercise-header" style="background: linear-gradient(135deg, rgba(217,119,6,0.12), rgba(217,119,6,0.04));">
+                        <div class="exercise-title"><span class="exercise-number" style="background: linear-gradient(135deg, #d97706, #f59e0b);">🌉</span>Bridge Exercise: Sneak Peek at Week 12</div>
+                        <span class="difficulty medium">Preview</span>
+                    </div>
+                    <div class="exercise-body">
+                        <div class="exercise-info-panel">
+                            <p class="exercise-description"><strong>Next week: Modules &amp; Packages!</strong> Your sensor logger code is now 300+ lines in a single file. Finding anything is painful. What if you could split it into organized, reusable pieces?</p>
+                            <div class="expected-output">
+                                <div class="expected-output-label">✓ Expected Output</div>
+                                <pre>Current file: sensor_logger.py (327 lines!)
+
+Contents:
+  Lines 1-50:    Custom exceptions
+  Lines 51-120:  Base Sensor class
+  Lines 121-180: TemperatureSensor, HumiditySensor, PressureSensor
+  Lines 181-260: SensorLogger class
+  Lines 261-327: Main program logic
+
+Finding the HumiditySensor class? Scroll, scroll, scroll... 😫
+Next week: split into modules — import what you need!</pre>
+                            </div>
+                            <div class="hints-container">
+                                <button class="hints-toggle" onclick="toggleHints('hintsBridge')">💡 Show Hints</button>
+                                <div class="hints-content" id="hintsBridge">
+                                    <ul>
+                                        <li>A single 300+ line file is hard to navigate, test, and reuse</li>
+                                        <li>What if another project needs just the Sensor class? Copy-paste the whole file?</li>
+                                        <li>Next week: <code>from sensors import TemperatureSensor</code> — clean imports from organized modules</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-code-panel">
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Bridge Exercise — Preview of Week 12: Modules</span>
+                                <button class="code-figure-run" onclick="runCode('exBridge')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exBridge"># Bridge Exercise: Growing File Size Problem
+# Everything crammed into one massive file!
+
+file_structure = {
+    "sensor_logger.py": {
+        "total_lines": 327,
+        "sections": [
+            ("Custom exceptions", "1-50"),
+            ("Base Sensor class", "51-120"),
+            ("TemperatureSensor, HumiditySensor, PressureSensor", "121-180"),
+            ("SensorLogger class", "181-260"),
+            ("Main program logic", "261-327"),
+        ]
+    }
+}
+
+print(f"Current file: sensor_logger.py "
+      f"({file_structure['sensor_logger.py']['total_lines']} lines!)\n")
+print("Contents:")
+for name, lines in file_structure["sensor_logger.py"]["sections"]:
+    print(f"  Lines {lines:10s}: {name}")
+
+print(f"\nFinding the HumiditySensor class? Scroll, scroll, scroll... 😫")
+print("Next week: split into modules — import what you need!")
+
+# What it COULD look like:
+print("\n--- Better structure with modules ---")
+ideal = [
+    "sensors/",
+    "  __init__.py",
+    "  base.py          → Sensor class",
+    "  temperature.py   → TemperatureSensor",
+    "  humidity.py      → HumiditySensor",
+    "  exceptions.py    → Custom exceptions",
+    "logger.py          → SensorLogger",
+    "main.py            → Program entry point",
+]
+for line in ideal:
+    print(f"  {line}")
+</textarea>
+                            <div class="code-output" id="outputexBridge">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box info-box">
+                    <p>A 300-line single file becomes unmaintainable. Next week you'll learn <strong>modules and packages</strong>: split your code into logical files, use <code>import</code> to connect them, and create reusable packages others can install!</p>
+                </div>
+            </section>
+
+            <!-- Case Study Part 4: Sensor Data Logger — Inheritance -->
+            <section id="casestudy" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: linear-gradient(135deg, #7c3aed, #a78bfa);">🔬</div>
+                    <h2>Case Study: Sensor Data Logger (Part 4 of 6)</h2>
+                </div>
+                <p>Continuing from Week 10's OOP design, we now use <strong>inheritance</strong> to create specialized sensor types with custom validation, while reusing all shared behavior from the base class.</p>
+
+                <div class="case-study-box">
+                    <div class="case-study-header">🔬 Part 4 — Inheritance: Specialized Sensor Subclasses</div>
+                    <div class="case-study-body">
+                        <p><strong>Goal:</strong> Create an abstract <code>Sensor</code> base class with shared logic, then build <code>TemperatureSensor</code>, <code>HumiditySensor</code>, and <code>PressureSensor</code> subclasses that each define their own validation rules.</p>
+                        <p><strong>What's new:</strong> Abstract base class with <code>ABC</code>, <code>super().__init__()</code>, method overriding for <code>validate()</code>, polymorphic <code>process_readings()</code>.</p>
+                        
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Case Study 4 — Sensor Data Logger: Inheritance Hierarchy</span>
+                                <button class="code-figure-run" onclick="runCode('cs4')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="cs4"># === CASE STUDY Part 4: Sensor Data Logger — Inheritance ===
+# Specialized sensor types via inheritance
+
+from abc import ABC, abstractmethod
+
+class SensorError(Exception):
+    pass
+
+class InvalidReadingError(SensorError):
+    def __init__(self, sensor_id, value, valid_range):
+        super().__init__(f"{sensor_id}: {value} outside {valid_range}")
+        self.sensor_id = sensor_id
+        self.value = value
+
+# --- Abstract Base Sensor ---
+class Sensor(ABC):
+    """Abstract base class for all sensors."""
+    
+    def __init__(self, sensor_id, unit, valid_range):
+        self.sensor_id = sensor_id
+        self.unit = unit
+        self.valid_range = valid_range
+        self._readings = []
+    
+    @property
+    @abstractmethod
+    def sensor_type(self):
+        """Each subclass must define its type."""
+        pass
+    
+    def validate(self, value):
+        """Default validation — check range. Override for custom rules."""
+        low, high = self.valid_range
+        if not (low <= value <= high):
+            raise InvalidReadingError(
+                self.sensor_id, value, self.valid_range)
+    
+    def add_reading(self, timestamp, value):
+        """Add reading with validation."""
+        self.validate(value)
+        self._readings.append((timestamp, value))
+    
+    def get_stats(self):
+        if not self._readings:
+            return {"min": None, "max": None, "avg": None, "count": 0}
+        vals = [v for _, v in self._readings]
+        return {"min": min(vals), "max": max(vals),
+                "avg": sum(vals)/len(vals), "count": len(vals)}
+    
+    def __str__(self):
+        s = self.get_stats()
+        return (f"{self.sensor_type}({self.sensor_id}): "
+                f"{s['count']} readings")
+
+# --- Specialized Subclasses ---
+class TemperatureSensor(Sensor):
+    """Temperature sensor with °C validation."""
+    
+    def __init__(self, sensor_id):
+        super().__init__(sensor_id, "°C", (-40, 80))
+    
+    @property
+    def sensor_type(self):
+        return "Temperature"
+    
+    def validate(self, value):
+        """Extended: also warn on rapid changes."""
+        super().validate(value)  # Range check first
+        if self._readings:
+            last_val = self._readings[-1][1]
+            if abs(value - last_val) > 10:
+                print(f"  ⚡ {self.sensor_id}: Rapid change "
+                      f"detected ({last_val} → {value})")
+
+class HumiditySensor(Sensor):
+    """Humidity sensor with % validation."""
+    
+    def __init__(self, sensor_id):
+        super().__init__(sensor_id, "%", (0, 100))
+    
+    @property
+    def sensor_type(self):
+        return "Humidity"
+
+class PressureSensor(Sensor):
+    """Pressure sensor with hPa validation."""
+    
+    def __init__(self, sensor_id):
+        super().__init__(sensor_id, "hPa", (300, 1100))
+    
+    @property
+    def sensor_type(self):
+        return "Pressure"
+    
+    def validate(self, value):
+        """Extended: pressure must be integer-like."""
+        super().validate(value)
+        if value != round(value, 1):
+            print(f"  📏 {self.sensor_id}: Rounding to 1 decimal")
+
+# --- Polymorphic Processing ---
+def process_readings(sensors, data):
+    """Process readings for ANY sensor type — polymorphism!"""
+    errors = []
+    for sid, ts, val_str in data:
+        sensor = sensors.get(sid)
+        if not sensor:
+            errors.append(f"Unknown: {sid}")
+            continue
+        try:
+            sensor.add_reading(ts, float(val_str))
+            print(f"  ✅ {sid}: {val_str} {sensor.unit}")
+        except (ValueError, SensorError) as e:
+            errors.append(str(e))
+            print(f"  ⚠️ {sid}: {e}")
+    return errors
+
+# --- Demo ---
+print("🏗️ Creating specialized sensors...\n")
+sensors = {
+    "T01": TemperatureSensor("T01"),
+    "H01": HumiditySensor("H01"),
+    "P01": PressureSensor("P01"),
+}
+
+for s in sensors.values():
+    print(f"  📡 {s} (range: {s.valid_range} {s.unit})")
+
+print(f"\n📝 Processing readings...\n")
+data = [
+    ("T01", "08:00", "22.5"),
+    ("T01", "08:05", "23.1"),
+    ("T01", "08:10", "35.0"),   # Rapid change!
+    ("H01", "08:00", "45.2"),
+    ("H01", "08:05", "110.0"),  # Out of range!
+    ("P01", "08:00", "1013.25"),
+    ("P01", "08:05", "1012.8"),
+]
+
+errors = process_readings(sensors, data)
+
+print(f"\n📊 Final Stats:")
+for s in sensors.values():
+    stats = s.get_stats()
+    if stats["count"] > 0:
+        print(f"  {s}: avg={stats['avg']:.1f} {s.unit}")
+
+# Polymorphism proof
+print(f"\n🔍 isinstance checks:")
+print(f"  T01 is Sensor? {isinstance(sensors['T01'], Sensor)}")
+print(f"  T01 is TemperatureSensor? "
+      f"{isinstance(sensors['T01'], TemperatureSensor)}")
+
+print(f"\n✅ One process_readings() handles ALL sensor types!")
+print("🔜 Next week: Split into modules for clean organization!")
+</textarea>
+                            <div class="code-output" id="outputcs4">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="warning-box info-box" style="margin-top: 20px;">
+                            <p><strong>What's next?</strong> Our inheritance hierarchy is clean and extensible, but all 100+ lines are in a single file. In <strong>Week 12</strong>, we'll organize this into a proper Python package with modules for exceptions, sensors, and the logger.</p>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- Submit Section -->
@@ -3042,17 +3407,20 @@ print(rogue.attack())</textarea>
         }
 
         const sections = [
-            { id: 'part1',     label: 'Introduction to Inheritance' },
-            { id: 'part2',     label: 'The super() Function' },
-            { id: 'part3',     label: 'Method Overriding' },
-            { id: 'part4',     label: 'Polymorphism' },
-            { id: 'part5',     label: 'Multiple Inheritance' },
-            { id: 'part6',     label: 'Abstract Base Classes' },
-            { id: 'part7',     label: 'Inheritance Best Practices' },
-            { id: 'part8',     label: 'Practical Applications' },
-            { id: 'part9',     label: 'Engineering Examples' },
-            { id: 'exercises', label: 'Practice Exercises' },
-            { id: 'submit',    label: 'Submit Your Work' }
+            { id: 'recap',      label: '🧠 Recap Quiz: Week 10' },
+            { id: 'part1',      label: 'Introduction to Inheritance' },
+            { id: 'part2',      label: 'The super() Function' },
+            { id: 'part3',      label: 'Method Overriding' },
+            { id: 'part4',      label: 'Polymorphism' },
+            { id: 'part5',      label: 'Multiple Inheritance' },
+            { id: 'part6',      label: 'Abstract Base Classes' },
+            { id: 'part7',      label: 'Inheritance Best Practices' },
+            { id: 'part8',      label: 'Practical Applications' },
+            { id: 'part9',      label: 'Engineering Examples' },
+            { id: 'mistakes',   label: '❌ Common Mistakes' },
+            { id: 'exercises',  label: 'Practice Exercises' },
+            { id: 'casestudy',  label: '🔬 Case Study: Part 4' },
+            { id: 'submit',     label: 'Submit Your Work' }
         ];
 
         const visited = new Set(); let currentIdx = 0;

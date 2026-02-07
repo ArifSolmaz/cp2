@@ -190,6 +190,17 @@
             .topbar-right span { display: none; }
         }
 
+        .danger-box { padding: 18px 24px; border-radius: 8px; margin: 16px 0; border-left: 4px solid var(--danger); background: rgba(220, 38, 38, 0.05); }
+        .danger-box::before { content: '❌ Common Mistake'; display: block; font-weight: 600; color: var(--danger); margin-bottom: 8px; font-size: 0.9rem; }
+        .danger-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .quiz-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .quiz-header { padding: 14px 20px; background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.03)); border-bottom: 1px solid var(--border); font-family: system-ui, sans-serif; font-weight: 600; color: var(--success); font-size: 0.95rem; }
+        .quiz-body { padding: 20px; }
+        .quiz-q { margin: 12px 0; padding: 14px 18px; background: rgba(124, 58, 237, 0.03); border-radius: 8px; border: 1px solid var(--border); }
+        .quiz-q strong { color: var(--accent); font-family: system-ui, sans-serif; }
+        .quiz-q .answer { color: var(--accent); font-size: 0.9rem; margin-top: 8px; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 6px; background: var(--accent-light); border: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; }
+        .quiz-q .answer:hover { background: rgba(124, 58, 237, 0.15); }
+        .quiz-q .answer-text { display: none; color: var(--success); margin-top: 8px; font-size: 0.93rem; padding: 10px 14px; background: rgba(5,150,105,0.06); border-radius: 6px; border-left: 3px solid var(--success); }
         .content strong { color: var(--text-primary); }
         .summary-item .icon { font-size: 1.3rem; }
     </style>
@@ -245,6 +256,45 @@
                 <li>Process text data in engineering applications</li>
             </ul>
         </div>
+
+        <!-- Recap Quiz: Week 6 Review -->
+        <section id="recap" class="section" style="scroll-margin-top: 70px;">
+            <div class="section-header">
+                <div class="section-number" style="background: var(--success);">🧠</div>
+                <h2>Recap Quiz: Week 6 Review</h2>
+            </div>
+            <p>Before diving into string methods, let's check your dictionaries and sets knowledge.</p>
+            <div class="quiz-box">
+                <div class="quiz-header">🧠 Quick Review — Test Your Week 6 Knowledge</div>
+                <div class="quiz-body">
+                    <div class="quiz-q">
+                        <strong>Q1:</strong> What happens with <code>my_dict["missing"]</code> if "missing" is not a key?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>KeyError</code>! Use <code>my_dict.get("missing", default_value)</code> to safely access keys without crashing.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q2:</strong> How do you iterate over both keys and values of a dictionary?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>for key, value in my_dict.items():</code> — The <code>.items()</code> method returns key-value pairs as tuples.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q3:</strong> What does <code>x = {}</code> create — a set or a dictionary?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ An empty <strong>dictionary</strong>! For an empty set, use <code>x = set()</code>.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q4:</strong> What is <code>{1, 2, 3} &amp; {2, 3, 4}</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>{2, 3}</code> — The <code>&amp;</code> operator returns the intersection (elements in BOTH sets).</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q5:</strong> What does <code>{k: v**2 for k, v in {"a": 2, "b": 3}.items()}</code> produce?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>{"a": 4, "b": 9}</code> — A dictionary comprehension that squares each value.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <div class="content">
             <!-- Section 1: String Fundamentals -->
@@ -1097,6 +1147,36 @@ for x, y, z in points:
                 </div>
             </div>
 
+            <!-- Common Mistakes: Strings -->
+            <section id="mistakes" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: var(--danger);">❌</div>
+                    <h2>Common Mistakes to Avoid</h2>
+                </div>
+                <p>These are the most frequent errors students make with strings. Study them before the exercises!</p>
+                
+                <div class="danger-box">
+                    <p><strong>Strings are immutable — methods return NEW strings</strong><br>
+                    <code>name = "hello"; name.upper()</code> does NOT change <code>name</code>! You must reassign: <code>name = name.upper()</code>. All string methods return a new string.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Forgetting that <code>.split()</code> returns a list</strong><br>
+                    <code>"a,b,c".split(",")</code> returns <code>["a", "b", "c"]</code> — a list, not a string. You need to index or loop through the result.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong><code>.find()</code> returns -1, not an error</strong><br>
+                    <code>"hello".find("x")</code> returns <code>-1</code> (not found), which is truthy! Always check <code>if result != -1:</code>. Use <code>.index()</code> if you want a <code>ValueError</code> instead.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Mixing up <code>.replace()</code> behavior</strong><br>
+                    <code>"aaa".replace("a", "b")</code> replaces ALL occurrences → <code>"bbb"</code>. For just the first: <code>"aaa".replace("a", "b", 1)</code> → <code>"baa"</code>.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Escaping issues in strings</strong><br>
+                    <code>"path\new\folder"</code> interprets <code>\n</code> as newline! Use raw strings <code>r"path\new\folder"</code> or double backslashes <code>"path\\new\\folder"</code>.</p>
+                </div>
+            </section>
+
             <!-- Exercises Section -->
             <section id="exercises" class="section">
                 <div class="section-header">
@@ -1641,6 +1721,81 @@ print(f"Valid email: {is_valid}")</textarea>
                             </div>
                         </div></div></div>
                 </div>
+            
+                <!-- Bridge Exercise → Week 8 -->
+                <div class="exercise-card" style="border: 2px solid rgba(217, 119, 6, 0.35); background: linear-gradient(135deg, rgba(217,119,6,0.04), transparent);">
+                    <div class="exercise-header" style="background: linear-gradient(135deg, rgba(217,119,6,0.12), rgba(217,119,6,0.04));">
+                        <div class="exercise-title"><span class="exercise-number" style="background: linear-gradient(135deg, #d97706, #f59e0b);">🌉</span>Bridge Exercise: Sneak Peek at Week 8</div>
+                        <span class="difficulty medium">Preview</span>
+                    </div>
+                    <div class="exercise-body">
+                        <div class="exercise-info-panel">
+                            <p class="exercise-description"><strong>Next week: File I/O!</strong> You've built a perfect sensor data parser using string methods — but when the program ends, all your data disappears! What if you could save it to a file and reload it later?</p>
+                            <div class="expected-output">
+                                <div class="expected-output-label">✓ Expected Output</div>
+                                <pre>Parsed sensor data:
+  temp_01: 24.5 (OK)
+  humidity_01: 65.2 (WARNING)
+
+All this data is lost when the program ends! 😫
+Can't share with colleagues either...
+Next week: File I/O saves data permanently!</pre>
+                            </div>
+                            <div class="hints-container">
+                                <button class="hints-toggle" onclick="toggleHints('hintsBridge')">💡 Show Hints</button>
+                                <div class="hints-content" id="hintsBridge">
+                                    <ul>
+                                        <li>We can parse strings beautifully now, but the results only live in memory</li>
+                                        <li>When the script finishes, everything vanishes</li>
+                                        <li>Next week: <code>with open("data.txt", "w") as f:</code> — save to disk permanently</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-code-panel">
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Bridge Exercise — Preview of Week 8: File I/O</span>
+                                <button class="code-figure-run" onclick="runCode('exBridge')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exBridge"># Bridge Exercise: Data That Disappears!
+# Using string methods to parse sensor logs
+
+raw_logs = [
+    "  TEMP: 24.5C | STATUS: OK  ",
+    "  HUMIDITY: 65.2% | STATUS: WARNING  ",
+]
+
+parsed_data = []
+for log in raw_logs:
+    parts = log.strip().split("|")
+    sensor_info = parts[0].strip().split(":")
+    status = parts[1].strip().split(":")[1].strip()
+    sensor_name = sensor_info[0].strip().lower().replace(" ", "_")
+    value = sensor_info[1].strip().rstrip("C%")
+    parsed_data.append({"name": sensor_name, "value": value, "status": status})
+
+print("Parsed sensor data:")
+for item in parsed_data:
+    print(f"  {item['name']}: {item['value']} ({item['status']})")
+
+# But when the program ends...
+print("\nAll this data is lost when the program ends! 😫")
+print("Can't share with colleagues either...")
+print("Next week: File I/O saves data permanently!")
+</textarea>
+                            <div class="code-output" id="outputexBridge">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box info-box">
+                    <p>Your parsing skills are great — but data stuck in memory disappears when the program exits. Next week you'll learn <strong>file I/O</strong>: reading from and writing to files so your data persists between runs!</p>
+                </div>
             </section>
             
             <!-- Submit Section -->
@@ -1831,6 +1986,7 @@ print(f"Valid email: {is_valid}")</textarea>
 
         // ============ SMART TOC ============
         const sections = [
+            { id: 'recap',     label: '🧠 Recap Quiz: Week 6' },
             { id: 'part1',     label: 'String Fundamentals' },
             { id: 'part2',     label: 'String Indexing and Slicing' },
             { id: 'part3',     label: 'Case Conversion Methods' },
@@ -1841,6 +1997,7 @@ print(f"Valid email: {is_valid}")</textarea>
             { id: 'part8',     label: 'String Formatting' },
             { id: 'part9',     label: 'Regular Expressions' },
             { id: 'part10',    label: 'Engineering Applications' },
+            { id: 'mistakes',  label: '❌ Common Mistakes' },
             { id: 'exercises', label: 'Practice Exercises' },
             { id: 'submit',    label: 'Submit Your Work' }
         ];

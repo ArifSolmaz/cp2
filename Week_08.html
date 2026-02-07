@@ -190,6 +190,21 @@
             .topbar-right span { display: none; }
         }
 
+        .danger-box { padding: 18px 24px; border-radius: 8px; margin: 16px 0; border-left: 4px solid var(--danger); background: rgba(220, 38, 38, 0.05); }
+        .danger-box::before { content: '❌ Common Mistake'; display: block; font-weight: 600; color: var(--danger); margin-bottom: 8px; font-size: 0.9rem; }
+        .danger-box p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+        .quiz-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .quiz-header { padding: 14px 20px; background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.03)); border-bottom: 1px solid var(--border); font-family: system-ui, sans-serif; font-weight: 600; color: var(--success); font-size: 0.95rem; }
+        .quiz-body { padding: 20px; }
+        .quiz-q { margin: 12px 0; padding: 14px 18px; background: rgba(124, 58, 237, 0.03); border-radius: 8px; border: 1px solid var(--border); }
+        .quiz-q strong { color: var(--accent); font-family: system-ui, sans-serif; }
+        .quiz-q .answer { color: var(--accent); font-size: 0.9rem; margin-top: 8px; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 6px; background: var(--accent-light); border: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; }
+        .quiz-q .answer:hover { background: rgba(124, 58, 237, 0.15); }
+        .quiz-q .answer-text { display: none; color: var(--success); margin-top: 8px; font-size: 0.93rem; padding: 10px 14px; background: rgba(5,150,105,0.06); border-radius: 6px; border-left: 3px solid var(--success); }
+        .case-study-box { background: var(--card-bg); border: 2px solid rgba(124, 58, 237, 0.3); border-radius: 12px; margin: 30px 0; overflow: hidden; }
+        .case-study-header { padding: 16px 20px; background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(124,58,237,0.04)); border-bottom: 1px solid rgba(124,58,237,0.2); font-family: system-ui, sans-serif; font-weight: 600; color: var(--accent); font-size: 1rem; display: flex; align-items: center; gap: 10px; }
+        .case-study-body { padding: 24px; }
+        .case-study-body p { color: var(--text-secondary); margin-bottom: 14px; }
         .content strong { color: var(--text-primary); }
         .summary-item .icon { font-size: 1.3rem; }
     </style>
@@ -241,6 +256,45 @@
                 <li>Process engineering data files</li>
             </ul>
         </div>
+
+        <!-- Recap Quiz: Week 7 Review -->
+        <section id="recap" class="section" style="scroll-margin-top: 70px;">
+            <div class="section-header">
+                <div class="section-number" style="background: var(--success);">🧠</div>
+                <h2>Recap Quiz: Week 7 Review</h2>
+            </div>
+            <p>Before learning file I/O, let's check your string methods knowledge from last week.</p>
+            <div class="quiz-box">
+                <div class="quiz-header">🧠 Quick Review — Test Your Week 7 Knowledge</div>
+                <div class="quiz-body">
+                    <div class="quiz-q">
+                        <strong>Q1:</strong> Does <code>"hello".upper()</code> change the original string?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ No! Strings are immutable. <code>.upper()</code> returns a NEW string. You must reassign: <code>s = s.upper()</code></div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q2:</strong> What does <code>"a,b,,c".split(",")</code> return?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>["a", "b", "", "c"]</code> — Note the empty string for the consecutive comma. <code>.split()</code> preserves empty segments.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q3:</strong> What does <code>" hello ".strip()</code> return?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>"hello"</code> — <code>.strip()</code> removes leading and trailing whitespace. Use <code>.lstrip()</code> or <code>.rstrip()</code> for one side only.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q4:</strong> How do you join <code>["a", "b", "c"]</code> into <code>"a-b-c"</code>?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>"-".join(["a", "b", "c"])</code> — The separator string calls <code>.join()</code> on the list.</div>
+                    </div>
+                    <div class="quiz-q">
+                        <strong>Q5:</strong> What does <code>"hello world".find("xyz")</code> return?<br>
+                        <span class="answer" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">👁 Show Answer</span>
+                        <div class="answer-text">✅ <code>-1</code> — Not found. Remember: -1 is truthy, so always check <code>if result != -1:</code></div>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <div class="content">
             <!-- Section 1: Opening and Closing Files -->
@@ -905,6 +959,36 @@ print(f"Missing: {config.get('missing', 'default')}")</textarea>
                 </div>
             </div>
 
+            <!-- Common Mistakes: File I/O -->
+            <section id="mistakes" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: var(--danger);">❌</div>
+                    <h2>Common Mistakes to Avoid</h2>
+                </div>
+                <p>These are the most frequent errors students make with file handling. Study them before the exercises!</p>
+                
+                <div class="danger-box">
+                    <p><strong>Forgetting to close files</strong><br>
+                    <code>f = open("file.txt")</code> without <code>f.close()</code> can leak resources and corrupt data. Always use <code>with open(...) as f:</code> — it closes automatically!</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Using <code>"w"</code> mode accidentally — data erased!</strong><br>
+                    <code>open("data.txt", "w")</code> erases the entire file before writing. To add data, use <code>"a"</code> (append). This is a common cause of data loss.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Not handling <code>FileNotFoundError</code></strong><br>
+                    <code>open("missing.txt")</code> crashes if the file doesn't exist. Always wrap in <code>try/except FileNotFoundError</code> or check with <code>os.path.exists()</code> first.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Forgetting <code>newline=""</code> with CSV files</strong><br>
+                    On Windows, <code>csv.writer</code> without <code>open("file.csv", "w", newline="")</code> adds blank lines between rows. Always include <code>newline=""</code>.</p>
+                </div>
+                <div class="danger-box">
+                    <p><strong>Reading a file twice without resetting</strong><br>
+                    After <code>f.read()</code>, the file pointer is at the end. A second <code>f.read()</code> returns empty string <code>""</code>. Use <code>f.seek(0)</code> to reset, or read once and store in a variable.</p>
+                </div>
+            </section>
+
             <!-- Exercises Section -->
             <section id="exercises" class="section">
                 <div class="section-header">
@@ -1506,6 +1590,190 @@ print(f"Config: {config}")</textarea>
                             </div>
                         </div></div></div>
                 </div>
+
+                <!-- Bridge Exercise → Week 9 -->
+                <div class="exercise-card" style="border: 2px solid rgba(217, 119, 6, 0.35); background: linear-gradient(135deg, rgba(217,119,6,0.04), transparent);">
+                    <div class="exercise-header" style="background: linear-gradient(135deg, rgba(217,119,6,0.12), rgba(217,119,6,0.04));">
+                        <div class="exercise-title"><span class="exercise-number" style="background: linear-gradient(135deg, #d97706, #f59e0b);">🌉</span>Bridge Exercise: Sneak Peek at Week 9</div>
+                        <span class="difficulty medium">Preview</span>
+                    </div>
+                    <div class="exercise-body">
+                        <div class="exercise-info-panel">
+                            <p class="exercise-description"><strong>Next week: Error Handling!</strong> Your file-reading code works fine with clean data — but what happens when a CSV has missing values, corrupt rows, or invalid numbers? Run this to see it crash!</p>
+                            <div class="expected-output">
+                                <div class="expected-output-label">✓ Expected Output</div>
+                                <pre>Reading sensor data...
+Row 1: temp=24.5
+Row 2: temp=ERROR — crashes here!
+
+The program dies on bad data! 😫
+Next week: try/except catches errors gracefully!</pre>
+                            </div>
+                            <div class="hints-container">
+                                <button class="hints-toggle" onclick="toggleHints('hintsBridge')">💡 Show Hints</button>
+                                <div class="hints-content" id="hintsBridge">
+                                    <ul>
+                                        <li><code>float("N/A")</code> raises a <code>ValueError</code> and crashes the whole program</li>
+                                        <li>Real-world data is messy — sensors fail, connections drop, files get corrupted</li>
+                                        <li>Next week: <code>try: ... except ValueError: ...</code> lets you handle bad data gracefully</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-code-panel">
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Bridge Exercise — Preview of Week 9: Error Handling</span>
+                                <button class="code-figure-run" onclick="runCode('exBridge')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="exBridge"># Bridge Exercise: Corrupted Data Crashes Everything!
+# Simulating reading a CSV with bad data
+
+csv_rows = [
+    "timestamp,sensor_id,temp",
+    "2024-01-01 08:00,T01,24.5",
+    "2024-01-01 08:05,T01,N/A",      # Sensor failure!
+    "2024-01-01 08:10,T01,25.1",
+]
+
+print("Reading sensor data...")
+readings = []
+for i, row in enumerate(csv_rows[1:], 1):  # Skip header
+    parts = row.split(",")
+    temp = float(parts[2])   # This CRASHES on "N/A"!
+    readings.append(temp)
+    print(f"Row {i}: temp={temp}")
+
+print(f"\nAverage: {sum(readings)/len(readings):.1f}")
+</textarea>
+                            <div class="code-output" id="outputexBridge">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box info-box">
+                    <p>Real sensor data is messy — values go missing, connections drop, files get corrupted. Next week you'll learn <strong>error handling</strong> with <code>try/except</code> to catch and recover from these problems gracefully!</p>
+                </div>
+            </section>
+
+            <!-- Case Study Part 1: Sensor Data Logger — File I/O Foundation -->
+            <section id="casestudy" class="section" style="scroll-margin-top: 70px;">
+                <div class="section-header">
+                    <div class="section-number" style="background: linear-gradient(135deg, #7c3aed, #a78bfa);">🔬</div>
+                    <h2>Case Study: Sensor Data Logger (Part 1 of 6)</h2>
+                </div>
+                <p>This running case study builds a complete <strong>Sensor Data Logger</strong> over Weeks 8–13, applying each week's new concept to a real mechatronics project. By Week 13, you'll have a full monitoring system!</p>
+
+                <div class="case-study-box">
+                    <div class="case-study-header">🔬 Part 1 — File I/O Foundation: Read, Parse, Analyze, Write</div>
+                    <div class="case-study-body">
+                        <p><strong>Goal:</strong> Create sample sensor CSV data, parse it into dictionaries, calculate statistics, and write a formatted report — a complete read→parse→analyze→write pipeline.</p>
+                        <p><strong>What you'll build:</strong> A script that reads temperature/humidity CSV data, computes min/max/average per sensor, and generates a summary report file.</p>
+                        
+                        <div class="code-figure">
+                            <div class="code-figure-header">
+                                <span class="code-figure-label">Case Study 1 — Sensor Data Logger: File I/O Pipeline</span>
+                                <button class="code-figure-run" onclick="runCode('cs1')">▶ Run</button>
+                            </div>
+                            <textarea class="code-editor" id="cs1"># === CASE STUDY Part 1: Sensor Data Logger — File I/O ===
+# Build a complete read → parse → analyze → write pipeline
+
+# --- Step 1: Create sample CSV sensor data ---
+csv_data = """timestamp,sensor_id,type,value,unit
+2024-01-15 08:00,T01,temperature,22.5,C
+2024-01-15 08:00,H01,humidity,45.2,%
+2024-01-15 08:05,T01,temperature,22.8,C
+2024-01-15 08:05,H01,humidity,46.1,%
+2024-01-15 08:10,T01,temperature,23.1,C
+2024-01-15 08:10,H01,humidity,44.8,%
+2024-01-15 08:15,T01,temperature,23.5,C
+2024-01-15 08:15,H01,humidity,47.3,%
+2024-01-15 08:20,T01,temperature,22.9,C
+2024-01-15 08:20,H01,humidity,46.5,%"""
+
+# --- Step 2: Parse CSV into list of dictionaries ---
+lines = csv_data.strip().split("\n")
+header = lines[0].split(",")
+readings = []
+
+for line in lines[1:]:
+    values = line.split(",")
+    record = {}
+    for i, col in enumerate(header):
+        record[col] = values[i]
+    record["value"] = float(record["value"])  # Convert to number
+    readings.append(record)
+
+print(f"✅ Parsed {len(readings)} readings")
+print(f"   Sample: {readings[0]}")
+
+# --- Step 3: Calculate statistics per sensor ---
+sensor_stats = {}
+for r in readings:
+    sid = r["sensor_id"]
+    if sid not in sensor_stats:
+        sensor_stats[sid] = {"type": r["type"], "unit": r["unit"], "values": []}
+    sensor_stats[sid]["values"].append(r["value"])
+
+print(f"\n📊 Statistics per sensor:")
+for sid, data in sensor_stats.items():
+    vals = data["values"]
+    stats = {
+        "min": min(vals),
+        "max": max(vals),
+        "avg": sum(vals) / len(vals),
+        "count": len(vals)
+    }
+    data["stats"] = stats
+    print(f"   {sid} ({data['type']}): "
+          f"min={stats['min']}, max={stats['max']}, "
+          f"avg={stats['avg']:.1f} {data['unit']} "
+          f"({stats['count']} readings)")
+
+# --- Step 4: Generate formatted report ---
+report_lines = []
+report_lines.append("=" * 50)
+report_lines.append("  SENSOR DATA LOGGER — SUMMARY REPORT")
+report_lines.append("=" * 50)
+report_lines.append(f"  Total readings: {len(readings)}")
+report_lines.append(f"  Sensors: {', '.join(sensor_stats.keys())}")
+report_lines.append("-" * 50)
+
+for sid, data in sensor_stats.items():
+    s = data["stats"]
+    report_lines.append(f"\n  [{sid}] {data['type'].upper()}")
+    report_lines.append(f"    Range: {s['min']} — {s['max']} {data['unit']}")
+    report_lines.append(f"    Average: {s['avg']:.2f} {data['unit']}")
+    report_lines.append(f"    Readings: {s['count']}")
+
+report_lines.append("\n" + "=" * 50)
+report_lines.append("  End of Report")
+report_lines.append("=" * 50)
+
+report = "\n".join(report_lines)
+print(f"\n📋 Generated Report:\n{report}")
+
+# In a real system, you'd write this to a file:
+# with open("sensor_report.txt", "w") as f:
+#     f.write(report)
+print("\n✅ Pipeline complete: Read → Parse → Analyze → Report")
+print("🔜 Next week: Add error handling for corrupt data!")
+</textarea>
+                            <div class="code-output" id="outputcs1">
+                                <div class="code-output-label">Output</div>
+                                <div class="code-output-content"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="warning-box info-box" style="margin-top: 20px;">
+                            <p><strong>What's next?</strong> This pipeline works perfectly with clean data. But what happens when a sensor sends "N/A" or a row is missing fields? In <strong>Week 9</strong>, we'll add error handling to make this system resilient.</p>
+                        </div>
+                    </div>
+                </div>
             </section>
             
             <!-- Submit Section -->
@@ -1667,17 +1935,20 @@ print(f"Config: {config}")</textarea>
         }
 
         const sections = [
-            { id: 'part1',     label: 'Opening and Closing Files' },
-            { id: 'part2',     label: 'Reading Files' },
-            { id: 'part3',     label: 'Writing Files' },
-            { id: 'part4',     label: 'Working with CSV Files' },
-            { id: 'part5',     label: 'Working with JSON Files' },
-            { id: 'part6',     label: 'File Paths and Directories' },
-            { id: 'part7',     label: 'File Exception Handling' },
-            { id: 'part8',     label: 'Binary Files' },
-            { id: 'part9',     label: 'Engineering Applications' },
-            { id: 'exercises', label: 'Practice Exercises' },
-            { id: 'submit',    label: 'Submit Your Work' }
+            { id: 'recap',      label: '🧠 Recap Quiz: Week 7' },
+            { id: 'part1',      label: 'Opening and Closing Files' },
+            { id: 'part2',      label: 'Reading Files' },
+            { id: 'part3',      label: 'Writing Files' },
+            { id: 'part4',      label: 'Working with CSV Files' },
+            { id: 'part5',      label: 'Working with JSON Files' },
+            { id: 'part6',      label: 'File Paths and Directories' },
+            { id: 'part7',      label: 'File Exception Handling' },
+            { id: 'part8',      label: 'Binary Files' },
+            { id: 'part9',      label: 'Engineering Applications' },
+            { id: 'mistakes',   label: '❌ Common Mistakes' },
+            { id: 'exercises',  label: 'Practice Exercises' },
+            { id: 'casestudy',  label: '🔬 Case Study: Part 1' },
+            { id: 'submit',     label: 'Submit Your Work' }
         ];
 
         const visited = new Set();
