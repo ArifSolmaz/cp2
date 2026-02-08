@@ -520,8 +520,8 @@ buildWeekCards();
 </script>
 
 <script>
-// Auto-redirect to current week's page (only on first visit)
-function getCurrentWeek() {
+// Auto-redirect to current week's Colab notebook (only on first visit)
+function getCurrentWeekColab() {
     const now = new Date();
     
     for (const item of weeks) {
@@ -531,7 +531,11 @@ function getCurrentWeek() {
         const end = new Date(item.end + 'T23:59:59');
         
         if (now >= start && now <= end) {
-            return item.file;
+            const weekNum = String(item.week).padStart(2, '0');
+            return {
+                url: `https://colab.research.google.com/github/ArifSolmaz/cp2/blob/main/notebooks/Week_${weekNum}.ipynb`,
+                label: `Week ${item.week}: ${item.topic}`
+            };
         }
     }
     return null;
@@ -545,17 +549,17 @@ const cameFromWeek = document.referrer.includes('Week');
 
 // Only redirect if: first visit AND no ?home=true AND didn't come from a week page
 if (!noRedirect && !hasVisited && !cameFromWeek) {
-    const currentWeekFile = getCurrentWeek();
-    if (currentWeekFile) {
+    const current = getCurrentWeekColab();
+    if (current) {
         sessionStorage.setItem('cp2_visited', 'true');
         
         const msg = document.createElement('div');
         msg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a1a2e;color:white;padding:30px 50px;border-radius:10px;font-family:system-ui;text-align:center;z-index:9999;box-shadow:0 10px 40px rgba(0,0,0,0.3);';
-        msg.innerHTML = '<div style="font-size:1.2rem;margin-bottom:10px;">Redirecting to this week\'s content...</div><div style="color:#a78bfa;">' + currentWeekFile.replace('.html','').replace('_',' ') + '</div>';
+        msg.innerHTML = '<div style="font-size:1.2rem;margin-bottom:10px;">Opening this week\'s notebook in Colab...</div><div style="color:#a78bfa;">' + current.label + '</div>';
         document.body.appendChild(msg);
         
         setTimeout(() => {
-            window.location.href = currentWeekFile;
+            window.location.href = current.url;
         }, 1500);
     }
 }
