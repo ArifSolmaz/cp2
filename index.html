@@ -296,6 +296,34 @@
             transform: translateX(4px);
         }
         
+        .week-card-actions {
+            display: flex;
+            gap: 8px;
+            padding-top: 10px;
+        }
+        
+        .week-card-actions a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            font-family: system-ui, sans-serif;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .btn-colab {
+            background: #f9ab00;
+            color: #1a1a1a;
+        }
+        
+        .btn-colab:hover {
+            background: #e09900;
+        }
+        
         /* Break Card */
         .break-card {
             background: linear-gradient(135deg, rgba(217, 119, 6, 0.08), rgba(217, 119, 6, 0.03));
@@ -465,9 +493,10 @@ function buildWeekCards() {
             `;
             grid.appendChild(card);
         } else {
-            const card = document.createElement('a');
-            card.href = item.file;
+            const card = document.createElement('div');
             card.className = 'week-card';
+            const weekNum = String(item.week).padStart(2, '0');
+            const colabUrl = `https://colab.research.google.com/github/ArifSolmaz/cp2/blob/main/notebooks/Week_${weekNum}.ipynb`;
             card.innerHTML = `
                 <div class="week-card-header">
                     <span class="week-badge">Week ${item.week}</span>
@@ -477,7 +506,9 @@ function buildWeekCards() {
                 <p>${item.desc}</p>
                 <div class="week-card-footer">
                     <span class="dates">${formatDate(item.start)} – ${formatDate(item.end)}</span>
-                    <span class="arrow">→</span>
+                </div>
+                <div class="week-card-actions">
+                    <a href="${colabUrl}" target="_blank" class="btn-colab">🟡 Open in Colab</a>
                 </div>
             `;
             grid.appendChild(card);
