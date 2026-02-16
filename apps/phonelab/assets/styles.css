@@ -42,7 +42,18 @@ input, textarea{
   width:100%; padding:12px 12px; border-radius:12px; border:1px solid var(--line);
   background: #0b1220; color:var(--txt); outline:none; font-size:16px;
 }
-textarea{ min-height:120px; resize:vertical; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size:14px; }
+textarea{
+  min-height:160px;
+  resize:vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size:14px;
+  line-height: 1.35;
+}
+
+/* Bigger code boxes specifically */
+textarea.codebox{
+  min-height: 420px;   /* good default on phone */
+}
 
 .row{ display:grid; gap:10px; grid-template-columns: 1fr; }
 @media(min-width:780px){ .row{ grid-template-columns: 1fr 1fr; } }
@@ -69,3 +80,40 @@ pre.out{
 }
 
 a{ color:inherit; }
+
+/* Modal */
+.modal-backdrop{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 9999;
+}
+.modal{
+  width: min(780px, 100%);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+}
+.modal h3{ margin: 0 0 8px; }
+.modal .modal-actions{
+  display:flex; justify-content:flex-end; gap:10px; margin-top:12px;
+}
+.modal .modal-actions button{
+  padding:10px 12px; border-radius:12px;
+  border:1px solid var(--line); background: var(--btn); color: var(--txt);
+  font-weight:700;
+}
+.helpbtn{
+  display:inline-block;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background: var(--btn);
+  color: var(--txt);
+  font-weight:700;
+}

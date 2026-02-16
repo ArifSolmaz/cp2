@@ -34,7 +34,7 @@
               inputmode="numeric"
               minlength="6"
               maxlength="12"
-              pattern="^\d{6,12}$"
+              pattern="^[0-9]{6,12}$"
               placeholder="e.g., 202612345"
               required
             />
@@ -54,7 +54,7 @@
         <input
           id="email"
           type="email"
-          pattern="^[A-Za-z0-9._%+-]+@istun\.edu\.tr$"
+          pattern="^[A-Za-z0-9._%+-]+@istun\\.edu\\.tr$"
           placeholder="name@istun.edu.tr"
           required
         />
@@ -76,7 +76,7 @@
       <details open>
         <summary><b>3) Python code</b> <span class="muted">(edit then Run)</span></summary>
         <label>Python</label>
-        <textarea id="codeBox" spellcheck="false"></textarea>
+        <textarea id="codeBox" class="codebox" spellcheck="false"></textarea>
         <small class="hint">The page defines <b>DATA</b> as a Python string containing your Data entry text.</small>
       </details>
 
@@ -89,13 +89,31 @@
 
       <div class="stickybar">
         <div class="bar-actions">
-          <button id="runBtn">Run Python</button>
-          <button id="submitBtn" class="primary">Submit</button>
+          <button id="helpBtn" class="helpbtn" type="button">Instructions</button>
+          <button id="runBtn" type="button">Run Python</button>
+          <button id="submitBtn" class="primary" type="button">Submit</button>
         </div>
         <small id="status" class="hint"></small>
       </div>
     </section>
   </main>
+
+  <!-- Help Modal (outside script) -->
+  <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3>Week 01 — Instructions</h3>
+      <ol class="muted">
+        <li><b>Identity:</b> Enter Student ID (6–12 digits), Name Surname, and <b>@istun.edu.tr</b> email.</li>
+        <li><b>Measure:</b> Choose stairs. Count steps (<code>N_steps</code>) and estimate step height (<code>step_height_m</code>). Measure time 5 trials using phone stopwatch.</li>
+        <li><b>Enter Data:</b> Fill <code>mass_kg</code>, <code>N_steps</code>, <code>step_height_m</code>, and <code>t=[...]</code>.</li>
+        <li><b>Run Python:</b> Check output (HEIGHT, AVG_TIME, AVG_POWER).</li>
+        <li><b>Submit:</b> One submission only. A new tab opens for “Accepted / Rejected / Duplicate”.</li>
+      </ol>
+      <div class="modal-actions">
+        <button id="closeHelpBtn" type="button">Close</button>
+      </div>
+    </div>
+  </div>
 
   <script src="../assets/app.js"></script>
   <script>
@@ -164,7 +182,7 @@ print("TRIAL_POWERS(W):", [round(x, 0) for x in P])
       const form = document.createElement("form");
       form.method = "POST";
       form.action = SCRIPT_URL;
-      form.target = "_blank"; // open confirmation in new tab (mobile-friendly)
+      form.target = "_blank"; // open confirmation in new tab
 
       const inp = document.createElement("input");
       inp.type = "hidden";
@@ -216,7 +234,6 @@ print("TRIAL_POWERS(W):", [round(x, 0) for x in P])
       const nameSurname = nameSurnameEl.value.trim();
       const email = emailEl.value.trim().toLowerCase();
 
-      // Client-side checks (server will also enforce)
       if (!/^\d{6,12}$/.test(studentId)) { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
       if (nameSurname.split(/\s+/).filter(Boolean).length < 2) { statusEl.textContent = "Enter Name and Surname (2 words)."; return; }
       if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email)) { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
@@ -231,14 +248,31 @@ print("TRIAL_POWERS(W):", [round(x, 0) for x in P])
         output: outEl.textContent,
         userAgent: navigator.userAgent,
         submittedAt: new Date().toISOString()
-        // courseKey: "CHANGE_ME" // only if you enabled it in Apps Script
       };
 
       statusEl.textContent = "Submitting… (confirmation opens in a new tab)";
       submitViaForm(payload);
 
-      // Local UI state (doesn't bypass server duplicate-check)
       PhoneLabUI.setStatus(WEEK, "submitted");
+    });
+
+    // --- Help modal wiring (Step 4) ---
+    const helpModal = document.getElementById("helpModal");
+    const helpBtn = document.getElementById("helpBtn");
+    const closeHelpBtn = document.getElementById("closeHelpBtn");
+
+    function openHelp(){ helpModal.style.display = "flex"; }
+    function closeHelp(){ helpModal.style.display = "none"; }
+
+    helpBtn.addEventListener("click", openHelp);
+    closeHelpBtn.addEventListener("click", closeHelp);
+
+    helpModal.addEventListener("click", (e) => {
+      if (e.target === helpModal) closeHelp();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeHelp();
     });
   </script>
 </body>
