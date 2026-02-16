@@ -9,17 +9,17 @@
 <body>
   <header class="topbar">
     <div class="brand">
-      <div class="brand-title">Week 02 — Room Comfort Classifier</div>
+      <div class="brand-title">Week 02 — Noise Compliance Checker</div>
       <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
     </div>
   </header>
 
   <main class="container">
     <section class="card">
-      <h1 style="margin:0 0 4px;">🌡️ Room Comfort Classifier</h1>
+      <h1 style="margin:0 0 4px;">🔊 Workplace Noise Compliance Checker</h1>
       <p class="muted" style="margin:0 0 12px;">
-        Is your room safe and comfortable to work in?
-        Measure real conditions, then write a classifier that decides.
+        Does your environment pass <em>industrial safety standards</em>?
+        Measure noise at 4 locations and build an automated compliance inspector.
       </p>
 
       <div class="concepts-box">
@@ -31,9 +31,15 @@
         <span class="concept-tag">nested if</span>
       </div>
 
-      <hr />
+      <!-- Step indicator -->
+      <div class="steps" style="margin-top:14px;">
+        <div class="step-pill active" data-step="1">① Identity</div>
+        <div class="step-pill" data-step="2">② Data</div>
+        <div class="step-pill" data-step="3">③ Code</div>
+        <div class="step-pill" data-step="4">④ Run & Submit</div>
+      </div>
 
-      <details open>
+      <details open id="sec1">
         <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
         <div class="row">
           <div>
@@ -55,50 +61,59 @@
 
       <hr />
 
-      <details open>
+      <details open id="sec2">
         <summary><b>2) Collect your data</b> <span class="muted">(from your phone)</span></summary>
 
         <div class="scenario-box">
           <b>🔬 What to do:</b>
           <ol class="muted" style="margin:6px 0 0; padding-left:20px;">
-            <li>Open a <b>weather app</b> — note the current temperature (°C) for your location.</li>
-            <li>Check <b>humidity %</b> in the same weather app.</li>
-            <li>Estimate the <b>light level</b>: look around your room and rate it 0–1000 lux.<br/>
-                <small>💡 Dark room ≈ 50, normal room ≈ 300, bright office ≈ 500, direct sunlight ≈ 1000</small></li>
-            <li>Estimate <b>noise level</b> in dB using a free sound meter app, or guess:<br/>
-                <small>🔇 Library ≈ 30, normal room ≈ 45, conversation ≈ 60, traffic ≈ 75, concert ≈ 100</small></li>
+            <li>Install a free <b>sound level meter (dB) app</b> on your phone
+              (<a href="https://apps.apple.com/app/niosh-sound-level-meter/id1096545820" target="_blank">iOS — NIOSH SLM</a> /
+               <a href="https://play.google.com/store/apps/details?id=com.gamebasic.decibel" target="_blank">Android — Sound Meter</a>).
+            </li>
+            <li>Measure noise (in <b>dB</b>) at <b>4 different locations</b>:
+              <ul style="margin-top:4px;">
+                <li><b>Location 1:</b> Your study desk / bedroom (quiet spot)</li>
+                <li><b>Location 2:</b> Kitchen / living room</li>
+                <li><b>Location 3:</b> Near a window or balcony (outdoor noise)</li>
+                <li><b>Location 4:</b> Near a speaker, TV, or noisy appliance (loud spot)</li>
+              </ul>
+            </li>
+            <li>Hold your phone at <b>ear height</b> and wait <b>10 seconds</b> for the reading to stabilize.</li>
+            <li>Enter the 4 readings below.</li>
           </ol>
+          <small>💡 <b>Reference:</b> Whisper ≈ 30 dB, conversation ≈ 60 dB, vacuum ≈ 75 dB, concert ≈ 100 dB. OSHA danger threshold = <b>85 dB</b>.</small>
         </div>
 
         <label>Your measurements (edit the numbers)</label>
         <textarea id="dataBox" spellcheck="false"></textarea>
-        <small class="hint">Change only the numbers after <code>=</code>.</small>
+        <small class="hint">⚠️ Change the numbers to <b>your own</b> readings. Default values will be rejected.</small>
       </details>
 
       <hr />
 
-      <details open>
+      <details id="sec3">
         <summary><b>3) Python code</b> <span class="muted">(write the if/elif/else logic)</span></summary>
-        <label>Python — fill in the classification logic</label>
+        <label>Python — build the compliance classifier</label>
         <textarea id="codeBox" class="codebox" spellcheck="false"></textarea>
         <small class="hint">
-          Use <b>if/elif/else</b> to classify each measurement.
-          Combine with <b>and/or/not</b> for the final verdict.
+          Use <b>if/elif/else</b> to classify each reading by OSHA standard.
+          Combine with <b>and/or/not</b> for the compliance verdict.
         </small>
       </details>
 
       <hr />
 
-      <details open>
+      <details id="sec4">
         <summary><b>4) Output</b> <span class="muted">(auto-captured after Run)</span></summary>
-        <pre id="output" class="out">Click "Run Python" to see output here.</pre>
+        <pre id="output" class="out">Click "▶ Run Python" to see output here.</pre>
       </details>
 
       <div class="stickybar">
         <div class="bar-actions">
-          <button id="helpBtn" class="helpbtn" type="button">Instructions</button>
+          <button id="helpBtn" class="helpbtn" type="button">?</button>
           <button id="runBtn" type="button">▶ Run Python</button>
-          <button id="submitBtn" class="primary" type="button">Submit</button>
+          <button id="submitBtn" class="primary" type="button">Submit ✓</button>
         </div>
         <small id="status" class="hint"></small>
       </div>
@@ -108,17 +123,24 @@
   <!-- Help Modal -->
   <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal">
-      <h3>Week 02 — Instructions</h3>
+      <h3>🔊 Week 02 — Instructions</h3>
       <ol class="muted">
-        <li><b>Identity:</b> Student ID, Name Surname, <b>@istun.edu.tr</b> email.</li>
-        <li><b>Measure:</b> Get temperature &amp; humidity from a weather app. Estimate light (lux) and noise (dB) for your current room.</li>
-        <li><b>Write code:</b> Use <b>if/elif/else</b> to classify each condition, then combine them with <b>and/or/not</b>.</li>
-        <li><b>Run:</b> Click "Run Python" and check the output.</li>
+        <li><b>Identity:</b> Student ID (6–12 digits), Name Surname, <b>@istun.edu.tr</b> email.</li>
+        <li><b>Get a dB meter app:</b> Search "sound meter" or "decibel" in your app store. The NIOSH SLM app (iOS) is recommended for accuracy.</li>
+        <li><b>Measure:</b> Record noise in dB at 4 locations — one quiet, one moderate, one with outdoor noise, one near something loud.</li>
+        <li><b>Enter data:</b> Type your 4 dB readings into the Data box.</li>
+        <li><b>Write code:</b> Complete the TODO lines — classify each reading and combine with boolean logic.</li>
+        <li><b>Run:</b> Tap "▶ Run Python" and check the compliance report.</li>
         <li><b>Submit:</b> One submission only. Confirmation opens in a new tab.</li>
       </ol>
-      <p class="muted" style="margin-top:10px;"><b>Tip:</b> Try changing the numbers and re-running to see how your classifier responds to different conditions!</p>
+      <p class="muted" style="margin-top:10px;">
+        <b>📐 The engineering:</b> OSHA (Occupational Safety &amp; Health Administration) sets
+        <b>85 dB</b> as the maximum safe level for 8-hour exposure. Every +3 dB doubles the
+        sound energy and halves the safe exposure time. Factory engineers must classify
+        zones exactly like you're doing here!
+      </p>
       <div class="modal-actions">
-        <button id="closeHelpBtn" type="button">Close</button>
+        <button id="closeHelpBtn" type="button">Got it</button>
       </div>
     </div>
   </div>
@@ -129,161 +151,187 @@
 
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
 
-    const studentIdEl  = document.getElementById("studentId");
+    const studentIdEl   = document.getElementById("studentId");
     const nameSurnameEl = document.getElementById("nameSurname");
-    const emailEl      = document.getElementById("email");
-    const dataEl       = document.getElementById("dataBox");
-    const codeEl       = document.getElementById("codeBox");
-    const outEl        = document.getElementById("output");
-    const statusEl     = document.getElementById("status");
+    const emailEl       = document.getElementById("email");
+    const dataEl        = document.getElementById("dataBox");
+    const codeEl        = document.getElementById("codeBox");
+    const outEl         = document.getElementById("output");
+    const statusEl      = document.getElementById("status");
 
+    // ── Default data ──
     const defaultData =
-`temperature_C=24.5
-humidity_percent=55
-light_lux=320
-noise_dB=42`;
+`desk_dB=42
+kitchen_dB=58
+outdoor_dB=72
+speaker_dB=88`;
 
+    // ── Starter code: ONLY Week 02 concepts ──
+    // if/elif/else, comparisons, and/or/not, boolean variables
+    // NO lists, NO loops, NO functions, NO dicts
     const starterCode =
 `# ──────────────────────────────────────────────
-# Week 02 — Room Comfort Classifier
+# Week 02 — Workplace Noise Compliance Checker
 # ──────────────────────────────────────────────
-# DATA is a string with your measurements.
+# DATA is a string with your 4 dB readings.
 # The lines below read them into variables.
 
 _lines = DATA.strip().split("\\n")
-temperature_C    = float(_lines[0].split("=")[1])
-humidity_percent = float(_lines[1].split("=")[1])
-light_lux        = float(_lines[2].split("=")[1])
-noise_dB         = float(_lines[3].split("=")[1])
+desk_dB    = float(_lines[0].split("=")[1])
+kitchen_dB = float(_lines[1].split("=")[1])
+outdoor_dB = float(_lines[2].split("=")[1])
+speaker_dB = float(_lines[3].split("=")[1])
 
-print("=" * 42)
-print("🌡️  ROOM COMFORT REPORT")
-print("=" * 42)
-print(f"Temperature : {temperature_C} °C")
-print(f"Humidity    : {humidity_percent} %")
-print(f"Light       : {light_lux} lux")
-print(f"Noise       : {noise_dB} dB")
-print("-" * 42)
+print("=" * 50)
+print("🔊 NOISE COMPLIANCE REPORT")
+print("=" * 50)
+print(f"Location 1 (Desk)    : {desk_dB:.0f} dB")
+print(f"Location 2 (Kitchen) : {kitchen_dB:.0f} dB")
+print(f"Location 3 (Outdoor) : {outdoor_dB:.0f} dB")
+print(f"Location 4 (Speaker) : {speaker_dB:.0f} dB")
+print("-" * 50)
 
 # ──────────────────────────────────────────────
-# TODO 1: TEMPERATURE classification
+# OSHA Noise Exposure Standards:
+#   < 70 dB  → SAFE       (no risk, even for long periods)
+#  70–84 dB  → CAUTION    (safe for short periods, monitor exposure)
+#  85–99 dB  → HAZARDOUS  (hearing protection required!)
+#   ≥ 100 dB → DANGEROUS  (immediate hearing damage risk!)
 # ──────────────────────────────────────────────
-# Cold:    below 18 °C
-# Cool:    18–21 °C
-# Comfort: 21–26 °C
-# Warm:    26–30 °C
-# Hot:     above 30 °C
 
-if temperature_C < 18:
-    temp_status = "❄️ COLD"
-elif temperature_C < 21:
-    temp_status = "🌤️ Cool"
-elif temperature_C <= 26:
-    temp_status = "✅ Comfortable"
-elif temperature_C <= 30:
-    temp_status = "🟡 Warm"
+# TODO 1: Classify DESK noise level
+if desk_dB < 70:
+    desk_status = "✅ SAFE"
+elif desk_dB < 85:
+    desk_status = "🟡 CAUTION"
+elif desk_dB < 100:
+    desk_status = "🔴 HAZARDOUS"
 else:
-    temp_status = "🔴 HOT"
+    desk_status = "🚨 DANGEROUS"
 
-print(f"Temp status : {temp_status}")
+print(f"Desk       : {desk_status}")
 
-# ──────────────────────────────────────────────
-# TODO 2: HUMIDITY classification
-# ──────────────────────────────────────────────
-# Dry:     below 30%
-# Comfort: 30–60%
-# Humid:   60–80%
-# Very humid: above 80%
-
-if humidity_percent < 30:
-    humid_status = "🏜️ Dry"
-elif humidity_percent <= 60:
-    humid_status = "✅ Comfortable"
-elif humidity_percent <= 80:
-    humid_status = "💧 Humid"
+# TODO 2: Classify KITCHEN noise level
+if kitchen_dB < 70:
+    kitchen_status = "✅ SAFE"
+elif kitchen_dB < 85:
+    kitchen_status = "🟡 CAUTION"
+elif kitchen_dB < 100:
+    kitchen_status = "🔴 HAZARDOUS"
 else:
-    humid_status = "🔴 Very Humid"
+    kitchen_status = "🚨 DANGEROUS"
 
-print(f"Humidity    : {humid_status}")
+print(f"Kitchen    : {kitchen_status}")
 
-# ──────────────────────────────────────────────
-# TODO 3: LIGHT classification
-# ──────────────────────────────────────────────
-# Dark:     below 100 lux
-# Dim:      100–300 lux
-# Good:     300–500 lux
-# Bright:   above 500 lux
-
-if light_lux < 100:
-    light_status = "🌑 Too Dark"
-elif light_lux < 300:
-    light_status = "🌒 Dim"
-elif light_lux <= 500:
-    light_status = "✅ Good"
+# TODO 3: Classify OUTDOOR noise level
+if outdoor_dB < 70:
+    outdoor_status = "✅ SAFE"
+elif outdoor_dB < 85:
+    outdoor_status = "🟡 CAUTION"
+elif outdoor_dB < 100:
+    outdoor_status = "🔴 HAZARDOUS"
 else:
-    light_status = "☀️ Bright"
+    outdoor_status = "🚨 DANGEROUS"
 
-print(f"Light       : {light_status}")
+print(f"Outdoor    : {outdoor_status}")
 
-# ──────────────────────────────────────────────
-# TODO 4: NOISE classification
-# ──────────────────────────────────────────────
-# Quiet:     below 35 dB
-# Normal:    35–55 dB
-# Noisy:     55–75 dB
-# Dangerous: above 75 dB (hearing damage risk!)
-
-if noise_dB < 35:
-    noise_status = "🤫 Quiet"
-elif noise_dB <= 55:
-    noise_status = "✅ Normal"
-elif noise_dB <= 75:
-    noise_status = "🔊 Noisy"
+# TODO 4: Classify SPEAKER noise level
+if speaker_dB < 70:
+    speaker_status = "✅ SAFE"
+elif speaker_dB < 85:
+    speaker_status = "🟡 CAUTION"
+elif speaker_dB < 100:
+    speaker_status = "🔴 HAZARDOUS"
 else:
-    noise_status = "🔴 DANGEROUS"
+    speaker_status = "🚨 DANGEROUS"
 
-print(f"Noise       : {noise_status}")
+print(f"Speaker    : {speaker_status}")
+
+print("-" * 50)
 
 # ──────────────────────────────────────────────
-# TODO 5: OVERALL VERDICT using and / or / not
+# TODO 5: Create BOOLEAN variables for each location
 # ──────────────────────────────────────────────
-# Create boolean variables for each condition:
+# A location is "safe" if it's below 85 dB (OSHA 8-hour limit)
 
-temp_ok  = temperature_C >= 21 and temperature_C <= 26
-humid_ok = humidity_percent >= 30 and humidity_percent <= 60
-light_ok = light_lux >= 300 and light_lux <= 500
-noise_ok = noise_dB <= 55
+desk_safe    = desk_dB < 85
+kitchen_safe = kitchen_dB < 85
+outdoor_safe = outdoor_dB < 85
+speaker_safe = speaker_dB < 85
 
-# Count how many are OK
-ok_count = 0
-if temp_ok:
-    ok_count = ok_count + 1
-if humid_ok:
-    ok_count = ok_count + 1
-if light_ok:
-    ok_count = ok_count + 1
-if noise_ok:
-    ok_count = ok_count + 1
+# ──────────────────────────────────────────────
+# TODO 6: Combine with AND / OR / NOT
+# ──────────────────────────────────────────────
 
-print("-" * 42)
+# Are ALL locations safe?
+all_safe = desk_safe and kitchen_safe and outdoor_safe and speaker_safe
 
-# Final verdict using boolean logic
-all_ok = temp_ok and humid_ok and light_ok and noise_ok
-any_danger = temperature_C > 35 or noise_dB > 85
+# Is ANY location hazardous (≥ 85 dB)?
+any_hazardous = not desk_safe or not kitchen_safe or not outdoor_safe or not speaker_safe
 
-if any_danger:
-    print("🚨 VERDICT: UNSAFE — leave this area!")
-elif all_ok:
-    print("✅ VERDICT: PERFECT working conditions!")
-elif ok_count >= 3:
-    print("🟡 VERDICT: Mostly fine, minor issues.")
-elif ok_count >= 2:
-    print("🟠 VERDICT: Several issues — consider moving.")
+# Is ANY location dangerously loud (≥ 100 dB)?
+any_dangerous = desk_dB >= 100 or kitchen_dB >= 100 or outdoor_dB >= 100 or speaker_dB >= 100
+
+# Would an 8-hour work shift here be safe?
+# (all locations must be under 85 dB AND no area above 70 dB for prolonged use)
+shift_safe = all_safe and desk_dB < 70
+
+print(f"All locations safe     : {all_safe}")
+print(f"Any hazardous (≥85dB)  : {any_hazardous}")
+print(f"Any dangerous (≥100dB) : {any_dangerous}")
+print(f"Safe for 8-hour shift  : {shift_safe}")
+
+print("-" * 50)
+
+# ──────────────────────────────────────────────
+# TODO 7: Count how many locations are safe
+# ──────────────────────────────────────────────
+safe_count = 0
+if desk_safe:
+    safe_count = safe_count + 1
+if kitchen_safe:
+    safe_count = safe_count + 1
+if outdoor_safe:
+    safe_count = safe_count + 1
+if speaker_safe:
+    safe_count = safe_count + 1
+
+# ──────────────────────────────────────────────
+# TODO 8: Find the LOUDEST reading (no max() — just if/else!)
+# ──────────────────────────────────────────────
+loudest = desk_dB
+if kitchen_dB > loudest:
+    loudest = kitchen_dB
+if outdoor_dB > loudest:
+    loudest = outdoor_dB
+if speaker_dB > loudest:
+    loudest = speaker_dB
+
+print(f"Loudest reading        : {loudest:.0f} dB")
+print(f"Safe locations         : {safe_count}/4")
+
+# ──────────────────────────────────────────────
+# TODO 9: OSHA COMPLIANCE VERDICT
+# ──────────────────────────────────────────────
+print("-" * 50)
+
+if any_dangerous:
+    print("🚨 OSHA VERDICT: FAIL — IMMEDIATE DANGER!")
+    print("   Evacuate or use hearing protection NOW.")
+elif any_hazardous:
+    print("⚠️  OSHA VERDICT: PARTIAL FAIL")
+    print("   Hearing protection required in loud zones.")
+    if not desk_safe:
+        print("   ❌ Your DESK is too loud to work at safely!")
+elif not shift_safe:
+    print("🟡 OSHA VERDICT: CONDITIONAL PASS")
+    print("   Safe for short periods, not for 8-hour shifts.")
 else:
-    print("🔴 VERDICT: Poor conditions — not recommended.")
+    print("✅ OSHA VERDICT: FULL COMPLIANCE")
+    print("   All zones safe for extended work periods.")
 
-print(f"   ({ok_count}/4 factors in comfort range)")
-print("=" * 42)
+print(f"   Rating: {safe_count}/4 zones compliant")
+print("=" * 50)
 `;
 
     // ── Wiring ──
@@ -306,12 +354,12 @@ print("=" * 42)
 
     const draft = PhoneLabUI.loadDraft(WEEK);
     if (draft){
-      studentIdEl.value = draft.studentId || "";
+      studentIdEl.value   = draft.studentId || "";
       nameSurnameEl.value = draft.nameSurname || "";
-      emailEl.value = draft.email || "";
-      dataEl.value = draft.data || defaultData;
-      codeEl.value = draft.code || starterCode;
-      outEl.textContent = draft.output || 'Click "Run Python" to see output here.';
+      emailEl.value       = draft.email || "";
+      dataEl.value        = draft.data || defaultData;
+      codeEl.value        = draft.code || starterCode;
+      outEl.textContent   = draft.output || 'Click "▶ Run Python" to see output here.';
       statusEl.textContent = "Draft loaded.";
     } else {
       dataEl.value = defaultData;
@@ -341,6 +389,7 @@ print("=" * 42)
       const studentId   = studentIdEl.value.trim();
       const nameSurname = nameSurnameEl.value.trim();
       const email       = emailEl.value.trim().toLowerCase();
+
       if (!/^\d{6,12}$/.test(studentId))
         { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
       if (nameSurname.split(/\s+/).filter(Boolean).length < 2)
@@ -348,9 +397,9 @@ print("=" * 42)
       if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email))
         { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
 
-      // Block default data submission
+      // Block default data
       if (dataEl.value.replace(/\s+/g,"") === defaultData.replace(/\s+/g,"")) {
-        statusEl.textContent = "⚠️ Enter YOUR OWN room measurements — default values are not accepted.";
+        statusEl.textContent = "⚠️ Enter YOUR OWN dB readings — default values are not accepted.";
         dataEl.style.outline = "2px solid #ef4444";
         setTimeout(() => dataEl.style.outline = "", 3000);
         return;
@@ -369,7 +418,8 @@ print("=" * 42)
       PhoneLabUI.setStatus(WEEK, "submitted");
     });
 
-    const helpModal    = document.getElementById("helpModal");
+    // Help modal
+    const helpModal = document.getElementById("helpModal");
     document.getElementById("helpBtn").addEventListener("click", () => helpModal.style.display = "flex");
     document.getElementById("closeHelpBtn").addEventListener("click", () => helpModal.style.display = "none");
     helpModal.addEventListener("click", e => { if (e.target === helpModal) helpModal.style.display = "none"; });
