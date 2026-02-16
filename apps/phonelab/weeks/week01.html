@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Week 01 — PhoneLab</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-title">Week 01 — Stair Power Estimator</div>
+      <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1 style="margin:0 0 6px;">Goal</h1>
+      <p class="muted" style="margin:0;">
+        Use your phone stopwatch + Python to estimate vertical climbing power.
+      </p>
+
+      <hr />
+
+      <details open>
+        <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
+
+        <div class="row">
+          <div>
+            <label>Student ID (6–12 digits)</label>
+            <input
+              id="studentId"
+              inputmode="numeric"
+              minlength="6"
+              maxlength="12"
+              pattern="^\d{6,12}$"
+              placeholder="e.g., 202612345"
+              required
+            />
+          </div>
+
+          <div>
+            <label>Name Surname</label>
+            <input
+              id="nameSurname"
+              placeholder="e.g., Arif Solmaz"
+              required
+            />
+          </div>
+        </div>
+
+        <label>Email (@istun.edu.tr)</label>
+        <input
+          id="email"
+          type="email"
+          pattern="^[A-Za-z0-9._%+-]+@istun\.edu\.tr$"
+          placeholder="name@istun.edu.tr"
+          required
+        />
+
+        <small class="hint">Draft auto-saves on this device.</small>
+      </details>
+
+      <hr />
+
+      <details open>
+        <summary><b>2) Data entry</b> <span class="muted">(your measurements)</span></summary>
+        <label>Measurements (key=value lines)</label>
+        <textarea id="dataBox" spellcheck="false"></textarea>
+        <small class="hint">Example: mass_kg=70, N_steps=20, step_height_m=0.17, t=[12.4,12.1,12.8,12.3,12.6]</small>
+      </details>
+
+      <hr />
+
+      <details open>
+        <summary><b>3) Python code</b> <span class="muted">(edit then Run)</span></summary>
+        <label>Python</label>
+        <textarea id="codeBox" spellcheck="false"></textarea>
+        <small class="hint">The page defines <b>DATA</b> as a Python string containing your Data entry text.</small>
+      </details>
+
+      <hr />
+
+      <details open>
+        <summary><b>4) Output</b> <span class="muted">(auto-captured)</span></summary>
+        <pre id="output" class="out">Click “Run Python” to see output here.</pre>
+      </details>
+
+      <div class="stickybar">
+        <div class="bar-actions">
+          <button id="runBtn">Run Python</button>
+          <button id="submitBtn" class="primary">Submit</button>
+        </div>
+        <small id="status" class="hint"></small>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/app.js"></script>
+  <script>
+    const WEEK = "week01";
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
+
+    const studentIdEl = document.getElementById("studentId");
+    const nameSurnameEl = document.getElementById("nameSurname");
+    const emailEl = document.getElementById("email");
+    const dataEl = document.getElementById("dataBox");
+    const codeEl = document.getElementById("codeBox");
+    const outEl = document.getElementById("output");
+    const statusEl = document.getElementById("status");
+
+    const defaultData =
+`mass_kg=70
+N_steps=20
+step_height_m=0.17
+t=[12.4, 12.1, 12.8, 12.3, 12.6]`;
+
+    const starterCode =
+`# Week 01 — Stair Power Estimator
+# DATA is provided by the webpage (string containing your key=value lines)
+
+g = 9.81
+
+lines = [ln.strip() for ln in DATA.splitlines() if ln.strip()]
+vals = {}
+for ln in lines:
+    if "=" in ln:
+        k, v = ln.split("=", 1)
+        vals[k.strip()] = v.strip()
+
+mass_kg = float(vals.get("mass_kg", "70"))
+N_steps = int(float(vals.get("N_steps", "20")))
+step_height_m = float(vals.get("step_height_m", "0.17"))
+
+t_list = eval(vals.get("t", "[12.4,12.1,12.8,12.3,12.6]"))  # class-safe for simple lists
+
+h = N_steps * step_height_m
+t_avg = sum(t_list) / len(t_list)
+P = [(mass_kg * g * h) / ti for ti in t_list]
+P_avg = sum(P) / len(P)
+
+print("HEIGHT(m):", round(h, 2))
+print("AVG_TIME(s):", round(t_avg, 2))
+print("AVG_POWER(W):", round(P_avg, 0))
+print("TRIAL_POWERS(W):", [round(x, 0) for x in P])
+`;
+
+    function save(){
+      PhoneLabUI.saveDraft(WEEK, {
+        studentId: studentIdEl.value,
+        nameSurname: nameSurnameEl.value,
+        email: emailEl.value,
+        data: dataEl.value,
+        code: codeEl.value,
+        output: outEl.textContent,
+        savedAt: new Date().toISOString()
+      });
+      statusEl.textContent = "Draft saved on this device.";
+    }
+
+    function submitViaForm(payload){
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = SCRIPT_URL;
+      form.target = "_blank"; // open confirmation in new tab (mobile-friendly)
+
+      const inp = document.createElement("input");
+      inp.type = "hidden";
+      inp.name = "payload";
+      inp.value = JSON.stringify(payload);
+
+      form.appendChild(inp);
+      document.body.appendChild(form);
+      form.submit();
+      form.remove();
+    }
+
+    // Load draft or defaults
+    const draft = PhoneLabUI.loadDraft(WEEK);
+    if (draft){
+      studentIdEl.value = draft.studentId || "";
+      nameSurnameEl.value = draft.nameSurname || "";
+      emailEl.value = draft.email || "";
+      dataEl.value = draft.data || defaultData;
+      codeEl.value = draft.code || starterCode;
+      outEl.textContent = draft.output || "Click “Run Python” to see output here.";
+      statusEl.textContent = "Draft loaded.";
+    } else {
+      dataEl.value = defaultData;
+      codeEl.value = starterCode;
+    }
+
+    [studentIdEl, nameSurnameEl, emailEl, dataEl, codeEl].forEach(el => el.addEventListener("input", save));
+
+    document.getElementById("runBtn").addEventListener("click", async () => {
+      statusEl.textContent = "Loading Python runtime (first time may take a bit)…";
+      const dataLiteral = JSON.stringify(dataEl.value);
+      const codeToRun = `DATA = ${dataLiteral}\n\n` + codeEl.value;
+
+      try{
+        const out = await PhoneLabUI.runPythonCapture(codeToRun);
+        outEl.textContent = out || "(no output)";
+        statusEl.textContent = "Run complete. If output looks correct, submit.";
+        save();
+      } catch (e){
+        outEl.textContent = String(e);
+        statusEl.textContent = "Run failed. Check your data/code.";
+        save();
+      }
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const studentId = studentIdEl.value.trim();
+      const nameSurname = nameSurnameEl.value.trim();
+      const email = emailEl.value.trim().toLowerCase();
+
+      // Client-side checks (server will also enforce)
+      if (!/^\d{6,12}$/.test(studentId)) { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
+      if (nameSurname.split(/\s+/).filter(Boolean).length < 2) { statusEl.textContent = "Enter Name and Surname (2 words)."; return; }
+      if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email)) { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
+
+      const payload = {
+        week: WEEK,
+        studentId,
+        nameSurname,
+        email,
+        data: dataEl.value,
+        code: codeEl.value,
+        output: outEl.textContent,
+        userAgent: navigator.userAgent,
+        submittedAt: new Date().toISOString()
+        // courseKey: "CHANGE_ME" // only if you enabled it in Apps Script
+      };
+
+      statusEl.textContent = "Submitting… (confirmation opens in a new tab)";
+      submitViaForm(payload);
+
+      // Local UI state (doesn't bypass server duplicate-check)
+      PhoneLabUI.setStatus(WEEK, "submitted");
+    });
+  </script>
+</body>
+</html>

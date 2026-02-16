@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Week 02 — PhoneLab</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-title">Week 02 — Tilt Safety Classifier</div>
+      <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1 style="margin:0 0 6px;">Goal</h1>
+      <p class="muted" style="margin:0;">
+        Measure tilt angles (degrees) using a phone level app and classify SAFE / CAUTION / UNSAFE with if/elif/else.
+      </p>
+
+      <hr />
+
+      <details open>
+        <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
+
+        <div class="row">
+          <div>
+            <label>Student ID (6–12 digits)</label>
+            <input
+              id="studentId"
+              inputmode="numeric"
+              minlength="6"
+              maxlength="12"
+              pattern="^\\d{6,12}$"
+              required
+              placeholder="e.g., 202612345"
+            />
+          </div>
+
+          <div>
+            <label>Name Surname</label>
+            <input
+              id="nameSurname"
+              required
+              placeholder="e.g., Arif Solmaz"
+            />
+          </div>
+        </div>
+
+        <label>Email (@istun.edu.tr)</label>
+        <input
+          id="email"
+          type="email"
+          pattern="^[A-Za-z0-9._%+-]+@istun\\.edu\\.tr$"
+          required
+          placeholder="name@istun.edu.tr"
+        />
+
+        <small class="hint">Draft auto-saves on this device.</small>
+      </details>
+
+      <hr />
+
+      <details open>
+        <summary><b>2) Data entry</b> <span class="muted">(angles in degrees)</span></summary>
+        <label>Enter 8 angles as key=value lines</label>
+        <textarea id="dataBox" spellcheck="false"></textarea>
+        <small class="hint">Example: a1=0.5 … a8=28.7 (degrees)</small>
+      </details>
+
+      <hr />
+
+      <details open>
+        <summary><b>3) Python code</b> <span class="muted">(if/elif/else)</span></summary>
+        <label>Python</label>
+        <textarea id="codeBox" spellcheck="false"></textarea>
+        <small class="hint">DATA is provided by the webpage. Student code here can be written without loops.</small>
+      </details>
+
+      <hr />
+
+      <details open>
+        <summary><b>4) Output</b> <span class="muted">(auto-captured)</span></summary>
+        <pre id="output" class="out">Click “Run Python” to see output here.</pre>
+      </details>
+
+      <div class="stickybar">
+        <div class="bar-actions">
+          <button id="runBtn">Run Python</button>
+          <button id="submitBtn" class="primary">Submit</button>
+        </div>
+        <small id="status" class="hint"></small>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/app.js"></script>
+  <script>
+    const WEEK = "week02";
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
+
+    const studentIdEl = document.getElementById("studentId");
+    const nameSurnameEl = document.getElementById("nameSurname");
+    const emailEl = document.getElementById("email");
+    const dataEl = document.getElementById("dataBox");
+    const codeEl = document.getElementById("codeBox");
+    const outEl = document.getElementById("output");
+    const statusEl = document.getElementById("status");
+
+    const defaultData =
+`a1=0.5
+a2=6.2
+a3=9.6
+a4=10.4
+a5=15.8
+a6=20.0
+a7=21.3
+a8=28.7`;
+
+    const starterCode =
+`# Week 02 — Tilt Safety Classifier
+# Requirement: use if/elif/else (loops not required this week)
+# DATA is provided by the webpage
+
+SAFE_TH = 10.0
+UNSAFE_TH = 20.0
+TOL = 1.0  # ± tolerance near SAFE threshold
+
+# Parse a1..a8 from DATA (key=value lines)
+vals = {}
+for ln in DATA.splitlines():
+    s = ln.strip()
+    if not s or "=" not in s:
+        continue
+    k, v = s.split("=", 1)
+    vals[k.strip()] = v.strip()
+
+a1 = float(vals.get("a1", "0"))
+a2 = float(vals.get("a2", "0"))
+a3 = float(vals.get("a3", "0"))
+a4 = float(vals.get("a4", "0"))
+a5 = float(vals.get("a5", "0"))
+a6 = float(vals.get("a6", "0"))
+a7 = float(vals.get("a7", "0"))
+a8 = float(vals.get("a8", "0"))
+
+print("Tilt Safety Classification")
+print("==========================")
+
+# Repeat pattern intentionally (Week 02 style)
+angle = a1
+if angle > UNSAFE_TH:
+    label = "UNSAFE"
+elif angle >= (SAFE_TH - TOL):
+    label = "CAUTION"
+else:
+    label = "SAFE"
+print(f"a1 = {a1:.1f}° -> {label}")
+
+angle = a2
+if angle > UNSAFE_TH:
+    label = "UNSAFE"
+elif angle >= (SAFE_TH - TOL):
+    label = "CAUTION"
+else:
+    label = "SAFE"
+print(f"a2 = {a2:.1f}° -> {label}")
+
+angle = a3
+if angle > UNSAFE_TH:
+    label = "UNSAFE"
+elif angle >= (SAFE_TH - TOL):
+    label = "CAUTION"
+else:
+    label = "SAFE"
+print(f"a3 = {a3:.1f}° -> {label}")
+
+angle = a4
+if angle > UNSAFE_TH:
+    label = "UNSAFE"
+elif angle >= (SAFE_TH - TOL):
+    label = "CAUTION"
+else:
+    label = "SAFE"
+print(f"a4 = {a4:.1f}° -> {label}")
+
+angle = a5
+if angle > UNSAFE_TH:
+    label = "UNSAFE"
+elif angle >= (SAFE_TH - TOL):
+    label = "CAUTION"
+else:
+    label = "SAFE"
+print(f"a5 = {a5:.1f}° -> {label}")
+
+angle = a6
+if angle > UNSAFE_TH:
+    label = "UNSAFE"
+elif angle >= (SAFE_TH - TOL):
+    label = "CAUTION"
+else:
+    label = "SAFE"
+print(f"a6 = {a6:.1f}° -> {label}")
+
+angle = a7
+if angle > UNSAFE_TH:
+    label = "UNSAFE"
+elif angle >= (SAFE_TH - TOL):
+    label = "CAUTION"
+else:
+    label = "SAFE"
+print(f"a7 = {a7:.1f}° -> {label}")
+
+angle = a8
+if angle > UNSAFE_TH:
+    label = "UNSAFE"
+elif angle >= (SAFE_TH - TOL):
+    label = "CAUTION"
+else:
+    label = "SAFE"
+print(f"a8 = {a8:.1f}° -> {label}")
+`;
+
+    function save(){
+      PhoneLabUI.saveDraft(WEEK, {
+        studentId: studentIdEl.value,
+        nameSurname: nameSurnameEl.value,
+        email: emailEl.value,
+        data: dataEl.value,
+        code: codeEl.value,
+        output: outEl.textContent,
+        savedAt: new Date().toISOString()
+      });
+      statusEl.textContent = "Draft saved on this device.";
+    }
+
+    function submitViaForm(payload){
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = SCRIPT_URL;
+      form.target = "_blank"; // open confirmation in new tab (mobile-friendly)
+
+      const inp = document.createElement("input");
+      inp.type = "hidden";
+      inp.name = "payload";
+      inp.value = JSON.stringify(payload);
+
+      form.appendChild(inp);
+      document.body.appendChild(form);
+      form.submit();
+      form.remove();
+    }
+
+    const draft = PhoneLabUI.loadDraft(WEEK);
+    if (draft){
+      studentIdEl.value = draft.studentId || "";
+      nameSurnameEl.value = draft.nameSurname || "";
+      emailEl.value = draft.email || "";
+      dataEl.value = draft.data || defaultData;
+      codeEl.value = draft.code || starterCode;
+      outEl.textContent = draft.output || "Click “Run Python” to see output here.";
+      statusEl.textContent = "Draft loaded.";
+    } else {
+      dataEl.value = defaultData;
+      codeEl.value = starterCode;
+    }
+
+    [studentIdEl, nameSurnameEl, emailEl, dataEl, codeEl].forEach(el => el.addEventListener("input", save));
+
+    document.getElementById("runBtn").addEventListener("click", async () => {
+      statusEl.textContent = "Loading Python runtime (first time may take a bit)…";
+      const dataLiteral = JSON.stringify(dataEl.value);
+      const codeToRun = `DATA = ${dataLiteral}\n\n` + codeEl.value;
+
+      try{
+        const out = await PhoneLabUI.runPythonCapture(codeToRun);
+        outEl.textContent = out || "(no output)";
+        statusEl.textContent = "Run complete. If output looks correct, submit.";
+        save();
+      } catch (e){
+        outEl.textContent = String(e);
+        statusEl.textContent = "Run failed. Check your data/code.";
+        save();
+      }
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const studentId = studentIdEl.value.trim();
+      const nameSurname = nameSurnameEl.value.trim();
+      const email = emailEl.value.trim().toLowerCase();
+
+      // Client-side checks (server will also enforce)
+      if (!/^\d{6,12}$/.test(studentId)) { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
+      if (nameSurname.split(/\s+/).filter(Boolean).length < 2) { statusEl.textContent = "Enter Name and Surname (2 words)."; return; }
+      if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email)) { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
+
+      const payload = {
+        week: WEEK,
+        studentId,
+        nameSurname,
+        email,
+        data: dataEl.value,
+        code: codeEl.value,
+        output: outEl.textContent,
+        userAgent: navigator.userAgent,
+        submittedAt: new Date().toISOString()
+        // courseKey: "CHANGE_ME" // only if you enabled it in Apps Script
+      };
+
+      statusEl.textContent = "Submitting… (confirmation opens in a new tab)";
+      submitViaForm(payload);
+
+      // Local UI state (doesn't bypass server duplicate-check)
+      PhoneLabUI.setStatus(WEEK, "submitted");
+    });
+  </script>
+</body>
+</html>
