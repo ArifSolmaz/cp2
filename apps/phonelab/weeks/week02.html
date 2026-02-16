@@ -9,88 +9,95 @@
 <body>
   <header class="topbar">
     <div class="brand">
-      <div class="brand-title">Week 02 — Tilt Safety Classifier</div>
+      <div class="brand-title">Week 02 — Room Comfort Classifier</div>
       <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
     </div>
   </header>
 
   <main class="container">
     <section class="card">
-      <h1 style="margin:0 0 6px;">Goal</h1>
-      <p class="muted" style="margin:0;">
-        Measure tilt angles (degrees) using a phone level app and classify SAFE / CAUTION / UNSAFE with if/elif/else.
+      <h1 style="margin:0 0 4px;">🌡️ Room Comfort Classifier</h1>
+      <p class="muted" style="margin:0 0 12px;">
+        Is your room safe and comfortable to work in?
+        Measure real conditions, then write a classifier that decides.
       </p>
+
+      <div class="concepts-box">
+        <b>📚 Concepts you'll practice (from Week 02):</b>
+        <span class="concept-tag">if / elif / else</span>
+        <span class="concept-tag">comparison (&lt; &gt; == !=)</span>
+        <span class="concept-tag">and / or / not</span>
+        <span class="concept-tag">boolean variables</span>
+        <span class="concept-tag">nested if</span>
+      </div>
 
       <hr />
 
       <details open>
         <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
-
         <div class="row">
           <div>
             <label>Student ID (6–12 digits)</label>
-            <input
-              id="studentId"
-              inputmode="numeric"
-              minlength="6"
-              maxlength="12"
-              pattern="^\\d{6,12}$"
-              required
-              placeholder="e.g., 202612345"
-            />
+            <input id="studentId" inputmode="numeric" minlength="6" maxlength="12"
+                   pattern="^\d{6,12}$" required placeholder="e.g., 202612345" />
           </div>
-
           <div>
             <label>Name Surname</label>
-            <input
-              id="nameSurname"
-              required
-              placeholder="e.g., Arif Solmaz"
-            />
+            <input id="nameSurname" required placeholder="e.g., Arif Solmaz" />
           </div>
         </div>
-
         <label>Email (@istun.edu.tr)</label>
-        <input
-          id="email"
-          type="email"
-          pattern="^[A-Za-z0-9._%+-]+@istun\\.edu\\.tr$"
-          required
-          placeholder="name@istun.edu.tr"
-        />
-
+        <input id="email" type="email"
+               pattern="^[A-Za-z0-9._%+-]+@istun\.edu\.tr$"
+               required placeholder="name@istun.edu.tr" />
         <small class="hint">Draft auto-saves on this device.</small>
       </details>
 
       <hr />
 
       <details open>
-        <summary><b>2) Data entry</b> <span class="muted">(angles in degrees)</span></summary>
-        <label>Enter 8 angles as key=value lines</label>
+        <summary><b>2) Collect your data</b> <span class="muted">(from your phone)</span></summary>
+
+        <div class="scenario-box">
+          <b>🔬 What to do:</b>
+          <ol class="muted" style="margin:6px 0 0; padding-left:20px;">
+            <li>Open a <b>weather app</b> — note the current temperature (°C) for your location.</li>
+            <li>Check <b>humidity %</b> in the same weather app.</li>
+            <li>Estimate the <b>light level</b>: look around your room and rate it 0–1000 lux.<br/>
+                <small>💡 Dark room ≈ 50, normal room ≈ 300, bright office ≈ 500, direct sunlight ≈ 1000</small></li>
+            <li>Estimate <b>noise level</b> in dB using a free sound meter app, or guess:<br/>
+                <small>🔇 Library ≈ 30, normal room ≈ 45, conversation ≈ 60, traffic ≈ 75, concert ≈ 100</small></li>
+          </ol>
+        </div>
+
+        <label>Your measurements (edit the numbers)</label>
         <textarea id="dataBox" spellcheck="false"></textarea>
-        <small class="hint">Example: a1=0.5 … a8=28.7 (degrees)</small>
+        <small class="hint">Change only the numbers after <code>=</code>.</small>
       </details>
 
       <hr />
 
       <details open>
-        <summary><b>3) Python code</b> <span class="muted">(if/elif/else)</span></summary>
-        <label>Python</label>
+        <summary><b>3) Python code</b> <span class="muted">(write the if/elif/else logic)</span></summary>
+        <label>Python — fill in the classification logic</label>
         <textarea id="codeBox" class="codebox" spellcheck="false"></textarea>
-        <small class="hint">DATA is provided by the webpage. Student code here can be written without loops.</small>
+        <small class="hint">
+          Use <b>if/elif/else</b> to classify each measurement.
+          Combine with <b>and/or/not</b> for the final verdict.
+        </small>
       </details>
 
       <hr />
 
       <details open>
-        <summary><b>4) Output</b> <span class="muted">(auto-captured)</span></summary>
-        <pre id="output" class="out">Click “Run Python” to see output here.</pre>
+        <summary><b>4) Output</b> <span class="muted">(auto-captured after Run)</span></summary>
+        <pre id="output" class="out">Click "Run Python" to see output here.</pre>
       </details>
 
       <div class="stickybar">
         <div class="bar-actions">
           <button id="helpBtn" class="helpbtn" type="button">Instructions</button>
-          <button id="runBtn" type="button">Run Python</button>
+          <button id="runBtn" type="button">▶ Run Python</button>
           <button id="submitBtn" class="primary" type="button">Submit</button>
         </div>
         <small id="status" class="hint"></small>
@@ -98,17 +105,18 @@
     </section>
   </main>
 
-  <!-- Help Modal (outside script) -->
+  <!-- Help Modal -->
   <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal">
       <h3>Week 02 — Instructions</h3>
       <ol class="muted">
-        <li><b>Identity:</b> Student ID (6–12 digits), Name Surname, <b>@istun.edu.tr</b> email.</li>
-        <li><b>Measure:</b> Use a phone level/tilt app. Record 8 angles (degrees) from different surfaces.</li>
-        <li><b>Enter Data:</b> Fill <code>a1=...</code> to <code>a8=...</code>.</li>
-        <li><b>Run Python:</b> Your code should use <b>if/elif/else</b> (loops not required).</li>
+        <li><b>Identity:</b> Student ID, Name Surname, <b>@istun.edu.tr</b> email.</li>
+        <li><b>Measure:</b> Get temperature &amp; humidity from a weather app. Estimate light (lux) and noise (dB) for your current room.</li>
+        <li><b>Write code:</b> Use <b>if/elif/else</b> to classify each condition, then combine them with <b>and/or/not</b>.</li>
+        <li><b>Run:</b> Click "Run Python" and check the output.</li>
         <li><b>Submit:</b> One submission only. Confirmation opens in a new tab.</li>
       </ol>
+      <p class="muted" style="margin-top:10px;"><b>Tip:</b> Try changing the numbers and re-running to see how your classifier responds to different conditions!</p>
       <div class="modal-actions">
         <button id="closeHelpBtn" type="button">Close</button>
       </div>
@@ -121,159 +129,181 @@
 
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
 
-    const studentIdEl = document.getElementById("studentId");
+    const studentIdEl  = document.getElementById("studentId");
     const nameSurnameEl = document.getElementById("nameSurname");
-    const emailEl = document.getElementById("email");
-    const dataEl = document.getElementById("dataBox");
-    const codeEl = document.getElementById("codeBox");
-    const outEl = document.getElementById("output");
-    const statusEl = document.getElementById("status");
+    const emailEl      = document.getElementById("email");
+    const dataEl       = document.getElementById("dataBox");
+    const codeEl       = document.getElementById("codeBox");
+    const outEl        = document.getElementById("output");
+    const statusEl     = document.getElementById("status");
 
     const defaultData =
-`a1=0.5
-a2=6.2
-a3=9.6
-a4=10.4
-a5=15.8
-a6=20.0
-a7=21.3
-a8=28.7`;
+`temperature_C=24.5
+humidity_percent=55
+light_lux=320
+noise_dB=42`;
 
     const starterCode =
-`# Week 02 — Tilt Safety Classifier
-# Requirement: use if/elif/else (loops not required this week)
-# DATA is provided by the webpage
+`# ──────────────────────────────────────────────
+# Week 02 — Room Comfort Classifier
+# ──────────────────────────────────────────────
+# DATA is a string with your measurements.
+# The lines below read them into variables.
 
-SAFE_TH = 10.0
-UNSAFE_TH = 20.0
-TOL = 1.0  # ± tolerance near SAFE threshold
+_lines = DATA.strip().split("\\n")
+temperature_C    = float(_lines[0].split("=")[1])
+humidity_percent = float(_lines[1].split("=")[1])
+light_lux        = float(_lines[2].split("=")[1])
+noise_dB         = float(_lines[3].split("=")[1])
 
-# Parse a1..a8 from DATA (key=value lines)
-vals = {}
-for ln in DATA.splitlines():
-    s = ln.strip()
-    if not s or "=" not in s:
-        continue
-    k, v = s.split("=", 1)
-    vals[k.strip()] = v.strip()
+print("=" * 42)
+print("🌡️  ROOM COMFORT REPORT")
+print("=" * 42)
+print(f"Temperature : {temperature_C} °C")
+print(f"Humidity    : {humidity_percent} %")
+print(f"Light       : {light_lux} lux")
+print(f"Noise       : {noise_dB} dB")
+print("-" * 42)
 
-a1 = float(vals.get("a1", "0"))
-a2 = float(vals.get("a2", "0"))
-a3 = float(vals.get("a3", "0"))
-a4 = float(vals.get("a4", "0"))
-a5 = float(vals.get("a5", "0"))
-a6 = float(vals.get("a6", "0"))
-a7 = float(vals.get("a7", "0"))
-a8 = float(vals.get("a8", "0"))
+# ──────────────────────────────────────────────
+# TODO 1: TEMPERATURE classification
+# ──────────────────────────────────────────────
+# Cold:    below 18 °C
+# Cool:    18–21 °C
+# Comfort: 21–26 °C
+# Warm:    26–30 °C
+# Hot:     above 30 °C
 
-print("Tilt Safety Classification")
-print("==========================")
-
-# Repeat pattern intentionally (Week 02 style)
-angle = a1
-if angle > UNSAFE_TH:
-    label = "UNSAFE"
-elif angle >= (SAFE_TH - TOL):
-    label = "CAUTION"
+if temperature_C < 18:
+    temp_status = "❄️ COLD"
+elif temperature_C < 21:
+    temp_status = "🌤️ Cool"
+elif temperature_C <= 26:
+    temp_status = "✅ Comfortable"
+elif temperature_C <= 30:
+    temp_status = "🟡 Warm"
 else:
-    label = "SAFE"
-print(f"a1 = {a1:.1f}° -> {label}")
+    temp_status = "🔴 HOT"
 
-angle = a2
-if angle > UNSAFE_TH:
-    label = "UNSAFE"
-elif angle >= (SAFE_TH - TOL):
-    label = "CAUTION"
-else:
-    label = "SAFE"
-print(f"a2 = {a2:.1f}° -> {label}")
+print(f"Temp status : {temp_status}")
 
-angle = a3
-if angle > UNSAFE_TH:
-    label = "UNSAFE"
-elif angle >= (SAFE_TH - TOL):
-    label = "CAUTION"
-else:
-    label = "SAFE"
-print(f"a3 = {a3:.1f}° -> {label}")
+# ──────────────────────────────────────────────
+# TODO 2: HUMIDITY classification
+# ──────────────────────────────────────────────
+# Dry:     below 30%
+# Comfort: 30–60%
+# Humid:   60–80%
+# Very humid: above 80%
 
-angle = a4
-if angle > UNSAFE_TH:
-    label = "UNSAFE"
-elif angle >= (SAFE_TH - TOL):
-    label = "CAUTION"
+if humidity_percent < 30:
+    humid_status = "🏜️ Dry"
+elif humidity_percent <= 60:
+    humid_status = "✅ Comfortable"
+elif humidity_percent <= 80:
+    humid_status = "💧 Humid"
 else:
-    label = "SAFE"
-print(f"a4 = {a4:.1f}° -> {label}")
+    humid_status = "🔴 Very Humid"
 
-angle = a5
-if angle > UNSAFE_TH:
-    label = "UNSAFE"
-elif angle >= (SAFE_TH - TOL):
-    label = "CAUTION"
-else:
-    label = "SAFE"
-print(f"a5 = {a5:.1f}° -> {label}")
+print(f"Humidity    : {humid_status}")
 
-angle = a6
-if angle > UNSAFE_TH:
-    label = "UNSAFE"
-elif angle >= (SAFE_TH - TOL):
-    label = "CAUTION"
-else:
-    label = "SAFE"
-print(f"a6 = {a6:.1f}° -> {label}")
+# ──────────────────────────────────────────────
+# TODO 3: LIGHT classification
+# ──────────────────────────────────────────────
+# Dark:     below 100 lux
+# Dim:      100–300 lux
+# Good:     300–500 lux
+# Bright:   above 500 lux
 
-angle = a7
-if angle > UNSAFE_TH:
-    label = "UNSAFE"
-elif angle >= (SAFE_TH - TOL):
-    label = "CAUTION"
+if light_lux < 100:
+    light_status = "🌑 Too Dark"
+elif light_lux < 300:
+    light_status = "🌒 Dim"
+elif light_lux <= 500:
+    light_status = "✅ Good"
 else:
-    label = "SAFE"
-print(f"a7 = {a7:.1f}° -> {label}")
+    light_status = "☀️ Bright"
 
-angle = a8
-if angle > UNSAFE_TH:
-    label = "UNSAFE"
-elif angle >= (SAFE_TH - TOL):
-    label = "CAUTION"
+print(f"Light       : {light_status}")
+
+# ──────────────────────────────────────────────
+# TODO 4: NOISE classification
+# ──────────────────────────────────────────────
+# Quiet:     below 35 dB
+# Normal:    35–55 dB
+# Noisy:     55–75 dB
+# Dangerous: above 75 dB (hearing damage risk!)
+
+if noise_dB < 35:
+    noise_status = "🤫 Quiet"
+elif noise_dB <= 55:
+    noise_status = "✅ Normal"
+elif noise_dB <= 75:
+    noise_status = "🔊 Noisy"
 else:
-    label = "SAFE"
-print(f"a8 = {a8:.1f}° -> {label}")
+    noise_status = "🔴 DANGEROUS"
+
+print(f"Noise       : {noise_status}")
+
+# ──────────────────────────────────────────────
+# TODO 5: OVERALL VERDICT using and / or / not
+# ──────────────────────────────────────────────
+# Create boolean variables for each condition:
+
+temp_ok  = temperature_C >= 21 and temperature_C <= 26
+humid_ok = humidity_percent >= 30 and humidity_percent <= 60
+light_ok = light_lux >= 300 and light_lux <= 500
+noise_ok = noise_dB <= 55
+
+# Count how many are OK
+ok_count = 0
+if temp_ok:
+    ok_count = ok_count + 1
+if humid_ok:
+    ok_count = ok_count + 1
+if light_ok:
+    ok_count = ok_count + 1
+if noise_ok:
+    ok_count = ok_count + 1
+
+print("-" * 42)
+
+# Final verdict using boolean logic
+all_ok = temp_ok and humid_ok and light_ok and noise_ok
+any_danger = temperature_C > 35 or noise_dB > 85
+
+if any_danger:
+    print("🚨 VERDICT: UNSAFE — leave this area!")
+elif all_ok:
+    print("✅ VERDICT: PERFECT working conditions!")
+elif ok_count >= 3:
+    print("🟡 VERDICT: Mostly fine, minor issues.")
+elif ok_count >= 2:
+    print("🟠 VERDICT: Several issues — consider moving.")
+else:
+    print("🔴 VERDICT: Poor conditions — not recommended.")
+
+print(f"   ({ok_count}/4 factors in comfort range)")
+print("=" * 42)
 `;
 
+    // ── Wiring ──
     function save(){
       PhoneLabUI.saveDraft(WEEK, {
-        studentId: studentIdEl.value,
-        nameSurname: nameSurnameEl.value,
-        email: emailEl.value,
-        data: dataEl.value,
-        code: codeEl.value,
-        output: outEl.textContent,
-        savedAt: new Date().toISOString()
+        studentId: studentIdEl.value, nameSurname: nameSurnameEl.value,
+        email: emailEl.value, data: dataEl.value, code: codeEl.value,
+        output: outEl.textContent, savedAt: new Date().toISOString()
       });
-      statusEl.textContent = "Draft saved on this device.";
+      statusEl.textContent = "Draft saved.";
     }
 
     function submitViaForm(payload){
       const form = document.createElement("form");
-      form.method = "POST";
-      form.action = SCRIPT_URL;
-      form.target = "_blank"; // open confirmation in new tab
-
+      form.method = "POST"; form.action = SCRIPT_URL; form.target = "_blank";
       const inp = document.createElement("input");
-      inp.type = "hidden";
-      inp.name = "payload";
-      inp.value = JSON.stringify(payload);
-
-      form.appendChild(inp);
-      document.body.appendChild(form);
-      form.submit();
-      form.remove();
+      inp.type = "hidden"; inp.name = "payload"; inp.value = JSON.stringify(payload);
+      form.appendChild(inp); document.body.appendChild(form); form.submit(); form.remove();
     }
 
-    // Load draft or defaults
     const draft = PhoneLabUI.loadDraft(WEEK);
     if (draft){
       studentIdEl.value = draft.studentId || "";
@@ -281,77 +311,58 @@ print(f"a8 = {a8:.1f}° -> {label}")
       emailEl.value = draft.email || "";
       dataEl.value = draft.data || defaultData;
       codeEl.value = draft.code || starterCode;
-      outEl.textContent = draft.output || "Click “Run Python” to see output here.";
+      outEl.textContent = draft.output || 'Click "Run Python" to see output here.';
       statusEl.textContent = "Draft loaded.";
     } else {
       dataEl.value = defaultData;
       codeEl.value = starterCode;
     }
 
-    [studentIdEl, nameSurnameEl, emailEl, dataEl, codeEl].forEach(el => el.addEventListener("input", save));
+    [studentIdEl, nameSurnameEl, emailEl, dataEl, codeEl].forEach(el =>
+      el.addEventListener("input", save));
 
     document.getElementById("runBtn").addEventListener("click", async () => {
-      statusEl.textContent = "Loading Python runtime (first time may take a bit)…";
+      statusEl.textContent = "Loading Python runtime…";
       const dataLiteral = JSON.stringify(dataEl.value);
       const codeToRun = `DATA = ${dataLiteral}\n\n` + codeEl.value;
-
-      try{
+      try {
         const out = await PhoneLabUI.runPythonCapture(codeToRun);
         outEl.textContent = out || "(no output)";
-        statusEl.textContent = "Run complete. If output looks correct, submit.";
+        statusEl.textContent = "✅ Run complete.";
         save();
-      } catch (e){
+      } catch (e) {
         outEl.textContent = String(e);
-        statusEl.textContent = "Run failed. Check your data/code.";
+        statusEl.textContent = "❌ Error — check your code.";
         save();
       }
     });
 
     document.getElementById("submitBtn").addEventListener("click", () => {
-      const studentId = studentIdEl.value.trim();
+      const studentId   = studentIdEl.value.trim();
       const nameSurname = nameSurnameEl.value.trim();
-      const email = emailEl.value.trim().toLowerCase();
-
-      if (!/^\d{6,12}$/.test(studentId)) { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
-      if (nameSurname.split(/\s+/).filter(Boolean).length < 2) { statusEl.textContent = "Enter Name and Surname (2 words)."; return; }
-      if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email)) { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
+      const email       = emailEl.value.trim().toLowerCase();
+      if (!/^\d{6,12}$/.test(studentId))
+        { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
+      if (nameSurname.split(/\s+/).filter(Boolean).length < 2)
+        { statusEl.textContent = "Enter Name and Surname."; return; }
+      if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email))
+        { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
 
       const payload = {
-        week: WEEK,
-        studentId,
-        nameSurname,
-        email,
-        data: dataEl.value,
-        code: codeEl.value,
-        output: outEl.textContent,
-        userAgent: navigator.userAgent,
-        submittedAt: new Date().toISOString()
+        week: WEEK, studentId, nameSurname, email,
+        data: dataEl.value, code: codeEl.value, output: outEl.textContent,
+        userAgent: navigator.userAgent, submittedAt: new Date().toISOString()
       };
-
-      statusEl.textContent = "Submitting… (confirmation opens in a new tab)";
+      statusEl.textContent = "Submitting…";
       submitViaForm(payload);
-
       PhoneLabUI.setStatus(WEEK, "submitted");
     });
 
-    // --- Help modal wiring (Step 4) ---
-    const helpModal = document.getElementById("helpModal");
-    const helpBtn = document.getElementById("helpBtn");
-    const closeHelpBtn = document.getElementById("closeHelpBtn");
-
-    function openHelp(){ helpModal.style.display = "flex"; }
-    function closeHelp(){ helpModal.style.display = "none"; }
-
-    helpBtn.addEventListener("click", openHelp);
-    closeHelpBtn.addEventListener("click", closeHelp);
-
-    helpModal.addEventListener("click", (e) => {
-      if (e.target === helpModal) closeHelp();
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeHelp();
-    });
+    const helpModal    = document.getElementById("helpModal");
+    document.getElementById("helpBtn").addEventListener("click", () => helpModal.style.display = "flex");
+    document.getElementById("closeHelpBtn").addEventListener("click", () => helpModal.style.display = "none");
+    helpModal.addEventListener("click", e => { if (e.target === helpModal) helpModal.style.display = "none"; });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") helpModal.style.display = "none"; });
   </script>
 </body>
 </html>

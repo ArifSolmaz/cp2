@@ -13,6 +13,7 @@ html,body{ margin:0; padding:0; background:var(--bg); color:var(--txt);
 
 .brand-title{ font-weight:700; font-size:16px; }
 .brand-sub{ color:var(--muted); font-size:12px; margin-top:2px; }
+.brand-sub a{ color:var(--ok); text-decoration:none; }
 
 .container{ max-width:980px; margin:0 auto; padding:16px; }
 .card{ background:var(--card); border:1px solid var(--line); border-radius:16px;
@@ -117,3 +118,72 @@ a{ color:inherit; }
   color: var(--txt);
   font-weight:700;
 }
+
+/* ═══════════════════════════════════════════
+   NEW STYLES — PhoneLab v2
+   ═══════════════════════════════════════════ */
+
+/* Concept tags — shows which course concepts are practiced */
+.concepts-box{
+  background: rgba(16,185,129,.08);
+  border: 1px solid rgba(16,185,129,.2);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-top: 14px;
+  font-size: 13px;
+  line-height: 2;
+}
+.concepts-box b{ color: var(--ok); display:block; margin-bottom:4px; }
+
+.concept-tag{
+  display: inline-block;
+  background: rgba(16,185,129,.15);
+  color: #6ee7b7;
+  border: 1px solid rgba(16,185,129,.25);
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 2px 4px 2px 0;
+  white-space: nowrap;
+}
+
+/* Small concept tags for hub cards */
+.concept-tag-sm{
+  display: inline-block;
+  background: rgba(16,185,129,.1);
+  color: #6ee7b7;
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 600;
+  margin: 1px 3px 1px 0;
+  white-space: nowrap;
+}
+
+.week-concepts{
+  margin-top: 8px;
+  line-height: 1.8;
+}
+
+.week-title{
+  margin: 8px 0 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--txt);
+}
+
+/* Scenario / instruction box */
+.scenario-box{
+  background: rgba(99,102,241,.08);
+  border: 1px solid rgba(99,102,241,.2);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+.scenario-box b{ color: #a5b4fc; }
+.scenario-box ol{ margin: 6px 0 0; padding-left: 20px; }
+.scenario-box li{ margin: 4px 0; }
+.scenario-box small{ color: var(--muted); }
+.scenario-box a{ color: var(--ok); text-decoration: underline; }

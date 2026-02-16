@@ -106,13 +106,10 @@ async function submitPayload(payload){
     throw new Error("SUBMIT_URL is not configured in apps/phonelab/assets/app.js");
   }
 
-  // Default: JSON POST
-  // If your endpoint blocks CORS, uncomment mode:"no-cors" (but you won't be able to read response).
   const res = await fetch(SUBMIT_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
-    // mode: "no-cors",
   });
 
   return res;

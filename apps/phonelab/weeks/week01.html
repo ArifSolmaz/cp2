@@ -9,88 +9,96 @@
 <body>
   <header class="topbar">
     <div class="brand">
-      <div class="brand-title">Week 01 — Stair Power Estimator</div>
+      <div class="brand-title">Week 01 — Phone Charging Speed Test</div>
       <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
     </div>
   </header>
 
   <main class="container">
     <section class="card">
-      <h1 style="margin:0 0 6px;">Goal</h1>
-      <p class="muted" style="margin:0;">
-        Use your phone stopwatch + Python to estimate vertical climbing power.
+      <h1 style="margin:0 0 4px;">⚡ Phone Charging Speed Test</h1>
+      <p class="muted" style="margin:0 0 12px;">
+        How fast is your charger <em>really</em> pushing energy into your phone?
+        Measure it, calculate it, know it.
       </p>
+
+      <div class="concepts-box">
+        <b>📚 Concepts you'll practice (from Week 01):</b>
+        <span class="concept-tag">variables</span>
+        <span class="concept-tag">int &amp; float</span>
+        <span class="concept-tag">arithmetic (+−×÷)</span>
+        <span class="concept-tag">f-strings</span>
+        <span class="concept-tag">print()</span>
+        <span class="concept-tag">type conversion</span>
+      </div>
 
       <hr />
 
       <details open>
         <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
-
         <div class="row">
           <div>
             <label>Student ID (6–12 digits)</label>
-            <input
-              id="studentId"
-              inputmode="numeric"
-              minlength="6"
-              maxlength="12"
-              pattern="^[0-9]{6,12}$"
-              placeholder="e.g., 202612345"
-              required
-            />
+            <input id="studentId" inputmode="numeric" minlength="6" maxlength="12"
+                   pattern="^\d{6,12}$" required placeholder="e.g., 202612345" />
           </div>
-
           <div>
             <label>Name Surname</label>
-            <input
-              id="nameSurname"
-              placeholder="e.g., Arif Solmaz"
-              required
-            />
+            <input id="nameSurname" required placeholder="e.g., Arif Solmaz" />
           </div>
         </div>
-
         <label>Email (@istun.edu.tr)</label>
-        <input
-          id="email"
-          type="email"
-          pattern="^[A-Za-z0-9._%+-]+@istun\\.edu\\.tr$"
-          placeholder="name@istun.edu.tr"
-          required
-        />
-
+        <input id="email" type="email"
+               pattern="^[A-Za-z0-9._%+-]+@istun\.edu\.tr$"
+               required placeholder="name@istun.edu.tr" />
         <small class="hint">Draft auto-saves on this device.</small>
       </details>
 
       <hr />
 
       <details open>
-        <summary><b>2) Data entry</b> <span class="muted">(your measurements)</span></summary>
-        <label>Measurements (key=value lines)</label>
+        <summary><b>2) Collect your data</b> <span class="muted">(from your phone)</span></summary>
+
+        <div class="scenario-box">
+          <b>🔬 What to do:</b>
+          <ol class="muted" style="margin:6px 0 0; padding-left:20px;">
+            <li>Plug in your charger. Open <b>Settings → Battery</b>.</li>
+            <li>Note the current battery <b>percentage</b>.</li>
+            <li>Start a <b>stopwatch</b> on another device (or note the time).</li>
+            <li>Wait <b>exactly 10 minutes</b>.</li>
+            <li>Note the new battery percentage.</li>
+            <li>Look up your phone's <b>battery capacity</b> (mAh) — search "[your phone model] battery mAh" online.</li>
+          </ol>
+        </div>
+
+        <label>Your measurements (edit the numbers)</label>
         <textarea id="dataBox" spellcheck="false"></textarea>
-        <small class="hint">Example: mass_kg=70, N_steps=20, step_height_m=0.17, t=[12.4,12.1,12.8,12.3,12.6]</small>
+        <small class="hint">Change only the numbers after <code>=</code>. Keep variable names as they are.</small>
       </details>
 
       <hr />
 
       <details open>
-        <summary><b>3) Python code</b> <span class="muted">(edit then Run)</span></summary>
-        <label>Python</label>
+        <summary><b>3) Python code</b> <span class="muted">(fill in the TODOs)</span></summary>
+        <label>Python — complete the calculations</label>
         <textarea id="codeBox" class="codebox" spellcheck="false"></textarea>
-        <small class="hint">The page defines <b>DATA</b> as a Python string containing your Data entry text.</small>
+        <small class="hint">
+          DATA is a string with your measurements. The parsing is done for you —
+          focus on the <b>arithmetic</b> and <b>print()</b> lines marked TODO.
+        </small>
       </details>
 
       <hr />
 
       <details open>
-        <summary><b>4) Output</b> <span class="muted">(auto-captured)</span></summary>
-        <pre id="output" class="out">Click “Run Python” to see output here.</pre>
+        <summary><b>4) Output</b> <span class="muted">(auto-captured after Run)</span></summary>
+        <pre id="output" class="out">Click "Run Python" to see output here.</pre>
       </details>
 
       <div class="stickybar">
         <div class="bar-actions">
           <button id="helpBtn" class="helpbtn" type="button">Instructions</button>
-          <button id="runBtn" type="button">Run Python</button>
+          <button id="runBtn" type="button">▶ Run Python</button>
           <button id="submitBtn" class="primary" type="button">Submit</button>
         </div>
         <small id="status" class="hint"></small>
@@ -98,17 +106,19 @@
     </section>
   </main>
 
-  <!-- Help Modal (outside script) -->
+  <!-- Help Modal -->
   <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal">
       <h3>Week 01 — Instructions</h3>
       <ol class="muted">
-        <li><b>Identity:</b> Enter Student ID (6–12 digits), Name Surname, and <b>@istun.edu.tr</b> email.</li>
-        <li><b>Measure:</b> Choose stairs. Count steps (<code>N_steps</code>) and estimate step height (<code>step_height_m</code>). Measure time 5 trials using phone stopwatch.</li>
-        <li><b>Enter Data:</b> Fill <code>mass_kg</code>, <code>N_steps</code>, <code>step_height_m</code>, and <code>t=[...]</code>.</li>
-        <li><b>Run Python:</b> Check output (HEIGHT, AVG_TIME, AVG_POWER).</li>
-        <li><b>Submit:</b> One submission only. A new tab opens for “Accepted / Rejected / Duplicate”.</li>
+        <li><b>Identity:</b> Student ID (6–12 digits), Name Surname, <b>@istun.edu.tr</b> email.</li>
+        <li><b>Measure:</b> Plug in your charger. Note battery % before and after 10 minutes. Look up your phone's battery capacity in mAh.</li>
+        <li><b>Enter data:</b> Edit the numbers in the Data box (keep variable names).</li>
+        <li><b>Write code:</b> Fill in the TODO lines — use <b>variables</b>, <b>arithmetic</b>, and <b>f-strings</b>.</li>
+        <li><b>Run:</b> Click "Run Python" and check the output.</li>
+        <li><b>Submit:</b> One submission only. Confirmation opens in a new tab.</li>
       </ol>
+      <p class="muted" style="margin-top:10px;"><b>Tip:</b> If you don't have a charger right now, use the example numbers. You can always test with your own data later!</p>
       <div class="modal-actions">
         <button id="closeHelpBtn" type="button">Close</button>
       </div>
@@ -121,50 +131,91 @@
 
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
 
-    const studentIdEl = document.getElementById("studentId");
+    const studentIdEl  = document.getElementById("studentId");
     const nameSurnameEl = document.getElementById("nameSurname");
-    const emailEl = document.getElementById("email");
-    const dataEl = document.getElementById("dataBox");
-    const codeEl = document.getElementById("codeBox");
-    const outEl = document.getElementById("output");
-    const statusEl = document.getElementById("status");
+    const emailEl      = document.getElementById("email");
+    const dataEl       = document.getElementById("dataBox");
+    const codeEl       = document.getElementById("codeBox");
+    const outEl        = document.getElementById("output");
+    const statusEl     = document.getElementById("status");
 
+    // ── Default data: simple key=value, NO lists, NO advanced types ──
     const defaultData =
-`mass_kg=70
-N_steps=20
-step_height_m=0.17
-t=[12.4, 12.1, 12.8, 12.3, 12.6]`;
+`battery_mAh=5000
+start_percent=35
+end_percent=44
+charge_time_min=10
+charger_volts=5`;
 
+    // ── Starter code: ONLY Week 01 concepts ──
+    // variables, arithmetic, f-strings, print(), float(), int()
+    // NO lists, NO loops, NO if/else, NO functions, NO dicts
     const starterCode =
-`# Week 01 — Stair Power Estimator
-# DATA is provided by the webpage (string containing your key=value lines)
+`# ──────────────────────────────────────────────
+# Week 01 — Phone Charging Speed Test
+# ──────────────────────────────────────────────
+# The webpage puts your data into a string called DATA.
+# The 5 lines below read your numbers into variables.
+# (This is just string splitting — you'll learn it properly in Week 7)
 
-g = 9.81
+_lines = DATA.strip().split("\\n")
+battery_mAh      = int(_lines[0].split("=")[1])
+start_percent    = int(_lines[1].split("=")[1])
+end_percent      = int(_lines[2].split("=")[1])
+charge_time_min  = int(_lines[3].split("=")[1])
+charger_volts    = int(_lines[4].split("=")[1])
 
-lines = [ln.strip() for ln in DATA.splitlines() if ln.strip()]
-vals = {}
-for ln in lines:
-    if "=" in ln:
-        k, v = ln.split("=", 1)
-        vals[k.strip()] = v.strip()
+# ──────────────────────────────────────────────
+# YOUR CODE BELOW — use variables & arithmetic
+# ──────────────────────────────────────────────
 
-mass_kg = float(vals.get("mass_kg", "70"))
-N_steps = int(float(vals.get("N_steps", "20")))
-step_height_m = float(vals.get("step_height_m", "0.17"))
+# TODO 1: Calculate how many percentage points were gained
+gained_percent = end_percent - start_percent
 
-t_list = eval(vals.get("t", "[12.4,12.1,12.8,12.3,12.6]"))  # class-safe for simple lists
+# TODO 2: Convert that to mAh gained
+#         (if battery is 5000 mAh and you gained 9%, that's 5000 * 9 / 100)
+gained_mAh = battery_mAh * gained_percent / 100
 
-h = N_steps * step_height_m
-t_avg = sum(t_list) / len(t_list)
-P = [(mass_kg * g * h) / ti for ti in t_list]
-P_avg = sum(P) / len(P)
+# TODO 3: Calculate charge rate in mAh per minute
+rate_mAh_per_min = gained_mAh / charge_time_min
 
-print("HEIGHT(m):", round(h, 2))
-print("AVG_TIME(s):", round(t_avg, 2))
-print("AVG_POWER(W):", round(P_avg, 0))
-print("TRIAL_POWERS(W):", [round(x, 0) for x in P])
+# TODO 4: Calculate charge rate in mAh per hour (multiply by 60)
+rate_mAh_per_hour = rate_mAh_per_min * 60
+
+# TODO 5: Estimate how many minutes to reach 100% from current level
+remaining_percent = 100 - end_percent
+remaining_mAh = battery_mAh * remaining_percent / 100
+time_to_full_min = remaining_mAh / rate_mAh_per_min
+
+# TODO 6: Convert minutes to hours and leftover minutes
+hours = int(time_to_full_min // 60)
+minutes = int(time_to_full_min % 60)
+
+# TODO 7: Calculate charging power in Watts
+#         Power (W) = Voltage (V) × Current (A)
+#         Current (A) = rate_mAh_per_hour / 1000
+current_amps = rate_mAh_per_hour / 1000
+power_watts = charger_volts * current_amps
+
+# ──────────────────────────────────────────────
+# PRINT RESULTS — use f-strings
+# ──────────────────────────────────────────────
+
+print("=" * 40)
+print("⚡ CHARGING SPEED REPORT")
+print("=" * 40)
+
+# TODO 8: Print each result using f-strings
+print(f"Battery capacity : {battery_mAh} mAh")
+print(f"Charged           : {start_percent}% → {end_percent}%  (+{gained_percent}%)")
+print(f"Energy gained     : {gained_mAh:.1f} mAh in {charge_time_min} min")
+print(f"Charge rate       : {rate_mAh_per_min:.1f} mAh/min  ({rate_mAh_per_hour:.0f} mAh/h)")
+print(f"Charging power    : {power_watts:.1f} W")
+print(f"Time to 100%      : {hours} h {minutes} min")
+print("=" * 40)
 `;
 
+    // ── Wiring (same pattern for all weeks) ──
     function save(){
       PhoneLabUI.saveDraft(WEEK, {
         studentId: studentIdEl.value,
@@ -175,20 +226,16 @@ print("TRIAL_POWERS(W):", [round(x, 0) for x in P])
         output: outEl.textContent,
         savedAt: new Date().toISOString()
       });
-      statusEl.textContent = "Draft saved on this device.";
+      statusEl.textContent = "Draft saved.";
     }
 
     function submitViaForm(payload){
       const form = document.createElement("form");
       form.method = "POST";
       form.action = SCRIPT_URL;
-      form.target = "_blank"; // open confirmation in new tab
-
+      form.target = "_blank";
       const inp = document.createElement("input");
-      inp.type = "hidden";
-      inp.name = "payload";
-      inp.value = JSON.stringify(payload);
-
+      inp.type = "hidden"; inp.name = "payload"; inp.value = JSON.stringify(payload);
       form.appendChild(inp);
       document.body.appendChild(form);
       form.submit();
@@ -198,82 +245,68 @@ print("TRIAL_POWERS(W):", [round(x, 0) for x in P])
     // Load draft or defaults
     const draft = PhoneLabUI.loadDraft(WEEK);
     if (draft){
-      studentIdEl.value = draft.studentId || "";
+      studentIdEl.value  = draft.studentId || "";
       nameSurnameEl.value = draft.nameSurname || "";
-      emailEl.value = draft.email || "";
-      dataEl.value = draft.data || defaultData;
-      codeEl.value = draft.code || starterCode;
-      outEl.textContent = draft.output || "Click “Run Python” to see output here.";
+      emailEl.value      = draft.email || "";
+      dataEl.value       = draft.data || defaultData;
+      codeEl.value       = draft.code || starterCode;
+      outEl.textContent  = draft.output || 'Click "Run Python" to see output here.';
       statusEl.textContent = "Draft loaded.";
     } else {
       dataEl.value = defaultData;
       codeEl.value = starterCode;
     }
 
-    [studentIdEl, nameSurnameEl, emailEl, dataEl, codeEl].forEach(el => el.addEventListener("input", save));
+    [studentIdEl, nameSurnameEl, emailEl, dataEl, codeEl].forEach(el =>
+      el.addEventListener("input", save));
 
     document.getElementById("runBtn").addEventListener("click", async () => {
-      statusEl.textContent = "Loading Python runtime (first time may take a bit)…";
+      statusEl.textContent = "Loading Python runtime…";
       const dataLiteral = JSON.stringify(dataEl.value);
       const codeToRun = `DATA = ${dataLiteral}\n\n` + codeEl.value;
-
-      try{
+      try {
         const out = await PhoneLabUI.runPythonCapture(codeToRun);
         outEl.textContent = out || "(no output)";
-        statusEl.textContent = "Run complete. If output looks correct, submit.";
+        statusEl.textContent = "✅ Run complete.";
         save();
-      } catch (e){
+      } catch (e) {
         outEl.textContent = String(e);
-        statusEl.textContent = "Run failed. Check your data/code.";
+        statusEl.textContent = "❌ Error — check your code.";
         save();
       }
     });
 
     document.getElementById("submitBtn").addEventListener("click", () => {
-      const studentId = studentIdEl.value.trim();
+      const studentId   = studentIdEl.value.trim();
       const nameSurname = nameSurnameEl.value.trim();
-      const email = emailEl.value.trim().toLowerCase();
+      const email       = emailEl.value.trim().toLowerCase();
 
-      if (!/^\d{6,12}$/.test(studentId)) { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
-      if (nameSurname.split(/\s+/).filter(Boolean).length < 2) { statusEl.textContent = "Enter Name and Surname (2 words)."; return; }
-      if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email)) { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
+      if (!/^\d{6,12}$/.test(studentId))
+        { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
+      if (nameSurname.split(/\s+/).filter(Boolean).length < 2)
+        { statusEl.textContent = "Enter Name and Surname."; return; }
+      if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email))
+        { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
 
       const payload = {
-        week: WEEK,
-        studentId,
-        nameSurname,
-        email,
-        data: dataEl.value,
-        code: codeEl.value,
-        output: outEl.textContent,
+        week: WEEK, studentId, nameSurname, email,
+        data: dataEl.value, code: codeEl.value, output: outEl.textContent,
         userAgent: navigator.userAgent,
         submittedAt: new Date().toISOString()
       };
-
-      statusEl.textContent = "Submitting… (confirmation opens in a new tab)";
+      statusEl.textContent = "Submitting…";
       submitViaForm(payload);
-
       PhoneLabUI.setStatus(WEEK, "submitted");
     });
 
-    // --- Help modal wiring (Step 4) ---
-    const helpModal = document.getElementById("helpModal");
-    const helpBtn = document.getElementById("helpBtn");
+    // Help modal
+    const helpModal    = document.getElementById("helpModal");
+    const helpBtn      = document.getElementById("helpBtn");
     const closeHelpBtn = document.getElementById("closeHelpBtn");
-
-    function openHelp(){ helpModal.style.display = "flex"; }
-    function closeHelp(){ helpModal.style.display = "none"; }
-
-    helpBtn.addEventListener("click", openHelp);
-    closeHelpBtn.addEventListener("click", closeHelp);
-
-    helpModal.addEventListener("click", (e) => {
-      if (e.target === helpModal) closeHelp();
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeHelp();
-    });
+    helpBtn.addEventListener("click", () => helpModal.style.display = "flex");
+    closeHelpBtn.addEventListener("click", () => helpModal.style.display = "none");
+    helpModal.addEventListener("click", e => { if (e.target === helpModal) helpModal.style.display = "none"; });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") helpModal.style.display = "none"; });
   </script>
 </body>
 </html>
