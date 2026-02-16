@@ -547,25 +547,74 @@ const noRedirect = urlParams.get('home') === 'true';
 const hasVisited = sessionStorage.getItem('cp2_visited');
 const cameFromWeek = document.referrer.includes('Week');
 
+// Mark as visited immediately
+sessionStorage.setItem('cp2_visited', 'true');
+
 // Only redirect if: first visit AND no ?home=true AND didn't come from a week page
 if (!noRedirect && !hasVisited && !cameFromWeek) {
     const current = getCurrentWeekColab();
     if (current) {
-        sessionStorage.setItem('cp2_visited', 'true');
-        
+        let redirectTimer = null;
+        let cancelled = false;
+
+        // Build popup
+        const overlay = document.createElement('div');
+        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:9998;';
+
         const msg = document.createElement('div');
-        msg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a1a2e;color:white;padding:30px 50px;border-radius:10px;font-family:system-ui;text-align:center;z-index:9999;box-shadow:0 10px 40px rgba(0,0,0,0.3);';
-        msg.innerHTML = '<div style="font-size:1.2rem;margin-bottom:10px;">Opening this week\'s notebook in Colab...</div><div style="color:#a78bfa;">' + current.label + '</div>';
+        msg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a1a2e;color:white;padding:30px 40px;border-radius:12px;font-family:system-ui,sans-serif;text-align:center;z-index:9999;box-shadow:0 10px 40px rgba(0,0,0,0.4);max-width:420px;width:90%;';
+        msg.innerHTML = `
+            <div style="font-size:1.1rem;margin-bottom:8px;">Opening this week's notebook in Colab...</div>
+            <div style="color:#a78bfa;font-weight:600;margin-bottom:16px;">${current.label}</div>
+            <div style="display:flex;gap:10px;justify-content:center;">
+                <a href="${current.url}" target="_blank" style="background:#f9ab00;color:#1a1a1a;padding:8px 20px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.9rem;">Open Now</a>
+                <button id="cancelRedirect" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);padding:8px 20px;border-radius:6px;cursor:pointer;font-weight:600;font-size:0.9rem;">Stay Here</button>
+            </div>
+            <div style="color:rgba(255,255,255,0.4);font-size:0.75rem;margin-top:12px;">Press <kbd style="background:rgba(255,255,255,0.15);padding:1px 6px;border-radius:3px;">Esc</kbd> to cancel</div>
+        `;
+
+        document.body.appendChild(overlay);
         document.body.appendChild(msg);
-        
-        setTimeout(() => {
-            window.location.href = current.url;
-        }, 1500);
+
+        // Cancel function
+        function cancelRedirect() {
+            if (cancelled) return;
+            cancelled = true;
+            clearTimeout(redirectTimer);
+            overlay.remove();
+            msg.remove();
+            document.removeEventListener('keydown', onKey);
+        }
+
+        // Esc key
+        function onKey(e) {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                cancelRedirect();
+            }
+        }
+        document.addEventListener('keydown', onKey);
+
+        // Click overlay to cancel
+        overlay.addEventListener('click', cancelRedirect);
+
+        // Cancel button
+        msg.querySelector('#cancelRedirect').addEventListener('click', cancelRedirect);
+
+        // "Open Now" also cleans up popup
+        msg.querySelector('a').addEventListener('click', function() {
+            clearTimeout(redirectTimer);
+            setTimeout(cancelRedirect, 300);
+        });
+
+        // Auto-redirect after 2.5s (longer so user has time to react)
+        redirectTimer = setTimeout(() => {
+            if (!cancelled) {
+                window.location.href = current.url;
+            }
+        }, 2500);
     }
 }
-
-// Mark as visited when viewing homepage
-sessionStorage.setItem('cp2_visited', 'true');
 </script>
 
 </body>
