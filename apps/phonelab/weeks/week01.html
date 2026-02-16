@@ -9,17 +9,17 @@
 <body>
   <header class="topbar">
     <div class="brand">
-      <div class="brand-title">Week 01 — Phone Charging Speed Test</div>
+      <div class="brand-title">Week 01 — Inverse Square Law Test</div>
       <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
     </div>
   </header>
 
   <main class="container">
     <section class="card">
-      <h1 style="margin:0 0 4px;">⚡ Phone Charging Speed Test</h1>
+      <h1 style="margin:0 0 4px;">🔦 Inverse Square Law Test</h1>
       <p class="muted" style="margin:0 0 12px;">
-        How fast is your charger <em>really</em> pushing energy into your phone?
-        Measure it, calculate it, know it.
+        Can you <em>prove a physics law</em> with your phone's flashlight?
+        Measure light intensity at 3 distances and see if the universe obeys the math.
       </p>
 
       <div class="concepts-box">
@@ -32,9 +32,15 @@
         <span class="concept-tag">type conversion</span>
       </div>
 
-      <hr />
+      <!-- Step indicator -->
+      <div class="steps" style="margin-top:14px;">
+        <div class="step-pill active" data-step="1">① Identity</div>
+        <div class="step-pill" data-step="2">② Data</div>
+        <div class="step-pill" data-step="3">③ Code</div>
+        <div class="step-pill" data-step="4">④ Run & Submit</div>
+      </div>
 
-      <details open>
+      <details open id="sec1">
         <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
         <div class="row">
           <div>
@@ -56,29 +62,32 @@
 
       <hr />
 
-      <details open>
+      <details open id="sec2">
         <summary><b>2) Collect your data</b> <span class="muted">(from your phone)</span></summary>
 
         <div class="scenario-box">
           <b>🔬 What to do:</b>
           <ol class="muted" style="margin:6px 0 0; padding-left:20px;">
-            <li>Plug in your charger. Open <b>Settings → Battery</b>.</li>
-            <li>Note the current battery <b>percentage</b>.</li>
-            <li>Start a <b>stopwatch</b> on another device (or note the time).</li>
-            <li>Wait <b>exactly 10 minutes</b>.</li>
-            <li>Note the new battery percentage.</li>
-            <li>Look up your phone's <b>battery capacity</b> (mAh) — search "[your phone model] battery mAh" online.</li>
+            <li>Install a free <b>lux meter app</b> on your phone
+              (<a href="https://apps.apple.com/app/lux-light-meter-pro/id1292598866" target="_blank">iOS</a> /
+               <a href="https://play.google.com/store/apps/details?id=com.doggoapps.luxlight" target="_blank">Android</a>).
+            </li>
+            <li>Find a <b>dark room</b> (or wait until evening). Place a light source (phone flashlight, desk lamp, or candle) on a table.</li>
+            <li>Hold your phone's light sensor facing the light at <b>exactly 10 cm</b> distance. Note the <b>lux</b> reading.</li>
+            <li>Repeat at <b>20 cm</b> and <b>40 cm</b>.</li>
+            <li>Note the distances you used (they should be 10, 20, 40 — but if you used different ones, that's OK!).</li>
           </ol>
+          <small>💡 <b>Tip:</b> Use a ruler or tape measure for accurate distances. Keep the sensor aimed straight at the light source.</small>
         </div>
 
         <label>Your measurements (edit the numbers)</label>
         <textarea id="dataBox" spellcheck="false"></textarea>
-        <small class="hint">Change only the numbers after <code>=</code>. Keep variable names as they are.</small>
+        <small class="hint">⚠️ Change the numbers to <b>your own</b> measurements. Default values will be rejected.</small>
       </details>
 
       <hr />
 
-      <details open>
+      <details id="sec3">
         <summary><b>3) Python code</b> <span class="muted">(fill in the TODOs)</span></summary>
         <label>Python — complete the calculations</label>
         <textarea id="codeBox" class="codebox" spellcheck="false"></textarea>
@@ -90,16 +99,16 @@
 
       <hr />
 
-      <details open>
+      <details id="sec4">
         <summary><b>4) Output</b> <span class="muted">(auto-captured after Run)</span></summary>
-        <pre id="output" class="out">Click "Run Python" to see output here.</pre>
+        <pre id="output" class="out">Click "▶ Run Python" to see output here.</pre>
       </details>
 
       <div class="stickybar">
         <div class="bar-actions">
-          <button id="helpBtn" class="helpbtn" type="button">Instructions</button>
+          <button id="helpBtn" class="helpbtn" type="button">?</button>
           <button id="runBtn" type="button">▶ Run Python</button>
-          <button id="submitBtn" class="primary" type="button">Submit</button>
+          <button id="submitBtn" class="primary" type="button">Submit ✓</button>
         </div>
         <small id="status" class="hint"></small>
       </div>
@@ -109,18 +118,23 @@
   <!-- Help Modal -->
   <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal">
-      <h3>Week 01 — Instructions</h3>
+      <h3>🔦 Week 01 — Instructions</h3>
       <ol class="muted">
         <li><b>Identity:</b> Student ID (6–12 digits), Name Surname, <b>@istun.edu.tr</b> email.</li>
-        <li><b>Measure:</b> Plug in your charger. Note battery % before and after 10 minutes. Look up your phone's battery capacity in mAh.</li>
-        <li><b>Enter data:</b> Edit the numbers in the Data box (keep variable names).</li>
-        <li><b>Write code:</b> Fill in the TODO lines — use <b>variables</b>, <b>arithmetic</b>, and <b>f-strings</b>.</li>
-        <li><b>Run:</b> Click "Run Python" and check the output.</li>
+        <li><b>Get a lux meter app:</b> Search "lux meter" in your app store. Any free one works — it uses your phone's front light sensor.</li>
+        <li><b>Measure:</b> In a dark room, aim a light source at your phone. Record the lux reading at <b>10 cm, 20 cm, and 40 cm</b>.</li>
+        <li><b>Enter data:</b> Type your 3 lux readings + 3 distances into the Data box.</li>
+        <li><b>Write code:</b> Complete the TODO lines — calculate ratios, expected values, and percentage errors.</li>
+        <li><b>Run:</b> Tap "▶ Run Python" and check the output.</li>
         <li><b>Submit:</b> One submission only. Confirmation opens in a new tab.</li>
       </ol>
-      <p class="muted" style="margin-top:10px;"><b>Tip:</b> If you don't have a charger right now, use the example numbers. You can always test with your own data later!</p>
+      <p class="muted" style="margin-top:10px;">
+        <b>📐 The physics:</b> The <em>Inverse Square Law</em> says light intensity
+        decreases with the square of the distance. Double the distance → ¼ the brightness.
+        Your experiment will test if this holds in real life!
+      </p>
       <div class="modal-actions">
-        <button id="closeHelpBtn" type="button">Close</button>
+        <button id="closeHelpBtn" type="button">Got it</button>
       </div>
     </div>
   </div>
@@ -131,91 +145,118 @@
 
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
 
-    const studentIdEl  = document.getElementById("studentId");
+    const studentIdEl   = document.getElementById("studentId");
     const nameSurnameEl = document.getElementById("nameSurname");
-    const emailEl      = document.getElementById("email");
-    const dataEl       = document.getElementById("dataBox");
-    const codeEl       = document.getElementById("codeBox");
-    const outEl        = document.getElementById("output");
-    const statusEl     = document.getElementById("status");
+    const emailEl       = document.getElementById("email");
+    const dataEl        = document.getElementById("dataBox");
+    const codeEl        = document.getElementById("codeBox");
+    const outEl         = document.getElementById("output");
+    const statusEl      = document.getElementById("status");
 
-    // ── Default data: simple key=value, NO lists, NO advanced types ──
+    // ── Default data ──
     const defaultData =
-`battery_mAh=5000
-start_percent=35
-end_percent=44
-charge_time_min=10
-charger_volts=5`;
+`lux_close=850
+lux_mid=215
+lux_far=54
+dist_close_cm=10
+dist_mid_cm=20
+dist_far_cm=40`;
 
     // ── Starter code: ONLY Week 01 concepts ──
     // variables, arithmetic, f-strings, print(), float(), int()
     // NO lists, NO loops, NO if/else, NO functions, NO dicts
     const starterCode =
 `# ──────────────────────────────────────────────
-# Week 01 — Phone Charging Speed Test
+# Week 01 — Inverse Square Law Test
 # ──────────────────────────────────────────────
 # The webpage puts your data into a string called DATA.
-# The 5 lines below read your numbers into variables.
-# (This is just string splitting — you'll learn it properly in Week 7)
+# The 6 lines below read your numbers into variables.
+# (This is just string splitting — you'll learn it properly later)
 
 _lines = DATA.strip().split("\\n")
-battery_mAh      = int(_lines[0].split("=")[1])
-start_percent    = int(_lines[1].split("=")[1])
-end_percent      = int(_lines[2].split("=")[1])
-charge_time_min  = int(_lines[3].split("=")[1])
-charger_volts    = int(_lines[4].split("=")[1])
+lux_close    = float(_lines[0].split("=")[1])
+lux_mid      = float(_lines[1].split("=")[1])
+lux_far      = float(_lines[2].split("=")[1])
+dist_close   = float(_lines[3].split("=")[1])
+dist_mid     = float(_lines[4].split("=")[1])
+dist_far     = float(_lines[5].split("=")[1])
 
 # ──────────────────────────────────────────────
 # YOUR CODE BELOW — use variables & arithmetic
 # ──────────────────────────────────────────────
 
-# TODO 1: Calculate how many percentage points were gained
-gained_percent = end_percent - start_percent
+# TODO 1: Calculate the distance ratios
+#         How many times farther is mid vs close?  far vs close?
+ratio_dist_mid  = dist_mid / dist_close
+ratio_dist_far  = dist_far / dist_close
 
-# TODO 2: Convert that to mAh gained
-#         (if battery is 5000 mAh and you gained 9%, that's 5000 * 9 / 100)
-gained_mAh = battery_mAh * gained_percent / 100
+# TODO 2: Calculate EXPECTED lux values using the inverse square law
+#         If you double the distance, intensity drops to 1/4
+#         Formula: expected_lux = lux_close / (distance_ratio ** 2)
+#         ** means "to the power of" — e.g., 3 ** 2 = 9
+expected_mid = lux_close / (ratio_dist_mid ** 2)
+expected_far = lux_close / (ratio_dist_far ** 2)
 
-# TODO 3: Calculate charge rate in mAh per minute
-rate_mAh_per_min = gained_mAh / charge_time_min
+# TODO 3: Calculate the ACTUAL ratios of your measurements
+#         What fraction of the close reading did you get at mid? at far?
+actual_ratio_mid = lux_mid / lux_close
+actual_ratio_far = lux_far / lux_close
 
-# TODO 4: Calculate charge rate in mAh per hour (multiply by 60)
-rate_mAh_per_hour = rate_mAh_per_min * 60
+# TODO 4: Calculate the EXPECTED ratios from physics
+#         At 2x distance → 1/4 = 0.25.  At 4x distance → 1/16 = 0.0625
+expected_ratio_mid = 1 / (ratio_dist_mid ** 2)
+expected_ratio_far = 1 / (ratio_dist_far ** 2)
 
-# TODO 5: Estimate how many minutes to reach 100% from current level
-remaining_percent = 100 - end_percent
-remaining_mAh = battery_mAh * remaining_percent / 100
-time_to_full_min = remaining_mAh / rate_mAh_per_min
+# TODO 5: Calculate percentage error for each
+#         error = |actual - expected| / expected * 100
+#         abs() gives absolute value (removes minus sign)
+error_mid = abs(actual_ratio_mid - expected_ratio_mid) / expected_ratio_mid * 100
+error_far = abs(actual_ratio_far - expected_ratio_far) / expected_ratio_far * 100
 
-# TODO 6: Convert minutes to hours and leftover minutes
-hours = int(time_to_full_min // 60)
-minutes = int(time_to_full_min % 60)
-
-# TODO 7: Calculate charging power in Watts
-#         Power (W) = Voltage (V) × Current (A)
-#         Current (A) = rate_mAh_per_hour / 1000
-current_amps = rate_mAh_per_hour / 1000
-power_watts = charger_volts * current_amps
+# TODO 6: Calculate average error
+avg_error = (error_mid + error_far) / 2
 
 # ──────────────────────────────────────────────
 # PRINT RESULTS — use f-strings
 # ──────────────────────────────────────────────
 
-print("=" * 40)
-print("⚡ CHARGING SPEED REPORT")
-print("=" * 40)
+print("=" * 50)
+print("🔦 INVERSE SQUARE LAW — LAB REPORT")
+print("=" * 50)
 
-# TODO 8: Print each result using f-strings
-print(f"Battery capacity : {battery_mAh} mAh")
-print(f"Charged           : {start_percent}% → {end_percent}%  (+{gained_percent}%)")
-print(f"Energy gained     : {gained_mAh:.1f} mAh in {charge_time_min} min")
-print(f"Charge rate       : {rate_mAh_per_min:.1f} mAh/min  ({rate_mAh_per_hour:.0f} mAh/h)")
-print(f"Charging power    : {power_watts:.1f} W")
-print(f"Time to 100%      : {hours} h {minutes} min")
-print("=" * 40)
+# TODO 7: Print your raw measurements
+print(f"Distance close : {dist_close:.0f} cm → {lux_close:.0f} lux")
+print(f"Distance mid   : {dist_mid:.0f} cm → {lux_mid:.0f} lux")
+print(f"Distance far   : {dist_far:.0f} cm → {lux_far:.0f} lux")
+
+print("-" * 50)
+print("PREDICTED vs MEASURED")
+print("-" * 50)
+
+# TODO 8: Print predicted vs actual for mid distance
+print(f"At {dist_mid:.0f} cm ({ratio_dist_mid:.1f}x farther):")
+print(f"  Predicted : {expected_mid:.1f} lux")
+print(f"  Measured  : {lux_mid:.0f} lux")
+print(f"  Error     : {error_mid:.1f}%")
+
+print()
+
+# TODO 9: Print predicted vs actual for far distance
+print(f"At {dist_far:.0f} cm ({ratio_dist_far:.1f}x farther):")
+print(f"  Predicted : {expected_far:.1f} lux")
+print(f"  Measured  : {lux_far:.0f} lux")
+print(f"  Error     : {error_far:.1f}%")
+
+print("-" * 50)
+
+# TODO 10: Print final verdict
+print(f"Average error  : {avg_error:.1f}%")
+print(f"Expected ratios: 1/{ratio_dist_mid ** 2:.0f} and 1/{ratio_dist_far ** 2:.0f}")
+print(f"Actual ratios  : {actual_ratio_mid:.4f} and {actual_ratio_far:.4f}")
+print("=" * 50)
 `;
 
-    // ── Wiring (same pattern for all weeks) ──
+    // ── Wiring ──
     function save(){
       PhoneLabUI.saveDraft(WEEK, {
         studentId: studentIdEl.value,
@@ -245,12 +286,12 @@ print("=" * 40)
     // Load draft or defaults
     const draft = PhoneLabUI.loadDraft(WEEK);
     if (draft){
-      studentIdEl.value  = draft.studentId || "";
+      studentIdEl.value   = draft.studentId || "";
       nameSurnameEl.value = draft.nameSurname || "";
-      emailEl.value      = draft.email || "";
-      dataEl.value       = draft.data || defaultData;
-      codeEl.value       = draft.code || starterCode;
-      outEl.textContent  = draft.output || 'Click "Run Python" to see output here.';
+      emailEl.value       = draft.email || "";
+      dataEl.value        = draft.data || defaultData;
+      codeEl.value        = draft.code || starterCode;
+      outEl.textContent   = draft.output || 'Click "▶ Run Python" to see output here.';
       statusEl.textContent = "Draft loaded.";
     } else {
       dataEl.value = defaultData;
@@ -287,6 +328,17 @@ print("=" * 40)
         { statusEl.textContent = "Enter Name and Surname."; return; }
       if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email))
         { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
+
+      // Block default data
+      if (dataEl.value.replace(/\s+/g,"") === defaultData.replace(/\s+/g,"")) {
+        statusEl.textContent = "⚠️ Enter YOUR OWN lux readings — default values are not accepted.";
+        dataEl.style.outline = "2px solid #ef4444";
+        setTimeout(() => dataEl.style.outline = "", 3000);
+        return;
+      }
+
+      if (!outEl.textContent || outEl.textContent.includes("Click") || outEl.textContent === "(no output)")
+        { statusEl.textContent = "⚠️ Run your code first before submitting."; return; }
 
       const payload = {
         week: WEEK, studentId, nameSurname, email,

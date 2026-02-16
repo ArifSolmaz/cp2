@@ -333,6 +333,17 @@ print("=" * 44)
       if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email))
         { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
 
+      // Block default data submission
+      if (dataEl.value.replace(/\s+/g,"") === defaultData.replace(/\s+/g,"")) {
+        statusEl.textContent = "⚠️ Enter YOUR OWN reaction times — default values are not accepted.";
+        dataEl.style.outline = "2px solid #ef4444";
+        setTimeout(() => dataEl.style.outline = "", 3000);
+        return;
+      }
+
+      if (!outEl.textContent || outEl.textContent.includes("Click") || outEl.textContent === "(no output)")
+        { statusEl.textContent = "⚠️ Run your code first before submitting."; return; }
+
       const payload = {
         week: WEEK, studentId, nameSurname, email,
         data: dataEl.value, code: codeEl.value, output: outEl.textContent,
