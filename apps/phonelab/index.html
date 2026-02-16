@@ -297,6 +297,18 @@
       transform: translateX(4px);
     }
 
+    .lab-deadline {
+      font-family: var(--hub-mono);
+      font-size: 11px;
+      color: var(--hub-dim);
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .lab-deadline .dl-icon { font-size: 12px; }
+    .lab-deadline.urgent { color: #ef4444; }
+    .lab-deadline.soon { color: var(--hub-glow-amber); }
+    .lab-deadline.closed { color: var(--hub-dim); text-decoration: line-through; }
+
     /* ── Status chip override for hub ── */
     .lab-chip {
       font-family: var(--hub-mono);
@@ -431,6 +443,10 @@
             <span class="lab-tag">f-strings</span>
             <span class="lab-tag">print()</span>
           </div>
+          <div class="lab-deadline" data-deadline="2026-02-18T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: Feb 18, 23:59</span>
+          </div>
           <div class="lab-start">LAUNCH LAB</div>
         </div>
       </a>
@@ -454,6 +470,10 @@
             <span class="lab-tag">and/or/not</span>
             <span class="lab-tag">booleans</span>
           </div>
+          <div class="lab-deadline" data-deadline="2026-02-25T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: Feb 25, 23:59</span>
+          </div>
           <div class="lab-start">LAUNCH LAB</div>
         </div>
       </a>
@@ -476,6 +496,10 @@
             <span class="lab-tag">range()</span>
             <span class="lab-tag">accumulator</span>
             <span class="lab-tag">break/continue</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-03-04T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: Mar 4, 23:59</span>
           </div>
           <div class="lab-start">LAUNCH LAB</div>
         </div>
@@ -507,6 +531,39 @@
         chip.textContent = "IDLE";
       }
     });
+
+    // Deadline countdowns
+    function updateDeadlines() {
+      document.querySelectorAll("[data-deadline]").forEach(function(el) {
+        var deadline = new Date(el.getAttribute("data-deadline"));
+        var now = new Date();
+        var diff = deadline - now;
+        var textEl = el.querySelector(".dl-text");
+
+        el.classList.remove("urgent", "soon", "closed");
+
+        if (diff <= 0) {
+          textEl.textContent = "CLOSED";
+          el.classList.add("closed");
+        } else {
+          var days = Math.floor(diff / 86400000);
+          var hrs = Math.floor((diff % 86400000) / 3600000);
+          var mins = Math.floor((diff % 3600000) / 60000);
+
+          if (days > 1) {
+            textEl.textContent = days + "d " + hrs + "h left";
+          } else if (days === 1) {
+            textEl.textContent = "1d " + hrs + "h left";
+            el.classList.add("soon");
+          } else {
+            textEl.textContent = hrs + "h " + mins + "m left";
+            el.classList.add("urgent");
+          }
+        }
+      });
+    }
+    updateDeadlines();
+    setInterval(updateDeadlines, 60000);
   </script>
 </body>
 </html>
