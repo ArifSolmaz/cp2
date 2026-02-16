@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CP2 • PhoneLab</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-title">CP II — PhoneLab</div>
+      <div class="brand-sub">Phone-only workflow • Run Python in browser • Submit</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero card">
+      <h1>Weekly Work</h1>
+      <p class="muted">
+        Each week: collect data with your phone → paste/enter → run Python → submit.
+      </p>
+      <ul class="bullets">
+        <li><b>Draft auto-saves</b> on your device</li>
+        <li><b>Python runs</b> inside the webpage (no laptop required)</li>
+        <li><b>Submission</b> sends your code + output to instructor</li>
+      </ul>
+    </section>
+
+    <section class="grid">
+      <a class="card week" href="weeks/week01.html">
+        <div class="week-head">
+          <h2>Week 01</h2>
+          <span class="chip" data-chip="week01">Not started</span>
+        </div>
+        <p class="muted">Variables • types • arithmetic • formatted output</p>
+        <div class="actions"><span class="btn">Start</span></div>
+      </a>
+
+      <a class="card week" href="weeks/week02.html">
+        <div class="week-head">
+          <h2>Week 02</h2>
+          <span class="chip" data-chip="week02">Not started</span>
+        </div>
+        <p class="muted">Booleans • comparisons • if/elif/else</p>
+        <div class="actions"><span class="btn">Start</span></div>
+      </a>
+
+      <a class="card week" href="weeks/week03.html">
+        <div class="week-head">
+          <h2>Week 03</h2>
+          <span class="chip" data-chip="week03">Not started</span>
+        </div>
+        <p class="muted">Loops • lists • break/continue</p>
+        <div class="actions"><span class="btn">Start</span></div>
+      </a>
+    </section>
+  </main>
+
+  <script src="assets/app.js"></script>
+  <script>
+    window.PhoneLabUI?.updateHubChips();
+  </script>
+</body>
+</html>
