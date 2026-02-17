@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Week 11 — PhoneLab</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-title">Week 11 — Game Character Builder</div>
+      <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1 style="margin:0 0 4px;">🎮 Game Character Builder</h1>
+      <p class="muted" style="margin:0 0 12px;">
+        An RPG class system <em>is</em> a Python class system!
+        Build <b>Character</b> → <b>Warrior / Mage / Archer</b> with
+        inheritance, abstract methods, mixins, and polymorphic combat.
+      </p>
+
+      <div class="concepts-box">
+        <b>📚 Concepts you'll practice (from Week 11):</b>
+        <span class="concept-tag">inheritance / subclass</span>
+        <span class="concept-tag">super()</span>
+        <span class="concept-tag">method overriding</span>
+        <span class="concept-tag">polymorphism</span>
+        <span class="concept-tag">ABC / @abstractmethod</span>
+        <span class="concept-tag">multiple inheritance / mixin</span>
+        <span class="concept-tag">isinstance() / MRO</span>
+      </div>
+
+      <!-- Step indicator -->
+      <div class="steps" style="margin-top:14px;">
+        <div class="step-pill active" data-step="1">① Identity</div>
+        <div class="step-pill" data-step="2">② Data</div>
+        <div class="step-pill" data-step="3">③ Code</div>
+        <div class="step-pill" data-step="4">④ Run & Submit</div>
+      </div>
+
+      <details open id="sec1">
+        <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
+        <div class="row">
+          <div>
+            <label>Student ID (6–12 digits)</label>
+            <input id="studentId" inputmode="numeric" minlength="6" maxlength="12"
+                   pattern="^\d{6,12}$" required placeholder="e.g., 202612345" />
+          </div>
+          <div>
+            <label>Name Surname</label>
+            <input id="nameSurname" required placeholder="e.g., Arif Solmaz" />
+          </div>
+        </div>
+        <label>Email (@istun.edu.tr)</label>
+        <input id="email" type="email"
+               pattern="^[A-Za-z0-9._%+-]+@istun\.edu\.tr$"
+               required placeholder="name@istun.edu.tr" />
+        <small class="hint">Draft auto-saves on this device.</small>
+      </details>
+
+      <hr />
+
+      <details open id="sec2">
+        <summary><b>2) Collect your data</b> <span class="muted">(from your favorite games)</span></summary>
+
+        <div class="scenario-box">
+          <b>🔬 What to do:</b>
+          <ol class="muted" style="margin:6px 0 0; padding-left:20px;">
+            <li>Think of <b>6 characters</b> from games you play or know
+              (Zelda, Elden Ring, Genshin Impact, LoL, Valorant, Minecraft, etc.).</li>
+            <li>For each character, record:
+              <ul style="margin-top:4px;">
+                <li><b>Name</b> (e.g., Link, Gandalf, Legolas)</li>
+                <li><b>Class:</b> warrior, mage, archer, or paladin</li>
+                <li><b>HP</b> (hit points, 50–500)</li>
+                <li><b>Attack power</b> (10–100)</li>
+              </ul>
+            </li>
+            <li>Include at least: <b>1 warrior</b>, <b>1 mage</b>, <b>1 archer</b>, and <b>1 paladin</b>.</li>
+            <li>Format: <code>Name,class,hp,attack</code></li>
+          </ol>
+          <small>💡 <b>Tip:</b> You can also invent your own characters! The paladin class will demonstrate <b>multiple inheritance</b> (Warrior + HealMixin).</small>
+        </div>
+
+        <label>Your 6 characters (one per line)</label>
+        <textarea id="dataBox" spellcheck="false"></textarea>
+        <small class="hint">⚠️ Enter <b>your own</b> characters. Default values will be rejected.</small>
+      </details>
+
+      <hr />
+
+      <details id="sec3">
+        <summary><b>3) Python code</b> <span class="muted">(inheritance hierarchy)</span></summary>
+        <label>Python — build the RPG class system</label>
+        <textarea id="codeBox" class="codebox" spellcheck="false"></textarea>
+        <small class="hint">
+          Build <b>ABC</b>, <b>subclasses</b>, <b>override methods</b>,
+          <b>super()</b>, <b>mixin</b>, <b>multiple inheritance</b>,
+          and <b>polymorphic</b> functions.
+        </small>
+      </details>
+
+      <hr />
+
+      <details id="sec4">
+        <summary><b>4) Output</b> <span class="muted">(auto-captured after Run)</span></summary>
+        <pre id="output" class="out">Click "▶ Run Python" to see output here.</pre>
+      </details>
+
+      <div class="stickybar">
+        <div class="bar-actions">
+          <button id="helpBtn" class="helpbtn" type="button">?</button>
+          <button id="runBtn" type="button">▶ Run Python</button>
+          <button id="submitBtn" class="primary" type="button">Submit ✓</button>
+        </div>
+        <small id="status" class="hint"></small>
+      </div>
+    </section>
+  </main>
+
+  <!-- Help Modal -->
+  <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3>🎮 Week 11 — Instructions</h3>
+      <ol class="muted">
+        <li><b>Identity:</b> Student ID (6–12 digits), Name Surname, <b>@istun.edu.tr</b> email.</li>
+        <li><b>Pick characters:</b> Choose 6 game characters — real or invented. Include at least 1 warrior, 1 mage, 1 archer, 1 paladin.</li>
+        <li><b>Enter data:</b> One per line: <code>Name,class,hp,attack</code></li>
+        <li><b>Write code:</b> Complete the TODOs — build the full inheritance hierarchy.</li>
+        <li><b>Run:</b> Tap "▶ Run Python" and watch the RPG system come alive.</li>
+        <li><b>Submit:</b> One submission only.</li>
+      </ol>
+      <p class="muted" style="margin-top:10px;">
+        <b>📐 The engineering:</b> In mechatronics, inheritance models real hierarchies —
+        <code>Actuator</code> → <code>Motor</code> / <code>Servo</code> / <code>Stepper</code>,
+        each overriding <code>move()</code> differently. Abstract base classes define
+        sensor interfaces that every driver must implement. The Paladin = Warrior + HealMixin
+        pattern mirrors <code>SmartSensor(Sensor, NetworkMixin)</code> in IoT systems!
+      </p>
+      <div class="modal-actions">
+        <button id="closeHelpBtn" type="button">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/app.js"></script>
+  <script>
+    const WEEK = "week11";
+    const DEADLINE = new Date("2026-04-29T23:59:00+03:00");
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
+
+    const studentIdEl   = document.getElementById("studentId");
+    const nameSurnameEl = document.getElementById("nameSurname");
+    const emailEl       = document.getElementById("email");
+    const dataEl        = document.getElementById("dataBox");
+    const codeEl        = document.getElementById("codeBox");
+    const outEl         = document.getElementById("output");
+    const statusEl      = document.getElementById("status");
+
+    // ── Default data ──
+    const defaultData =
+`Arthas,warrior,350,75
+Gandalf,mage,200,90
+Legolas,archer,220,80
+Uther,paladin,300,60
+Jaina,mage,180,95
+Sylvanas,archer,210,85`;
+
+    const starterCode =
+`# ──────────────────────────────────────────────
+# Week 11 — Game Character Builder
+# ──────────────────────────────────────────────
+from abc import ABC, abstractmethod
+
+# ──────────────────────────────────────────────
+# TODO 1: Define ABSTRACT BASE CLASS — Character
+#         Use ABC and @abstractmethod
+#         Abstract methods: attack(), defend()
+#         Concrete: __init__, __str__, take_damage()
+# ──────────────────────────────────────────────
+
+class Character(ABC):
+    """Abstract base class for all game characters."""
+
+    character_count = 0   # class attribute
+
+    def __init__(self, name, hp, attack_power):
+        self.name = name
+        self.max_hp = int(hp)
+        self.hp = int(hp)
+        self.attack_power = int(attack_power)
+        Character.character_count += 1
+
+    def __str__(self):
+        return f"{self.name} [{self.__class__.__name__}] HP:{self.hp}/{self.max_hp} ATK:{self.attack_power}"
+
+    def take_damage(self, amount):
+        """Reduce HP (concrete method — shared by all)."""
+        self.hp = max(0, self.hp - amount)
+        return self.hp > 0   # True if still alive
+
+    @abstractmethod
+    def attack(self):
+        """Each subclass must define its own attack style."""
+        pass
+
+    @abstractmethod
+    def defend(self):
+        """Each subclass must define its own defense style."""
+        pass
+
+# ──────────────────────────────────────────────
+# TODO 2: Define WARRIOR subclass
+#         Inherits from Character
+#         Override attack() → "⚔️ Slash" (full power)
+#         Override defend() → "🛡️ Shield Block" (reduce 50%)
+#         Use super().__init__() to call parent constructor
+# ──────────────────────────────────────────────
+
+class Warrior(Character):
+    """Melee fighter — high HP, strong defense."""
+
+    def __init__(self, name, hp, attack_power):
+        super().__init__(name, hp, attack_power)
+        self.armor = 0.5   # 50% damage reduction
+
+    def attack(self):
+        damage = self.attack_power
+        return damage, f"⚔️ {self.name} slashes for {damage} damage!"
+
+    def defend(self):
+        block = int(self.attack_power * self.armor)
+        return block, f"🛡️ {self.name} raises shield, blocking {block} damage!"
+
+# ──────────────────────────────────────────────
+# TODO 3: Define MAGE subclass
+#         Override attack() → "🔥 Fireball" (1.5x power)
+#         Override defend() → "✨ Magic Barrier" (reduce 30%)
+#         Add mana attribute in __init__ using super()
+# ──────────────────────────────────────────────
+
+class Mage(Character):
+    """Magic caster — high attack, lower HP."""
+
+    def __init__(self, name, hp, attack_power):
+        super().__init__(name, hp, attack_power)
+        self.mana = 100
+
+    def attack(self):
+        damage = int(self.attack_power * 1.5)
+        self.mana = max(0, self.mana - 15)
+        return damage, f"🔥 {self.name} casts Fireball for {damage} damage! (Mana: {self.mana})"
+
+    def defend(self):
+        barrier = int(self.attack_power * 0.3)
+        return barrier, f"✨ {self.name} conjures Magic Barrier, absorbing {barrier} damage!"
+
+# ──────────────────────────────────────────────
+# TODO 4: Define ARCHER subclass
+#         Override attack() → "🏹 Arrow" (1.2x power)
+#         Override defend() → "💨 Dodge" (evade chance)
+#         Override __str__ to add arrows count
+# ──────────────────────────────────────────────
+
+class Archer(Character):
+    """Ranged fighter — balanced stats, high precision."""
+
+    def __init__(self, name, hp, attack_power):
+        super().__init__(name, hp, attack_power)
+        self.arrows = 20
+
+    def attack(self):
+        damage = int(self.attack_power * 1.2)
+        self.arrows = max(0, self.arrows - 1)
+        return damage, f"🏹 {self.name} fires arrow for {damage} damage! (Arrows: {self.arrows})"
+
+    def defend(self):
+        dodge = int(self.attack_power * 0.4)
+        return dodge, f"💨 {self.name} dodges, avoiding {dodge} damage!"
+
+    def __str__(self):
+        """Override parent __str__ to add arrow count."""
+        base = super().__str__()
+        return f"{base} 🏹:{self.arrows}"
+
+# ──────────────────────────────────────────────
+# TODO 5: Define HEALMIXIN — a mixin class
+#         Adds heal() method to any class
+#         Not a standalone class — designed to be mixed in
+# ──────────────────────────────────────────────
+
+class HealMixin:
+    """Mixin that adds healing ability to any character."""
+
+    heal_amount = 30   # class attribute
+
+    def heal(self):
+        """Restore HP up to max."""
+        before = self.hp
+        self.hp = min(self.max_hp, self.hp + HealMixin.heal_amount)
+        healed = self.hp - before
+        return healed, f"💚 {self.name} heals for {healed} HP! (HP: {self.hp}/{self.max_hp})"
+
+# ──────────────────────────────────────────────
+# TODO 6: Define PALADIN — MULTIPLE INHERITANCE
+#         Inherits from BOTH Warrior AND HealMixin
+#         Override attack() to call super() version + add holy
+#         Demonstrate MRO
+# ──────────────────────────────────────────────
+
+class Paladin(Warrior, HealMixin):
+    """Holy warrior — can fight AND heal (multiple inheritance)."""
+
+    def __init__(self, name, hp, attack_power):
+        super().__init__(name, hp, attack_power)
+        self.faith = 100
+
+    def attack(self):
+        """Override Warrior's attack — add holy damage."""
+        base_dmg, base_msg = super().attack()   # calls Warrior.attack()
+        holy_bonus = 15
+        total = base_dmg + holy_bonus
+        return total, f"✝️ {self.name} performs Holy Strike for {total} damage! (+{holy_bonus} holy)"
+
+    def defend(self):
+        """Use Warrior's shield block."""
+        return super().defend()
+
+# ──────────────────────────────────────────────
+# TODO 7: Define POLYMORPHIC functions
+#         battle(c1, c2) — works with ANY Character subclass
+#         show_party(list) — prints any mix of characters
+# ──────────────────────────────────────────────
+
+def battle_round(attacker, defender):
+    """Polymorphic battle — works with any Character subclass."""
+    dmg, atk_msg = attacker.attack()
+    block, def_msg = defender.defend()
+    net_damage = max(0, dmg - block)
+    alive = defender.take_damage(net_damage)
+    return dmg, block, net_damage, atk_msg, def_msg, alive
+
+def show_party(characters):
+    """Polymorphic display — works with any list of Characters."""
+    for c in characters:
+        print(f"  {c}")    # calls each class's own __str__
+
+# ──────────────────────────────────────────────
+# TODO 8: Use isinstance() and type checking
+# ──────────────────────────────────────────────
+
+def classify_character(char):
+    """Use isinstance to classify characters."""
+    roles = []
+    if isinstance(char, Warrior):
+        roles.append("Frontline")
+    if isinstance(char, Mage):
+        roles.append("Spellcaster")
+    if isinstance(char, Archer):
+        roles.append("Ranged")
+    if isinstance(char, HealMixin):
+        roles.append("Healer")
+    if isinstance(char, Character):
+        roles.append("Character")
+    return roles
+
+
+# ══════════════════════════════════════════════
+# MAIN PROGRAM — build and battle!
+# ══════════════════════════════════════════════
+
+_lines = DATA.strip().split("\\n")
+
+CLASS_MAP = {
+    "warrior": Warrior,
+    "mage": Mage,
+    "archer": Archer,
+    "paladin": Paladin,
+}
+
+print("=" * 55)
+print("🎮 GAME CHARACTER BUILDER")
+print("=" * 55)
+
+# ── Create characters using factory pattern ──
+
+print("\\nCREATING PARTY:")
+party = []
+for line in _lines:
+    parts = [p.strip() for p in line.split(",")]
+    name, cls_name, hp, atk = parts[0], parts[1].lower(), parts[2], parts[3]
+    CharClass = CLASS_MAP.get(cls_name, Warrior)
+    char = CharClass(name, hp, atk)
+    party.append(char)
+    print(f"  + {char}")
+
+print(f"\\n  Character.character_count = {Character.character_count}")
+
+# ── Demonstrate isinstance() ──
+
+print(f"\\n{'─' * 55}")
+print("TYPE CLASSIFICATION (isinstance):")
+for char in party:
+    roles = classify_character(char)
+    print(f"  {char.name:12s} → {roles}")
+
+# ── Demonstrate issubclass() ──
+
+print(f"\\n  issubclass(Paladin, Warrior) = {issubclass(Paladin, Warrior)}")
+print(f"  issubclass(Paladin, HealMixin) = {issubclass(Paladin, HealMixin)}")
+print(f"  issubclass(Mage, Character) = {issubclass(Mage, Character)}")
+
+# ── Show MRO for Paladin ──
+
+print(f"\\n{'─' * 55}")
+print("METHOD RESOLUTION ORDER (MRO):")
+print(f"  Paladin MRO: {[c.__name__ for c in Paladin.__mro__]}")
+print(f"  Warrior MRO: {[c.__name__ for c in Warrior.__mro__]}")
+
+# ── ABC demo: try to instantiate abstract class ──
+
+print(f"\\n{'─' * 55}")
+print("ABSTRACT BASE CLASS TEST:")
+try:
+    ghost = Character("Ghost", 100, 50)
+except TypeError as e:
+    print(f"  ✅ Cannot instantiate ABC: {type(e).__name__}")
+
+# ── Polymorphic battle ──
+
+print(f"\\n{'─' * 55}")
+print("⚔️ POLYMORPHIC BATTLE:")
+
+# Pick first two different-class characters
+fighters = party[:2] if len(party) >= 2 else party
+if len(fighters) >= 2:
+    c1, c2 = fighters[0], fighters[1]
+    print(f"\\n  {c1.name} vs {c2.name}!")
+    print()
+
+    for round_num in range(1, 4):
+        print(f"  ── Round {round_num} ──")
+        dmg, block, net, atk_msg, def_msg, alive = battle_round(c1, c2)
+        print(f"    {atk_msg}")
+        print(f"    {def_msg}")
+        print(f"    Net damage: {net} → {c2.name} HP: {c2.hp}/{c2.max_hp}")
+        if not alive:
+            print(f"    💀 {c2.name} has fallen!")
+            break
+        print()
+
+# ── Paladin healing demo ──
+
+print(f"\\n{'─' * 55}")
+print("💚 PALADIN HEALING (from HealMixin):")
+
+paladins = [c for c in party if isinstance(c, Paladin)]
+if paladins:
+    pal = paladins[0]
+    # Simulate some damage first
+    pal.take_damage(50)
+    print(f"  {pal.name} took 50 damage → HP: {pal.hp}/{pal.max_hp}")
+    healed, msg = pal.heal()
+    print(f"  {msg}")
+else:
+    print("  (No paladin in party — add one with class 'paladin')")
+
+# ── Polymorphic party display ──
+
+print(f"\\n{'─' * 55}")
+print("FULL PARTY (polymorphic __str__):")
+show_party(party)
+
+# ── Method overriding comparison ──
+
+print(f"\\n{'─' * 55}")
+print("ATTACK STYLES (method overriding):")
+for char in party:
+    _, msg = char.attack()
+    print(f"  {msg}")
+
+# ── Final stats ──
+
+print(f"\\n{'=' * 55}")
+
+warriors = [c for c in party if isinstance(c, Warrior)]
+mages = [c for c in party if isinstance(c, Mage)]
+archers = [c for c in party if isinstance(c, Archer)]
+healers = [c for c in party if isinstance(c, HealMixin)]
+
+total_hp = sum(c.max_hp for c in party)
+total_atk = sum(c.attack_power for c in party)
+avg_hp = total_hp / len(party) if party else 0
+
+if len(warriors) > len(mages) and len(warriors) > len(archers):
+    style = "⚔️ Brute Force — heavy on frontline fighters"
+elif len(mages) > len(warriors):
+    style = "🔥 Arcane Dominance — magic-heavy party"
+elif len(archers) > len(warriors):
+    style = "🏹 Precision Strike — ranged specialists"
+else:
+    style = "⚖️ Balanced — well-rounded party composition"
+
+print(f"PARTY PROFILE: {style}")
+print(f"  Warriors: {len(warriors)}  Mages: {len(mages)}  Archers: {len(archers)}")
+print(f"  Healers (HealMixin): {len(healers)}")
+print(f"  Total HP: {total_hp}  Avg HP: {avg_hp:.0f}")
+print(f"  Classes in hierarchy: Character → Warrior/Mage/Archer, Paladin(Warrior+HealMixin)")
+print("=" * 55)
+`;
+
+    // ── Wiring ──
+    function save(){
+      PhoneLabUI.saveDraft(WEEK, {
+        studentId: studentIdEl.value, nameSurname: nameSurnameEl.value,
+        email: emailEl.value, data: dataEl.value, code: codeEl.value,
+        output: outEl.textContent, savedAt: new Date().toISOString()
+      });
+      statusEl.textContent = "Draft saved.";
+    }
+
+    function submitViaForm(payload){
+      const form = document.createElement("form");
+      form.method = "POST"; form.action = SCRIPT_URL; form.target = "_blank";
+      const inp = document.createElement("input");
+      inp.type = "hidden"; inp.name = "payload"; inp.value = JSON.stringify(payload);
+      form.appendChild(inp); document.body.appendChild(form); form.submit(); form.remove();
+    }
+
+    const draft = PhoneLabUI.loadDraft(WEEK);
+    if (draft){
+      studentIdEl.value   = draft.studentId || "";
+      nameSurnameEl.value = draft.nameSurname || "";
+      emailEl.value       = draft.email || "";
+      dataEl.value        = draft.data || defaultData;
+      codeEl.value        = draft.code || starterCode;
+      outEl.textContent   = draft.output || 'Click "▶ Run Python" to see output here.';
+      statusEl.textContent = "Draft loaded.";
+    } else {
+      dataEl.value = defaultData;
+      codeEl.value = starterCode;
+    }
+
+    [studentIdEl, nameSurnameEl, emailEl, dataEl, codeEl].forEach(el =>
+      el.addEventListener("input", save));
+
+    document.getElementById("runBtn").addEventListener("click", async () => {
+      statusEl.textContent = "Loading Python runtime…";
+      const dataLiteral = JSON.stringify(dataEl.value);
+      const codeToRun = `DATA = ${dataLiteral}\n\n` + codeEl.value;
+      try {
+        const out = await PhoneLabUI.runPythonCapture(codeToRun);
+        outEl.textContent = out || "(no output)";
+        statusEl.textContent = "✅ Run complete.";
+        save();
+      } catch (e) {
+        outEl.textContent = String(e);
+        statusEl.textContent = "❌ Error — check your code.";
+        save();
+      }
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const studentId   = studentIdEl.value.trim();
+      const nameSurname = nameSurnameEl.value.trim();
+      const email       = emailEl.value.trim().toLowerCase();
+
+      if (!/^\d{6,12}$/.test(studentId))
+        { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
+      if (nameSurname.split(/\s+/).filter(Boolean).length < 2)
+        { statusEl.textContent = "Enter Name and Surname."; return; }
+      if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email))
+        { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
+
+      if (new Date() > DEADLINE) {
+        statusEl.textContent = "⏰ Submission closed — deadline was Apr 29, 23:59.";
+        return;
+      }
+
+      if (dataEl.value.replace(/\s+/g,"") === defaultData.replace(/\s+/g,"")) {
+        statusEl.textContent = "⚠️ Enter YOUR OWN characters — default values are not accepted.";
+        dataEl.style.outline = "2px solid #ef4444";
+        setTimeout(() => dataEl.style.outline = "", 3000);
+        return;
+      }
+
+      if (!outEl.textContent || outEl.textContent.includes("Click") || outEl.textContent === "(no output)")
+        { statusEl.textContent = "⚠️ Run your code first before submitting."; return; }
+
+      const payload = {
+        week: WEEK, studentId, nameSurname, email,
+        data: dataEl.value, code: codeEl.value, output: outEl.textContent,
+        userAgent: navigator.userAgent, submittedAt: new Date().toISOString()
+      };
+      statusEl.textContent = "Submitting…";
+      submitViaForm(payload);
+      PhoneLabUI.setStatus(WEEK, "submitted");
+    });
+
+    const helpModal = document.getElementById("helpModal");
+    document.getElementById("helpBtn").addEventListener("click", () => helpModal.style.display = "flex");
+    document.getElementById("closeHelpBtn").addEventListener("click", () => helpModal.style.display = "none");
+    helpModal.addEventListener("click", e => { if (e.target === helpModal) helpModal.style.display = "none"; });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") helpModal.style.display = "none"; });
+  </script>
+</body>
+</html>

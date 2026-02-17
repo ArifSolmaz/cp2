@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Week 13 — PhoneLab</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-title">Week 13 — Weather Station Data Hub</div>
+      <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1 style="margin:0 0 4px;">🌡️ Weather Station Data Hub</h1>
+      <p class="muted" style="margin:0 0 12px;">
+        Process one week of weather data through <b>every data format</b> —
+        CSV logging, JSON API, XML feed, SQLite storage, binary encoding,
+        validation, and a full ETL pipeline.
+      </p>
+
+      <div class="concepts-box">
+        <b>📚 Concepts you'll practice (from Week 13):</b>
+        <span class="concept-tag">csv.DictReader / DictWriter</span>
+        <span class="concept-tag">json.dumps / loads</span>
+        <span class="concept-tag">xml.etree.ElementTree</span>
+        <span class="concept-tag">sqlite3</span>
+        <span class="concept-tag">struct (binary)</span>
+        <span class="concept-tag">data validation</span>
+        <span class="concept-tag">ETL pipeline</span>
+      </div>
+
+      <!-- Step indicator -->
+      <div class="steps" style="margin-top:14px;">
+        <div class="step-pill active" data-step="1">① Identity</div>
+        <div class="step-pill" data-step="2">② Data</div>
+        <div class="step-pill" data-step="3">③ Code</div>
+        <div class="step-pill" data-step="4">④ Run & Submit</div>
+      </div>
+
+      <details open id="sec1">
+        <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
+        <div class="row">
+          <div>
+            <label>Student ID (6–12 digits)</label>
+            <input id="studentId" inputmode="numeric" minlength="6" maxlength="12"
+                   pattern="^\d{6,12}$" required placeholder="e.g., 202612345" />
+          </div>
+          <div>
+            <label>Name Surname</label>
+            <input id="nameSurname" required placeholder="e.g., Arif Solmaz" />
+          </div>
+        </div>
+        <label>Email (@istun.edu.tr)</label>
+        <input id="email" type="email"
+               pattern="^[A-Za-z0-9._%+-]+@istun\.edu\.tr$"
+               required placeholder="name@istun.edu.tr" />
+        <small class="hint">Draft auto-saves on this device.</small>
+      </details>
+
+      <hr />
+
+      <details open id="sec2">
+        <summary><b>2) Collect your data</b> <span class="muted">(from your weather app)</span></summary>
+
+        <div class="scenario-box">
+          <b>🔬 What to do:</b>
+          <ol class="muted" style="margin:6px 0 0; padding-left:20px;">
+            <li>Open your <b>weather app</b> (phone built-in, Google Weather, AccuWeather, etc.).</li>
+            <li>Record <b>7 days</b> of weather — past week or the 7-day forecast. For each day:
+              <ul style="margin-top:4px;">
+                <li><b>Date</b> (YYYY-MM-DD)</li>
+                <li><b>Temperature</b> (°C, e.g., 12.5)</li>
+                <li><b>Humidity</b> (%, e.g., 65)</li>
+                <li><b>Condition</b> (sunny, cloudy, rainy, snowy, stormy, foggy, partly-cloudy)</li>
+                <li><b>Wind speed</b> (km/h, e.g., 18)</li>
+              </ul>
+            </li>
+            <li>Format: <code>date,temp,humidity,condition,wind</code></li>
+          </ol>
+          <small>💡 <b>Tip:</b> Most weather apps show a 7-day forecast — just copy those numbers!</small>
+        </div>
+
+        <label>Your 7 days of weather (one per line)</label>
+        <textarea id="dataBox" spellcheck="false"></textarea>
+        <small class="hint">⚠️ Enter <b>your own</b> weather data. Default values will be rejected.</small>
+      </details>
+
+      <hr />
+
+      <details id="sec3">
+        <summary><b>3) Python code</b> <span class="muted">(multi-format data processing)</span></summary>
+        <label>Python — CSV → JSON → XML → SQLite → struct</label>
+        <textarea id="codeBox" class="codebox" spellcheck="false"></textarea>
+        <small class="hint">
+          Build a full <b>ETL pipeline</b> using <b>csv</b>, <b>json</b>,
+          <b>xml.etree</b>, <b>sqlite3</b>, <b>struct</b>, and validation.
+        </small>
+      </details>
+
+      <hr />
+
+      <details id="sec4">
+        <summary><b>4) Output</b> <span class="muted">(auto-captured after Run)</span></summary>
+        <pre id="output" class="out">Click "▶ Run Python" to see output here.</pre>
+      </details>
+
+      <div class="stickybar">
+        <div class="bar-actions">
+          <button id="helpBtn" class="helpbtn" type="button">?</button>
+          <button id="runBtn" type="button">▶ Run Python</button>
+          <button id="submitBtn" class="primary" type="button">Submit ✓</button>
+        </div>
+        <small id="status" class="hint"></small>
+      </div>
+    </section>
+  </main>
+
+  <!-- Help Modal -->
+  <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3>🌡️ Week 13 — Instructions</h3>
+      <ol class="muted">
+        <li><b>Identity:</b> Student ID (6–12 digits), Name Surname, <b>@istun.edu.tr</b> email.</li>
+        <li><b>Grab weather data:</b> Open your weather app, record 7 days of temp, humidity, condition, wind.</li>
+        <li><b>Enter data:</b> One day per line: <code>YYYY-MM-DD,temp,humidity,condition,wind</code></li>
+        <li><b>Write code:</b> Complete the TODOs — process data through CSV, JSON, XML, SQLite, and struct.</li>
+        <li><b>Run &amp; Submit.</b></li>
+      </ol>
+      <p class="muted" style="margin-top:10px;">
+        <b>📐 The engineering:</b> A real weather station stores readings in
+        CSV logs, publishes via JSON APIs, feeds XML to meteorological networks,
+        archives in SQLite databases, and transmits compact binary packets over
+        radio links. This assignment mirrors that exact data flow — you're building
+        a real data hub!
+      </p>
+      <div class="modal-actions">
+        <button id="closeHelpBtn" type="button">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/app.js"></script>
+  <script>
+    const WEEK = "week13";
+    const DEADLINE = new Date("2026-05-13T23:59:00+03:00");
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
+
+    const studentIdEl   = document.getElementById("studentId");
+    const nameSurnameEl = document.getElementById("nameSurname");
+    const emailEl       = document.getElementById("email");
+    const dataEl        = document.getElementById("dataBox");
+    const codeEl        = document.getElementById("codeBox");
+    const outEl         = document.getElementById("output");
+    const statusEl      = document.getElementById("status");
+
+    // ── Default data ──
+    const defaultData =
+`2026-02-09,8.5,72,cloudy,22
+2026-02-10,11.0,58,sunny,15
+2026-02-11,6.2,85,rainy,35
+2026-02-12,9.8,63,partly-cloudy,18
+2026-02-13,3.1,90,snowy,28
+2026-02-14,12.4,55,sunny,10
+2026-02-15,7.6,78,foggy,8`;
+
+    const starterCode =
+`# ──────────────────────────────────────────────
+# Week 13 — Weather Station Data Hub
+# ──────────────────────────────────────────────
+import csv
+import json
+import sqlite3
+import struct
+import io
+import xml.etree.ElementTree as ET
+
+# Valid conditions for validation
+VALID_CONDITIONS = {"sunny", "cloudy", "rainy", "snowy", "stormy", "foggy", "partly-cloudy"}
+
+# Parse raw input
+_lines = DATA.strip().split("\\n")
+
+print("=" * 55)
+print("🌡️ WEATHER STATION DATA HUB")
+print("=" * 55)
+
+# ──────────────────────────────────────────────
+# TODO 1: DATA VALIDATION
+#         Validate each row before processing
+#         Check: date format, temp range, humidity 0-100,
+#         valid condition, wind >= 0
+# ──────────────────────────────────────────────
+
+print("\\n📋 STEP 1: Data Validation")
+
+def validate_record(parts):
+    """Validate a weather record. Returns (is_valid, errors)."""
+    errors = []
+
+    if len(parts) != 5:
+        return False, ["Expected 5 fields"]
+
+    date, temp_s, hum_s, cond, wind_s = [p.strip() for p in parts]
+
+    # Date format check
+    if len(date) != 10 or date[4] != '-' or date[7] != '-':
+        errors.append("Invalid date format")
+
+    # Temperature range
+    try:
+        temp = float(temp_s)
+        if temp < -50 or temp > 60:
+            errors.append(f"Temp {temp} out of range [-50, 60]")
+    except ValueError:
+        errors.append("Temp not a number")
+
+    # Humidity 0-100
+    try:
+        hum = int(hum_s)
+        if hum < 0 or hum > 100:
+            errors.append(f"Humidity {hum} out of range [0, 100]")
+    except ValueError:
+        errors.append("Humidity not a number")
+
+    # Valid condition
+    if cond.lower() not in VALID_CONDITIONS:
+        errors.append(f"Unknown condition: {cond}")
+
+    # Wind >= 0
+    try:
+        wind = float(wind_s)
+        if wind < 0:
+            errors.append("Wind speed cannot be negative")
+    except ValueError:
+        errors.append("Wind not a number")
+
+    return len(errors) == 0, errors
+
+valid_records = []
+for i, line in enumerate(_lines):
+    parts = line.split(",")
+    ok, errs = validate_record(parts)
+    if ok:
+        valid_records.append([p.strip() for p in parts])
+        print(f"  Day {i+1}: ✅ Valid")
+    else:
+        print(f"  Day {i+1}: ❌ {', '.join(errs)}")
+
+print(f"  Validated: {len(valid_records)}/{len(_lines)} records passed")
+
+# ──────────────────────────────────────────────
+# TODO 2: CSV — Write and read back with DictWriter/DictReader
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("📄 STEP 2: CSV Format")
+
+FIELDS = ["date", "temp", "humidity", "condition", "wind"]
+
+# Write CSV using DictWriter
+csv_buffer = io.StringIO()
+writer = csv.DictWriter(csv_buffer, fieldnames=FIELDS)
+writer.writeheader()
+for rec in valid_records:
+    writer.writerow(dict(zip(FIELDS, rec)))
+
+csv_text = csv_buffer.getvalue()
+print(f"  Written {len(valid_records)} rows with DictWriter")
+print(f"  CSV size: {len(csv_text)} chars")
+
+# Read back with DictReader
+csv_buffer = io.StringIO(csv_text)
+reader = csv.DictReader(csv_buffer)
+csv_rows = list(reader)
+
+print(f"  Read back {len(csv_rows)} rows with DictReader")
+for row in csv_rows[:3]:
+    print(f"    {row['date']} | {row['temp']}°C | {row['humidity']}% | {row['condition']}")
+if len(csv_rows) > 3:
+    print(f"    ... ({len(csv_rows) - 3} more rows)")
+
+# ──────────────────────────────────────────────
+# TODO 3: JSON — Convert to API response format
+#         Use json.dumps with indent
+#         Use json.loads to parse back
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("📡 STEP 3: JSON Format (API style)")
+
+# Build JSON API response
+api_response = {
+    "station": "PhoneLab Weather",
+    "unit_system": "metric",
+    "record_count": len(csv_rows),
+    "forecast": []
+}
+
+for row in csv_rows:
+    api_response["forecast"].append({
+        "date": row["date"],
+        "temperature_c": float(row["temp"]),
+        "humidity_pct": int(row["humidity"]),
+        "condition": row["condition"],
+        "wind_kmh": float(row["wind"])
+    })
+
+# Serialize to JSON string
+json_str = json.dumps(api_response, indent=2)
+print(f"  JSON size: {len(json_str)} chars")
+
+# Parse back
+parsed = json.loads(json_str)
+print(f"  Parsed back: {parsed['record_count']} records")
+print(f"  Station: {parsed['station']}")
+print(f"  Sample: {json.dumps(parsed['forecast'][0])}")
+
+# ──────────────────────────────────────────────
+# TODO 4: XML — Create weather feed with ElementTree
+#         Build tree, add elements, convert to string
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("📰 STEP 4: XML Format (weather feed)")
+
+# Create XML tree
+root = ET.Element("WeatherFeed")
+root.set("station", "PhoneLab")
+root.set("units", "metric")
+
+for row in csv_rows:
+    day_elem = ET.SubElement(root, "Day")
+    day_elem.set("date", row["date"])
+
+    ET.SubElement(day_elem, "Temperature").text = row["temp"]
+    ET.SubElement(day_elem, "Humidity").text = row["humidity"]
+    ET.SubElement(day_elem, "Condition").text = row["condition"]
+    ET.SubElement(day_elem, "Wind").text = row["wind"]
+
+xml_str = ET.tostring(root, encoding="unicode")
+print(f"  XML size: {len(xml_str)} chars")
+
+# Parse XML back with XPath-style queries
+tree = ET.fromstring(xml_str)
+all_days = tree.findall("Day")
+print(f"  Parsed back: {len(all_days)} <Day> elements")
+
+# XPath query: find all temperatures
+temps_from_xml = [float(d.find("Temperature").text) for d in all_days]
+print(f"  Temps from XML: {temps_from_xml}")
+
+# Find rainy days using XML search
+rainy = [d.get("date") for d in all_days
+         if d.find("Condition").text in ("rainy", "stormy")]
+print(f"  Rainy/stormy days: {rainy if rainy else 'none'}")
+
+# ──────────────────────────────────────────────
+# TODO 5: SQLite — Create database, insert, query
+#         CREATE TABLE, INSERT, SELECT with WHERE,
+#         aggregate functions (AVG, MAX, MIN)
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("🗄️ STEP 5: SQLite Database")
+
+# Create in-memory database
+conn = sqlite3.connect(":memory:")
+cur = conn.cursor()
+
+# Create table
+cur.execute("""
+    CREATE TABLE weather (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        date TEXT NOT NULL,
+        temp REAL NOT NULL,
+        humidity INTEGER NOT NULL,
+        condition TEXT NOT NULL,
+        wind REAL NOT NULL
+    )
+""")
+
+# Insert data
+for row in csv_rows:
+    cur.execute(
+        "INSERT INTO weather (date, temp, humidity, condition, wind) VALUES (?, ?, ?, ?, ?)",
+        (row["date"], float(row["temp"]), int(row["humidity"]),
+         row["condition"], float(row["wind"]))
+    )
+conn.commit()
+print(f"  Inserted {cur.rowcount} rows (last), total: {len(csv_rows)}")
+
+# Aggregate queries
+cur.execute("SELECT AVG(temp), MIN(temp), MAX(temp) FROM weather")
+avg_t, min_t, max_t = cur.fetchone()
+print(f"  SQL AVG(temp): {avg_t:.1f}°C")
+print(f"  SQL MIN(temp): {min_t:.1f}°C  MAX(temp): {max_t:.1f}°C")
+
+# WHERE query
+cur.execute("SELECT date, temp, condition FROM weather WHERE humidity > 75")
+humid_days = cur.fetchall()
+print(f"  High humidity days (>75%): {len(humid_days)}")
+for d in humid_days:
+    print(f"    {d[0]} | {d[1]}°C | {d[2]}")
+
+# GROUP BY
+cur.execute("SELECT condition, COUNT(*), AVG(temp) FROM weather GROUP BY condition")
+groups = cur.fetchall()
+print(f"  By condition (GROUP BY):")
+for cond, cnt, avg in groups:
+    print(f"    {cond:15s} {cnt} day(s) avg {avg:.1f}°C")
+
+conn.close()
+
+# ──────────────────────────────────────────────
+# TODO 6: STRUCT — Pack weather into binary format
+#         Compact binary encoding for transmission
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("🔧 STEP 6: Binary Format (struct)")
+
+# Pack format: temp(float) + humidity(unsigned byte) + wind(float)
+# = 'f B f' = 4 + 1 + 4 = 9 bytes per record
+PACK_FORMAT = "fBf"
+record_size = struct.calcsize(PACK_FORMAT)
+print(f"  Pack format: '{PACK_FORMAT}' = {record_size} bytes/record")
+
+packed_data = b""
+for row in csv_rows:
+    packed = struct.pack(PACK_FORMAT,
+                         float(row["temp"]),
+                         int(row["humidity"]),
+                         float(row["wind"]))
+    packed_data += packed
+
+print(f"  Total binary: {len(packed_data)} bytes vs {len(csv_text)} chars CSV")
+print(f"  Compression : {len(packed_data)/len(csv_text)*100:.0f}% of CSV size")
+
+# Unpack and verify
+print(f"  Unpacked verification:")
+for i in range(min(3, len(csv_rows))):
+    offset = i * record_size
+    temp, hum, wind = struct.unpack(PACK_FORMAT,
+                                     packed_data[offset:offset + record_size])
+    print(f"    Record {i+1}: temp={temp:.1f}°C hum={hum}% wind={wind:.1f}km/h")
+
+# ──────────────────────────────────────────────
+# TODO 7: ETL PIPELINE — tie it all together
+#         Extract (parse) → Transform (enrich) →
+#         Load (multi-format export)
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("🔄 STEP 7: ETL Pipeline Summary")
+
+def classify_weather(temp, condition):
+    """Transform step: classify weather severity."""
+    if condition in ("stormy", "snowy") or temp < 0:
+        return "SEVERE"
+    elif condition == "rainy" or temp < 5:
+        return "MODERATE"
+    else:
+        return "MILD"
+
+enriched = []
+for row in csv_rows:
+    severity = classify_weather(float(row["temp"]), row["condition"])
+    enriched.append({**row, "severity": severity})
+
+# Pipeline report
+severity_counts = {}
+for rec in enriched:
+    s = rec["severity"]
+    severity_counts[s] = severity_counts.get(s, 0) + 1
+
+print("  Pipeline: RAW → VALIDATE → CSV → JSON → XML → SQLite → Binary")
+print(f"  Records processed: {len(enriched)}")
+print(f"  Severity classification:")
+for sev, cnt in sorted(severity_counts.items()):
+    bar = "█" * (cnt * 3)
+    print(f"    {sev:10s} {cnt} day(s) {bar}")
+
+# ──────────────────────────────────────────────
+# FORMAT COMPARISON & VERDICT
+# ──────────────────────────────────────────────
+
+print(f"\\n{'=' * 55}")
+print("FORMAT COMPARISON:")
+print(f"  CSV    : {len(csv_text):5d} chars — tabular, human-readable")
+print(f"  JSON   : {len(json_str):5d} chars — nested, API-ready")
+print(f"  XML    : {len(xml_str):5d} chars — tagged, interoperable")
+print(f"  SQLite : in-memory   — queryable, indexed")
+print(f"  Binary : {len(packed_data):5d} bytes — compact, fast")
+
+avg_temp = sum(float(r["temp"]) for r in csv_rows) / len(csv_rows)
+avg_wind = sum(float(r["wind"]) for r in csv_rows) / len(csv_rows)
+
+if avg_temp >= 20:
+    forecast = "☀️ Warm week — enjoy the sunshine!"
+elif avg_temp >= 10:
+    forecast = "🌤️ Mild week — pleasant conditions"
+elif avg_temp >= 0:
+    forecast = "🧥 Cool week — dress in layers"
+else:
+    forecast = "🥶 Cold week — bundle up!"
+
+print(f"\\nWEEKLY FORECAST: {forecast}")
+print(f"  Avg temp : {avg_temp:.1f}°C")
+print(f"  Avg wind : {avg_wind:.1f} km/h")
+print(f"  Formats  : 5 (CSV, JSON, XML, SQLite, Binary)")
+print(f"  Pipeline : 7 stages completed")
+print("=" * 55)
+`;
+
+    // ── Wiring ──
+    function save(){
+      PhoneLabUI.saveDraft(WEEK, {
+        studentId: studentIdEl.value, nameSurname: nameSurnameEl.value,
+        email: emailEl.value, data: dataEl.value, code: codeEl.value,
+        output: outEl.textContent, savedAt: new Date().toISOString()
+      });
+      statusEl.textContent = "Draft saved.";
+    }
+
+    function submitViaForm(payload){
+      const form = document.createElement("form");
+      form.method = "POST"; form.action = SCRIPT_URL; form.target = "_blank";
+      const inp = document.createElement("input");
+      inp.type = "hidden"; inp.name = "payload"; inp.value = JSON.stringify(payload);
+      form.appendChild(inp); document.body.appendChild(form); form.submit(); form.remove();
+    }
+
+    const draft = PhoneLabUI.loadDraft(WEEK);
+    if (draft){
+      studentIdEl.value   = draft.studentId || "";
+      nameSurnameEl.value = draft.nameSurname || "";
+      emailEl.value       = draft.email || "";
+      dataEl.value        = draft.data || defaultData;
+      codeEl.value        = draft.code || starterCode;
+      outEl.textContent   = draft.output || 'Click "▶ Run Python" to see output here.';
+      statusEl.textContent = "Draft loaded.";
+    } else {
+      dataEl.value = defaultData;
+      codeEl.value = starterCode;
+    }
+
+    [studentIdEl, nameSurnameEl, emailEl, dataEl, codeEl].forEach(el =>
+      el.addEventListener("input", save));
+
+    document.getElementById("runBtn").addEventListener("click", async () => {
+      statusEl.textContent = "Loading Python runtime…";
+      const dataLiteral = JSON.stringify(dataEl.value);
+      const codeToRun = `DATA = ${dataLiteral}\n\n` + codeEl.value;
+      try {
+        const out = await PhoneLabUI.runPythonCapture(codeToRun);
+        outEl.textContent = out || "(no output)";
+        statusEl.textContent = "✅ Run complete.";
+        save();
+      } catch (e) {
+        outEl.textContent = String(e);
+        statusEl.textContent = "❌ Error — check your code.";
+        save();
+      }
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const studentId   = studentIdEl.value.trim();
+      const nameSurname = nameSurnameEl.value.trim();
+      const email       = emailEl.value.trim().toLowerCase();
+
+      if (!/^\d{6,12}$/.test(studentId))
+        { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
+      if (nameSurname.split(/\s+/).filter(Boolean).length < 2)
+        { statusEl.textContent = "Enter Name and Surname."; return; }
+      if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email))
+        { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
+
+      if (new Date() > DEADLINE) {
+        statusEl.textContent = "⏰ Submission closed — deadline was May 13, 23:59.";
+        return;
+      }
+
+      if (dataEl.value.replace(/\s+/g,"") === defaultData.replace(/\s+/g,"")) {
+        statusEl.textContent = "⚠️ Enter YOUR OWN weather data — default values are not accepted.";
+        dataEl.style.outline = "2px solid #ef4444";
+        setTimeout(() => dataEl.style.outline = "", 3000);
+        return;
+      }
+
+      if (!outEl.textContent || outEl.textContent.includes("Click") || outEl.textContent === "(no output)")
+        { statusEl.textContent = "⚠️ Run your code first before submitting."; return; }
+
+      const payload = {
+        week: WEEK, studentId, nameSurname, email,
+        data: dataEl.value, code: codeEl.value, output: outEl.textContent,
+        userAgent: navigator.userAgent, submittedAt: new Date().toISOString()
+      };
+      statusEl.textContent = "Submitting…";
+      submitViaForm(payload);
+      PhoneLabUI.setStatus(WEEK, "submitted");
+    });
+
+    const helpModal = document.getElementById("helpModal");
+    document.getElementById("helpBtn").addEventListener("click", () => helpModal.style.display = "flex");
+    document.getElementById("closeHelpBtn").addEventListener("click", () => helpModal.style.display = "none");
+    helpModal.addEventListener("click", e => { if (e.target === helpModal) helpModal.style.display = "none"; });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") helpModal.style.display = "none"; });
+  </script>
+</body>
+</html>

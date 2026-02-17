@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Week 14 — PhoneLab</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-title">Week 14 — Environmental Monitor (Final)</div>
+      <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1 style="margin:0 0 4px;">🌿 Environmental Monitor — Final Project</h1>
+      <p class="muted" style="margin:0 0 12px;">
+        Build a <b>complete sensor monitoring system</b> that integrates
+        <em>every concept</em> from the entire course — OOP, inheritance,
+        file I/O, data formats, error handling, modules, and more.
+      </p>
+
+      <div class="concepts-box">
+        <b>📚 Capstone — integrates ALL 14 weeks:</b>
+        <span class="concept-tag">ABC / inheritance / polymorphism</span>
+        <span class="concept-tag">factory / observer patterns</span>
+        <span class="concept-tag">CSV / JSON / SQLite storage</span>
+        <span class="concept-tag">statistics / analytics</span>
+        <span class="concept-tag">try/except / custom exceptions</span>
+        <span class="concept-tag">dataclasses / enum / modules</span>
+      </div>
+
+      <!-- Step indicator -->
+      <div class="steps" style="margin-top:14px;">
+        <div class="step-pill active" data-step="1">① Identity</div>
+        <div class="step-pill" data-step="2">② Data</div>
+        <div class="step-pill" data-step="3">③ Code</div>
+        <div class="step-pill" data-step="4">④ Run & Submit</div>
+      </div>
+
+      <details open id="sec1">
+        <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
+        <div class="row">
+          <div>
+            <label>Student ID (6–12 digits)</label>
+            <input id="studentId" inputmode="numeric" minlength="6" maxlength="12"
+                   pattern="^\d{6,12}$" required placeholder="e.g., 202612345" />
+          </div>
+          <div>
+            <label>Name Surname</label>
+            <input id="nameSurname" required placeholder="e.g., Arif Solmaz" />
+          </div>
+        </div>
+        <label>Email (@istun.edu.tr)</label>
+        <input id="email" type="email"
+               pattern="^[A-Za-z0-9._%+-]+@istun\.edu\.tr$"
+               required placeholder="name@istun.edu.tr" />
+        <small class="hint">Draft auto-saves on this device.</small>
+      </details>
+
+      <hr />
+
+      <details open id="sec2">
+        <summary><b>2) Collect your data</b> <span class="muted">(4 sensors × 5 readings)</span></summary>
+
+        <div class="scenario-box">
+          <b>🔬 What to do:</b>
+          <ol class="muted" style="margin:6px 0 0; padding-left:20px;">
+            <li>Use your phone to take <b>5 readings</b> from <b>4 sensors</b>:
+              <ul style="margin-top:4px;">
+                <li><b>Light</b> — lux meter app (0–100000 lux)</li>
+                <li><b>Sound</b> — dB meter app (0–130 dB)</li>
+                <li><b>Temperature</b> — weather app or thermometer (−40–60 °C)</li>
+                <li><b>Pressure</b> — barometer app or weather app (800–1100 hPa)</li>
+              </ul>
+            </li>
+            <li>Take readings at <b>5 different times or locations</b> (morning, afternoon, indoor, outdoor, etc.).</li>
+            <li>Format: <code>sensor_type,reading1,reading2,reading3,reading4,reading5</code></li>
+            <li>Exactly <b>4 lines</b> — one per sensor type.</li>
+          </ol>
+          <small>💡 <b>Tip:</b> If you don't have a barometer app, use weather.com for your city's pressure value and vary it slightly (±5) across readings.</small>
+        </div>
+
+        <label>Your 4 sensor rows (5 readings each)</label>
+        <textarea id="dataBox" spellcheck="false"></textarea>
+        <small class="hint">⚠️ Enter <b>your own</b> readings. Default values will be rejected.</small>
+      </details>
+
+      <hr />
+
+      <details id="sec3">
+        <summary><b>3) Python code</b> <span class="muted">(full monitoring system)</span></summary>
+        <label>Python — complete sensor monitoring system</label>
+        <textarea id="codeBox" class="codebox" spellcheck="false"></textarea>
+        <small class="hint">
+          This integrates <b>everything</b> — OOP, inheritance, file I/O,
+          data formats, error handling, modules, patterns, and analytics.
+        </small>
+      </details>
+
+      <hr />
+
+      <details id="sec4">
+        <summary><b>4) Output</b> <span class="muted">(auto-captured after Run)</span></summary>
+        <pre id="output" class="out">Click "▶ Run Python" to see output here.</pre>
+      </details>
+
+      <div class="stickybar">
+        <div class="bar-actions">
+          <button id="helpBtn" class="helpbtn" type="button">?</button>
+          <button id="runBtn" type="button">▶ Run Python</button>
+          <button id="submitBtn" class="primary" type="button">Submit ✓</button>
+        </div>
+        <small id="status" class="hint"></small>
+      </div>
+    </section>
+  </main>
+
+  <!-- Help Modal -->
+  <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3>🌿 Week 14 — Final Project Instructions</h3>
+      <ol class="muted">
+        <li><b>Identity:</b> Student ID, Name Surname, @istun.edu.tr email.</li>
+        <li><b>Collect data:</b> 4 sensors × 5 readings. Use phone sensor apps for light (lux), sound (dB), temperature (°C), and pressure (hPa).</li>
+        <li><b>Enter data:</b> 4 lines: <code>sensor_type,r1,r2,r3,r4,r5</code></li>
+        <li><b>Code:</b> Complete the TODOs — build a full monitoring system using ALL course concepts.</li>
+        <li><b>Run &amp; Submit.</b></li>
+      </ol>
+      <p class="muted" style="margin-top:10px;">
+        <b>📐 The engineering:</b> This final project mirrors a real environmental
+        monitoring station. Industrial systems use the exact same architecture:
+        sensor abstraction (ABC), multi-format storage (CSV for logs, JSON for
+        config, SQLite for archives), analytics engines, alert systems with
+        observers, and factory patterns for sensor instantiation. You're building
+        a production-grade system in miniature!
+      </p>
+      <div class="modal-actions">
+        <button id="closeHelpBtn" type="button">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/app.js"></script>
+  <script>
+    const WEEK = "week14";
+    const DEADLINE = new Date("2026-05-20T23:59:00+03:00");
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
+
+    const studentIdEl   = document.getElementById("studentId");
+    const nameSurnameEl = document.getElementById("nameSurname");
+    const emailEl       = document.getElementById("email");
+    const dataEl        = document.getElementById("dataBox");
+    const codeEl        = document.getElementById("codeBox");
+    const outEl         = document.getElementById("output");
+    const statusEl      = document.getElementById("status");
+
+    // ── Default data ──
+    const defaultData =
+`light,450,12000,320,85,5200
+sound,42,68,35,71,55
+temperature,22.5,28.1,19.8,31.2,24.6
+pressure,1013,1008,1015,1005,1011`;
+
+    const starterCode =
+`# ══════════════════════════════════════════════
+# Week 14 — Environmental Monitor (Final Project)
+# ══════════════════════════════════════════════
+#
+# This capstone integrates ALL 14 weeks:
+#   Wk1: variables        Wk8:  file I/O
+#   Wk2: if/elif/else     Wk9:  exceptions
+#   Wk3: for loops        Wk10: OOP / dunders
+#   Wk4: functions        Wk11: inheritance / ABC
+#   Wk5: lists            Wk12: modules / stdlib
+#   Wk6: dicts / sets     Wk13: CSV/JSON/XML/SQLite
+#   Wk7: strings          Wk14: full system integration
+# ══════════════════════════════════════════════
+
+# ── Imports (Week 12: modules & import styles) ──
+from abc import ABC, abstractmethod          # Week 11
+from dataclasses import dataclass, field     # Week 12
+from enum import Enum                        # Week 12
+from collections import defaultdict          # Week 12
+from itertools import combinations           # Week 12
+from functools import reduce                 # Week 12
+import statistics                            # Week 12
+import csv                                   # Week 13
+import json                                  # Week 13
+import sqlite3                               # Week 13
+import io                                    # Week 8
+import re                                    # Week 12
+import math                                  # Week 12
+
+
+# ══════════════════════════════════════════════
+# LAYER 1: CUSTOM EXCEPTIONS (Week 9)
+# ══════════════════════════════════════════════
+
+class SensorError(Exception):
+    """Base exception for sensor system."""
+    pass
+
+class SensorRangeError(SensorError):
+    def __init__(self, sensor_id, value, valid_range):
+        self.sensor_id = sensor_id
+        self.value = value
+        self.valid_range = valid_range
+        super().__init__(f"{sensor_id}: {value} outside {valid_range}")
+
+class SensorOfflineError(SensorError):
+    def __init__(self, sensor_id):
+        super().__init__(f"{sensor_id} is offline")
+
+
+# ══════════════════════════════════════════════
+# LAYER 2: ENUMS & DATACLASSES (Week 12)
+# ══════════════════════════════════════════════
+
+class SensorType(Enum):
+    LIGHT = "light"
+    SOUND = "sound"
+    TEMPERATURE = "temperature"
+    PRESSURE = "pressure"
+
+class AlertLevel(Enum):
+    INFO = 1
+    WARNING = 2
+    CRITICAL = 3
+
+@dataclass
+class Reading:
+    sensor_id: str
+    sensor_type: SensorType
+    value: float
+    unit: str
+    index: int
+
+    def __str__(self):
+        return f"[{self.sensor_id}] {self.value:.1f} {self.unit}"
+
+@dataclass
+class Alert:
+    level: AlertLevel
+    sensor_id: str
+    message: str
+
+
+# ══════════════════════════════════════════════
+# LAYER 3: SENSOR HIERARCHY (Weeks 10-11)
+#   ABC, inheritance, super(), override,
+#   @property, @staticmethod, @classmethod,
+#   __str__, __repr__, __lt__, __eq__
+# ══════════════════════════════════════════════
+
+class BaseSensor(ABC):
+    """Abstract base class for all sensors."""
+
+    sensor_count = 0   # class attribute (Week 10)
+
+    def __init__(self, sensor_id):
+        self.sensor_id = sensor_id
+        self._readings = []       # list (Week 5)
+        self._active = True
+        BaseSensor.sensor_count += 1
+
+    @property
+    @abstractmethod
+    def sensor_type(self):
+        pass
+
+    @property
+    @abstractmethod
+    def unit(self):
+        pass
+
+    @property
+    @abstractmethod
+    def valid_range(self):
+        pass
+
+    def add_reading(self, value):
+        """Validate and store a reading (Week 9: exceptions)."""
+        low, high = self.valid_range
+        if value < low or value > high:
+            raise SensorRangeError(self.sensor_id, value, self.valid_range)
+        reading = Reading(self.sensor_id, self.sensor_type,
+                          value, self.unit, len(self._readings))
+        self._readings.append(reading)
+        return reading
+
+    @abstractmethod
+    def classify(self, value):
+        """Each sensor classifies its readings differently (polymorphism)."""
+        pass
+
+    def get_stats(self):
+        """Compute stats using statistics module (Week 12)."""
+        if not self._readings:
+            return {}
+        vals = [r.value for r in self._readings]
+        return {
+            "count": len(vals),
+            "mean": round(statistics.mean(vals), 2),
+            "median": round(statistics.median(vals), 2),
+            "stdev": round(statistics.stdev(vals), 2) if len(vals) > 1 else 0,
+            "min": min(vals),
+            "max": max(vals),
+        }
+
+    # Dunder methods (Week 10)
+    def __str__(self):
+        status = "Active" if self._active else "Offline"
+        return f"{self.sensor_type.value:12s} {self.sensor_id} [{status}] readings:{len(self._readings)}"
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.sensor_id}')"
+
+    def __lt__(self, other):
+        """Compare by reading count."""
+        return len(self._readings) < len(other._readings)
+
+    def __eq__(self, other):
+        return self.sensor_id == other.sensor_id
+
+    def __len__(self):
+        return len(self._readings)
+
+    @staticmethod
+    def format_value(value, unit):
+        return f"{value:.1f} {unit}"
+
+    @classmethod
+    def create(cls, sensor_id):
+        return cls(sensor_id)
+
+
+# ── Concrete sensor subclasses (Week 11: inheritance + override) ──
+
+class LightSensor(BaseSensor):
+    @property
+    def sensor_type(self): return SensorType.LIGHT
+    @property
+    def unit(self): return "lux"
+    @property
+    def valid_range(self): return (0, 100000)
+
+    def classify(self, value):
+        if value < 50: return "dark"
+        elif value < 500: return "dim"
+        elif value < 10000: return "bright"
+        else: return "intense"
+
+class SoundSensor(BaseSensor):
+    @property
+    def sensor_type(self): return SensorType.SOUND
+    @property
+    def unit(self): return "dB"
+    @property
+    def valid_range(self): return (0, 130)
+
+    def classify(self, value):
+        if value < 40: return "quiet"
+        elif value < 60: return "moderate"
+        elif value < 85: return "loud"
+        else: return "dangerous"
+
+class TemperatureSensor(BaseSensor):
+    @property
+    def sensor_type(self): return SensorType.TEMPERATURE
+    @property
+    def unit(self): return "°C"
+    @property
+    def valid_range(self): return (-40, 60)
+
+    def classify(self, value):
+        if value < 0: return "freezing"
+        elif value < 15: return "cold"
+        elif value < 25: return "comfortable"
+        else: return "hot"
+
+class PressureSensor(BaseSensor):
+    @property
+    def sensor_type(self): return SensorType.PRESSURE
+    @property
+    def unit(self): return "hPa"
+    @property
+    def valid_range(self): return (800, 1100)
+
+    def classify(self, value):
+        if value < 1000: return "low"
+        elif value < 1020: return "normal"
+        else: return "high"
+
+
+# ══════════════════════════════════════════════
+# LAYER 4: FACTORY PATTERN (Week 11)
+# ══════════════════════════════════════════════
+
+SENSOR_FACTORY = {
+    "light": LightSensor,
+    "sound": SoundSensor,
+    "temperature": TemperatureSensor,
+    "pressure": PressureSensor,
+}
+
+def create_sensor(sensor_type_str, sensor_id):
+    """Factory function — create sensor by type string."""
+    cls = SENSOR_FACTORY.get(sensor_type_str.lower())
+    if cls is None:
+        raise SensorError(f"Unknown sensor type: {sensor_type_str}")
+    return cls(sensor_id)
+
+
+# ══════════════════════════════════════════════
+# LAYER 5: STORAGE BACKENDS (Week 13)
+#   ABC for storage + CSV, JSON, SQLite implementations
+# ══════════════════════════════════════════════
+
+class StorageBackend(ABC):
+    @abstractmethod
+    def save(self, readings):
+        pass
+    @abstractmethod
+    def load(self):
+        pass
+
+class CSVStorage(StorageBackend):
+    def __init__(self):
+        self._buffer = io.StringIO()
+
+    def save(self, readings):
+        self._buffer = io.StringIO()
+        writer = csv.DictWriter(self._buffer,
+                                fieldnames=["sensor_id","type","value","unit","index"])
+        writer.writeheader()
+        for r in readings:
+            writer.writerow({
+                "sensor_id": r.sensor_id, "type": r.sensor_type.value,
+                "value": r.value, "unit": r.unit, "index": r.index
+            })
+        return self._buffer.getvalue()
+
+    def load(self):
+        self._buffer.seek(0)
+        return list(csv.DictReader(self._buffer))
+
+class JSONStorage(StorageBackend):
+    def __init__(self):
+        self._data = ""
+
+    def save(self, readings):
+        data = [{
+            "sensor_id": r.sensor_id, "type": r.sensor_type.value,
+            "value": r.value, "unit": r.unit, "index": r.index
+        } for r in readings]
+        self._data = json.dumps({"readings": data, "count": len(data)}, indent=2)
+        return self._data
+
+    def load(self):
+        return json.loads(self._data)
+
+class SQLiteStorage(StorageBackend):
+    def __init__(self):
+        self.conn = sqlite3.connect(":memory:")
+        self.conn.execute("""CREATE TABLE readings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            sensor_id TEXT, type TEXT, value REAL, unit TEXT, idx INTEGER
+        )""")
+
+    def save(self, readings):
+        for r in readings:
+            self.conn.execute(
+                "INSERT INTO readings (sensor_id,type,value,unit,idx) VALUES (?,?,?,?,?)",
+                (r.sensor_id, r.sensor_type.value, r.value, r.unit, r.index))
+        self.conn.commit()
+        return f"{len(readings)} rows inserted"
+
+    def load(self):
+        cur = self.conn.execute("SELECT * FROM readings")
+        return cur.fetchall()
+
+    def query(self, sql):
+        return self.conn.execute(sql).fetchall()
+
+    def close(self):
+        self.conn.close()
+
+
+# ══════════════════════════════════════════════
+# LAYER 6: OBSERVER PATTERN — Alert System (Week 11)
+# ══════════════════════════════════════════════
+
+class AlertManager:
+    """Observer pattern — subscribers get notified of alerts."""
+
+    THRESHOLDS = {
+        SensorType.LIGHT: (50, 50000),
+        SensorType.SOUND: (0, 85),
+        SensorType.TEMPERATURE: (0, 35),
+        SensorType.PRESSURE: (990, 1030),
+    }
+
+    def __init__(self):
+        self._alerts = []
+        self._subscribers = []     # observer list
+
+    def subscribe(self, callback):
+        """Register an observer."""
+        self._subscribers.append(callback)
+
+    def _notify(self, alert):
+        """Notify all subscribers."""
+        for callback in self._subscribers:
+            callback(alert)
+
+    def check_reading(self, reading):
+        """Check if a reading triggers an alert."""
+        low, high = self.THRESHOLDS.get(reading.sensor_type, (None, None))
+        if low is None:
+            return
+        if reading.value < low:
+            alert = Alert(AlertLevel.WARNING, reading.sensor_id,
+                          f"{reading.value:.1f} {reading.unit} below threshold {low}")
+            self._alerts.append(alert)
+            self._notify(alert)
+        elif reading.value > high:
+            alert = Alert(AlertLevel.CRITICAL, reading.sensor_id,
+                          f"{reading.value:.1f} {reading.unit} above threshold {high}")
+            self._alerts.append(alert)
+            self._notify(alert)
+
+    @property
+    def alert_count(self):
+        return len(self._alerts)
+
+    @property
+    def alerts(self):
+        return list(self._alerts)
+
+
+# ══════════════════════════════════════════════
+# LAYER 7: MAIN APPLICATION
+# ══════════════════════════════════════════════
+
+# Parse input data (Week 7: string methods)
+_lines = DATA.strip().split("\\n")
+
+print("=" * 58)
+print("🌿 ENVIRONMENTAL MONITOR — FINAL PROJECT")
+print("=" * 58)
+
+# ── Step 1: Create sensors via factory (Week 11) ──
+
+print("\\n📡 SENSOR INITIALIZATION (factory pattern):")
+sensors = {}
+all_readings = []
+
+for line in _lines:
+    parts = [p.strip() for p in line.split(",")]
+    stype = parts[0].lower()
+    values = parts[1:]
+
+    # Factory creates the right subclass
+    sensor_id = f"{stype.upper()}_001"
+    try:
+        sensor = create_sensor(stype, sensor_id)
+        sensors[stype] = sensor
+        print(f"  ✅ Created {repr(sensor)}")
+    except SensorError as e:
+        print(f"  ❌ {e}")
+        continue
+
+    # Add readings with validation (Week 9: try/except)
+    for val_str in values:
+        try:
+            value = float(val_str)
+            reading = sensor.add_reading(value)
+            all_readings.append(reading)
+        except (ValueError, SensorRangeError) as e:
+            print(f"    ⚠️ Skipped: {e}")
+
+print(f"\\n  BaseSensor.sensor_count = {BaseSensor.sensor_count}")
+print(f"  Total readings: {len(all_readings)}")
+
+# ── Step 2: Alert system with observer (Week 11) ──
+
+print(f"\\n{'─' * 58}")
+print("🚨 ALERT SYSTEM (observer pattern):")
+
+alert_log = []
+
+def log_alert(alert):
+    """Observer callback — logs alerts."""
+    alert_log.append(f"  [{alert.level.name}] {alert.sensor_id}: {alert.message}")
+
+alert_mgr = AlertManager()
+alert_mgr.subscribe(log_alert)    # register observer
+
+for reading in all_readings:
+    alert_mgr.check_reading(reading)
+
+if alert_log:
+    for msg in alert_log:
+        print(msg)
+    print(f"  Total alerts: {alert_mgr.alert_count}")
+else:
+    print("  ✅ No alerts — all readings within thresholds")
+
+# ── Step 3: Polymorphic analysis (Weeks 10-11) ──
+
+print(f"\\n{'─' * 58}")
+print("📊 SENSOR STATISTICS (polymorphism + statistics module):")
+
+for stype, sensor in sensors.items():
+    stats = sensor.get_stats()
+    print(f"\\n  {sensor}")
+    print(f"    Mean: {stats['mean']} {sensor.unit}  "
+          f"Median: {stats['median']}  StDev: {stats['stdev']}")
+    print(f"    Range: [{stats['min']}, {stats['max']}] {sensor.unit}")
+
+    # Polymorphic classify (each sensor classifies differently)
+    classifications = defaultdict(int)   # Week 12: collections
+    for r in sensor._readings:
+        label = sensor.classify(r.value)
+        classifications[label] += 1
+    class_str = ", ".join(f"{k}:{v}" for k, v in classifications.items())
+    print(f"    Classifications: {class_str}")
+
+# ── Step 4: Cross-sensor correlation (Week 12: itertools) ──
+
+print(f"\\n{'─' * 58}")
+print("🔗 CROSS-SENSOR CORRELATIONS (itertools.combinations):")
+
+sensor_list = list(sensors.values())
+for s1, s2 in combinations(sensor_list, 2):
+    vals1 = [r.value for r in s1._readings]
+    vals2 = [r.value for r in s2._readings]
+    n = min(len(vals1), len(vals2))
+    if n < 2:
+        continue
+    vals1, vals2 = vals1[:n], vals2[:n]
+    m1, m2 = statistics.mean(vals1), statistics.mean(vals2)
+    num = sum((a - m1) * (b - m2) for a, b in zip(vals1, vals2))
+    d1 = math.sqrt(sum((a - m1) ** 2 for a in vals1))
+    d2 = math.sqrt(sum((b - m2) ** 2 for b in vals2))
+    r = num / (d1 * d2) if d1 and d2 else 0
+    if abs(r) >= 0.4:
+        tag = "📈 positive" if r > 0 else "📉 negative"
+        print(f"  {s1.sensor_type.value:12s} × {s2.sensor_type.value:12s}  r={r:+.2f} {tag}")
+
+# ── Step 5: Multi-format storage (Week 13) ──
+
+print(f"\\n{'─' * 58}")
+print("💾 MULTI-FORMAT STORAGE:")
+
+# CSV
+csv_store = CSVStorage()
+csv_text = csv_store.save(all_readings)
+csv_rows = csv_store.load()
+print(f"  CSV    : {len(csv_text):5d} chars, {len(csv_rows)} rows read back")
+
+# JSON
+json_store = JSONStorage()
+json_text = json_store.save(all_readings)
+json_data = json_store.load()
+print(f"  JSON   : {len(json_text):5d} chars, {json_data['count']} records parsed")
+
+# SQLite
+db = SQLiteStorage()
+db_result = db.save(all_readings)
+print(f"  SQLite : {db_result}")
+
+# SQL aggregate queries
+for stype in sensors:
+    rows = db.query(
+        f"SELECT AVG(value), MIN(value), MAX(value) FROM readings WHERE type='{stype}'"
+    )
+    if rows and rows[0][0]:
+        avg, mn, mx = rows[0]
+        print(f"    SQL {stype:12s}: AVG={avg:.1f} MIN={mn:.1f} MAX={mx:.1f}")
+
+db.close()
+
+# ── Step 6: isinstance / type checking (Week 11) ──
+
+print(f"\\n{'─' * 58}")
+print("🔍 TYPE SYSTEM VERIFICATION:")
+
+for sensor in sensors.values():
+    checks = []
+    if isinstance(sensor, BaseSensor): checks.append("BaseSensor")
+    if isinstance(sensor, LightSensor): checks.append("LightSensor")
+    if isinstance(sensor, SoundSensor): checks.append("SoundSensor")
+    if isinstance(sensor, TemperatureSensor): checks.append("TemperatureSensor")
+    if isinstance(sensor, PressureSensor): checks.append("PressureSensor")
+    print(f"  {sensor.sensor_id:18s} isinstance: {checks}")
+
+print(f"  issubclass(LightSensor, BaseSensor)  = {issubclass(LightSensor, BaseSensor)}")
+print(f"  issubclass(StorageBackend, ABC)       = {issubclass(StorageBackend, ABC)}")
+
+# ── Step 7: Final system report ──
+
+print(f"\\n{'═' * 58}")
+
+# Compute overall environment quality
+temp_sensor = sensors.get("temperature")
+sound_sensor = sensors.get("sound")
+light_sensor = sensors.get("light")
+
+score = 0
+reasons = []
+if temp_sensor:
+    t_avg = statistics.mean([r.value for r in temp_sensor._readings])
+    if 18 <= t_avg <= 26:
+        score += 1; reasons.append("temp ✅")
+    else:
+        reasons.append("temp ❌")
+if sound_sensor:
+    s_avg = statistics.mean([r.value for r in sound_sensor._readings])
+    if s_avg < 60:
+        score += 1; reasons.append("noise ✅")
+    else:
+        reasons.append("noise ❌")
+if light_sensor:
+    l_avg = statistics.mean([r.value for r in light_sensor._readings])
+    if 200 <= l_avg <= 10000:
+        score += 1; reasons.append("light ✅")
+    else:
+        reasons.append("light ❌")
+if alert_mgr.alert_count == 0:
+    score += 1; reasons.append("alerts ✅")
+else:
+    reasons.append(f"alerts ❌ ({alert_mgr.alert_count})")
+
+verdicts = {
+    4: "🟢 EXCELLENT — ideal environment",
+    3: "🟡 GOOD — minor concerns",
+    2: "🟠 FAIR — needs improvement",
+}
+verdict = verdicts.get(score, "🔴 POOR — take action")
+
+total_readings = reduce(lambda a, s: a + len(s), sensors.values(), 0)
+
+print(f"ENVIRONMENT QUALITY: {score}/4 — {verdict}")
+print(f"  {', '.join(reasons)}")
+print(f"  Sensors deployed : {len(sensors)}")
+print(f"  Total readings   : {total_readings}")
+print(f"  Alerts triggered : {alert_mgr.alert_count}")
+print(f"  Storage backends : CSV, JSON, SQLite")
+print(f"  Design patterns  : Factory, Observer, ABC, ETL")
+print(f"  Weeks integrated : 1-14 (variables → full system)")
+print("═" * 58)
+`;
+
+    // ── Wiring ──
+    function save(){
+      PhoneLabUI.saveDraft(WEEK, {
+        studentId: studentIdEl.value, nameSurname: nameSurnameEl.value,
+        email: emailEl.value, data: dataEl.value, code: codeEl.value,
+        output: outEl.textContent, savedAt: new Date().toISOString()
+      });
+      statusEl.textContent = "Draft saved.";
+    }
+
+    function submitViaForm(payload){
+      const form = document.createElement("form");
+      form.method = "POST"; form.action = SCRIPT_URL; form.target = "_blank";
+      const inp = document.createElement("input");
+      inp.type = "hidden"; inp.name = "payload"; inp.value = JSON.stringify(payload);
+      form.appendChild(inp); document.body.appendChild(form); form.submit(); form.remove();
+    }
+
+    const draft = PhoneLabUI.loadDraft(WEEK);
+    if (draft){
+      studentIdEl.value   = draft.studentId || "";
+      nameSurnameEl.value = draft.nameSurname || "";
+      emailEl.value       = draft.email || "";
+      dataEl.value        = draft.data || defaultData;
+      codeEl.value        = draft.code || starterCode;
+      outEl.textContent   = draft.output || 'Click "▶ Run Python" to see output here.';
+      statusEl.textContent = "Draft loaded.";
+    } else {
+      dataEl.value = defaultData;
+      codeEl.value = starterCode;
+    }
+
+    [studentIdEl, nameSurnameEl, emailEl, dataEl, codeEl].forEach(el =>
+      el.addEventListener("input", save));
+
+    document.getElementById("runBtn").addEventListener("click", async () => {
+      statusEl.textContent = "Loading Python runtime…";
+      const dataLiteral = JSON.stringify(dataEl.value);
+      const codeToRun = `DATA = ${dataLiteral}\n\n` + codeEl.value;
+      try {
+        const out = await PhoneLabUI.runPythonCapture(codeToRun);
+        outEl.textContent = out || "(no output)";
+        statusEl.textContent = "✅ Run complete.";
+        save();
+      } catch (e) {
+        outEl.textContent = String(e);
+        statusEl.textContent = "❌ Error — check your code.";
+        save();
+      }
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const studentId   = studentIdEl.value.trim();
+      const nameSurname = nameSurnameEl.value.trim();
+      const email       = emailEl.value.trim().toLowerCase();
+
+      if (!/^\d{6,12}$/.test(studentId))
+        { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
+      if (nameSurname.split(/\s+/).filter(Boolean).length < 2)
+        { statusEl.textContent = "Enter Name and Surname."; return; }
+      if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email))
+        { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
+
+      if (new Date() > DEADLINE) {
+        statusEl.textContent = "⏰ Submission closed — deadline was May 20, 23:59.";
+        return;
+      }
+
+      if (dataEl.value.replace(/\s+/g,"") === defaultData.replace(/\s+/g,"")) {
+        statusEl.textContent = "⚠️ Enter YOUR OWN sensor readings — default values are not accepted.";
+        dataEl.style.outline = "2px solid #ef4444";
+        setTimeout(() => dataEl.style.outline = "", 3000);
+        return;
+      }
+
+      if (!outEl.textContent || outEl.textContent.includes("Click") || outEl.textContent === "(no output)")
+        { statusEl.textContent = "⚠️ Run your code first before submitting."; return; }
+
+      const payload = {
+        week: WEEK, studentId, nameSurname, email,
+        data: dataEl.value, code: codeEl.value, output: outEl.textContent,
+        userAgent: navigator.userAgent, submittedAt: new Date().toISOString()
+      };
+      statusEl.textContent = "Submitting…";
+      submitViaForm(payload);
+      PhoneLabUI.setStatus(WEEK, "submitted");
+    });
+
+    const helpModal = document.getElementById("helpModal");
+    document.getElementById("helpBtn").addEventListener("click", () => helpModal.style.display = "flex");
+    document.getElementById("closeHelpBtn").addEventListener("click", () => helpModal.style.display = "none");
+    helpModal.addEventListener("click", e => { if (e.target === helpModal) helpModal.style.display = "none"; });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") helpModal.style.display = "none"; });
+  </script>
+</body>
+</html>

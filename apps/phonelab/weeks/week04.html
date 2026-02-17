@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Week 04 — PhoneLab</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-title">Week 04 — Inclinometer Engineering Suite</div>
+      <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1 style="margin:0 0 4px;">📐 Inclinometer Engineering Suite</h1>
+      <p class="muted" style="margin:0 0 12px;">
+        Your phone is a precision <em>inclinometer</em>. Measure slopes around you,
+        then build an engineering toolkit of <b>functions</b> that calculates forces,
+        predicts sliding, and surveys your environment.
+      </p>
+
+      <div class="concepts-box">
+        <b>📚 Concepts you'll practice (from Week 04):</b>
+        <span class="concept-tag">def / return</span>
+        <span class="concept-tag">parameters</span>
+        <span class="concept-tag">multiple returns</span>
+        <span class="concept-tag">default arguments</span>
+        <span class="concept-tag">docstrings</span>
+        <span class="concept-tag">scope</span>
+      </div>
+
+      <!-- Step indicator -->
+      <div class="steps" style="margin-top:14px;">
+        <div class="step-pill active" data-step="1">① Identity</div>
+        <div class="step-pill" data-step="2">② Data</div>
+        <div class="step-pill" data-step="3">③ Code</div>
+        <div class="step-pill" data-step="4">④ Run & Submit</div>
+      </div>
+
+      <details open id="sec1">
+        <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
+        <div class="row">
+          <div>
+            <label>Student ID (6–12 digits)</label>
+            <input id="studentId" inputmode="numeric" minlength="6" maxlength="12"
+                   pattern="^\d{6,12}$" required placeholder="e.g., 202612345" />
+          </div>
+          <div>
+            <label>Name Surname</label>
+            <input id="nameSurname" required placeholder="e.g., Arif Solmaz" />
+          </div>
+        </div>
+        <label>Email (@istun.edu.tr)</label>
+        <input id="email" type="email"
+               pattern="^[A-Za-z0-9._%+-]+@istun\.edu\.tr$"
+               required placeholder="name@istun.edu.tr" />
+        <small class="hint">Draft auto-saves on this device.</small>
+      </details>
+
+      <hr />
+
+      <details open id="sec2">
+        <summary><b>2) Collect your data</b> <span class="muted">(from your phone)</span></summary>
+
+        <div class="scenario-box">
+          <b>🔬 What to do:</b>
+          <ol class="muted" style="margin:6px 0 0; padding-left:20px;">
+            <li>Open your phone's built-in <b>level/inclinometer</b>
+              (iOS: Measure app → Level;
+               Android: search "bubble level" or "inclinometer" in your app store —
+               <a href="https://play.google.com/store/apps/details?id=com.keuwl.spirit" target="_blank">Clinometer</a>).
+            </li>
+            <li>Measure the <b>angle in degrees</b> at <b>5 different surfaces</b>:
+              <ul style="margin-top:4px;">
+                <li><b>Stairs:</b> Place phone flat on a step</li>
+                <li><b>Ramp/slope:</b> A driveway, wheelchair ramp, or sloped sidewalk</li>
+                <li><b>Road/street:</b> Any road surface</li>
+                <li><b>Table/desk:</b> Your study surface (should be close to 0°)</li>
+                <li><b>Roof/wall:</b> Lean phone against a sloped roof, book, or tilted surface</li>
+              </ul>
+            </li>
+            <li>Also enter a <b>mass in kg</b> — the weight of an object you'd place on these surfaces (e.g., your phone ~0.2 kg, a book ~0.5 kg, a backpack ~5 kg).</li>
+          </ol>
+          <small>💡 <b>Reference:</b> Flat = 0°, gentle slope = 5–10°, stairs ≈ 25–40°, steep roof ≈ 35–50°. ADA wheelchair ramp max = 4.8°.</small>
+        </div>
+
+        <label>Your measurements (edit the numbers)</label>
+        <textarea id="dataBox" spellcheck="false"></textarea>
+        <small class="hint">⚠️ Change the numbers to <b>your own</b> readings. Default values will be rejected.</small>
+      </details>
+
+      <hr />
+
+      <details id="sec3">
+        <summary><b>3) Python code</b> <span class="muted">(define the functions)</span></summary>
+        <label>Python — build your engineering function toolkit</label>
+        <textarea id="codeBox" class="codebox" spellcheck="false"></textarea>
+        <small class="hint">
+          Define <b>functions</b> with <code>def</code>, use <b>parameters</b>,
+          <b>return</b> values, <b>default arguments</b>, and <b>docstrings</b>.
+        </small>
+      </details>
+
+      <hr />
+
+      <details id="sec4">
+        <summary><b>4) Output</b> <span class="muted">(auto-captured after Run)</span></summary>
+        <pre id="output" class="out">Click "▶ Run Python" to see output here.</pre>
+      </details>
+
+      <div class="stickybar">
+        <div class="bar-actions">
+          <button id="helpBtn" class="helpbtn" type="button">?</button>
+          <button id="runBtn" type="button">▶ Run Python</button>
+          <button id="submitBtn" class="primary" type="button">Submit ✓</button>
+        </div>
+        <small id="status" class="hint"></small>
+      </div>
+    </section>
+  </main>
+
+  <!-- Help Modal -->
+  <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3>📐 Week 04 — Instructions</h3>
+      <ol class="muted">
+        <li><b>Identity:</b> Student ID (6–12 digits), Name Surname, <b>@istun.edu.tr</b> email.</li>
+        <li><b>Get a level app:</b> iPhone has one built in (Measure → Level). For Android, search "clinometer" or "bubble level".</li>
+        <li><b>Measure:</b> Place your phone flat on 5 different surfaces and record the angle in degrees.</li>
+        <li><b>Enter data:</b> Type your 5 angles + object mass into the Data box.</li>
+        <li><b>Write code:</b> Define the functions in the TODO sections — each function uses <code>def</code>, <code>return</code>, and <b>docstrings</b>.</li>
+        <li><b>Run:</b> Tap "▶ Run Python" and check the engineering report.</li>
+        <li><b>Submit:</b> One submission only. Confirmation opens in a new tab.</li>
+      </ol>
+      <p class="muted" style="margin-top:10px;">
+        <b>📐 The engineering:</b> Inclinometers are critical in mechatronics — from robot
+        arm joint angles to conveyor belt slopes. Calculating gravitational components on
+        inclined planes is fundamental for any mechanism that moves on a slope. The functions
+        you build here are the same ones used in industrial automation software!
+      </p>
+      <div class="modal-actions">
+        <button id="closeHelpBtn" type="button">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/app.js"></script>
+  <script>
+    const WEEK = "week04";
+    const DEADLINE = new Date("2026-03-11T23:59:00+03:00");
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
+
+    const studentIdEl   = document.getElementById("studentId");
+    const nameSurnameEl = document.getElementById("nameSurname");
+    const emailEl       = document.getElementById("email");
+    const dataEl        = document.getElementById("dataBox");
+    const codeEl        = document.getElementById("codeBox");
+    const outEl         = document.getElementById("output");
+    const statusEl      = document.getElementById("status");
+
+    // ── Default data ──
+    const defaultData =
+`stairs_angle=32
+ramp_angle=12
+road_angle=4
+table_angle=1
+roof_angle=28
+object_mass_kg=5`;
+
+    // ── Starter code: Week 04 concepts ──
+    // def, parameters, return, multiple returns, default args, docstrings
+    // Also uses Week 01-03: variables, arithmetic, if/else, for loops
+    const starterCode =
+`# ──────────────────────────────────────────────
+# Week 04 — Inclinometer Engineering Suite
+# ──────────────────────────────────────────────
+import math
+
+_lines = DATA.strip().split("\\n")
+stairs_angle   = float(_lines[0].split("=")[1])
+ramp_angle     = float(_lines[1].split("=")[1])
+road_angle     = float(_lines[2].split("=")[1])
+table_angle    = float(_lines[3].split("=")[1])
+roof_angle     = float(_lines[4].split("=")[1])
+object_mass_kg = float(_lines[5].split("=")[1])
+
+GRAVITY = 9.81   # m/s²
+
+# ──────────────────────────────────────────────
+# TODO 1: Define deg_to_rad(angle)
+#         Converts degrees to radians.
+#         Formula: radians = degrees × π / 180
+#         Must include a docstring.
+# ──────────────────────────────────────────────
+
+def deg_to_rad(angle):
+    """Convert an angle from degrees to radians."""
+    return angle * math.pi / 180
+
+
+# ──────────────────────────────────────────────
+# TODO 2: Define slope_percent(angle)
+#         Converts angle to slope percentage.
+#         Formula: slope% = tan(angle_in_radians) × 100
+#         Must call deg_to_rad() inside.
+# ──────────────────────────────────────────────
+
+def slope_percent(angle):
+    """Convert angle in degrees to slope percentage."""
+    rad = deg_to_rad(angle)
+    return math.tan(rad) * 100
+
+
+# ──────────────────────────────────────────────
+# TODO 3: Define classify_slope(angle)
+#         Returns a string classification:
+#           < 3°   → "FLAT"
+#           3-10°  → "GENTLE"
+#           10-25° → "MODERATE"
+#           25-40° → "STEEP"
+#           > 40°  → "EXTREME"
+#         Must include a docstring.
+# ──────────────────────────────────────────────
+
+def classify_slope(angle):
+    """Classify a slope angle into an engineering category."""
+    if angle < 3:
+        return "FLAT"
+    elif angle < 10:
+        return "GENTLE"
+    elif angle < 25:
+        return "MODERATE"
+    elif angle <= 40:
+        return "STEEP"
+    else:
+        return "EXTREME"
+
+
+# ──────────────────────────────────────────────
+# TODO 4: Define sliding_force(mass, angle, friction=0.3)
+#         Calculates forces on an inclined plane.
+#         - gravity_component = mass × g × sin(angle)
+#         - friction_force    = mass × g × cos(angle) × friction
+#         - net_force         = gravity_component - friction_force
+#         - will_slide        = net_force > 0  (boolean)
+#         Returns MULTIPLE values: (gravity_component, friction_force,
+#                                   net_force, will_slide)
+#         Uses DEFAULT ARGUMENT for friction.
+# ──────────────────────────────────────────────
+
+def sliding_force(mass, angle, friction=0.3):
+    """
+    Calculate forces on an object on an inclined plane.
+
+    Parameters:
+        mass     : object mass in kg
+        angle    : slope angle in degrees
+        friction : coefficient of friction (default 0.3)
+
+    Returns:
+        gravity_component, friction_force, net_force, will_slide
+    """
+    rad = deg_to_rad(angle)
+    gravity_component = mass * GRAVITY * math.sin(rad)
+    friction_force = mass * GRAVITY * math.cos(rad) * friction
+    net_force = gravity_component - friction_force
+    will_slide = net_force > 0
+    return gravity_component, friction_force, net_force, will_slide
+
+
+# ──────────────────────────────────────────────
+# TODO 5: Define survey_report(angles, names, mass=10.0)
+#         Takes a list of angles and location names.
+#         Loops through all locations and builds a summary.
+#         Returns MULTIPLE values:
+#           (steepest_name, steepest_angle, slide_count, flat_count)
+#         Uses DEFAULT ARGUMENT for mass.
+#         Must include a docstring.
+# ──────────────────────────────────────────────
+
+def survey_report(angles, names, mass=10.0):
+    """
+    Survey multiple slopes and return a summary.
+
+    Parameters:
+        angles : list of angle measurements in degrees
+        names  : list of location names
+        mass   : object mass in kg (default 10.0)
+
+    Returns:
+        steepest_name, steepest_angle, slide_count, flat_count
+    """
+    steepest_angle = 0
+    steepest_name = ""
+    slide_count = 0
+    flat_count = 0
+
+    for i in range(len(angles)):
+        if angles[i] > steepest_angle:
+            steepest_angle = angles[i]
+            steepest_name = names[i]
+
+        grav, fric, net, will_slide = sliding_force(mass, angles[i])
+        if will_slide:
+            slide_count = slide_count + 1
+
+        category = classify_slope(angles[i])
+        if category == "FLAT":
+            flat_count = flat_count + 1
+
+    return steepest_name, steepest_angle, slide_count, flat_count
+
+
+# ──────────────────────────────────────────────
+# MAIN PROGRAM — call your functions!
+# ──────────────────────────────────────────────
+
+angles = [stairs_angle, ramp_angle, road_angle, table_angle, roof_angle]
+names  = ["Stairs", "Ramp", "Road", "Table", "Roof"]
+
+print("=" * 55)
+print("📐 INCLINOMETER ENGINEERING REPORT")
+print("=" * 55)
+
+# TODO 6: Print individual analysis for each location
+for i in range(len(angles)):
+    angle = angles[i]
+    name = names[i]
+    slope = slope_percent(angle)
+    category = classify_slope(angle)
+    grav, fric, net, will_slide = sliding_force(object_mass_kg, angle)
+    slide_text = "⚠️ SLIDES" if will_slide else "✅ HOLDS"
+
+    print(f"\\n📍 {name}: {angle:.1f}°")
+    print(f"   Slope      : {slope:.1f}%")
+    print(f"   Category   : {category}")
+    print(f"   Gravity F  : {grav:.2f} N")
+    print(f"   Friction F : {fric:.2f} N")
+    print(f"   Net force  : {net:.2f} N → {slide_text}")
+
+# TODO 7: Call survey_report and print summary
+print("\\n" + "-" * 55)
+print(f"SURVEY SUMMARY (object: {object_mass_kg} kg, friction: 0.3)")
+print("-" * 55)
+
+steepest_name, steepest_angle, slide_count, flat_count = survey_report(
+    angles, names, object_mass_kg
+)
+
+print(f"Steepest surface : {steepest_name} ({steepest_angle:.1f}°)")
+print(f"Sliding risk     : {slide_count}/{len(angles)} surfaces")
+print(f"Flat surfaces    : {flat_count}/{len(angles)}")
+
+# TODO 8: Test with different friction (calling with keyword argument)
+print("\\n" + "-" * 55)
+print("FRICTION COMPARISON")
+print("-" * 55)
+
+grav_s, fric_s, net_s, slide_s = sliding_force(object_mass_kg, steepest_angle, friction=0.1)
+print(f"Ice (μ=0.1)    : net = {net_s:.2f} N → {'SLIDES' if slide_s else 'HOLDS'}")
+
+grav_r, fric_r, net_r, slide_r = sliding_force(object_mass_kg, steepest_angle, friction=0.5)
+print(f"Rubber (μ=0.5) : net = {net_r:.2f} N → {'SLIDES' if slide_r else 'HOLDS'}")
+
+grav_g, fric_g, net_g, slide_g = sliding_force(object_mass_kg, steepest_angle)
+print(f"Default (μ=0.3): net = {net_g:.2f} N → {'SLIDES' if slide_g else 'HOLDS'}")
+
+print("=" * 55)
+`;
+
+    // ── Wiring ──
+    function save(){
+      PhoneLabUI.saveDraft(WEEK, {
+        studentId: studentIdEl.value, nameSurname: nameSurnameEl.value,
+        email: emailEl.value, data: dataEl.value, code: codeEl.value,
+        output: outEl.textContent, savedAt: new Date().toISOString()
+      });
+      statusEl.textContent = "Draft saved.";
+    }
+
+    function submitViaForm(payload){
+      const form = document.createElement("form");
+      form.method = "POST"; form.action = SCRIPT_URL; form.target = "_blank";
+      const inp = document.createElement("input");
+      inp.type = "hidden"; inp.name = "payload"; inp.value = JSON.stringify(payload);
+      form.appendChild(inp); document.body.appendChild(form); form.submit(); form.remove();
+    }
+
+    const draft = PhoneLabUI.loadDraft(WEEK);
+    if (draft){
+      studentIdEl.value   = draft.studentId || "";
+      nameSurnameEl.value = draft.nameSurname || "";
+      emailEl.value       = draft.email || "";
+      dataEl.value        = draft.data || defaultData;
+      codeEl.value        = draft.code || starterCode;
+      outEl.textContent   = draft.output || 'Click "▶ Run Python" to see output here.';
+      statusEl.textContent = "Draft loaded.";
+    } else {
+      dataEl.value = defaultData;
+      codeEl.value = starterCode;
+    }
+
+    [studentIdEl, nameSurnameEl, emailEl, dataEl, codeEl].forEach(el =>
+      el.addEventListener("input", save));
+
+    document.getElementById("runBtn").addEventListener("click", async () => {
+      statusEl.textContent = "Loading Python runtime…";
+      const dataLiteral = JSON.stringify(dataEl.value);
+      const codeToRun = `DATA = ${dataLiteral}\n\n` + codeEl.value;
+      try {
+        const out = await PhoneLabUI.runPythonCapture(codeToRun);
+        outEl.textContent = out || "(no output)";
+        statusEl.textContent = "✅ Run complete.";
+        save();
+      } catch (e) {
+        outEl.textContent = String(e);
+        statusEl.textContent = "❌ Error — check your code.";
+        save();
+      }
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const studentId   = studentIdEl.value.trim();
+      const nameSurname = nameSurnameEl.value.trim();
+      const email       = emailEl.value.trim().toLowerCase();
+
+      if (!/^\d{6,12}$/.test(studentId))
+        { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
+      if (nameSurname.split(/\s+/).filter(Boolean).length < 2)
+        { statusEl.textContent = "Enter Name and Surname."; return; }
+      if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email))
+        { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
+
+      // Block after deadline
+      if (new Date() > DEADLINE) {
+        statusEl.textContent = "⏰ Submission closed — deadline was Mar 11, 23:59.";
+        return;
+      }
+
+      // Block default data
+      if (dataEl.value.replace(/\s+/g,"") === defaultData.replace(/\s+/g,"")) {
+        statusEl.textContent = "⚠️ Enter YOUR OWN angle readings — default values are not accepted.";
+        dataEl.style.outline = "2px solid #ef4444";
+        setTimeout(() => dataEl.style.outline = "", 3000);
+        return;
+      }
+
+      if (!outEl.textContent || outEl.textContent.includes("Click") || outEl.textContent === "(no output)")
+        { statusEl.textContent = "⚠️ Run your code first before submitting."; return; }
+
+      const payload = {
+        week: WEEK, studentId, nameSurname, email,
+        data: dataEl.value, code: codeEl.value, output: outEl.textContent,
+        userAgent: navigator.userAgent, submittedAt: new Date().toISOString()
+      };
+      statusEl.textContent = "Submitting…";
+      submitViaForm(payload);
+      PhoneLabUI.setStatus(WEEK, "submitted");
+    });
+
+    // Help modal
+    const helpModal = document.getElementById("helpModal");
+    document.getElementById("helpBtn").addEventListener("click", () => helpModal.style.display = "flex");
+    document.getElementById("closeHelpBtn").addEventListener("click", () => helpModal.style.display = "none");
+    helpModal.addEventListener("click", e => { if (e.target === helpModal) helpModal.style.display = "none"; });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") helpModal.style.display = "none"; });
+  </script>
+</body>
+</html>

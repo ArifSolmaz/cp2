@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Week 07 — PhoneLab</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-title">Week 07 — Chat Message Analyzer</div>
+      <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1 style="margin:0 0 4px;">💬 Chat Message Analyzer</h1>
+      <p class="muted" style="margin:0 0 12px;">
+        Decode your texting style! Copy <b>8 recent messages</b> from any chat app
+        and use <em>string methods</em> to analyze your communication patterns.
+      </p>
+
+      <div class="concepts-box">
+        <b>📚 Concepts you'll practice (from Week 07):</b>
+        <span class="concept-tag">split() / join()</span>
+        <span class="concept-tag">find() / count() / replace()</span>
+        <span class="concept-tag">strip() / upper() / lower()</span>
+        <span class="concept-tag">startswith() / endswith()</span>
+        <span class="concept-tag">isdigit() / isalpha()</span>
+        <span class="concept-tag">slicing</span>
+        <span class="concept-tag">f-string formatting</span>
+      </div>
+
+      <!-- Step indicator -->
+      <div class="steps" style="margin-top:14px;">
+        <div class="step-pill active" data-step="1">① Identity</div>
+        <div class="step-pill" data-step="2">② Data</div>
+        <div class="step-pill" data-step="3">③ Code</div>
+        <div class="step-pill" data-step="4">④ Run & Submit</div>
+      </div>
+
+      <details open id="sec1">
+        <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
+        <div class="row">
+          <div>
+            <label>Student ID (6–12 digits)</label>
+            <input id="studentId" inputmode="numeric" minlength="6" maxlength="12"
+                   pattern="^\d{6,12}$" required placeholder="e.g., 202612345" />
+          </div>
+          <div>
+            <label>Name Surname</label>
+            <input id="nameSurname" required placeholder="e.g., Arif Solmaz" />
+          </div>
+        </div>
+        <label>Email (@istun.edu.tr)</label>
+        <input id="email" type="email"
+               pattern="^[A-Za-z0-9._%+-]+@istun\.edu\.tr$"
+               required placeholder="name@istun.edu.tr" />
+        <small class="hint">Draft auto-saves on this device.</small>
+      </details>
+
+      <hr />
+
+      <details open id="sec2">
+        <summary><b>2) Collect your data</b> <span class="muted">(from your phone)</span></summary>
+
+        <div class="scenario-box">
+          <b>🔬 What to do:</b>
+          <ol class="muted" style="margin:6px 0 0; padding-left:20px;">
+            <li>Open any <b>chat app</b> (WhatsApp, Telegram, Instagram DM, iMessage, SMS, etc.).</li>
+            <li>Copy <b>8 messages you sent</b> (not received) — pick a variety:
+              <ul style="margin-top:4px;">
+                <li>At least 1 question (ends with <b>?</b>)</li>
+                <li>At least 1 with an emoji or exclamation</li>
+                <li>At least 1 short message (under 5 words)</li>
+                <li>At least 1 longer message (10+ words)</li>
+              </ul>
+            </li>
+            <li>Enter each message on a <b>separate line</b> below.</li>
+          </ol>
+          <small>💡 <b>Privacy:</b> You can modify messages slightly to remove private info. The analysis cares about patterns, not content.</small>
+        </div>
+
+        <label>Your 8 messages (one per line)</label>
+        <textarea id="dataBox" spellcheck="false"></textarea>
+        <small class="hint">⚠️ Enter <b>your own</b> messages. Default values will be rejected.</small>
+      </details>
+
+      <hr />
+
+      <details id="sec3">
+        <summary><b>3) Python code</b> <span class="muted">(string methods galore)</span></summary>
+        <label>Python — analyze your texting style</label>
+        <textarea id="codeBox" class="codebox" spellcheck="false"></textarea>
+        <small class="hint">
+          Use <b>split, join, find, count, replace, strip, upper, lower,
+          startswith, endswith, isdigit, isalpha</b>, and <b>slicing</b>.
+        </small>
+      </details>
+
+      <hr />
+
+      <details id="sec4">
+        <summary><b>4) Output</b> <span class="muted">(auto-captured after Run)</span></summary>
+        <pre id="output" class="out">Click "▶ Run Python" to see output here.</pre>
+      </details>
+
+      <div class="stickybar">
+        <div class="bar-actions">
+          <button id="helpBtn" class="helpbtn" type="button">?</button>
+          <button id="runBtn" type="button">▶ Run Python</button>
+          <button id="submitBtn" class="primary" type="button">Submit ✓</button>
+        </div>
+        <small id="status" class="hint"></small>
+      </div>
+    </section>
+  </main>
+
+  <!-- Help Modal -->
+  <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3>💬 Week 07 — Instructions</h3>
+      <ol class="muted">
+        <li><b>Identity:</b> Student ID (6–12 digits), Name Surname, <b>@istun.edu.tr</b> email.</li>
+        <li><b>Collect messages:</b> Open any chat app. Copy 8 messages you recently sent — mix of questions, short replies, and longer texts.</li>
+        <li><b>Enter data:</b> Paste one message per line in the Data box.</li>
+        <li><b>Write code:</b> Complete the TODOs — every one uses a different string method.</li>
+        <li><b>Run:</b> Tap "▶ Run Python" and check the texting analysis.</li>
+        <li><b>Submit:</b> One submission only. Confirmation opens in a new tab.</li>
+      </ol>
+      <p class="muted" style="margin-top:10px;">
+        <b>📐 The engineering:</b> In mechatronics, string processing is everywhere —
+        parsing serial port data, reading G-code commands, extracting sensor log values,
+        and validating user input. The split/strip/find/replace chain you use here is
+        identical to how embedded systems parse UART or I2C messages!
+      </p>
+      <div class="modal-actions">
+        <button id="closeHelpBtn" type="button">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/app.js"></script>
+  <script>
+    const WEEK = "week07";
+    const DEADLINE = new Date("2026-04-01T23:59:00+03:00");
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
+
+    const studentIdEl   = document.getElementById("studentId");
+    const nameSurnameEl = document.getElementById("nameSurname");
+    const emailEl       = document.getElementById("email");
+    const dataEl        = document.getElementById("dataBox");
+    const codeEl        = document.getElementById("codeBox");
+    const outEl         = document.getElementById("output");
+    const statusEl      = document.getElementById("status");
+
+    // ── Default data ──
+    const defaultData =
+`Hey are you coming to class tomorrow?
+ok sounds good
+I just finished the assignment, it was really hard but I think I got most of it right
+haha nice
+Can you send me the notes from last week?
+I will be there in 5 minutes!!!
+No
+The project deadline is March 25 and we still need to finish the presentation slides`;
+
+    const starterCode =
+`# ──────────────────────────────────────────────
+# Week 07 — Chat Message Analyzer
+# ──────────────────────────────────────────────
+
+# Parse messages: one per line, strip whitespace
+raw_lines = DATA.strip().split("\\n")
+messages = [line.strip() for line in raw_lines if line.strip()]
+
+NUM = len(messages)
+
+print("=" * 55)
+print("💬 CHAT MESSAGE ANALYSIS")
+print("=" * 55)
+
+# ──────────────────────────────────────────────
+# TODO 1: Use SPLIT and LEN to count words per message
+# ──────────────────────────────────────────────
+
+print("\\nMESSAGE BREAKDOWN:")
+total_words = 0
+total_chars = 0
+
+for i, msg in enumerate(messages):
+    words = msg.split()
+    word_count = len(words)
+    char_count = len(msg)
+    total_words += word_count
+    total_chars += char_count
+    # Use slicing to show preview (first 40 chars)
+    preview = msg[:40] + "..." if len(msg) > 40 else msg
+    print(f"  {i+1}. [{word_count:2d} words, {char_count:3d} chars] {preview}")
+
+avg_words = total_words / NUM
+avg_chars = total_chars / NUM
+
+print(f"\\n{'─' * 55}")
+print(f"Total words   : {total_words}")
+print(f"Total chars   : {total_chars}")
+print(f"Avg words/msg : {avg_words:.1f}")
+print(f"Avg chars/msg : {avg_chars:.1f}")
+
+# ──────────────────────────────────────────────
+# TODO 2: Use ENDSWITH to classify message types
+#         ? → question, ! → exclamation, . → statement
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("MESSAGE TYPES (endswith):")
+
+questions = []
+exclamations = []
+statements = []
+
+for msg in messages:
+    stripped = msg.rstrip()
+    if stripped.endswith("?"):
+        questions.append(msg)
+    elif stripped.endswith("!"):
+        exclamations.append(msg)
+    else:
+        statements.append(msg)
+
+print(f"  Questions (?)     : {len(questions)}")
+print(f"  Exclamations (!)  : {len(exclamations)}")
+print(f"  Statements/other  : {len(statements)}")
+
+# ──────────────────────────────────────────────
+# TODO 3: Use UPPER / LOWER to detect shouting
+#         Shouting = message equals its own .upper()
+#         and has at least 2 alpha characters
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("CASE ANALYSIS (upper/lower):")
+
+shout_count = 0
+all_lower_count = 0
+
+for msg in messages:
+    alpha_chars = ""
+    for ch in msg:
+        if ch.isalpha():
+            alpha_chars += ch
+    if len(alpha_chars) >= 2:
+        if alpha_chars == alpha_chars.upper():
+            shout_count += 1
+        elif alpha_chars == alpha_chars.lower():
+            all_lower_count += 1
+
+print(f"  ALL CAPS (shouting): {shout_count}")
+print(f"  all lowercase      : {all_lower_count}")
+print(f"  Mixed case         : {NUM - shout_count - all_lower_count}")
+
+# ──────────────────────────────────────────────
+# TODO 4: Use COUNT to find most-used words
+#         Build a word frequency from all messages
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("WORD FREQUENCY (count/split):")
+
+# Join all messages, convert to lower, split into words
+all_text = " ".join(messages).lower()
+all_words = all_text.split()
+
+# Count each unique word
+word_freq = {}
+for word in all_words:
+    # Strip punctuation from edges
+    clean = word.strip(".,!?;:'\\"-()[]")
+    if len(clean) >= 2:
+        word_freq[clean] = word_freq.get(clean, 0) + 1
+
+# Sort and show top 5
+top_words = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:5]
+for word, freq in top_words:
+    bar = "█" * freq
+    print(f"  {word:12s} {freq:2d}x {bar}")
+
+# ──────────────────────────────────────────────
+# TODO 5: Use FIND to detect links and numbers
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("CONTENT DETECTION (find):")
+
+link_count = 0
+number_count = 0
+emoji_count = 0
+
+for msg in messages:
+    if msg.find("http") != -1 or msg.find("www.") != -1:
+        link_count += 1
+    # Check for numbers using find + isdigit
+    for word in msg.split():
+        clean_word = word.strip(".,!?;:'\\"-()[]")
+        if clean_word.isdigit():
+            number_count += 1
+    # Simple emoji detection: chars outside basic ASCII range
+    for ch in msg:
+        if ord(ch) > 127:
+            emoji_count += 1
+
+print(f"  Messages with links : {link_count}")
+print(f"  Numbers found       : {number_count}")
+print(f"  Non-ASCII chars     : {emoji_count}")
+
+# ──────────────────────────────────────────────
+# TODO 6: Use REPLACE to create a censored version
+#         Replace common filler words with [...]
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("CLEANED MESSAGE (replace/strip):")
+
+# Pick the longest message
+longest_msg = ""
+for msg in messages:
+    if len(msg) > len(longest_msg):
+        longest_msg = msg
+
+cleaned = longest_msg.strip()
+cleaned = cleaned.replace("  ", " ")   # double spaces → single
+
+# Show original vs cleaned
+print(f"  Original : {longest_msg}")
+print(f"  Cleaned  : {cleaned}")
+print(f"  Length reduction: {len(longest_msg) - len(cleaned)} chars")
+
+# ──────────────────────────────────────────────
+# TODO 7: Use STARTSWITH to detect message patterns
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("PATTERN DETECTION (startswith):")
+
+greeting_starts = ("hey", "hi", "hello", "merhaba", "selam")
+affirmative_starts = ("ok", "yes", "yeah", "sure", "evet", "tamam")
+
+greeting_count = 0
+affirm_count = 0
+
+for msg in messages:
+    low = msg.lower().strip()
+    if low.startswith(greeting_starts):
+        greeting_count += 1
+    if low.startswith(affirmative_starts):
+        affirm_count += 1
+
+print(f"  Greetings (hey/hi/hello) : {greeting_count}")
+print(f"  Affirmatives (ok/yes)    : {affirm_count}")
+
+# ──────────────────────────────────────────────
+# TODO 8: Use JOIN + formatting to build a summary
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("SHORT vs LONG:")
+
+short_msgs = [msg for msg in messages if len(msg.split()) <= 3]
+long_msgs = [msg for msg in messages if len(msg.split()) >= 10]
+
+print(f"  Short (≤3 words) : {len(short_msgs)}")
+if short_msgs:
+    print(f"    → {' | '.join(short_msgs)}")
+
+print(f"  Long (10+ words) : {len(long_msgs)}")
+if long_msgs:
+    for m in long_msgs:
+        print(f"    → {m[:50]}...")
+
+# ──────────────────────────────────────────────
+# TODO 9: Use ISALPHA / ISDIGIT for char-level analysis
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("CHARACTER ANALYSIS (isalpha/isdigit):")
+
+alpha_total = 0
+digit_total = 0
+space_total = 0
+punct_total = 0
+
+for ch in all_text:
+    if ch.isalpha():
+        alpha_total += 1
+    elif ch.isdigit():
+        digit_total += 1
+    elif ch == " ":
+        space_total += 1
+    else:
+        punct_total += 1
+
+print(f"  Letters     : {alpha_total:4d} ({alpha_total * 100 // len(all_text)}%)")
+print(f"  Digits      : {digit_total:4d} ({digit_total * 100 // len(all_text)}%)")
+print(f"  Spaces      : {space_total:4d} ({space_total * 100 // len(all_text)}%)")
+print(f"  Punctuation : {punct_total:4d} ({punct_total * 100 // len(all_text)}%)")
+
+# ──────────────────────────────────────────────
+# TEXTING STYLE VERDICT
+# ──────────────────────────────────────────────
+
+print(f"\\n{'=' * 55}")
+
+if avg_words >= 10:
+    style = "📝 Essay Writer — you write paragraphs, not texts"
+elif avg_words >= 5:
+    style = "💬 Conversationalist — balanced and clear"
+elif avg_words >= 2:
+    style = "⚡ Minimalist — short and to the point"
+else:
+    style = "🗿 One-Worder — the silent type"
+
+print(f"TEXTING STYLE: {style}")
+print(f"  Avg message : {avg_words:.1f} words")
+print(f"  Questions   : {len(questions)}/{NUM} ({len(questions)*100//NUM}%)")
+print(f"  Top word    : \\"{top_words[0][0]}\\" ({top_words[0][1]}x)" if top_words else "")
+print("=" * 55)
+`;
+
+    // ── Wiring ──
+    function save(){
+      PhoneLabUI.saveDraft(WEEK, {
+        studentId: studentIdEl.value, nameSurname: nameSurnameEl.value,
+        email: emailEl.value, data: dataEl.value, code: codeEl.value,
+        output: outEl.textContent, savedAt: new Date().toISOString()
+      });
+      statusEl.textContent = "Draft saved.";
+    }
+
+    function submitViaForm(payload){
+      const form = document.createElement("form");
+      form.method = "POST"; form.action = SCRIPT_URL; form.target = "_blank";
+      const inp = document.createElement("input");
+      inp.type = "hidden"; inp.name = "payload"; inp.value = JSON.stringify(payload);
+      form.appendChild(inp); document.body.appendChild(form); form.submit(); form.remove();
+    }
+
+    const draft = PhoneLabUI.loadDraft(WEEK);
+    if (draft){
+      studentIdEl.value   = draft.studentId || "";
+      nameSurnameEl.value = draft.nameSurname || "";
+      emailEl.value       = draft.email || "";
+      dataEl.value        = draft.data || defaultData;
+      codeEl.value        = draft.code || starterCode;
+      outEl.textContent   = draft.output || 'Click "▶ Run Python" to see output here.';
+      statusEl.textContent = "Draft loaded.";
+    } else {
+      dataEl.value = defaultData;
+      codeEl.value = starterCode;
+    }
+
+    [studentIdEl, nameSurnameEl, emailEl, dataEl, codeEl].forEach(el =>
+      el.addEventListener("input", save));
+
+    document.getElementById("runBtn").addEventListener("click", async () => {
+      statusEl.textContent = "Loading Python runtime…";
+      const dataLiteral = JSON.stringify(dataEl.value);
+      const codeToRun = `DATA = ${dataLiteral}\n\n` + codeEl.value;
+      try {
+        const out = await PhoneLabUI.runPythonCapture(codeToRun);
+        outEl.textContent = out || "(no output)";
+        statusEl.textContent = "✅ Run complete.";
+        save();
+      } catch (e) {
+        outEl.textContent = String(e);
+        statusEl.textContent = "❌ Error — check your code.";
+        save();
+      }
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const studentId   = studentIdEl.value.trim();
+      const nameSurname = nameSurnameEl.value.trim();
+      const email       = emailEl.value.trim().toLowerCase();
+
+      if (!/^\d{6,12}$/.test(studentId))
+        { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
+      if (nameSurname.split(/\s+/).filter(Boolean).length < 2)
+        { statusEl.textContent = "Enter Name and Surname."; return; }
+      if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email))
+        { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
+
+      if (new Date() > DEADLINE) {
+        statusEl.textContent = "⏰ Submission closed — deadline was Apr 1, 23:59.";
+        return;
+      }
+
+      if (dataEl.value.replace(/\s+/g,"") === defaultData.replace(/\s+/g,"")) {
+        statusEl.textContent = "⚠️ Enter YOUR OWN chat messages — default values are not accepted.";
+        dataEl.style.outline = "2px solid #ef4444";
+        setTimeout(() => dataEl.style.outline = "", 3000);
+        return;
+      }
+
+      if (!outEl.textContent || outEl.textContent.includes("Click") || outEl.textContent === "(no output)")
+        { statusEl.textContent = "⚠️ Run your code first before submitting."; return; }
+
+      const payload = {
+        week: WEEK, studentId, nameSurname, email,
+        data: dataEl.value, code: codeEl.value, output: outEl.textContent,
+        userAgent: navigator.userAgent, submittedAt: new Date().toISOString()
+      };
+      statusEl.textContent = "Submitting…";
+      submitViaForm(payload);
+      PhoneLabUI.setStatus(WEEK, "submitted");
+    });
+
+    const helpModal = document.getElementById("helpModal");
+    document.getElementById("helpBtn").addEventListener("click", () => helpModal.style.display = "flex");
+    document.getElementById("closeHelpBtn").addEventListener("click", () => helpModal.style.display = "none");
+    helpModal.addEventListener("click", e => { if (e.target === helpModal) helpModal.style.display = "none"; });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") helpModal.style.display = "none"; });
+  </script>
+</body>
+</html>

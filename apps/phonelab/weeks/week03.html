@@ -9,38 +9,31 @@
 <body>
   <header class="topbar">
     <div class="brand">
-      <div class="brand-title">Week 03 — Human Sensor Calibration</div>
+      <div class="brand-title">Week 03 — Reaction Time Analyzer</div>
       <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
     </div>
   </header>
 
   <main class="container">
     <section class="card">
-      <h1 style="margin:0 0 4px;">🎯 Human Sensor Calibration</h1>
+      <h1 style="margin:0 0 4px;">⏱️ Reaction Time Analyzer</h1>
       <p class="muted" style="margin:0 0 12px;">
-        How precise is <em>your internal clock</em>?
-        Try to stop a stopwatch at exactly <b>5.000 seconds</b> — ten times —
-        then analyze your precision, accuracy, and learning curve.
+        How fast are your reflexes? Measure your reaction time 10 times,
+        then use <b>loops</b> to analyze the data.
       </p>
 
       <div class="concepts-box">
         <b>📚 Concepts you'll practice (from Week 03):</b>
         <span class="concept-tag">for loop</span>
+        <span class="concept-tag">while loop</span>
         <span class="concept-tag">range()</span>
-        <span class="concept-tag">accumulator pattern</span>
         <span class="concept-tag">break / continue</span>
-        <span class="concept-tag">manual min/max</span>
+        <span class="concept-tag">accumulator pattern</span>
       </div>
 
-      <!-- Step indicator -->
-      <div class="steps" style="margin-top:14px;">
-        <div class="step-pill active" data-step="1">① Identity</div>
-        <div class="step-pill" data-step="2">② Data</div>
-        <div class="step-pill" data-step="3">③ Code</div>
-        <div class="step-pill" data-step="4">④ Run & Submit</div>
-      </div>
+      <hr />
 
-      <details open id="sec1">
+      <details open>
         <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
         <div class="row">
           <div>
@@ -62,50 +55,50 @@
 
       <hr />
 
-      <details open id="sec2">
-        <summary><b>2) Collect your data</b> <span class="muted">(from your phone)</span></summary>
+      <details open>
+        <summary><b>2) Collect your data</b> <span class="muted">(10 reaction times)</span></summary>
 
         <div class="scenario-box">
           <b>🔬 What to do:</b>
           <ol class="muted" style="margin:6px 0 0; padding-left:20px;">
-            <li>Open the <b>stopwatch</b> on your phone (built-in Clock app).</li>
-            <li>Your goal: start the stopwatch, then stop it at <b>exactly 5.000 seconds</b>.</li>
-            <li>Don't look at the screen while counting! Close your eyes or look away, count to 5 in your head, then tap stop.</li>
-            <li>Record the <b>exact time shown</b> (e.g., 4.87, 5.23, 5.01).</li>
-            <li>Repeat <b>10 times</b>. Enter all 10 readings below, separated by commas.</li>
+            <li>Go to <a href="https://humanbenchmark.com/tests/reactiontime" target="_blank" style="color:#10b981;"><b>humanbenchmark.com/tests/reactiontime</b></a> on your phone browser.</li>
+            <li>Do <b>10 trials</b>. After each trial, write down the time in <b>milliseconds</b> (ms).</li>
+            <li>Enter all 10 values below, separated by commas.</li>
           </ol>
-          <small>💡 <b>Challenge:</b> Can you get within ±0.10s? Under ±0.05s makes you a "precision instrument"!</small>
+          <small class="muted" style="display:block; margin-top:8px;">
+            💡 Average human reaction time is 200–250 ms. Below 200 ms is fast!
+          </small>
         </div>
 
-        <label>Your 10 readings (comma-separated, in seconds)</label>
+        <label>Your 10 reaction times (ms, comma-separated)</label>
         <textarea id="dataBox" spellcheck="false"></textarea>
-        <small class="hint">⚠️ These must be <b>your own</b> attempts. Default values will be rejected.</small>
+        <small class="hint">Example: 245, 312, 198, 267, 223, 289, 201, 256, 234, 210</small>
       </details>
 
       <hr />
 
-      <details id="sec3">
-        <summary><b>3) Python code</b> <span class="muted">(fill in the TODOs)</span></summary>
-        <label>Python — analyze your calibration data with loops</label>
+      <details open>
+        <summary><b>3) Python code</b> <span class="muted">(write the loops)</span></summary>
+        <label>Python — use loops to analyze your data</label>
         <textarea id="codeBox" class="codebox" spellcheck="false"></textarea>
         <small class="hint">
-          Use <b>for loops</b> and <b>accumulators</b> — do NOT use built-in
-          <code>sum()</code>, <code>min()</code>, or <code>max()</code>.
+          Use <b>for</b> loops to iterate through your reaction times.
+          The code has TODO sections for you to complete.
         </small>
       </details>
 
       <hr />
 
-      <details id="sec4">
+      <details open>
         <summary><b>4) Output</b> <span class="muted">(auto-captured after Run)</span></summary>
-        <pre id="output" class="out">Click "▶ Run Python" to see output here.</pre>
+        <pre id="output" class="out">Click "Run Python" to see output here.</pre>
       </details>
 
       <div class="stickybar">
         <div class="bar-actions">
-          <button id="helpBtn" class="helpbtn" type="button">?</button>
+          <button id="helpBtn" class="helpbtn" type="button">Instructions</button>
           <button id="runBtn" type="button">▶ Run Python</button>
-          <button id="submitBtn" class="primary" type="button">Submit ✓</button>
+          <button id="submitBtn" class="primary" type="button">Submit</button>
         </div>
         <small id="status" class="hint"></small>
       </div>
@@ -115,23 +108,20 @@
   <!-- Help Modal -->
   <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal">
-      <h3>🎯 Week 03 — Instructions</h3>
+      <h3>Week 03 — Instructions</h3>
       <ol class="muted">
-        <li><b>Identity:</b> Student ID (6–12 digits), Name Surname, <b>@istun.edu.tr</b> email.</li>
-        <li><b>Measure:</b> Open your phone's stopwatch. Try to stop it at exactly 5.000 seconds — 10 times. Don't peek while counting!</li>
-        <li><b>Enter data:</b> Type all 10 readings separated by commas (e.g., 4.87, 5.23, 5.01, ...).</li>
-        <li><b>Write code:</b> Complete the TODO lines — use <b>for loops</b> and <b>accumulators</b> to analyze your data.</li>
-        <li><b>Run:</b> Tap "▶ Run Python" and check the calibration report.</li>
-        <li><b>Submit:</b> One submission only. Confirmation opens in a new tab.</li>
+        <li><b>Identity:</b> Student ID, Name Surname, <b>@istun.edu.tr</b> email.</li>
+        <li><b>Measure:</b> Go to humanbenchmark.com and do 10 reaction time trials.</li>
+        <li><b>Enter data:</b> Type your 10 times (ms) separated by commas.</li>
+        <li><b>Write code:</b> Use <b>for loops</b> to compute stats. Fill in the TODO sections.</li>
+        <li><b>Run &amp; Submit:</b> Check output, then submit once.</li>
       </ol>
       <p class="muted" style="margin-top:10px;">
-        <b>📐 The engineering:</b> In mechatronics, every sensor must be <em>calibrated</em> —
-        you check how close (accuracy) and how consistent (precision) its readings are
-        compared to a known reference. Here, YOU are the sensor and 5.000s is the reference.
-        This is exactly how engineers validate instruments in real labs!
+        <b>No internet?</b> Use a phone stopwatch instead:<br/>
+        Have a friend say "GO!" — tap as fast as you can. Record 10 times in seconds, then multiply by 1000 to convert to ms.
       </p>
       <div class="modal-actions">
-        <button id="closeHelpBtn" type="button">Got it</button>
+        <button id="closeHelpBtn" type="button">Close</button>
       </div>
     </div>
   </div>
@@ -139,183 +129,146 @@
   <script src="../assets/app.js"></script>
   <script>
     const WEEK = "week03";
-    const DEADLINE = new Date("2026-03-04T23:59:00+03:00");
 
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
 
-    const studentIdEl   = document.getElementById("studentId");
+    const studentIdEl  = document.getElementById("studentId");
     const nameSurnameEl = document.getElementById("nameSurname");
-    const emailEl       = document.getElementById("email");
-    const dataEl        = document.getElementById("dataBox");
-    const codeEl        = document.getElementById("codeBox");
-    const outEl         = document.getElementById("output");
-    const statusEl      = document.getElementById("status");
+    const emailEl      = document.getElementById("email");
+    const dataEl       = document.getElementById("dataBox");
+    const codeEl       = document.getElementById("codeBox");
+    const outEl        = document.getElementById("output");
+    const statusEl     = document.getElementById("status");
 
-    // ── Default data ──
-    const defaultData =
-`5.23, 4.87, 5.14, 4.95, 5.08, 5.31, 4.76, 5.02, 4.91, 5.19`;
+    const defaultData = `245, 312, 198, 267, 223, 289, 201, 256, 234, 210`;
 
-    // ── Starter code: ONLY Week 03 concepts ──
-    // for, range(), accumulator, break/continue
-    // NO sum(), min(), max(), NO functions, NO dicts, NO list comprehensions
     const starterCode =
 `# ──────────────────────────────────────────────
-# Week 03 — Human Sensor Calibration
+# Week 03 — Reaction Time Analyzer
 # ──────────────────────────────────────────────
-# DATA is a string with 10 comma-separated times.
-# The lines below split them into a list of floats.
-# (You'll learn list methods properly later — just use the loop below)
+# DATA is a string like "245, 312, 198, ..."
+# The line below converts it into a list of numbers.
+# (You'll learn about lists properly in Week 5 —
+#  for now, just know that 'times' is a sequence
+#  you can loop over with 'for')
 
 _parts = DATA.strip().split(",")
-readings = []
+times = []
 for _p in _parts:
-    readings.append(float(_p.strip()))
+    times.append(float(_p.strip()))
 
-TARGET = 5.0    # the reference value: exactly 5 seconds
-NUM = len(readings)   # should be 10
+n = len(times)
 
-print("=" * 50)
-print("🎯 HUMAN SENSOR CALIBRATION REPORT")
-print("=" * 50)
-
-# ──────────────────────────────────────────────
-# TODO 1: Print each trial and its error
-#         error = reading - TARGET  (can be + or -)
-# ──────────────────────────────────────────────
-
-for i in range(NUM):
-    error = readings[i] - TARGET
-    if error >= 0:
-        sign = "+"
-    else:
-        sign = ""
-    print(f"  Trial {i + 1:2d}: {readings[i]:.3f}s  (error: {sign}{error:.3f}s)")
-
-print("-" * 50)
+print("=" * 44)
+print("⏱️  REACTION TIME REPORT")
+print("=" * 44)
+print(f"Trials recorded: {n}")
+print("-" * 44)
 
 # ──────────────────────────────────────────────
-# TODO 2: Calculate TOTAL and AVERAGE absolute error
-#         Use an accumulator — do NOT use sum()!
+# TODO 1: Print each trial using a for loop
 # ──────────────────────────────────────────────
+# Use range(n) to get trial numbers 0, 1, 2, ...
+# Print each as "Trial 1: 245 ms" (add 1 to start from 1)
 
-total_abs_error = 0
-for i in range(NUM):
-    error = abs(readings[i] - TARGET)
-    total_abs_error = total_abs_error + error
+for i in range(n):
+    print(f"  Trial {i + 1}: {times[i]:.0f} ms")
 
-avg_abs_error = total_abs_error / NUM
-
-print(f"Total absolute error   : {total_abs_error:.3f}s")
-print(f"Average absolute error : {avg_abs_error:.3f}s")
+print("-" * 44)
 
 # ──────────────────────────────────────────────
-# TODO 3: Find the BEST and WORST attempts
-#         (smallest and largest absolute error)
-#         Do NOT use min() or max()!
+# TODO 2: Calculate TOTAL using a for loop
 # ──────────────────────────────────────────────
+# Use the accumulator pattern:
+# Start with total = 0, then add each time
 
-best_error = abs(readings[0] - TARGET)
-best_trial = 1
-worst_error = abs(readings[0] - TARGET)
-worst_trial = 1
+total = 0
+for t in times:
+    total = total + t
 
-for i in range(1, NUM):
-    error = abs(readings[i] - TARGET)
-    if error < best_error:
-        best_error = error
-        best_trial = i + 1
-    if error > worst_error:
-        worst_error = error
-        worst_trial = i + 1
-
-print(f"Best attempt  : Trial {best_trial} (error: {best_error:.3f}s)")
-print(f"Worst attempt : Trial {worst_trial} (error: {worst_error:.3f}s)")
+average = total / n
+print(f"Total time  : {total:.0f} ms")
+print(f"Average     : {average:.1f} ms")
 
 # ──────────────────────────────────────────────
-# TODO 4: Count how many attempts were "precise"
-#         Precise = within ±0.10s of the target
-#         Use continue to skip non-precise ones
+# TODO 3: Find FASTEST and SLOWEST with a loop
+# ──────────────────────────────────────────────
+# Start with fastest = times[0], then check each time
+
+fastest = times[0]
+slowest = times[0]
+
+for t in times:
+    if t < fastest:
+        fastest = t
+    if t > slowest:
+        slowest = t
+
+print(f"Fastest     : {fastest:.0f} ms")
+print(f"Slowest     : {slowest:.0f} ms")
+print(f"Range       : {slowest - fastest:.0f} ms")
+
+# ──────────────────────────────────────────────
+# TODO 4: Count FAST reactions (< 230 ms)
+#         using a for loop with if
 # ──────────────────────────────────────────────
 
-precise_count = 0
-for i in range(NUM):
-    error = abs(readings[i] - TARGET)
-    if error > 0.10:
-        continue    # skip — not precise enough
-    precise_count = precise_count + 1
+fast_threshold = 230
+fast_count = 0
 
-print(f"Precise hits (±0.10s) : {precise_count}/{NUM}")
+for t in times:
+    if t < fast_threshold:
+        fast_count = fast_count + 1
+
+slow_count = n - fast_count
+
+print(f"Fast (<{fast_threshold}ms): {fast_count} / {n}")
+print(f"Slow (≥{fast_threshold}ms): {slow_count} / {n}")
 
 # ──────────────────────────────────────────────
-# TODO 5: Calculate BIAS (systematic error)
-#         bias = average of (reading - TARGET), with sign
-#         Positive bias = you tend to overshoot
-#         Negative bias = you tend to undershoot
+# TODO 5: Check for IMPROVEMENT trend
 # ──────────────────────────────────────────────
+# Compare first half average vs second half average
+# Use range() to loop through first 5, then last 5
 
-total_signed_error = 0
-for i in range(NUM):
-    total_signed_error = total_signed_error + (readings[i] - TARGET)
+first_half_total = 0
+for i in range(n // 2):
+    first_half_total = first_half_total + times[i]
+first_half_avg = first_half_total / (n // 2)
 
-bias = total_signed_error / NUM
+second_half_total = 0
+for i in range(n // 2, n):
+    second_half_total = second_half_total + times[i]
+second_half_avg = second_half_total / (n - n // 2)
 
-print(f"Bias (systematic error): {bias:+.3f}s", end="")
-if bias > 0.05:
-    print("  → You tend to OVERSHOOT")
-elif bias < -0.05:
-    print("  → You tend to UNDERSHOOT")
+print("-" * 44)
+print(f"First half avg  : {first_half_avg:.1f} ms")
+print(f"Second half avg : {second_half_avg:.1f} ms")
+
+if second_half_avg < first_half_avg:
+    improvement = first_half_avg - second_half_avg
+    print(f"📈 You IMPROVED by {improvement:.1f} ms!")
 else:
-    print("  → Well calibrated!")
+    decline = second_half_avg - first_half_avg
+    print(f"📉 You slowed down by {decline:.1f} ms")
 
 # ──────────────────────────────────────────────
-# TODO 6: LEARNING EFFECT — compare first 5 vs last 5
+# TODO 6: Performance rating
 # ──────────────────────────────────────────────
 
-first_half_error = 0
-for i in range(5):
-    first_half_error = first_half_error + abs(readings[i] - TARGET)
-first_half_avg = first_half_error / 5
-
-second_half_error = 0
-for i in range(5, NUM):
-    second_half_error = second_half_error + abs(readings[i] - TARGET)
-second_half_avg = second_half_error / 5
-
-improvement = first_half_avg - second_half_avg
-
-print("-" * 50)
-print(f"First 5 avg error  : {first_half_avg:.3f}s")
-print(f"Last 5 avg error   : {second_half_avg:.3f}s")
-print(f"Improvement         : {improvement:+.3f}s", end="")
-if improvement > 0.02:
-    print("  → You got BETTER with practice!")
-elif improvement < -0.02:
-    print("  → You got WORSE (fatigue?)")
+print("-" * 44)
+if average < 200:
+    print("🏆 RATING: Elite — faster than most humans!")
+elif average < 250:
+    print("🥇 RATING: Fast — excellent reflexes!")
+elif average < 300:
+    print("🥈 RATING: Average — normal human range")
+elif average < 400:
+    print("🥉 RATING: Below average — keep practicing!")
 else:
-    print("  → Consistent throughout")
+    print("💤 RATING: Slow — were you sleepy?")
 
-# ──────────────────────────────────────────────
-# TODO 7: PRECISION GRADE
-# ──────────────────────────────────────────────
-
-print("-" * 50)
-
-if avg_abs_error < 0.05:
-    grade = "S — Precision Instrument"
-elif avg_abs_error < 0.10:
-    grade = "A — Excellent"
-elif avg_abs_error < 0.20:
-    grade = "B — Good"
-elif avg_abs_error < 0.35:
-    grade = "C — Needs Calibration"
-else:
-    grade = "D — Unreliable Sensor"
-
-print(f"CALIBRATION GRADE: {grade}")
-print(f"  Average error: {avg_abs_error:.3f}s")
-print(f"  Precise hits:  {precise_count}/{NUM}")
-print(f"  Bias:          {bias:+.3f}s")
-print("=" * 50)
+print("=" * 44)
 `;
 
     // ── Wiring ──
@@ -338,12 +291,12 @@ print("=" * 50)
 
     const draft = PhoneLabUI.loadDraft(WEEK);
     if (draft){
-      studentIdEl.value   = draft.studentId || "";
+      studentIdEl.value = draft.studentId || "";
       nameSurnameEl.value = draft.nameSurname || "";
-      emailEl.value       = draft.email || "";
-      dataEl.value        = draft.data || defaultData;
-      codeEl.value        = draft.code || starterCode;
-      outEl.textContent   = draft.output || 'Click "▶ Run Python" to see output here.';
+      emailEl.value = draft.email || "";
+      dataEl.value = draft.data || defaultData;
+      codeEl.value = draft.code || starterCode;
+      outEl.textContent = draft.output || 'Click "Run Python" to see output here.';
       statusEl.textContent = "Draft loaded.";
     } else {
       dataEl.value = defaultData;
@@ -373,7 +326,6 @@ print("=" * 50)
       const studentId   = studentIdEl.value.trim();
       const nameSurname = nameSurnameEl.value.trim();
       const email       = emailEl.value.trim().toLowerCase();
-
       if (!/^\d{6,12}$/.test(studentId))
         { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
       if (nameSurname.split(/\s+/).filter(Boolean).length < 2)
@@ -381,15 +333,9 @@ print("=" * 50)
       if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email))
         { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
 
-      // Block after deadline
-      if (new Date() > DEADLINE) {
-        statusEl.textContent = "⏰ Submission closed — deadline was Mar 4, 23:59.";
-        return;
-      }
-
-      // Block default data
+      // Block default data submission
       if (dataEl.value.replace(/\s+/g,"") === defaultData.replace(/\s+/g,"")) {
-        statusEl.textContent = "⚠️ Enter YOUR OWN stopwatch readings — default values are not accepted.";
+        statusEl.textContent = "⚠️ Enter YOUR OWN reaction times — default values are not accepted.";
         dataEl.style.outline = "2px solid #ef4444";
         setTimeout(() => dataEl.style.outline = "", 3000);
         return;
@@ -408,7 +354,6 @@ print("=" * 50)
       PhoneLabUI.setStatus(WEEK, "submitted");
     });
 
-    // Help modal
     const helpModal = document.getElementById("helpModal");
     document.getElementById("helpBtn").addEventListener("click", () => helpModal.style.display = "flex");
     document.getElementById("closeHelpBtn").addEventListener("click", () => helpModal.style.display = "none");

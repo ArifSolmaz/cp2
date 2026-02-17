@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Week 08 — PhoneLab</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-title">Week 08 — Survey Data Processor</div>
+      <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1 style="margin:0 0 4px;">📊 Survey Data Processor</h1>
+      <p class="muted" style="margin:0 0 12px;">
+        Create a mini-survey, collect responses from <b>6 people</b>,
+        then use <em>file I/O</em> to write CSV, read with DictReader,
+        export JSON reports, and handle errors — all core file operations.
+      </p>
+
+      <div class="concepts-box">
+        <b>📚 Concepts you'll practice (from Week 08):</b>
+        <span class="concept-tag">open() / with</span>
+        <span class="concept-tag">read / write / append</span>
+        <span class="concept-tag">csv.writer / DictReader</span>
+        <span class="concept-tag">json.dump / json.load</span>
+        <span class="concept-tag">try / except</span>
+        <span class="concept-tag">os.path</span>
+      </div>
+
+      <!-- Step indicator -->
+      <div class="steps" style="margin-top:14px;">
+        <div class="step-pill active" data-step="1">① Identity</div>
+        <div class="step-pill" data-step="2">② Data</div>
+        <div class="step-pill" data-step="3">③ Code</div>
+        <div class="step-pill" data-step="4">④ Run & Submit</div>
+      </div>
+
+      <details open id="sec1">
+        <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
+        <div class="row">
+          <div>
+            <label>Student ID (6–12 digits)</label>
+            <input id="studentId" inputmode="numeric" minlength="6" maxlength="12"
+                   pattern="^\d{6,12}$" required placeholder="e.g., 202612345" />
+          </div>
+          <div>
+            <label>Name Surname</label>
+            <input id="nameSurname" required placeholder="e.g., Arif Solmaz" />
+          </div>
+        </div>
+        <label>Email (@istun.edu.tr)</label>
+        <input id="email" type="email"
+               pattern="^[A-Za-z0-9._%+-]+@istun\.edu\.tr$"
+               required placeholder="name@istun.edu.tr" />
+        <small class="hint">Draft auto-saves on this device.</small>
+      </details>
+
+      <hr />
+
+      <details open id="sec2">
+        <summary><b>2) Collect your data</b> <span class="muted">(ask 6 people)</span></summary>
+
+        <div class="scenario-box">
+          <b>🔬 What to do:</b>
+          <ol class="muted" style="margin:6px 0 0; padding-left:20px;">
+            <li>You'll run a <b>mini-survey with 5 questions</b> (rate 1–5 stars).</li>
+            <li>Ask <b>6 people</b> — classmates, friends, or family (you can include yourself).</li>
+            <li>The 5 default questions are about course satisfaction. You may <b>change the questions</b> to any topic you like!</li>
+            <li>Format: first line = questions (comma-separated), then one line per respondent:
+              <code>Name,Q1,Q2,Q3,Q4,Q5</code>
+            </li>
+          </ol>
+          <small>💡 <b>Tip:</b> You can do this quickly by sending a WhatsApp message: "Rate these 1–5" and collecting replies.</small>
+        </div>
+
+        <label>Your survey data (edit questions + responses)</label>
+        <textarea id="dataBox" spellcheck="false"></textarea>
+        <small class="hint">⚠️ Change to <b>your own</b> respondents and ratings. Default values will be rejected.</small>
+      </details>
+
+      <hr />
+
+      <details id="sec3">
+        <summary><b>3) Python code</b> <span class="muted">(file I/O operations)</span></summary>
+        <label>Python — write CSV, read with DictReader, export JSON</label>
+        <textarea id="codeBox" class="codebox" spellcheck="false"></textarea>
+        <small class="hint">
+          Use <b>open()</b>, <b>with</b>, <b>csv.writer</b>, <b>csv.DictReader</b>,
+          <b>json.dump/load</b>, <b>try/except</b>, and <b>os.path</b>.
+        </small>
+      </details>
+
+      <hr />
+
+      <details id="sec4">
+        <summary><b>4) Output</b> <span class="muted">(auto-captured after Run)</span></summary>
+        <pre id="output" class="out">Click "▶ Run Python" to see output here.</pre>
+      </details>
+
+      <div class="stickybar">
+        <div class="bar-actions">
+          <button id="helpBtn" class="helpbtn" type="button">?</button>
+          <button id="runBtn" type="button">▶ Run Python</button>
+          <button id="submitBtn" class="primary" type="button">Submit ✓</button>
+        </div>
+        <small id="status" class="hint"></small>
+      </div>
+    </section>
+  </main>
+
+  <!-- Help Modal -->
+  <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3>📊 Week 08 — Instructions</h3>
+      <ol class="muted">
+        <li><b>Identity:</b> Student ID (6–12 digits), Name Surname, <b>@istun.edu.tr</b> email.</li>
+        <li><b>Create survey:</b> Use the 5 default questions or write your own. Ask 6 people to rate each 1–5.</li>
+        <li><b>Enter data:</b> First line = questions, then one line per respondent: <code>Name,Q1,Q2,Q3,Q4,Q5</code></li>
+        <li><b>Write code:</b> Complete the TODOs — write files, read them back, export JSON.</li>
+        <li><b>Run:</b> Tap "▶ Run Python". Files are created in the browser's virtual filesystem.</li>
+        <li><b>Submit:</b> One submission only.</li>
+      </ol>
+      <p class="muted" style="margin-top:10px;">
+        <b>📐 The engineering:</b> In mechatronics, file I/O is everywhere — reading
+        sensor configuration from JSON, logging measurements to CSV, parsing G-code
+        text files, and exporting calibration reports. The write→read→transform→export
+        pipeline you build here is the same one used in every data acquisition system!
+      </p>
+      <div class="modal-actions">
+        <button id="closeHelpBtn" type="button">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/app.js"></script>
+  <script>
+    const WEEK = "week08";
+    const DEADLINE = new Date("2026-04-08T23:59:00+03:00");
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
+
+    const studentIdEl   = document.getElementById("studentId");
+    const nameSurnameEl = document.getElementById("nameSurname");
+    const emailEl       = document.getElementById("email");
+    const dataEl        = document.getElementById("dataBox");
+    const codeEl        = document.getElementById("codeBox");
+    const outEl         = document.getElementById("output");
+    const statusEl      = document.getElementById("status");
+
+    // ── Default data ──
+    const defaultData =
+`How useful was the lecture?,How clear was the material?,How engaging was the instructor?,How good were the examples?,How confident do you feel?
+Ahmet,4,5,3,4,5
+Elif,5,4,4,5,4
+Mehmet,3,3,2,4,3
+Zeynep,5,5,5,5,4
+Can,4,3,4,3,5
+Ayse,3,4,3,5,4`;
+
+    const starterCode =
+`# ──────────────────────────────────────────────
+# Week 08 — Survey Data Processor
+# ──────────────────────────────────────────────
+import csv
+import json
+import os
+import io
+
+# Parse input data
+_lines = DATA.strip().split("\\n")
+questions = [q.strip() for q in _lines[0].split(",")]
+responses = []
+for line in _lines[1:]:
+    parts = [p.strip() for p in line.split(",")]
+    responses.append(parts)
+
+NUM_Q = len(questions)
+
+print("=" * 55)
+print("📊 SURVEY DATA PROCESSOR")
+print("=" * 55)
+
+# ──────────────────────────────────────────────
+# TODO 1: WRITE raw survey data to a text file
+#         Use open() with 'w' mode and the with statement
+# ──────────────────────────────────────────────
+
+print("\\n📝 STEP 1: Writing raw data to text file...")
+
+with open("survey_raw.txt", "w") as f:
+    f.write("SURVEY RAW DATA\\n")
+    f.write("=" * 40 + "\\n")
+    f.write("Questions: " + ", ".join(questions) + "\\n\\n")
+    for resp in responses:
+        f.write(resp[0] + ": " + ", ".join(resp[1:]) + "\\n")
+
+print("  ✅ Written survey_raw.txt")
+print(f"  File exists: {os.path.exists('survey_raw.txt')}")
+
+# ──────────────────────────────────────────────
+# TODO 2: READ the text file back line-by-line
+# ──────────────────────────────────────────────
+
+print("\\n📖 STEP 2: Reading text file back...")
+
+with open("survey_raw.txt", "r") as f:
+    lines = f.readlines()
+
+print(f"  Lines read: {len(lines)}")
+for line in lines[:3]:
+    print(f"  | {line.rstrip()}")
+print(f"  | ... ({len(lines) - 3} more lines)")
+
+# ──────────────────────────────────────────────
+# TODO 3: WRITE structured CSV with csv.writer
+#         Header row + data rows
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("📄 STEP 3: Writing CSV file with csv.writer...")
+
+with open("survey_results.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    # Header row
+    header = ["Name"] + [f"Q{i+1}" for i in range(NUM_Q)]
+    writer.writerow(header)
+    # Data rows
+    for resp in responses:
+        writer.writerow(resp)
+
+print(f"  ✅ Written survey_results.csv")
+
+# Verify: read raw content
+with open("survey_results.csv", "r") as f:
+    raw_csv = f.read()
+print(f"  File size: {len(raw_csv)} chars")
+
+# Use os.path operations
+filepath = "survey_results.csv"
+print(f"  Basename : {os.path.basename(filepath)}")
+print(f"  Extension: {os.path.splitext(filepath)[1]}")
+
+# ──────────────────────────────────────────────
+# TODO 4: READ CSV with csv.DictReader
+#         Access data by column name
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("📊 STEP 4: Reading CSV with DictReader...")
+
+all_records = []
+with open("survey_results.csv", "r") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        all_records.append(row)
+        name = row["Name"]
+        scores = [int(row[f"Q{i+1}"]) for i in range(NUM_Q)]
+        avg = sum(scores) / len(scores)
+        print(f"  {name:10s} → scores: {scores} → avg: {avg:.1f}")
+
+print(f"  Total respondents: {len(all_records)}")
+
+# ──────────────────────────────────────────────
+# TODO 5: APPEND a new response to the CSV
+#         Use append mode 'a'
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("➕ STEP 5: Appending new response...")
+
+# Simulate a late response
+new_name = "Late_Resp"
+new_scores = [4, 4, 3, 5, 4]
+
+with open("survey_results.csv", "a", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerow([new_name] + new_scores)
+
+print(f"  ✅ Appended: {new_name} → {new_scores}")
+
+# Verify new row count
+with open("survey_results.csv", "r") as f:
+    reader = csv.reader(f)
+    row_count = sum(1 for _ in reader) - 1   # minus header
+print(f"  Total respondents now: {row_count}")
+
+# ──────────────────────────────────────────────
+# TODO 6: Compute per-question stats and build
+#         a results dictionary for JSON export
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("📈 STEP 6: Computing statistics...")
+
+# Re-read CSV with new data
+with open("survey_results.csv", "r") as f:
+    reader = csv.DictReader(f)
+    all_records = list(reader)
+
+question_stats = {}
+for qi in range(NUM_Q):
+    col = f"Q{qi+1}"
+    values = []
+    for row in all_records:
+        try:
+            val = int(row[col])
+            if 1 <= val <= 5:
+                values.append(val)
+        except (ValueError, KeyError):
+            pass   # skip invalid entries
+    
+    q_label = questions[qi] if qi < len(questions) else f"Question {qi+1}"
+    avg_score = sum(values) / len(values) if values else 0
+    question_stats[col] = {
+        "question": q_label,
+        "responses": len(values),
+        "average": round(avg_score, 2),
+        "min": min(values) if values else 0,
+        "max": max(values) if values else 0
+    }
+    
+    bar = "★" * round(avg_score) + "☆" * (5 - round(avg_score))
+    print(f"  Q{qi+1}: {avg_score:.2f}/5 {bar}  {q_label[:30]}")
+
+# ──────────────────────────────────────────────
+# TODO 7: EXPORT results as JSON with json.dump
+#         Use indent for pretty printing
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("💾 STEP 7: Exporting JSON report...")
+
+report = {
+    "survey_title": "PhoneLab Week 08 Survey",
+    "total_respondents": len(all_records),
+    "questions": question_stats,
+    "respondent_names": [r["Name"] for r in all_records]
+}
+
+with open("survey_report.json", "w") as f:
+    json.dump(report, f, indent=2)
+
+print(f"  ✅ Written survey_report.json")
+
+# ──────────────────────────────────────────────
+# TODO 8: READ JSON back and verify
+#         Use json.load
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("📂 STEP 8: Reading JSON back...")
+
+with open("survey_report.json", "r") as f:
+    loaded = json.load(f)
+
+print(f"  Title        : {loaded['survey_title']}")
+print(f"  Respondents  : {loaded['total_respondents']}")
+print(f"  Questions    : {len(loaded['questions'])}")
+print(f"  JSON keys    : {list(loaded.keys())}")
+
+# ──────────────────────────────────────────────
+# TODO 9: EXCEPTION HANDLING — try reading
+#         a file that doesn't exist
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("🛡️ STEP 9: Exception handling...")
+
+try:
+    with open("missing_file.csv", "r") as f:
+        data = f.read()
+    print("  File found!")
+except FileNotFoundError:
+    print("  ⚠️ FileNotFoundError caught: missing_file.csv does not exist")
+
+# Also handle invalid data conversion
+test_values = ["5", "3", "abc", "4", "", "2"]
+valid = []
+invalid_count = 0
+for val in test_values:
+    try:
+        num = int(val)
+        valid.append(num)
+    except ValueError:
+        invalid_count += 1
+
+print(f"  Parsed {len(valid)} valid values, skipped {invalid_count} invalid")
+
+# ──────────────────────────────────────────────
+# TODO 10: OS.PATH operations — list all created files
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("📁 STEP 10: File system summary (os.path)...")
+
+created_files = ["survey_raw.txt", "survey_results.csv", "survey_report.json"]
+for filepath in created_files:
+    exists = os.path.exists(filepath)
+    basename = os.path.basename(filepath)
+    name, ext = os.path.splitext(filepath)
+    if exists:
+        with open(filepath, "r") as f:
+            size = len(f.read())
+        print(f"  ✅ {basename:25s} ext={ext:5s}  size={size:5d} chars")
+    else:
+        print(f"  ❌ {basename:25s} NOT FOUND")
+
+# ──────────────────────────────────────────────
+# SURVEY REPORT VERDICT
+# ──────────────────────────────────────────────
+
+print(f"\\n{'=' * 55}")
+
+overall_avg = sum(q["average"] for q in question_stats.values()) / NUM_Q
+best_q = max(question_stats.items(), key=lambda x: x[1]["average"])
+worst_q = min(question_stats.items(), key=lambda x: x[1]["average"])
+
+if overall_avg >= 4.5:
+    verdict = "⭐ Excellent — overwhelmingly positive"
+elif overall_avg >= 3.5:
+    verdict = "✅ Good — mostly satisfied"
+elif overall_avg >= 2.5:
+    verdict = "🟡 Mixed — room for improvement"
+else:
+    verdict = "🔴 Poor — needs attention"
+
+print(f"SURVEY VERDICT: {verdict}")
+print(f"  Overall average : {overall_avg:.2f}/5")
+print(f"  Strongest area  : {best_q[0]} ({best_q[1]['average']:.2f}) — {best_q[1]['question'][:35]}")
+print(f"  Weakest area    : {worst_q[0]} ({worst_q[1]['average']:.2f}) — {worst_q[1]['question'][:35]}")
+print(f"  Files created   : {len(created_files)} (.txt, .csv, .json)")
+print("=" * 55)
+`;
+
+    // ── Wiring ──
+    function save(){
+      PhoneLabUI.saveDraft(WEEK, {
+        studentId: studentIdEl.value, nameSurname: nameSurnameEl.value,
+        email: emailEl.value, data: dataEl.value, code: codeEl.value,
+        output: outEl.textContent, savedAt: new Date().toISOString()
+      });
+      statusEl.textContent = "Draft saved.";
+    }
+
+    function submitViaForm(payload){
+      const form = document.createElement("form");
+      form.method = "POST"; form.action = SCRIPT_URL; form.target = "_blank";
+      const inp = document.createElement("input");
+      inp.type = "hidden"; inp.name = "payload"; inp.value = JSON.stringify(payload);
+      form.appendChild(inp); document.body.appendChild(form); form.submit(); form.remove();
+    }
+
+    const draft = PhoneLabUI.loadDraft(WEEK);
+    if (draft){
+      studentIdEl.value   = draft.studentId || "";
+      nameSurnameEl.value = draft.nameSurname || "";
+      emailEl.value       = draft.email || "";
+      dataEl.value        = draft.data || defaultData;
+      codeEl.value        = draft.code || starterCode;
+      outEl.textContent   = draft.output || 'Click "▶ Run Python" to see output here.';
+      statusEl.textContent = "Draft loaded.";
+    } else {
+      dataEl.value = defaultData;
+      codeEl.value = starterCode;
+    }
+
+    [studentIdEl, nameSurnameEl, emailEl, dataEl, codeEl].forEach(el =>
+      el.addEventListener("input", save));
+
+    document.getElementById("runBtn").addEventListener("click", async () => {
+      statusEl.textContent = "Loading Python runtime…";
+      const dataLiteral = JSON.stringify(dataEl.value);
+      const codeToRun = `DATA = ${dataLiteral}\n\n` + codeEl.value;
+      try {
+        const out = await PhoneLabUI.runPythonCapture(codeToRun);
+        outEl.textContent = out || "(no output)";
+        statusEl.textContent = "✅ Run complete.";
+        save();
+      } catch (e) {
+        outEl.textContent = String(e);
+        statusEl.textContent = "❌ Error — check your code.";
+        save();
+      }
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const studentId   = studentIdEl.value.trim();
+      const nameSurname = nameSurnameEl.value.trim();
+      const email       = emailEl.value.trim().toLowerCase();
+
+      if (!/^\d{6,12}$/.test(studentId))
+        { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
+      if (nameSurname.split(/\s+/).filter(Boolean).length < 2)
+        { statusEl.textContent = "Enter Name and Surname."; return; }
+      if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email))
+        { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
+
+      if (new Date() > DEADLINE) {
+        statusEl.textContent = "⏰ Submission closed — deadline was Apr 8, 23:59.";
+        return;
+      }
+
+      if (dataEl.value.replace(/\s+/g,"") === defaultData.replace(/\s+/g,"")) {
+        statusEl.textContent = "⚠️ Enter YOUR OWN survey responses — default values are not accepted.";
+        dataEl.style.outline = "2px solid #ef4444";
+        setTimeout(() => dataEl.style.outline = "", 3000);
+        return;
+      }
+
+      if (!outEl.textContent || outEl.textContent.includes("Click") || outEl.textContent === "(no output)")
+        { statusEl.textContent = "⚠️ Run your code first before submitting."; return; }
+
+      const payload = {
+        week: WEEK, studentId, nameSurname, email,
+        data: dataEl.value, code: codeEl.value, output: outEl.textContent,
+        userAgent: navigator.userAgent, submittedAt: new Date().toISOString()
+      };
+      statusEl.textContent = "Submitting…";
+      submitViaForm(payload);
+      PhoneLabUI.setStatus(WEEK, "submitted");
+    });
+
+    const helpModal = document.getElementById("helpModal");
+    document.getElementById("helpBtn").addEventListener("click", () => helpModal.style.display = "flex");
+    document.getElementById("closeHelpBtn").addEventListener("click", () => helpModal.style.display = "none");
+    helpModal.addEventListener("click", e => { if (e.target === helpModal) helpModal.style.display = "none"; });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") helpModal.style.display = "none"; });
+  </script>
+</body>
+</html>

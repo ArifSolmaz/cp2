@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Week 05 — PhoneLab</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-title">Week 05 — Step Counter Weekly Tracker</div>
+      <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1 style="margin:0 0 4px;">🏃 Step Counter Weekly Tracker</h1>
+      <p class="muted" style="margin:0 0 12px;">
+        Are you actually moving enough? Pull <b>7 days</b> of step data from your phone
+        and use <em>lists, slicing, sorting, and comprehensions</em> to analyze your activity.
+      </p>
+
+      <div class="concepts-box">
+        <b>📚 Concepts you'll practice (from Week 05):</b>
+        <span class="concept-tag">lists</span>
+        <span class="concept-tag">indexing / slicing</span>
+        <span class="concept-tag">sort / sorted</span>
+        <span class="concept-tag">sum / min / max / len</span>
+        <span class="concept-tag">list comprehension</span>
+        <span class="concept-tag">tuples &amp; unpacking</span>
+        <span class="concept-tag">enumerate / zip</span>
+      </div>
+
+      <!-- Step indicator -->
+      <div class="steps" style="margin-top:14px;">
+        <div class="step-pill active" data-step="1">① Identity</div>
+        <div class="step-pill" data-step="2">② Data</div>
+        <div class="step-pill" data-step="3">③ Code</div>
+        <div class="step-pill" data-step="4">④ Run & Submit</div>
+      </div>
+
+      <details open id="sec1">
+        <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
+        <div class="row">
+          <div>
+            <label>Student ID (6–12 digits)</label>
+            <input id="studentId" inputmode="numeric" minlength="6" maxlength="12"
+                   pattern="^\d{6,12}$" required placeholder="e.g., 202612345" />
+          </div>
+          <div>
+            <label>Name Surname</label>
+            <input id="nameSurname" required placeholder="e.g., Arif Solmaz" />
+          </div>
+        </div>
+        <label>Email (@istun.edu.tr)</label>
+        <input id="email" type="email"
+               pattern="^[A-Za-z0-9._%+-]+@istun\.edu\.tr$"
+               required placeholder="name@istun.edu.tr" />
+        <small class="hint">Draft auto-saves on this device.</small>
+      </details>
+
+      <hr />
+
+      <details open id="sec2">
+        <summary><b>2) Collect your data</b> <span class="muted">(from your phone)</span></summary>
+
+        <div class="scenario-box">
+          <b>🔬 What to do:</b>
+          <ol class="muted" style="margin:6px 0 0; padding-left:20px;">
+            <li>Open your phone's <b>Health / Fitness app</b>:
+              <ul style="margin-top:4px;">
+                <li><b>iPhone:</b> Health → Browse → Activity → Steps → Show All Data (or weekly view)</li>
+                <li><b>Samsung:</b> Samsung Health → Steps → Weekly</li>
+                <li><b>Other Android:</b> Google Fit → Steps → 7-day view</li>
+              </ul>
+            </li>
+            <li>Find the <b>last 7 days</b> of step counts (Mon–Sun or any 7 consecutive days).</li>
+            <li>Enter each day's <b>total steps</b> below, separated by commas.</li>
+            <li>Also enter your <b>stride length</b> in cm (average: men ≈ 78 cm, women ≈ 70 cm). If unsure, use 74.</li>
+          </ol>
+          <small>💡 <b>Reference:</b> WHO recommends 8,000–10,000 steps/day. Under 5,000 = sedentary. Over 12,000 = very active.</small>
+        </div>
+
+        <label>Your measurements (edit the numbers)</label>
+        <textarea id="dataBox" spellcheck="false"></textarea>
+        <small class="hint">⚠️ Change the numbers to <b>your own</b> step data. Default values will be rejected.</small>
+      </details>
+
+      <hr />
+
+      <details id="sec3">
+        <summary><b>3) Python code</b> <span class="muted">(use lists, slicing, comprehensions)</span></summary>
+        <label>Python — analyze your weekly activity with lists</label>
+        <textarea id="codeBox" class="codebox" spellcheck="false"></textarea>
+        <small class="hint">
+          Use <b>lists</b>, <b>slicing</b>, <b>list comprehensions</b>,
+          <b>enumerate</b>, <b>zip</b>, and <b>tuples</b>.
+        </small>
+      </details>
+
+      <hr />
+
+      <details id="sec4">
+        <summary><b>4) Output</b> <span class="muted">(auto-captured after Run)</span></summary>
+        <pre id="output" class="out">Click "▶ Run Python" to see output here.</pre>
+      </details>
+
+      <div class="stickybar">
+        <div class="bar-actions">
+          <button id="helpBtn" class="helpbtn" type="button">?</button>
+          <button id="runBtn" type="button">▶ Run Python</button>
+          <button id="submitBtn" class="primary" type="button">Submit ✓</button>
+        </div>
+        <small id="status" class="hint"></small>
+      </div>
+    </section>
+  </main>
+
+  <!-- Help Modal -->
+  <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3>🏃 Week 05 — Instructions</h3>
+      <ol class="muted">
+        <li><b>Identity:</b> Student ID (6–12 digits), Name Surname, <b>@istun.edu.tr</b> email.</li>
+        <li><b>Find your steps:</b> Open Health (iPhone), Samsung Health, or Google Fit. Look at your last 7 days of step counts.</li>
+        <li><b>Enter data:</b> Type 7 step counts as comma-separated values + your stride length in cm.</li>
+        <li><b>Write code:</b> Complete the TODOs — use lists, slicing, sorting, comprehensions, and tuples.</li>
+        <li><b>Run:</b> Tap "▶ Run Python" and check the activity report.</li>
+        <li><b>Submit:</b> One submission only. Confirmation opens in a new tab.</li>
+      </ol>
+      <p class="muted" style="margin-top:10px;">
+        <b>📐 The engineering:</b> In mechatronics, sensor data arrives as lists of
+        time-series values — exactly like your daily step counts. Slicing extracts
+        windows of data, sorting finds extremes, and comprehensions filter/transform
+        efficiently. These are the same operations used on accelerometer, gyroscope,
+        and encoder data in real systems!
+      </p>
+      <div class="modal-actions">
+        <button id="closeHelpBtn" type="button">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/app.js"></script>
+  <script>
+    const WEEK = "week05";
+    const DEADLINE = new Date("2026-03-18T23:59:00+03:00");
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
+
+    const studentIdEl   = document.getElementById("studentId");
+    const nameSurnameEl = document.getElementById("nameSurname");
+    const emailEl       = document.getElementById("email");
+    const dataEl        = document.getElementById("dataBox");
+    const codeEl        = document.getElementById("codeBox");
+    const outEl         = document.getElementById("output");
+    const statusEl      = document.getElementById("status");
+
+    // ── Default data ──
+    const defaultData =
+`steps=8432,5210,11087,7653,9241,4120,10385
+stride_cm=74`;
+
+    const starterCode =
+`# ──────────────────────────────────────────────
+# Week 05 — Step Counter Weekly Tracker
+# ──────────────────────────────────────────────
+
+_lines = DATA.strip().split("\\n")
+steps_raw = _lines[0].split("=")[1]
+stride_cm = float(_lines[1].split("=")[1])
+
+# TODO 1: Parse the step data into a LIST of integers
+#         Split by comma, convert each to int
+steps = [int(s.strip()) for s in steps_raw.split(",")]
+
+# Day names to pair with your data
+days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+stride_m = stride_cm / 100   # convert to meters
+
+print("=" * 55)
+print("🏃 WEEKLY STEP TRACKER REPORT")
+print("=" * 55)
+
+# ──────────────────────────────────────────────
+# TODO 2: Use ENUMERATE to print each day's data
+#         Print: rank, day name, steps, distance in km
+# ──────────────────────────────────────────────
+
+print("\\nDAILY BREAKDOWN:")
+for i, (day, count) in enumerate(zip(days, steps)):
+    km = count * stride_m / 1000
+    print(f"  {i+1}. {day}: {count:,} steps ({km:.2f} km)")
+
+# ──────────────────────────────────────────────
+# TODO 3: Use SUM, MIN, MAX, LEN for basic stats
+# ──────────────────────────────────────────────
+
+total_steps = sum(steps)
+avg_steps = total_steps / len(steps)
+best_day = max(steps)
+worst_day = min(steps)
+total_km = total_steps * stride_m / 1000
+
+print(f"\\n{'─' * 55}")
+print("WEEKLY STATISTICS:")
+print(f"  Total steps  : {total_steps:,}")
+print(f"  Total distance: {total_km:.2f} km")
+print(f"  Daily average : {avg_steps:,.0f} steps")
+print(f"  Best day      : {best_day:,} steps")
+print(f"  Worst day     : {worst_day:,} steps")
+print(f"  Range         : {best_day - worst_day:,} steps")
+
+# ──────────────────────────────────────────────
+# TODO 4: Use INDEXING to find WHICH day was best/worst
+# ──────────────────────────────────────────────
+
+best_index = steps.index(best_day)
+worst_index = steps.index(worst_day)
+print(f"  Best day was  : {days[best_index]}")
+print(f"  Worst day was : {days[worst_index]}")
+
+# ──────────────────────────────────────────────
+# TODO 5: Use SLICING — weekday vs weekend comparison
+#         Weekdays = steps[0:5], Weekend = steps[5:7]
+# ──────────────────────────────────────────────
+
+weekday_steps = steps[0:5]     # Mon-Fri
+weekend_steps = steps[5:7]     # Sat-Sun
+
+weekday_avg = sum(weekday_steps) / len(weekday_steps)
+weekend_avg = sum(weekend_steps) / len(weekend_steps)
+
+print(f"\\n{'─' * 55}")
+print("WEEKDAY vs WEEKEND:")
+print(f"  Weekday avg   : {weekday_avg:,.0f} steps/day")
+print(f"  Weekend avg   : {weekend_avg:,.0f} steps/day")
+if weekend_avg > weekday_avg:
+    print(f"  → You're MORE active on weekends! (+{weekend_avg - weekday_avg:,.0f})")
+else:
+    print(f"  → You're MORE active on weekdays! (+{weekday_avg - weekend_avg:,.0f})")
+
+# ──────────────────────────────────────────────
+# TODO 6: Use SORTED to create a ranking
+#         Sort WITHOUT modifying the original list
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("RANKED (best to worst):")
+
+# Create list of tuples (steps, day_name) and sort descending
+ranked = sorted(zip(steps, days), reverse=True)
+for rank, (count, day) in enumerate(ranked, start=1):
+    medal = "🥇" if rank == 1 else "🥈" if rank == 2 else "🥉" if rank == 3 else "  "
+    print(f"  {medal} #{rank} {day}: {count:,} steps")
+
+# ──────────────────────────────────────────────
+# TODO 7: Use LIST COMPREHENSION to classify days
+#         Active day = 8,000+ steps
+#         Sedentary  = under 5,000 steps
+# ──────────────────────────────────────────────
+
+active_days = [day for day, count in zip(days, steps) if count >= 8000]
+sedentary_days = [day for day, count in zip(days, steps) if count < 5000]
+
+print(f"\\n{'─' * 55}")
+print("ACTIVITY CLASSIFICATION:")
+print(f"  Active days (8k+)   : {active_days}")
+print(f"  Sedentary days (<5k): {sedentary_days}")
+print(f"  Active ratio        : {len(active_days)}/{len(steps)} days")
+
+# ──────────────────────────────────────────────
+# TODO 8: Use LIST COMPREHENSION to calculate
+#         distances in km for each day
+# ──────────────────────────────────────────────
+
+distances_km = [count * stride_m / 1000 for count in steps]
+
+# Use SLICING to get top 3 distances
+top3_distances = sorted(distances_km, reverse=True)[:3]
+print(f"  Top 3 distances     : {[round(d, 2) for d in top3_distances]} km")
+
+# ──────────────────────────────────────────────
+# TODO 9: Use TUPLES for daily summaries
+#         Create a list of (day, steps, km, status) tuples
+# ──────────────────────────────────────────────
+
+daily_summary = []
+for day, count, km in zip(days, steps, distances_km):
+    if count >= 10000:
+        status = "⭐ Excellent"
+    elif count >= 8000:
+        status = "✅ Active"
+    elif count >= 5000:
+        status = "🟡 Moderate"
+    else:
+        status = "🔴 Sedentary"
+    daily_summary.append((day, count, km, status))
+
+# ──────────────────────────────────────────────
+# TODO 10: TUPLE UNPACKING to print the summary
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("DAILY STATUS:")
+for day, count, km, status in daily_summary:
+    print(f"  {day}: {count:>6,} steps | {km:5.2f} km | {status}")
+
+# ──────────────────────────────────────────────
+# FINAL GRADE
+# ──────────────────────────────────────────────
+
+print(f"\\n{'=' * 55}")
+if avg_steps >= 10000:
+    grade = "A — Athlete"
+elif avg_steps >= 8000:
+    grade = "B — Active"
+elif avg_steps >= 5000:
+    grade = "C — Moderate"
+elif avg_steps >= 3000:
+    grade = "D — Low Activity"
+else:
+    grade = "F — Couch Potato"
+
+print(f"WEEKLY GRADE: {grade}")
+print(f"  Average: {avg_steps:,.0f} steps/day ({total_km:.1f} km total)")
+print("=" * 55)
+`;
+
+    // ── Wiring ──
+    function save(){
+      PhoneLabUI.saveDraft(WEEK, {
+        studentId: studentIdEl.value, nameSurname: nameSurnameEl.value,
+        email: emailEl.value, data: dataEl.value, code: codeEl.value,
+        output: outEl.textContent, savedAt: new Date().toISOString()
+      });
+      statusEl.textContent = "Draft saved.";
+    }
+
+    function submitViaForm(payload){
+      const form = document.createElement("form");
+      form.method = "POST"; form.action = SCRIPT_URL; form.target = "_blank";
+      const inp = document.createElement("input");
+      inp.type = "hidden"; inp.name = "payload"; inp.value = JSON.stringify(payload);
+      form.appendChild(inp); document.body.appendChild(form); form.submit(); form.remove();
+    }
+
+    const draft = PhoneLabUI.loadDraft(WEEK);
+    if (draft){
+      studentIdEl.value   = draft.studentId || "";
+      nameSurnameEl.value = draft.nameSurname || "";
+      emailEl.value       = draft.email || "";
+      dataEl.value        = draft.data || defaultData;
+      codeEl.value        = draft.code || starterCode;
+      outEl.textContent   = draft.output || 'Click "▶ Run Python" to see output here.';
+      statusEl.textContent = "Draft loaded.";
+    } else {
+      dataEl.value = defaultData;
+      codeEl.value = starterCode;
+    }
+
+    [studentIdEl, nameSurnameEl, emailEl, dataEl, codeEl].forEach(el =>
+      el.addEventListener("input", save));
+
+    document.getElementById("runBtn").addEventListener("click", async () => {
+      statusEl.textContent = "Loading Python runtime…";
+      const dataLiteral = JSON.stringify(dataEl.value);
+      const codeToRun = `DATA = ${dataLiteral}\n\n` + codeEl.value;
+      try {
+        const out = await PhoneLabUI.runPythonCapture(codeToRun);
+        outEl.textContent = out || "(no output)";
+        statusEl.textContent = "✅ Run complete.";
+        save();
+      } catch (e) {
+        outEl.textContent = String(e);
+        statusEl.textContent = "❌ Error — check your code.";
+        save();
+      }
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const studentId   = studentIdEl.value.trim();
+      const nameSurname = nameSurnameEl.value.trim();
+      const email       = emailEl.value.trim().toLowerCase();
+
+      if (!/^\d{6,12}$/.test(studentId))
+        { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
+      if (nameSurname.split(/\s+/).filter(Boolean).length < 2)
+        { statusEl.textContent = "Enter Name and Surname."; return; }
+      if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email))
+        { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
+
+      if (new Date() > DEADLINE) {
+        statusEl.textContent = "⏰ Submission closed — deadline was Mar 18, 23:59.";
+        return;
+      }
+
+      if (dataEl.value.replace(/\s+/g,"") === defaultData.replace(/\s+/g,"")) {
+        statusEl.textContent = "⚠️ Enter YOUR OWN step data — default values are not accepted.";
+        dataEl.style.outline = "2px solid #ef4444";
+        setTimeout(() => dataEl.style.outline = "", 3000);
+        return;
+      }
+
+      if (!outEl.textContent || outEl.textContent.includes("Click") || outEl.textContent === "(no output)")
+        { statusEl.textContent = "⚠️ Run your code first before submitting."; return; }
+
+      const payload = {
+        week: WEEK, studentId, nameSurname, email,
+        data: dataEl.value, code: codeEl.value, output: outEl.textContent,
+        userAgent: navigator.userAgent, submittedAt: new Date().toISOString()
+      };
+      statusEl.textContent = "Submitting…";
+      submitViaForm(payload);
+      PhoneLabUI.setStatus(WEEK, "submitted");
+    });
+
+    const helpModal = document.getElementById("helpModal");
+    document.getElementById("helpBtn").addEventListener("click", () => helpModal.style.display = "flex");
+    document.getElementById("closeHelpBtn").addEventListener("click", () => helpModal.style.display = "none");
+    helpModal.addEventListener("click", e => { if (e.target === helpModal) helpModal.style.display = "none"; });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") helpModal.style.display = "none"; });
+  </script>
+</body>
+</html>

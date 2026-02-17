@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Week 09 — PhoneLab</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-title">Week 09 — Sensor Data Sanitizer</div>
+      <div class="brand-sub"><a href="../index.html">← Back to PhoneLab Hub</a></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1 style="margin:0 0 4px;">📶 Sensor Data Sanitizer</h1>
+      <p class="muted" style="margin:0 0 12px;">
+        Real sensor data is <em>messy</em> — dropouts, spikes, timeouts, corrupt values.
+        Build a <b>crash-proof parser</b> that cleans 12 noisy readings using
+        exception handling, custom errors, and defensive programming.
+      </p>
+
+      <div class="concepts-box">
+        <b>📚 Concepts you'll practice (from Week 09):</b>
+        <span class="concept-tag">try / except / else / finally</span>
+        <span class="concept-tag">multiple exception types</span>
+        <span class="concept-tag">raise</span>
+        <span class="concept-tag">custom exception classes</span>
+        <span class="concept-tag">assert</span>
+        <span class="concept-tag">exception as e</span>
+      </div>
+
+      <!-- Step indicator -->
+      <div class="steps" style="margin-top:14px;">
+        <div class="step-pill active" data-step="1">① Identity</div>
+        <div class="step-pill" data-step="2">② Data</div>
+        <div class="step-pill" data-step="3">③ Code</div>
+        <div class="step-pill" data-step="4">④ Run & Submit</div>
+      </div>
+
+      <details open id="sec1">
+        <summary><b>1) Identity</b> <span class="muted">(required)</span></summary>
+        <div class="row">
+          <div>
+            <label>Student ID (6–12 digits)</label>
+            <input id="studentId" inputmode="numeric" minlength="6" maxlength="12"
+                   pattern="^\d{6,12}$" required placeholder="e.g., 202612345" />
+          </div>
+          <div>
+            <label>Name Surname</label>
+            <input id="nameSurname" required placeholder="e.g., Arif Solmaz" />
+          </div>
+        </div>
+        <label>Email (@istun.edu.tr)</label>
+        <input id="email" type="email"
+               pattern="^[A-Za-z0-9._%+-]+@istun\.edu\.tr$"
+               required placeholder="name@istun.edu.tr" />
+        <small class="hint">Draft auto-saves on this device.</small>
+      </details>
+
+      <hr />
+
+      <details open id="sec2">
+        <summary><b>2) Collect your data</b> <span class="muted">(simulate noisy sensors)</span></summary>
+
+        <div class="scenario-box">
+          <b>🔬 What to do:</b>
+          <ol class="muted" style="margin:6px 0 0; padding-left:20px;">
+            <li>Imagine you have a <b>temperature sensor</b> (valid range: −40 to 125 °C)
+              that sends a reading every second.</li>
+            <li>Enter <b>12 readings</b> — one per line. But <b>include some bad data</b> to simulate real-world problems:
+              <ul style="margin-top:4px;">
+                <li>At least 2 <b>valid numbers</b> (e.g., <code>23.5</code>, <code>71.2</code>)</li>
+                <li>At least 1 <b>"ERR"</b> or <b>"TIMEOUT"</b> (sensor dropout)</li>
+                <li>At least 1 <b>empty line</b> or whitespace-only</li>
+                <li>At least 1 <b>out-of-range value</b> (e.g., <code>999</code>, <code>-100</code>)</li>
+                <li>At least 1 <b>non-numeric junk</b> (e.g., <code>abc</code>, <code>#$%</code>)</li>
+              </ul>
+            </li>
+            <li>You can also use <b>real readings</b> from a thermometer app and add some bad entries manually.</li>
+          </ol>
+          <small>💡 <b>Engineering context:</b> UART/I2C sensors commonly return "ERR", "NaN", or garbage bytes when they malfunction. Your code must survive all of it.</small>
+        </div>
+
+        <label>Your 12 sensor readings (one per line — include errors!)</label>
+        <textarea id="dataBox" spellcheck="false"></textarea>
+        <small class="hint">⚠️ Change to <b>your own</b> readings (with your own errors mixed in). Default values will be rejected.</small>
+      </details>
+
+      <hr />
+
+      <details id="sec3">
+        <summary><b>3) Python code</b> <span class="muted">(exception handling)</span></summary>
+        <label>Python — build a crash-proof sensor parser</label>
+        <textarea id="codeBox" class="codebox" spellcheck="false"></textarea>
+        <small class="hint">
+          Use <b>try/except/else/finally</b>, <b>raise</b>,
+          <b>custom exception classes</b>, <b>assert</b>, and catch <b>multiple exception types</b>.
+        </small>
+      </details>
+
+      <hr />
+
+      <details id="sec4">
+        <summary><b>4) Output</b> <span class="muted">(auto-captured after Run)</span></summary>
+        <pre id="output" class="out">Click "▶ Run Python" to see output here.</pre>
+      </details>
+
+      <div class="stickybar">
+        <div class="bar-actions">
+          <button id="helpBtn" class="helpbtn" type="button">?</button>
+          <button id="runBtn" type="button">▶ Run Python</button>
+          <button id="submitBtn" class="primary" type="button">Submit ✓</button>
+        </div>
+        <small id="status" class="hint"></small>
+      </div>
+    </section>
+  </main>
+
+  <!-- Help Modal -->
+  <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3>📶 Week 09 — Instructions</h3>
+      <ol class="muted">
+        <li><b>Identity:</b> Student ID (6–12 digits), Name Surname, <b>@istun.edu.tr</b> email.</li>
+        <li><b>Create data:</b> Enter 12 temperature readings — mix of valid numbers, errors ("ERR", "TIMEOUT"), empty lines, out-of-range values, and junk text.</li>
+        <li><b>Write code:</b> Complete the TODOs — define custom exceptions, build a robust parser, use try/except/else/finally.</li>
+        <li><b>Run:</b> Tap "▶ Run Python". Your code should <b>never crash</b> — that's the whole point!</li>
+        <li><b>Submit:</b> One submission only.</li>
+      </ol>
+      <p class="muted" style="margin-top:10px;">
+        <b>📐 The engineering:</b> Every mechatronics system must handle sensor failures
+        gracefully. A robot arm doesn't stop working because one temperature probe
+        returned "ERR" — it logs the error, uses the last valid reading, and keeps
+        going. The exception handling patterns here are identical to those in
+        industrial SCADA systems and automotive ECUs!
+      </p>
+      <div class="modal-actions">
+        <button id="closeHelpBtn" type="button">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/app.js"></script>
+  <script>
+    const WEEK = "week09";
+    const DEADLINE = new Date("2026-04-15T23:59:00+03:00");
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
+
+    const studentIdEl   = document.getElementById("studentId");
+    const nameSurnameEl = document.getElementById("nameSurname");
+    const emailEl       = document.getElementById("email");
+    const dataEl        = document.getElementById("dataBox");
+    const codeEl        = document.getElementById("codeBox");
+    const outEl         = document.getElementById("output");
+    const statusEl      = document.getElementById("status");
+
+    // ── Default data ──
+    const defaultData =
+`23.5
+ERR
+71.2
+-100
+TIMEOUT
+
+18.9
+abc
+999
+42.0
+#$%
+36.7`;
+
+    const starterCode =
+`# ──────────────────────────────────────────────
+# Week 09 — Sensor Data Sanitizer
+# ──────────────────────────────────────────────
+
+# Sensor specification
+SENSOR_MIN = -40.0    # °C — minimum valid reading
+SENSOR_MAX = 125.0    # °C — maximum valid reading
+
+# Parse raw readings (one per line)
+raw_readings = DATA.strip().split("\\n")
+
+print("=" * 55)
+print("📶 SENSOR DATA SANITIZER")
+print("=" * 55)
+print(f"Raw readings received: {len(raw_readings)}")
+print(f"Valid range: {SENSOR_MIN}°C to {SENSOR_MAX}°C")
+
+# ──────────────────────────────────────────────
+# TODO 1: Define CUSTOM EXCEPTION CLASSES
+#         SensorError (base), with subclasses:
+#         - SensorTimeoutError (for "ERR", "TIMEOUT")
+#         - SensorRangeError (for out-of-range values)
+#         - SensorFormatError (for non-numeric junk)
+# ──────────────────────────────────────────────
+
+class SensorError(Exception):
+    """Base exception for sensor-related errors."""
+    pass
+
+class SensorTimeoutError(SensorError):
+    """Raised when sensor reports dropout or timeout."""
+    def __init__(self, raw_value):
+        self.raw_value = raw_value
+        super().__init__(f"Sensor dropout: '{raw_value}'")
+
+class SensorRangeError(SensorError):
+    """Raised when reading is outside valid range."""
+    def __init__(self, value, min_val, max_val):
+        self.value = value
+        self.min_val = min_val
+        self.max_val = max_val
+        super().__init__(f"{value}°C outside range [{min_val}, {max_val}]")
+
+class SensorFormatError(SensorError):
+    """Raised when reading is not a valid number."""
+    def __init__(self, raw_value):
+        self.raw_value = raw_value
+        super().__init__(f"Cannot parse: '{raw_value}'")
+
+# ──────────────────────────────────────────────
+# TODO 2: Define validate_reading(raw) function
+#         Uses RAISE to throw custom exceptions:
+#         - Empty/whitespace → SensorTimeoutError
+#         - "ERR"/"TIMEOUT"  → SensorTimeoutError
+#         - Non-numeric      → SensorFormatError
+#         - Out of range     → SensorRangeError
+#         - Valid            → return float value
+# ──────────────────────────────────────────────
+
+def validate_reading(raw):
+    """
+    Validate a raw sensor reading string.
+    Raises SensorTimeoutError, SensorFormatError, or SensorRangeError.
+    Returns float if valid.
+    """
+    stripped = raw.strip()
+
+    # Check for empty / whitespace
+    if not stripped:
+        raise SensorTimeoutError("EMPTY")
+
+    # Check for known error codes
+    if stripped.upper() in ("ERR", "TIMEOUT", "NAN", "NULL", "N/A"):
+        raise SensorTimeoutError(stripped)
+
+    # Try to convert to float
+    try:
+        value = float(stripped)
+    except ValueError:
+        raise SensorFormatError(stripped)
+
+    # Check range
+    if value < SENSOR_MIN or value > SENSOR_MAX:
+        raise SensorRangeError(value, SENSOR_MIN, SENSOR_MAX)
+
+    return value
+
+# ──────────────────────────────────────────────
+# TODO 3: Process all readings with TRY/EXCEPT/ELSE/FINALLY
+#         - except: catch SPECIFIC exception types separately
+#         - else: runs only when reading is valid
+#         - finally: always increments the counter
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("PROCESSING LOG:")
+
+valid_readings = []
+error_log = []
+processed_count = 0
+
+for i, raw in enumerate(raw_readings):
+    reading_num = i + 1
+    try:
+        value = validate_reading(raw)
+    except SensorTimeoutError as e:
+        error_log.append({"index": reading_num, "type": "TIMEOUT", "detail": str(e)})
+        print(f"  #{reading_num:2d} ⏱️ TIMEOUT  : {e}")
+    except SensorRangeError as e:
+        error_log.append({"index": reading_num, "type": "RANGE", "detail": str(e)})
+        print(f"  #{reading_num:2d} 📏 RANGE    : {e}")
+    except SensorFormatError as e:
+        error_log.append({"index": reading_num, "type": "FORMAT", "detail": str(e)})
+        print(f"  #{reading_num:2d} 🔣 FORMAT   : {e}")
+    except SensorError as e:
+        # Catch any other SensorError subclass
+        error_log.append({"index": reading_num, "type": "UNKNOWN", "detail": str(e)})
+        print(f"  #{reading_num:2d} ❓ SENSOR   : {e}")
+    else:
+        # Only runs if NO exception was raised
+        valid_readings.append(value)
+        print(f"  #{reading_num:2d} ✅ VALID    : {value:.1f}°C")
+    finally:
+        # Always runs — count every reading processed
+        processed_count += 1
+
+# ──────────────────────────────────────────────
+# TODO 4: Use ASSERT to verify data integrity
+#         Assert that processed count equals input count
+#         Assert that valid + errors = total
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("ASSERTIONS (data integrity):")
+
+assert processed_count == len(raw_readings), \\
+    f"Processed {processed_count} but received {len(raw_readings)}"
+print(f"  ✅ processed_count ({processed_count}) == input count ({len(raw_readings)})")
+
+assert len(valid_readings) + len(error_log) == len(raw_readings), \\
+    "Valid + errors doesn't match total"
+print(f"  ✅ valid ({len(valid_readings)}) + errors ({len(error_log)}) == total ({len(raw_readings)})")
+
+assert all(SENSOR_MIN <= v <= SENSOR_MAX for v in valid_readings), \\
+    "Some valid readings are out of range!"
+print(f"  ✅ All valid readings within [{SENSOR_MIN}, {SENSOR_MAX}]°C")
+
+# ──────────────────────────────────────────────
+# TODO 5: Compute stats on CLEAN data with
+#         exception handling for edge cases
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("CLEAN DATA STATISTICS:")
+
+try:
+    avg_temp = sum(valid_readings) / len(valid_readings)
+    min_temp = min(valid_readings)
+    max_temp = max(valid_readings)
+    spread = max_temp - min_temp
+except ZeroDivisionError:
+    print("  ⚠️ No valid readings — cannot compute statistics!")
+    avg_temp = 0
+    min_temp = 0
+    max_temp = 0
+    spread = 0
+else:
+    print(f"  Valid readings : {len(valid_readings)}")
+    print(f"  Average temp   : {avg_temp:.2f}°C")
+    print(f"  Min / Max      : {min_temp:.1f}°C / {max_temp:.1f}°C")
+    print(f"  Spread         : {spread:.1f}°C")
+finally:
+    data_quality = len(valid_readings) / len(raw_readings) * 100 if raw_readings else 0
+    print(f"  Data quality   : {data_quality:.0f}% ({len(valid_readings)}/{len(raw_readings)} usable)")
+
+# ──────────────────────────────────────────────
+# TODO 6: Error classification report
+#         Group errors by TYPE using exception info
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("ERROR CLASSIFICATION:")
+
+error_types = {}
+for err in error_log:
+    etype = err["type"]
+    error_types[etype] = error_types.get(etype, 0) + 1
+
+if error_types:
+    for etype, count in sorted(error_types.items(), key=lambda x: x[1], reverse=True):
+        bar = "█" * count
+        print(f"  {etype:10s} : {count} {bar}")
+else:
+    print("  No errors! (You should add some bad data to test your code)")
+
+# ──────────────────────────────────────────────
+# TODO 7: RAISE an exception if data quality is
+#         too low — but catch it gracefully
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("QUALITY GATE:")
+
+QUALITY_THRESHOLD = 40   # minimum % of valid readings
+
+try:
+    if data_quality < QUALITY_THRESHOLD:
+        raise SensorError(
+            f"Data quality {data_quality:.0f}% is below threshold {QUALITY_THRESHOLD}%! "
+            f"Sensor may need recalibration."
+        )
+    print(f"  ✅ PASS — quality {data_quality:.0f}% >= {QUALITY_THRESHOLD}% threshold")
+except SensorError as e:
+    print(f"  ⚠️ FAIL — {e}")
+
+# ──────────────────────────────────────────────
+# TODO 8: Safe batch processor — demonstrate
+#         handling MULTIPLE exception types together
+# ──────────────────────────────────────────────
+
+print(f"\\n{'─' * 55}")
+print("BATCH CONVERSION TEST:")
+
+test_values = ["25.0", "ERR", "", "abc", "200", "None", "37.5", "-999"]
+for val in test_values:
+    try:
+        result = validate_reading(val)
+    except (SensorTimeoutError, SensorFormatError) as e:
+        # Group timeout and format errors together
+        print(f"  '{val:6s}' → ❌ Input error: {type(e).__name__}")
+    except SensorRangeError as e:
+        print(f"  '{val:6s}' → 📏 Out of range: {e.value}°C")
+    else:
+        print(f"  '{val:6s}' → ✅ {result:.1f}°C")
+
+# ──────────────────────────────────────────────
+# SENSOR HEALTH VERDICT
+# ──────────────────────────────────────────────
+
+print(f"\\n{'=' * 55}")
+
+if data_quality >= 80:
+    health = "🟢 HEALTHY — sensor operating normally"
+elif data_quality >= 50:
+    health = "🟡 DEGRADED — intermittent errors, monitor closely"
+elif data_quality >= 25:
+    health = "🟠 POOR — frequent failures, schedule maintenance"
+else:
+    health = "🔴 CRITICAL — sensor likely malfunctioning, replace"
+
+print(f"SENSOR HEALTH: {health}")
+print(f"  Data quality     : {data_quality:.0f}%")
+print(f"  Valid / Total    : {len(valid_readings)} / {len(raw_readings)}")
+print(f"  Error types seen : {len(error_types)}")
+print(f"  Custom exceptions: SensorTimeoutError, SensorRangeError, SensorFormatError")
+print("=" * 55)
+`;
+
+    // ── Wiring ──
+    function save(){
+      PhoneLabUI.saveDraft(WEEK, {
+        studentId: studentIdEl.value, nameSurname: nameSurnameEl.value,
+        email: emailEl.value, data: dataEl.value, code: codeEl.value,
+        output: outEl.textContent, savedAt: new Date().toISOString()
+      });
+      statusEl.textContent = "Draft saved.";
+    }
+
+    function submitViaForm(payload){
+      const form = document.createElement("form");
+      form.method = "POST"; form.action = SCRIPT_URL; form.target = "_blank";
+      const inp = document.createElement("input");
+      inp.type = "hidden"; inp.name = "payload"; inp.value = JSON.stringify(payload);
+      form.appendChild(inp); document.body.appendChild(form); form.submit(); form.remove();
+    }
+
+    const draft = PhoneLabUI.loadDraft(WEEK);
+    if (draft){
+      studentIdEl.value   = draft.studentId || "";
+      nameSurnameEl.value = draft.nameSurname || "";
+      emailEl.value       = draft.email || "";
+      dataEl.value        = draft.data || defaultData;
+      codeEl.value        = draft.code || starterCode;
+      outEl.textContent   = draft.output || 'Click "▶ Run Python" to see output here.';
+      statusEl.textContent = "Draft loaded.";
+    } else {
+      dataEl.value = defaultData;
+      codeEl.value = starterCode;
+    }
+
+    [studentIdEl, nameSurnameEl, emailEl, dataEl, codeEl].forEach(el =>
+      el.addEventListener("input", save));
+
+    document.getElementById("runBtn").addEventListener("click", async () => {
+      statusEl.textContent = "Loading Python runtime…";
+      const dataLiteral = JSON.stringify(dataEl.value);
+      const codeToRun = `DATA = ${dataLiteral}\n\n` + codeEl.value;
+      try {
+        const out = await PhoneLabUI.runPythonCapture(codeToRun);
+        outEl.textContent = out || "(no output)";
+        statusEl.textContent = "✅ Run complete.";
+        save();
+      } catch (e) {
+        outEl.textContent = String(e);
+        statusEl.textContent = "❌ Error — check your code.";
+        save();
+      }
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const studentId   = studentIdEl.value.trim();
+      const nameSurname = nameSurnameEl.value.trim();
+      const email       = emailEl.value.trim().toLowerCase();
+
+      if (!/^\d{6,12}$/.test(studentId))
+        { statusEl.textContent = "Student ID must be 6–12 digits."; return; }
+      if (nameSurname.split(/\s+/).filter(Boolean).length < 2)
+        { statusEl.textContent = "Enter Name and Surname."; return; }
+      if (!/^[A-Za-z0-9._%+-]+@istun\.edu\.tr$/.test(email))
+        { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
+
+      if (new Date() > DEADLINE) {
+        statusEl.textContent = "⏰ Submission closed — deadline was Apr 15, 23:59.";
+        return;
+      }
+
+      if (dataEl.value.replace(/\s+/g,"") === defaultData.replace(/\s+/g,"")) {
+        statusEl.textContent = "⚠️ Enter YOUR OWN sensor readings — default values are not accepted.";
+        dataEl.style.outline = "2px solid #ef4444";
+        setTimeout(() => dataEl.style.outline = "", 3000);
+        return;
+      }
+
+      if (!outEl.textContent || outEl.textContent.includes("Click") || outEl.textContent === "(no output)")
+        { statusEl.textContent = "⚠️ Run your code first before submitting."; return; }
+
+      const payload = {
+        week: WEEK, studentId, nameSurname, email,
+        data: dataEl.value, code: codeEl.value, output: outEl.textContent,
+        userAgent: navigator.userAgent, submittedAt: new Date().toISOString()
+      };
+      statusEl.textContent = "Submitting…";
+      submitViaForm(payload);
+      PhoneLabUI.setStatus(WEEK, "submitted");
+    });
+
+    const helpModal = document.getElementById("helpModal");
+    document.getElementById("helpBtn").addEventListener("click", () => helpModal.style.display = "flex");
+    document.getElementById("closeHelpBtn").addEventListener("click", () => helpModal.style.display = "none");
+    helpModal.addEventListener("click", e => { if (e.target === helpModal) helpModal.style.display = "none"; });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") helpModal.style.display = "none"; });
+  </script>
+</body>
+</html>
