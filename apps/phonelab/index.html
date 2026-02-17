@@ -2,88 +2,867 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>CP2 • PhoneLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    /* ═══════════════════════════════════════
+       PHONELAB HUB — Mechatronics Terminal
+       ═══════════════════════════════════════ */
+
+    :root {
+      --hub-bg: #060a10;
+      --hub-surface: #0c1118;
+      --hub-border: #1a2332;
+      --hub-glow-green: #00ff88;
+      --hub-glow-cyan: #00d4ff;
+      --hub-glow-amber: #ffb800;
+      --hub-text: #c8d6e5;
+      --hub-dim: #4a5568;
+      --hub-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+      --hub-sans: 'Space Grotesk', system-ui, sans-serif;
+    }
+
+    body.hub-page {
+      background: var(--hub-bg);
+      color: var(--hub-text);
+      font-family: var(--hub-sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Circuit board background ── */
+    .circuit-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        /* Grid */
+        linear-gradient(rgba(0,212,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,.03) 1px, transparent 1px),
+        /* Larger grid */
+        linear-gradient(rgba(0,255,136,.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,.02) 1px, transparent 1px);
+      background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+    }
+    .circuit-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 20%, rgba(0,212,255,.06) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 80%, rgba(0,255,136,.04) 0%, transparent 50%);
+    }
+
+    /* ── Top bar ── */
+    .hub-topbar {
+      position: sticky; top: 0; z-index: 20;
+      background: rgba(6,10,16,.92);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--hub-border);
+      padding: 12px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .hub-logo {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hub-logo-icon {
+      width: 36px; height: 36px;
+      border: 2px solid var(--hub-glow-green);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 0 12px rgba(0,255,136,.15);
+      animation: pulse-border 3s ease-in-out infinite;
+    }
+    @keyframes pulse-border {
+      0%, 100% { box-shadow: 0 0 8px rgba(0,255,136,.1); }
+      50% { box-shadow: 0 0 20px rgba(0,255,136,.25); }
+    }
+    .hub-logo-text {
+      font-family: var(--hub-mono);
+      font-weight: 700; font-size: 14px;
+      color: var(--hub-glow-green);
+      letter-spacing: 1px;
+    }
+    .hub-logo-sub {
+      font-family: var(--hub-mono);
+      font-size: 10px; color: var(--hub-dim);
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+    .hub-dept {
+      font-family: var(--hub-mono);
+      font-size: 10px; color: var(--hub-dim);
+      text-align: right; letter-spacing: 1px;
+    }
+
+    /* ── Main container ── */
+    .hub-main {
+      position: relative; z-index: 1;
+      max-width: 900px; margin: 0 auto;
+      padding: 20px 16px 60px;
+    }
+
+    /* ── Hero section ── */
+    .hub-hero {
+      border: 1px solid var(--hub-border);
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(12,17,24,.95) 0%, rgba(6,10,16,.98) 100%);
+      padding: 32px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hub-hero::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--hub-glow-green), var(--hub-glow-cyan), var(--hub-glow-amber));
+    }
+    .hub-hero::after {
+      content: ''; position: absolute; top: -80px; right: -40px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(0,255,136,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      font-family: var(--hub-mono);
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--hub-glow-cyan);
+      margin-bottom: 8px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .hero-label::before {
+      content: ''; width: 8px; height: 8px;
+      background: var(--hub-glow-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--hub-glow-green);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .4; }
+    }
+
+    .hero-title {
+      font-family: var(--hub-sans);
+      font-size: 28px; font-weight: 800;
+      color: #fff;
+      margin: 0 0 6px;
+      line-height: 1.2;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, var(--hub-glow-green), var(--hub-glow-cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      color: var(--hub-dim);
+      font-size: 14px; line-height: 1.6;
+      max-width: 540px;
+      margin-bottom: 20px;
+    }
+
+    /* ── Workflow steps ── */
+    .workflow {
+      display: flex; gap: 0; flex-wrap: wrap;
+    }
+    .wf-step {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 14px;
+      border: 1px solid var(--hub-border);
+      background: rgba(0,0,0,.3);
+      font-family: var(--hub-mono);
+      font-size: 12px; font-weight: 600;
+      color: var(--hub-text);
+      white-space: nowrap;
+    }
+    .wf-step:first-child { border-radius: 8px 0 0 8px; }
+    .wf-step:last-child { border-radius: 0 8px 8px 0; }
+    .wf-step:not(:last-child) { border-right: none; }
+    .wf-step .wf-icon {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+    }
+    .wf-step:nth-child(1) .wf-icon { background: rgba(0,255,136,.15); color: var(--hub-glow-green); }
+    .wf-step:nth-child(2) .wf-icon { background: rgba(0,212,255,.15); color: var(--hub-glow-cyan); }
+    .wf-step:nth-child(3) .wf-icon { background: rgba(255,184,0,.15); color: var(--hub-glow-amber); }
+    .wf-arrow { color: var(--hub-dim); font-size: 10px; margin: 0 -4px; }
+
+    /* ── Section divider ── */
+    .section-label {
+      font-family: var(--hub-mono);
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--hub-dim);
+      margin: 28px 0 14px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, var(--hub-border), transparent);
+    }
+
+    /* ── Lab cards ── */
+    .lab-grid {
+      display: grid; gap: 14px;
+      grid-template-columns: 1fr;
+    }
+    @media(min-width: 640px) {
+      .lab-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media(min-width: 900px) {
+      .lab-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .lab-card {
+      display: flex; flex-direction: column;
+      border: 1px solid var(--hub-border);
+      border-radius: 14px;
+      background: var(--hub-surface);
+      padding: 0;
+      text-decoration: none; color: inherit;
+      transition: transform .2s, border-color .3s, box-shadow .3s;
+      overflow: hidden;
+      position: relative;
+    }
+    .lab-card:hover, .lab-card:active {
+      transform: translateY(-2px);
+      border-color: rgba(0,255,136,.3);
+      box-shadow: 0 8px 30px rgba(0,255,136,.08);
+    }
+
+    .lab-card-top {
+      padding: 16px 16px 12px;
+      border-bottom: 1px solid var(--hub-border);
+      display: flex; justify-content: space-between; align-items: flex-start;
+    }
+    .lab-week {
+      font-family: var(--hub-mono);
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--hub-dim);
+    }
+    .lab-number {
+      font-family: var(--hub-mono);
+      font-size: 32px; font-weight: 800;
+      color: rgba(255,255,255,.06);
+      line-height: 1;
+      position: absolute; top: 8px; right: 14px;
+    }
+
+    .lab-card-body {
+      padding: 14px 16px 16px;
+      flex: 1; display: flex; flex-direction: column;
+    }
+    .lab-icon {
+      font-size: 24px; margin-bottom: 6px;
+    }
+    .lab-title {
+      font-family: var(--hub-sans);
+      font-size: 16px; font-weight: 700;
+      color: #fff; margin: 0 0 6px;
+      line-height: 1.3;
+    }
+    .lab-desc {
+      font-size: 13px; color: var(--hub-dim);
+      line-height: 1.5; flex: 1;
+      margin-bottom: 12px;
+    }
+
+    .lab-tags {
+      display: flex; flex-wrap: wrap; gap: 4px;
+      margin-bottom: 12px;
+    }
+    .lab-tag {
+      font-family: var(--hub-mono);
+      font-size: 10px; font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(0,212,255,.08);
+      color: rgba(0,212,255,.7);
+      border: 1px solid rgba(0,212,255,.12);
+      letter-spacing: 0.5px;
+    }
+
+    .lab-start {
+      font-family: var(--hub-mono);
+      font-size: 12px; font-weight: 700;
+      color: var(--hub-glow-green);
+      display: flex; align-items: center; gap: 6px;
+      letter-spacing: 1px;
+    }
+    .lab-start::after {
+      content: '→'; transition: transform .2s;
+    }
+    .lab-card:hover .lab-start::after {
+      transform: translateX(4px);
+    }
+
+    .lab-deadline {
+      font-family: var(--hub-mono);
+      font-size: 11px;
+      color: var(--hub-dim);
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .lab-deadline .dl-icon { font-size: 12px; }
+    .lab-deadline.urgent { color: #ef4444; }
+    .lab-deadline.soon { color: var(--hub-glow-amber); }
+    .lab-deadline.closed { color: var(--hub-dim); text-decoration: line-through; }
+
+    /* ── Status chip override for hub ── */
+    .lab-chip {
+      font-family: var(--hub-mono);
+      font-size: 10px; font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 4px;
+      letter-spacing: 1px; text-transform: uppercase;
+      border: 1px solid var(--hub-border);
+      color: var(--hub-dim);
+      background: transparent;
+    }
+    .lab-chip.ok {
+      color: var(--hub-glow-green);
+      border-color: rgba(0,255,136,.3);
+      background: rgba(0,255,136,.08);
+    }
+    .lab-chip.warn {
+      color: var(--hub-glow-amber);
+      border-color: rgba(255,184,0,.3);
+      background: rgba(255,184,0,.08);
+    }
+
+    /* ── Gear animation (decorative) ── */
+    .gear-deco {
+      position: fixed; bottom: -60px; right: -60px;
+      width: 200px; height: 200px;
+      opacity: .03; z-index: 0;
+      pointer-events: none;
+      animation: spin-slow 60s linear infinite;
+    }
+    @keyframes spin-slow { to { transform: rotate(360deg); } }
+
+    /* ── Footer ── */
+    .hub-footer {
+      text-align: center;
+      font-family: var(--hub-mono);
+      font-size: 10px;
+      color: var(--hub-dim);
+      letter-spacing: 1px;
+      padding: 20px;
+      border-top: 1px solid var(--hub-border);
+      margin-top: 40px;
+    }
+    .hub-footer a { color: var(--hub-glow-cyan); text-decoration: none; }
+
+    /* ── Responsive ── */
+    @media(max-width: 480px) {
+      .hero-title { font-size: 22px; }
+      .workflow { flex-direction: column; }
+      .wf-step { border-radius: 0 !important; border-right: 1px solid var(--hub-border) !important; }
+      .wf-step:first-child { border-radius: 8px 8px 0 0 !important; }
+      .wf-step:last-child { border-radius: 0 0 8px 8px !important; border-top: none; }
+      .wf-step:not(:first-child) { border-top: none; }
+      .hub-dept { display: none; }
+    }
+  </style>
 </head>
-<body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-title">CP II — PhoneLab</div>
-      <div class="brand-sub">Phone-only labs • Run Python in browser • Submit</div>
+<body class="hub-page">
+
+  <!-- Circuit board background -->
+  <div class="circuit-bg"></div>
+
+  <!-- Decorative gear -->
+  <svg class="gear-deco" viewBox="0 0 100 100" fill="currentColor">
+    <path d="M50 10 L54 0 L58 10 A40 40 0 0 1 73 17 L82 12 L80 23 A40 40 0 0 1 90 38 L100 38 L96 48 A40 40 0 0 1 96 52 L100 62 L90 62 A40 40 0 0 1 80 77 L82 88 L73 83 A40 40 0 0 1 58 90 L54 100 L50 90 A40 40 0 0 1 42 90 L38 100 L34 90 A40 40 0 0 1 20 83 L12 88 L14 77 A40 40 0 0 1 4 62 L0 62 L4 52 A40 40 0 0 1 4 48 L0 38 L10 38 A40 40 0 0 1 20 23 L18 12 L27 17 A40 40 0 0 1 42 10 L46 0 Z M50 30 A20 20 0 1 0 50 70 A20 20 0 1 0 50 30Z"/>
+  </svg>
+
+  <!-- Top bar -->
+  <header class="hub-topbar">
+    <div class="hub-logo">
+      <div class="hub-logo-icon">⚙</div>
+      <div>
+        <div class="hub-logo-text">PHONELAB</div>
+        <div class="hub-logo-sub">Computer Programming II</div>
+      </div>
+    </div>
+    <div class="hub-dept">
+      MECHATRONICS<br/>ENGINEERING
     </div>
   </header>
 
-  <main class="container">
-    <section class="hero card">
-      <h1>📱 PhoneLab</h1>
-      <p class="muted">
-        Each week you'll use your <b>phone</b> to collect real data, then write
-        <b>Python code</b> to analyze it — using only the concepts from that
-        week's lecture. No laptop needed.
+  <!-- Main content -->
+  <main class="hub-main">
+
+    <!-- Hero -->
+    <section class="hub-hero">
+      <div class="hero-label">System Online</div>
+      <h1 class="hero-title">Your Phone is a<br/><span>Measurement Lab</span></h1>
+      <p class="hero-desc">
+        Each week: use your phone's sensors to collect real engineering data,
+        write Python to analyze it, and submit — all from your browser.
+        Only that week's programming concepts allowed.
       </p>
-      <ul class="bullets">
-        <li><b>📏 Measure</b> something real with your phone</li>
-        <li><b>🐍 Code</b> in Python right in your browser</li>
-        <li><b>📤 Submit</b> your code + output to the instructor</li>
-      </ul>
+
+      <div class="workflow">
+        <div class="wf-step">
+          <div class="wf-icon">📡</div>
+          Measure
+        </div>
+        <div class="wf-step">
+          <div class="wf-icon">🐍</div>
+          Code
+        </div>
+        <div class="wf-step">
+          <div class="wf-icon">📤</div>
+          Submit
+        </div>
+      </div>
     </section>
 
-    <section class="grid">
+    <!-- Lab cards -->
+    <div class="section-label">Active Lab Assignments</div>
 
-      <a class="card week" href="weeks/week01.html">
-        <div class="week-head">
-          <h2>Week 01</h2>
-          <span class="chip" data-chip="week01">Not started</span>
+    <section class="lab-grid">
+
+      <!-- Week 01 -->
+      <a class="lab-card" href="weeks/week01.html">
+        <div class="lab-card-top">
+          <div class="lab-week">Week 01</div>
+          <span class="lab-chip" data-chip="week01">Idle</span>
+          <div class="lab-number">01</div>
         </div>
-        <h3 class="week-title">🔦 Inverse Square Law Test</h3>
-        <p class="muted">Prove a physics law with your phone! Measure light intensity at 3 distances with a lux meter app and calculate if the universe obeys the math.</p>
-        <div class="week-concepts">
-          <span class="concept-tag-sm">variables</span>
-          <span class="concept-tag-sm">arithmetic</span>
-          <span class="concept-tag-sm">f-strings</span>
-          <span class="concept-tag-sm">print()</span>
+        <div class="lab-card-body">
+          <div class="lab-icon">🔦</div>
+          <h2 class="lab-title">Inverse Square Law Test</h2>
+          <p class="lab-desc">
+            Prove a physics law with your flashlight. Measure light intensity at 3 distances and check if intensity ∝ 1/d².
+          </p>
+          <div class="lab-tags">
+            <span class="lab-tag">variables</span>
+            <span class="lab-tag">arithmetic</span>
+            <span class="lab-tag">f-strings</span>
+            <span class="lab-tag">print()</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-02-18T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: Feb 18, 23:59</span>
+          </div>
+          <div class="lab-start">LAUNCH LAB</div>
         </div>
-        <div class="actions"><span class="btn">Start →</span></div>
       </a>
 
-      <a class="card week" href="weeks/week02.html">
-        <div class="week-head">
-          <h2>Week 02</h2>
-          <span class="chip" data-chip="week02">Not started</span>
+      <!-- Week 02 -->
+      <a class="lab-card" href="weeks/week02.html">
+        <div class="lab-card-top">
+          <div class="lab-week">Week 02</div>
+          <span class="lab-chip" data-chip="week02">Idle</span>
+          <div class="lab-number">02</div>
         </div>
-        <h3 class="week-title">🌡️ Room Comfort Classifier</h3>
-        <p class="muted">Check temperature, humidity, light, and noise in your room. Build a classifier that decides if conditions are safe for work.</p>
-        <div class="week-concepts">
-          <span class="concept-tag-sm">if/elif/else</span>
-          <span class="concept-tag-sm">comparisons</span>
-          <span class="concept-tag-sm">and/or/not</span>
+        <div class="lab-card-body">
+          <div class="lab-icon">🔊</div>
+          <h2 class="lab-title">Workplace Noise Compliance</h2>
+          <p class="lab-desc">
+            Measure noise at 4 locations with a dB meter app. Classify each zone by OSHA standards and determine if your environment passes inspection.
+          </p>
+          <div class="lab-tags">
+            <span class="lab-tag">if/elif/else</span>
+            <span class="lab-tag">comparisons</span>
+            <span class="lab-tag">and/or/not</span>
+            <span class="lab-tag">booleans</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-02-25T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: Feb 25, 23:59</span>
+          </div>
+          <div class="lab-start">LAUNCH LAB</div>
         </div>
-        <div class="actions"><span class="btn">Start →</span></div>
       </a>
 
-      <a class="card week" href="weeks/week03.html">
-        <div class="week-head">
-          <h2>Week 03</h2>
-          <span class="chip" data-chip="week03">Not started</span>
+      <!-- Week 03 -->
+      <a class="lab-card" href="weeks/week03.html">
+        <div class="lab-card-top">
+          <div class="lab-week">Week 03</div>
+          <span class="lab-chip" data-chip="week03">Idle</span>
+          <div class="lab-number">03</div>
         </div>
-        <h3 class="week-title">⏱️ Reaction Time Analyzer</h3>
-        <p class="muted">Test your reflexes 10 times, then use loops to find your average, fastest time, improvement trend, and performance rating.</p>
-        <div class="week-concepts">
-          <span class="concept-tag-sm">for loop</span>
-          <span class="concept-tag-sm">range()</span>
-          <span class="concept-tag-sm">accumulator</span>
-          <span class="concept-tag-sm">break/continue</span>
+        <div class="lab-card-body">
+          <div class="lab-icon">🎯</div>
+          <h2 class="lab-title">Human Sensor Calibration</h2>
+          <p class="lab-desc">
+            Stop a stopwatch at exactly 5.000s — 10 times. Analyze your precision, accuracy, bias, and learning curve with loops.
+          </p>
+          <div class="lab-tags">
+            <span class="lab-tag">for loop</span>
+            <span class="lab-tag">range()</span>
+            <span class="lab-tag">accumulator</span>
+            <span class="lab-tag">break/continue</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-03-04T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: Mar 4, 23:59</span>
+          </div>
+          <div class="lab-start">LAUNCH LAB</div>
         </div>
-        <div class="actions"><span class="btn">Start →</span></div>
+      </a>
+
+      <!-- Week 04 -->
+      <a class="lab-card" href="weeks/week04.html">
+        <div class="lab-card-top">
+          <div class="lab-week">Week 04</div>
+          <span class="lab-chip" data-chip="week04">Idle</span>
+          <div class="lab-number">04</div>
+        </div>
+        <div class="lab-card-body">
+          <div class="lab-icon">📐</div>
+          <h2 class="lab-title">Inclinometer Engineering Suite</h2>
+          <p class="lab-desc">
+            Measure slopes at 5 locations with your phone's level app. Build a toolkit of functions that calculates forces, predicts sliding, and surveys your environment.
+          </p>
+          <div class="lab-tags">
+            <span class="lab-tag">def / return</span>
+            <span class="lab-tag">parameters</span>
+            <span class="lab-tag">multiple returns</span>
+            <span class="lab-tag">default args</span>
+            <span class="lab-tag">docstrings</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-03-11T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: Mar 11, 23:59</span>
+          </div>
+          <div class="lab-start">LAUNCH LAB</div>
+        </div>
+      </a>
+
+      <!-- Week 05 -->
+      <a class="lab-card" href="weeks/week05.html">
+        <div class="lab-card-top">
+          <div class="lab-week">Week 05</div>
+          <span class="lab-chip" data-chip="week05">Idle</span>
+          <div class="lab-number">05</div>
+        </div>
+        <div class="lab-card-body">
+          <div class="lab-icon">🏃</div>
+          <h2 class="lab-title">Step Counter Weekly Tracker</h2>
+          <p class="lab-desc">
+            Pull 7 days of step counts from your health app. Slice weekdays vs weekends, rank by activity, and classify with list comprehensions.
+          </p>
+          <div class="lab-tags">
+            <span class="lab-tag">lists / slicing</span>
+            <span class="lab-tag">sort / sorted</span>
+            <span class="lab-tag">comprehensions</span>
+            <span class="lab-tag">tuples</span>
+            <span class="lab-tag">enumerate / zip</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-03-18T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: Mar 18, 23:59</span>
+          </div>
+          <div class="lab-start">LAUNCH LAB</div>
+        </div>
+      </a>
+
+      <!-- Week 06 -->
+      <a class="lab-card" href="weeks/week06.html">
+        <div class="lab-card-top">
+          <div class="lab-week">Week 06</div>
+          <span class="lab-chip" data-chip="week06">Idle</span>
+          <div class="lab-number">06</div>
+        </div>
+        <div class="lab-card-body">
+          <div class="lab-icon">📊</div>
+          <h2 class="lab-title">Screen Time Category Tracker</h2>
+          <p class="lab-desc">
+            Pull screen time data for 8 apps. Build nested dicts, filter with comprehensions, and use set operations to cross-reference habits.
+          </p>
+          <div class="lab-tags">
+            <span class="lab-tag">dictionaries</span>
+            <span class="lab-tag">dict comprehension</span>
+            <span class="lab-tag">sets &amp; operations</span>
+            <span class="lab-tag">nested dicts</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-03-25T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: Mar 25, 23:59</span>
+          </div>
+          <div class="lab-start">LAUNCH LAB</div>
+        </div>
+      </a>
+
+      <!-- Week 07 -->
+      <a class="lab-card" href="weeks/week07.html">
+        <div class="lab-card-top">
+          <div class="lab-week">Week 07</div>
+          <span class="lab-chip" data-chip="week07">Idle</span>
+          <div class="lab-number">07</div>
+        </div>
+        <div class="lab-card-body">
+          <div class="lab-icon">💬</div>
+          <h2 class="lab-title">Chat Message Analyzer</h2>
+          <p class="lab-desc">
+            Copy 8 messages from any chat app. Analyze word frequency, detect questions and shouting, and profile your texting style with string methods.
+          </p>
+          <div class="lab-tags">
+            <span class="lab-tag">split / join</span>
+            <span class="lab-tag">find / count / replace</span>
+            <span class="lab-tag">startswith / endswith</span>
+            <span class="lab-tag">isdigit / isalpha</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-04-01T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: Apr 1, 23:59</span>
+          </div>
+          <div class="lab-start">LAUNCH LAB</div>
+        </div>
+      </a>
+
+      <!-- Week 08 -->
+      <a class="lab-card" href="weeks/week08.html">
+        <div class="lab-card-top">
+          <div class="lab-week">Week 08</div>
+          <span class="lab-chip" data-chip="week08">Idle</span>
+          <div class="lab-number">08</div>
+        </div>
+        <div class="lab-card-body">
+          <div class="lab-icon">📊</div>
+          <h2 class="lab-title">Survey Data Processor</h2>
+          <p class="lab-desc">
+            Run a 5-question survey with 6 people. Write CSV, read with DictReader, export JSON reports, and handle file errors.
+          </p>
+          <div class="lab-tags">
+            <span class="lab-tag">open / with</span>
+            <span class="lab-tag">csv writer / DictReader</span>
+            <span class="lab-tag">json dump / load</span>
+            <span class="lab-tag">try / except</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-04-08T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: Apr 8, 23:59</span>
+          </div>
+          <div class="lab-start">LAUNCH LAB</div>
+        </div>
+      </a>
+
+      <!-- Week 09 -->
+      <a class="lab-card" href="weeks/week09.html">
+        <div class="lab-card-top">
+          <div class="lab-week">Week 09</div>
+          <span class="lab-chip" data-chip="week09">Idle</span>
+          <div class="lab-number">09</div>
+        </div>
+        <div class="lab-card-body">
+          <div class="lab-icon">📶</div>
+          <h2 class="lab-title">Sensor Data Sanitizer</h2>
+          <p class="lab-desc">
+            Parse 12 noisy sensor readings — dropouts, spikes, junk. Build a crash-proof pipeline with custom exceptions and defensive programming.
+          </p>
+          <div class="lab-tags">
+            <span class="lab-tag">try / except / else / finally</span>
+            <span class="lab-tag">raise</span>
+            <span class="lab-tag">custom exceptions</span>
+            <span class="lab-tag">assert</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-04-15T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: Apr 15, 23:59</span>
+          </div>
+          <div class="lab-start">LAUNCH LAB</div>
+        </div>
+      </a>
+
+      <!-- Week 10 -->
+      <a class="lab-card" href="weeks/week10.html">
+        <div class="lab-card-top">
+          <div class="lab-week">Week 10</div>
+          <span class="lab-chip" data-chip="week10">Idle</span>
+          <div class="lab-number">10</div>
+        </div>
+        <div class="lab-card-body">
+          <div class="lab-icon">🎵</div>
+          <h2 class="lab-title">Music Library Builder</h2>
+          <p class="lab-desc">
+            Turn your playlist into an OOP system. Build Song and Playlist classes with dunder methods, properties, and composition.
+          </p>
+          <div class="lab-tags">
+            <span class="lab-tag">class / __init__ / self</span>
+            <span class="lab-tag">__str__ / __eq__ / __lt__</span>
+            <span class="lab-tag">@property / @classmethod</span>
+            <span class="lab-tag">composition</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-04-22T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: Apr 22, 23:59</span>
+          </div>
+          <div class="lab-start">LAUNCH LAB</div>
+        </div>
+      </a>
+
+      <!-- Week 11 -->
+      <a class="lab-card" href="weeks/week11.html">
+        <div class="lab-card-top">
+          <div class="lab-week">Week 11</div>
+          <span class="lab-chip" data-chip="week11">Idle</span>
+          <div class="lab-number">11</div>
+        </div>
+        <div class="lab-card-body">
+          <div class="lab-icon">🎮</div>
+          <h2 class="lab-title">Game Character Builder</h2>
+          <p class="lab-desc">
+            Build an RPG class hierarchy with abstract base, subclasses, mixins, multiple inheritance, and polymorphic combat.
+          </p>
+          <div class="lab-tags">
+            <span class="lab-tag">ABC / @abstractmethod</span>
+            <span class="lab-tag">super() / override</span>
+            <span class="lab-tag">multiple inheritance</span>
+            <span class="lab-tag">polymorphism</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-04-29T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: Apr 29, 23:59</span>
+          </div>
+          <div class="lab-start">LAUNCH LAB</div>
+        </div>
+      </a>
+
+      <!-- Week 12 -->
+      <a class="lab-card" href="weeks/week12.html">
+        <div class="lab-card-top">
+          <div class="lab-week">Week 12</div>
+          <span class="lab-chip" data-chip="week12">Idle</span>
+          <div class="lab-number">12</div>
+        </div>
+        <div class="lab-card-body">
+          <div class="lab-icon">📊</div>
+          <h2 class="lab-title">Personal Stats Dashboard</h2>
+          <p class="lab-desc">
+            Track 7 days of sleep, water, screen time, steps, and mood. Analyze with statistics, collections, datetime, dataclasses, enum, and more.
+          </p>
+          <div class="lab-tags">
+            <span class="lab-tag">statistics / math</span>
+            <span class="lab-tag">collections / datetime</span>
+            <span class="lab-tag">dataclasses / enum</span>
+            <span class="lab-tag">itertools / functools</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-05-06T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: May 6, 23:59</span>
+          </div>
+          <div class="lab-start">LAUNCH LAB</div>
+        </div>
+      </a>
+
+      <!-- Week 13 -->
+      <a class="lab-card" href="weeks/week13.html">
+        <div class="lab-card-top">
+          <div class="lab-week">Week 13</div>
+          <span class="lab-chip" data-chip="week13">Idle</span>
+          <div class="lab-number">13</div>
+        </div>
+        <div class="lab-card-body">
+          <div class="lab-icon">🌡️</div>
+          <h2 class="lab-title">Weather Station Data Hub</h2>
+          <p class="lab-desc">
+            Process 7 days of weather through every data format — CSV, JSON, XML, SQLite, binary — with validation and a full ETL pipeline.
+          </p>
+          <div class="lab-tags">
+            <span class="lab-tag">csv / json / xml</span>
+            <span class="lab-tag">sqlite3 / struct</span>
+            <span class="lab-tag">validation</span>
+            <span class="lab-tag">ETL pipeline</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-05-13T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: May 13, 23:59</span>
+          </div>
+          <div class="lab-start">LAUNCH LAB</div>
+        </div>
+      </a>
+
+      <!-- Week 14 -->
+      <a class="lab-card" href="weeks/week14.html">
+        <div class="lab-card-top">
+          <div class="lab-week">Week 14</div>
+          <span class="lab-chip" data-chip="week14">Idle</span>
+          <div class="lab-number">14</div>
+        </div>
+        <div class="lab-card-body">
+          <div class="lab-icon">🌿</div>
+          <h2 class="lab-title">Environmental Monitor</h2>
+          <p class="lab-desc">
+            Final project — build a complete sensor monitoring system integrating OOP, inheritance, storage backends, analytics, alerts, and design patterns.
+          </p>
+          <div class="lab-tags">
+            <span class="lab-tag">ABC / factory / observer</span>
+            <span class="lab-tag">CSV / JSON / SQLite</span>
+            <span class="lab-tag">analytics / alerts</span>
+            <span class="lab-tag">full integration</span>
+          </div>
+          <div class="lab-deadline" data-deadline="2026-05-20T23:59:00+03:00">
+            <span class="dl-icon">⏰</span>
+            <span class="dl-text">Due: May 20, 23:59</span>
+          </div>
+          <div class="lab-start">LAUNCH LAB</div>
+        </div>
       </a>
 
     </section>
+
+    <!-- Footer -->
+    <footer class="hub-footer">
+      Istanbul Health &amp; Technology University · Mechatronics Engineering<br/>
+      CP2 PhoneLab · <a href="https://arifsolmaz.github.io/cp2/">Course Home</a>
+    </footer>
   </main>
 
   <script src="assets/app.js"></script>
   <script>
-    window.PhoneLabUI?.updateHubChips();
+    // Update chip status from localStorage
+    document.querySelectorAll("[data-chip]").forEach(function(chip) {
+      var week = chip.getAttribute("data-chip");
+      var status = window.PhoneLabUI ? window.PhoneLabUI.getStatus(week) : "none";
+      chip.classList.remove("ok", "warn");
+      if (status === "submitted") {
+        chip.textContent = "DONE";
+        chip.classList.add("ok");
+      } else if (status === "draft") {
+        chip.textContent = "DRAFT";
+        chip.classList.add("warn");
+      } else {
+        chip.textContent = "IDLE";
+      }
+    });
+
+    // Deadline countdowns
+    function updateDeadlines() {
+      document.querySelectorAll("[data-deadline]").forEach(function(el) {
+        var deadline = new Date(el.getAttribute("data-deadline"));
+        var now = new Date();
+        var diff = deadline - now;
+        var textEl = el.querySelector(".dl-text");
+
+        el.classList.remove("urgent", "soon", "closed");
+
+        if (diff <= 0) {
+          textEl.textContent = "CLOSED";
+          el.classList.add("closed");
+        } else {
+          var days = Math.floor(diff / 86400000);
+          var hrs = Math.floor((diff % 86400000) / 3600000);
+          var mins = Math.floor((diff % 3600000) / 60000);
+
+          if (days > 1) {
+            textEl.textContent = days + "d " + hrs + "h left";
+          } else if (days === 1) {
+            textEl.textContent = "1d " + hrs + "h left";
+            el.classList.add("soon");
+          } else {
+            textEl.textContent = hrs + "h " + mins + "m left";
+            el.classList.add("urgent");
+          }
+        }
+      });
+    }
+    updateDeadlines();
+    setInterval(updateDeadlines, 60000);
   </script>
 </body>
 </html>
