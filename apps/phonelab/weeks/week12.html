@@ -150,7 +150,7 @@
   <script src="../assets/app.js"></script>
   <script>
     const WEEK = "week12";
-    const DEADLINE = new Date("2026-05-06T23:59:00+03:00");
+    const DEADLINE = new Date("2026-05-20T23:59:00+03:00");
 
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxu_JAL7pMXz_7bSGC7kIYvs76UGJji8ubbmr6h7rnLY-M2deKSubTxTiekeKecMclC/exec";
 
@@ -525,7 +525,7 @@ print("=" * 55)
         { statusEl.textContent = "Email must be @istun.edu.tr"; return; }
 
       if (new Date() > DEADLINE) {
-        statusEl.textContent = "⏰ Submission closed — deadline was May 6, 23:59.";
+        statusEl.textContent = "⏰ Submission closed — deadline was May 20, 23:59.";
         return;
       }
 
